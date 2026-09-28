@@ -42,3 +42,9 @@ Contenu du dossier
    - Option « anonymat » : si tu préfères publier ton adresse et ton téléphone plutôt que de
      t’appuyer sur l’hébergeur, ajoute-les dans « Éditeur » et supprime l’encadré violet.
    Les licences des polices sont dans assets/fonts/LICENCES.txt (obligatoire avec les polices).
+
+6) En ligne
+   Adresse du site : https://parpar30.github.io/mes-logiciels/
+   Dépôt GitHub    : https://github.com/PARPAR30/mes-logiciels (branche main, GitHub Pages)
+   Pour mettre à jour : modifie les fichiers ici, puis sur github.com/PARPAR30/mes-logiciels
+   « Add file → Upload files » (ou GitHub Desktop). Le site se met à jour en ~1 minute.
