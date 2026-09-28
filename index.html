@@ -1,0 +1,975 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mes logiciels — six outils de droit, une seule application</title>
+<meta name="description" content="Fiches mémo, Fiches d’arrêt, Codes & articles, Suivi Juridique, Considérant, Quantième : six logiciels pour les études et la pratique du droit, réunis dans une seule application pour macOS et Windows.">
+<meta name="theme-color" content="#F6F5F1">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Mes logiciels — tout au même endroit">
+<meta property="og:description" content="Six logiciels pour les études et la pratique du droit, réunis dans une seule application. macOS et Windows.">
+<!-- Une fois le site en ligne : remplacer par l’adresse complète, ex. https://mon-site.fr/assets/img/og-image.jpg -->
+<meta property="og:image" content="https://parpar30.github.io/mes-logiciels/assets/img/og-image.jpg">
+<meta property="og:url" content="https://parpar30.github.io/mes-logiciels/">
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+<style>
+@font-face{font-family:'Zilla Slab';font-weight:400;font-display:swap;src:url(assets/fonts/zilla-slab-latin-400-normal.woff2) format('woff2')}
+@font-face{font-family:'Zilla Slab';font-weight:400;font-style:italic;font-display:swap;src:url(assets/fonts/zilla-slab-latin-400-italic.woff2) format('woff2')}
+@font-face{font-family:'Zilla Slab';font-weight:600;font-display:swap;src:url(assets/fonts/zilla-slab-latin-600-normal.woff2) format('woff2')}
+@font-face{font-family:'Zilla Slab';font-weight:700;font-display:swap;src:url(assets/fonts/zilla-slab-latin-700-normal.woff2) format('woff2')}
+@font-face{font-family:'Archivo';font-weight:400;font-display:swap;src:url(assets/fonts/archivo-latin-400-normal.woff2) format('woff2')}
+@font-face{font-family:'Archivo';font-weight:500;font-display:swap;src:url(assets/fonts/archivo-latin-500-normal.woff2) format('woff2')}
+@font-face{font-family:'Archivo';font-weight:600;font-display:swap;src:url(assets/fonts/archivo-latin-600-normal.woff2) format('woff2')}
+@font-face{font-family:'Archivo';font-weight:700;font-display:swap;src:url(assets/fonts/archivo-latin-700-normal.woff2) format('woff2')}
+@font-face{font-family:'Plex Mono';font-weight:500;font-display:swap;src:url(assets/fonts/ibm-plex-mono-latin-500-normal.woff2) format('woff2')}
+
+/* ================================================================
+   DA de l’application : crème / encre / violet, bordures franches,
+   ombres décalées ; thème nuit comme dans l’app
+   ================================================================ */
+:root{
+  --paper:#F6F5F1; --card:#FFFFFF; --ink:#141416; --muted:#65656D; --soft:#9A9AA2; --line:#E4E1DA; --shadow:#D8D5CD;
+  --vio:#3B2FE8; --vio-2:#8F87FF; --wash:rgba(59,47,232,.09);
+  --red:#E4553A; --green:#3E9A5E; --yel:#E9B730; --gold:#C9A84C; --navy:#0B1426; --navy-2:#16264A;
+  --slab:'Zilla Slab',Rockwell,Georgia,serif; --sans:'Archivo',system-ui,-apple-system,'Segoe UI',sans-serif; --mono:'Plex Mono',ui-monospace,Menlo,monospace;
+  --gut:clamp(16px,4vw,48px);
+}
+:root[data-theme="dark"]{--paper:#141418;--card:#1C1C21;--ink:#F0F0F0;--muted:#A8A8B0;--soft:#74747C;--line:#2B2B33;--shadow:#050507;--vio:#6C63FF;--wash:rgba(108,99,255,.14)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#141418;--card:#1C1C21;--ink:#F0F0F0;--muted:#A8A8B0;--soft:#74747C;--line:#2B2B33;--shadow:#050507;--vio:#6C63FF;--wash:rgba(108,99,255,.14)}}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 18px/1.6 var(--sans);overflow-x:hidden}
+img,video,canvas,svg{display:block;max-width:100%}
+a{color:inherit}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--vio);outline-offset:3px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+kbd{font:500 .8em/1 var(--mono);padding:4px 8px 3px;border:2px solid var(--ink);border-bottom-width:4px;background:var(--card);white-space:nowrap}
+.wrap{max-width:1280px;margin:0 auto;padding:0 var(--gut)}
+.lbl{font:700 12px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase}
+
+/* grain papier */
+.grain{position:fixed;inset:-50%;z-index:90;pointer-events:none;opacity:.05;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");animation:grain 1.2s steps(6) infinite}
+@keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-3%,2%)}40%{transform:translate(2%,-3%)}60%{transform:translate(-2%,-1%)}80%{transform:translate(3%,3%)}100%{transform:translate(0,0)}}
+
+/* curseur personnalisé */
+.cur,.cur-ring{position:fixed;left:0;top:0;z-index:100;pointer-events:none;border-radius:50%}
+.cur{width:8px;height:8px;margin:-4px 0 0 -4px;background:var(--vio)}
+.cur-ring{width:40px;height:40px;margin:-20px 0 0 -20px;border:2px solid var(--vio);display:grid;place-items:center;transition:width .25s,height .25s,margin .25s,background .25s,border-color .25s}
+.cur-ring span{font:700 10px/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;color:#fff;opacity:0;transition:opacity .2s}
+.cur-ring.big{width:92px;height:92px;margin:-46px 0 0 -46px;background:var(--vio);border-color:var(--vio)}
+.cur-ring.big span{opacity:1}
+.has-cur,.has-cur *{cursor:none!important}
+.has-cur input,.has-cur [contenteditable="true"]{cursor:text!important}
+
+/* ================= barre du haut ================= */
+.top{position:fixed;top:0;left:0;right:0;z-index:50;transition:transform .35s cubic-bezier(.2,.9,.2,1)}
+.top.hide{transform:translateY(-100%)}
+.top__in{display:flex;align-items:center;gap:10px;height:66px;padding:0 var(--gut);background:var(--paper);border-bottom:3px solid var(--ink)}
+.brand{display:flex;align-items:center;gap:10px;font:700 21px/1 var(--slab);text-decoration:none;margin-right:auto;white-space:nowrap}
+.brand svg{width:28px;height:28px}
+.links{display:flex;gap:4px}
+.links a{font:600 12px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:var(--muted);padding:12px 12px;border:2.5px solid transparent}
+.links a:hover{color:var(--ink);border-color:var(--ink)}
+.tb{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 14px;border:2.5px solid var(--ink);background:var(--card);font:700 12px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;text-decoration:none;cursor:pointer;color:var(--ink)}
+.tb--vio{background:var(--vio);border-color:var(--vio);color:#fff}
+.prog{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;height:6px;background:transparent}
+.prog i{background:var(--line);position:relative;overflow:hidden}
+.prog i::after{content:"";position:absolute;inset:0;background:var(--vio);transform-origin:left;transform:scaleX(var(--p,0))}
+@media (max-width:900px){.links{display:none}}
+@media (max-width:420px){.brand{font-size:18px}.tb{padding:0 10px}}
+
+/* ================= boutons ================= */
+.btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:58px;padding:0 26px;border:3px solid var(--ink);background:var(--card);color:var(--ink);font:700 14px/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;text-decoration:none;cursor:pointer;box-shadow:6px 6px 0 var(--ink);transition:box-shadow .15s,background .15s}
+.btn:hover{box-shadow:9px 9px 0 var(--vio)}
+.btn:active{box-shadow:0 0 0 var(--ink)}
+.btn--ink{background:var(--ink);color:var(--paper)}
+.btn--vio{background:var(--vio);border-color:var(--ink);color:#fff}
+
+/* ================= accueil ================= */
+.hero{position:relative;min-height:100svh;display:grid;place-items:center;overflow:hidden;padding:120px var(--gut) 90px}
+#grid{position:absolute;inset:0;width:100%;height:100%}
+.hero__in{position:relative;text-align:center;max-width:1100px}
+.scale{width:clamp(96px,11vw,150px);height:auto;margin:0 auto 10px;overflow:visible;cursor:pointer}
+.hero h1{font:700 clamp(60px,12.5vw,196px)/.9 var(--slab);letter-spacing:-.04em;margin:0;white-space:nowrap}
+.hero h1 .ch{display:inline-block;will-change:transform}
+.hero h1 .ch.in{animation:drop .9s cubic-bezier(.3,1.5,.5,1) both}
+@keyframes drop{from{transform:translateY(-120%) rotate(-12deg);opacity:0}to{transform:none;opacity:1}}
+.hero__bar{height:12px;width:min(560px,60%);background:var(--vio);margin:18px auto 30px;transform-origin:center;animation:grow .8s .9s cubic-bezier(.7,0,.2,1) both}
+.js-curtain .hero__bar{animation-delay:2.1s}
+.hero h1 .ch{opacity:0}.hero h1 .ch.in,.hero h1 .ch.ok{opacity:1}
+@keyframes grow{from{transform:scaleX(0)}}
+.roll{display:flex;justify-content:center;align-items:baseline;gap:.35em;flex-wrap:wrap;font:600 clamp(24px,3.2vw,42px)/1.15 var(--slab)}
+.roll__win{display:inline-block;height:1.2em;overflow:hidden;vertical-align:bottom;text-align:left;transition:width .6s cubic-bezier(.7,-.3,.2,1.3)}
+.roll__list{display:block;transition:transform .6s cubic-bezier(.7,-.3,.2,1.3)}
+.roll__list span{display:block;width:max-content;height:1.2em;color:var(--vio)}
+@media (max-width:620px){.roll__list span{text-align:center}}
+.hero p.sub{font-size:clamp(17px,1.6vw,20px);color:var(--muted);margin:18px auto 34px;max-width:46ch}
+.hero .ctas{display:flex;flex-wrap:wrap;justify-content:center;gap:18px}
+.scroll-hint{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);font:600 11px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--soft);display:flex;flex-direction:column;align-items:center;gap:10px}
+.scroll-hint i{width:2px;height:38px;background:linear-gradient(var(--ink) 50%,transparent 50%);background-size:2px 12px;animation:dash 1s linear infinite}
+@keyframes dash{to{background-position:0 12px}}
+
+/* bandeau de mots */
+.ticker{border-block:3px solid var(--ink);background:var(--ink);color:var(--paper);overflow:hidden;white-space:nowrap}
+.ticker__t{display:inline-flex;animation:tick 26s linear infinite;padding:16px 0}
+.ticker span{font:700 clamp(22px,3vw,34px)/1 var(--slab);padding:0 28px;display:inline-flex;align-items:center;gap:28px}
+.ticker span::after{content:"";width:14px;height:14px;background:var(--vio);transform:rotate(45deg)}
+@keyframes tick{to{transform:translateX(-50%)}}
+
+/* ================= sections ================= */
+section{position:relative}
+.sec{padding:clamp(80px,11vw,150px) 0}
+.h2{font:700 clamp(40px,6vw,84px)/1 var(--slab);letter-spacing:-.025em;margin:0}
+.h2 em{font-style:normal;color:var(--vio)}
+.lead{color:var(--muted);font-size:clamp(17px,1.5vw,20px);max-width:48ch}
+[data-split] .w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.08em}
+[data-split] .w>span{display:inline-block;transform:translateY(105%);transition:transform .8s cubic-bezier(.2,.9,.2,1)}
+[data-split].in .w>span{transform:none}
+.rv{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.9,.2,1)}
+.rv.in{opacity:1;transform:none}
+
+/* les 6 cartes (reprennent l’accueil de l’app) */
+#six{overflow:hidden}
+.six__head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:20px 60px;margin-bottom:56px}
+.fam{font:700 clamp(20px,2vw,26px)/1.2 var(--slab);margin:0 0 20px}
+.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px;perspective:1100px;margin-bottom:54px}
+@media (max-width:980px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:620px){.cards{grid-template-columns:1fr;gap:22px}}
+.tile{--rx:0deg;--ry:0deg;--sx:12px;--sy:12px;display:block;text-decoration:none;background:var(--card);border:3px solid var(--ink);padding:26px 26px 28px;box-shadow:var(--sx) var(--sy) 0 var(--shadow);transform:var(--scatter,translate(0,0)) rotateX(var(--rx)) rotateY(var(--ry));transform-style:preserve-3d;transition:box-shadow .2s;will-change:transform}
+.tile:hover{box-shadow:var(--sx) var(--sy) 0 var(--vio)}
+.tile:hover h3,.tile:hover .num{color:var(--vio)}
+.tile__t{display:flex;align-items:center;gap:12px;margin-bottom:12px;transform:translateZ(30px)}
+.num{display:grid;place-items:center;width:36px;height:36px;border:2.5px solid currentColor;font:700 15px/1 var(--sans);flex:none;transition:color .2s}
+.tile h3{font:700 26px/1.1 var(--slab);margin:0;transition:color .2s}
+.tile p{margin:0;color:var(--muted);font-size:16px;transform:translateZ(16px)}
+.tile .go{display:inline-flex;margin-top:16px;font:700 12px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--vio);transform:translateZ(22px)}
+
+/* film */
+.film{background:var(--ink);color:var(--paper);overflow:hidden}
+.film .lead{color:#A8A8B0}
+.film .h2 em{color:var(--vio-2)}
+.player{position:relative;margin-top:50px;border:3px solid #F2F2F2;box-shadow:16px 16px 0 var(--vio);background:#000;transform:perspective(1400px) rotateX(var(--fx,14deg)) scale(var(--fs,.92));transform-origin:50% 100%}
+.player video{width:100%;aspect-ratio:16/9;height:auto}
+.play{position:absolute;inset:0;display:grid;place-items:center;background:transparent;border:0;cursor:pointer}
+.play b{width:clamp(90px,11vw,140px);aspect-ratio:1;border-radius:50%;background:var(--vio);display:grid;place-items:center;box-shadow:0 0 0 0 rgba(59,47,232,.6);animation:pulse 2s infinite;transition:transform .2s}
+.play:hover b{transform:scale(1.08)}
+.play b::before{content:"";margin-left:8px;border-left:30px solid #fff;border-top:19px solid transparent;border-bottom:19px solid transparent}
+@keyframes pulse{70%{box-shadow:0 0 0 34px rgba(59,47,232,0)}100%{box-shadow:0 0 0 0 rgba(59,47,232,0)}}
+.player.playing .play{display:none}
+
+/* ================= sections « à toi de jouer » ================= */
+.app{padding:clamp(80px,10vw,140px) 0;overflow:hidden;isolation:isolate}
+.app__g{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:clamp(30px,5vw,80px);align-items:start}
+@media (max-width:960px){.app__g{grid-template-columns:minmax(0,1fr)}}
+.app__info{position:sticky;top:110px}
+@media (max-width:960px){.app__info{position:static}}
+.big{position:absolute;right:-.06em;top:.05em;font:700 clamp(200px,30vw,440px)/.8 var(--slab);color:transparent;-webkit-text-stroke:2px var(--line);pointer-events:none;user-select:none;transform:translateY(var(--py,0));z-index:-1}
+.app__k{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+.app__k .num{width:48px;height:48px;font-size:19px}
+.app__k .lbl{color:var(--vio)}
+.app h2{font:700 clamp(40px,5vw,68px)/1 var(--slab);letter-spacing:-.02em;margin:0}
+.app h2::after{content:"";display:block;width:110px;height:10px;background:var(--vio);margin-top:18px;transform-origin:left;transform:scaleX(0);transition:transform .8s .3s cubic-bezier(.7,0,.2,1)}
+.app h2.in::after{transform:scaleX(1)}
+.app__d{color:var(--muted);font-size:clamp(17px,1.5vw,19px);margin:22px 0}
+.ul{list-style:none;padding:0;margin:0 0 26px;display:grid;gap:10px;font-size:16px}
+.ul li{position:relative;padding-left:32px;line-height:1.7}
+.ul li::before{content:"";position:absolute;left:0;top:.62em;width:10px;height:10px;background:var(--vio);transform:rotate(45deg)}
+.try{display:inline-block;border:2.5px dashed var(--vio);padding:12px 16px;font-size:15px;line-height:2;color:var(--ink);background:var(--wash);margin:0}
+.try .lbl{color:var(--vio);margin-right:10px}
+.demo{position:relative;background:var(--card);border:3px solid var(--ink);box-shadow:14px 14px 0 var(--shadow)}
+.demo__bar{display:flex;align-items:center;gap:8px;height:40px;padding:0 14px;border-bottom:3px solid var(--ink);font:700 12px/1 var(--sans);color:var(--muted);background:var(--card)}
+.demo__bar i{width:12px;height:12px;border-radius:50%;border:2px solid var(--ink)}
+.demo__bar i:nth-child(1){background:var(--red)}.demo__bar i:nth-child(2){background:var(--yel)}.demo__bar i:nth-child(3){background:var(--green)}
+.demo__bar span{margin-left:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.demo__bar .rp{margin-left:auto;border:2px solid var(--ink);background:none;font:700 10px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;padding:6px 8px;cursor:pointer;color:var(--ink)}
+.demo__in{padding:clamp(16px,3vw,30px);background:#F6F5F1;color:#141416}
+.note{margin-top:16px;font:500 12.5px/1.5 var(--mono);color:var(--soft)}
+
+/* --- 1. fiches mémo --- */
+.deckhead{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;background:#fff;border:3px solid #141416;padding:14px 18px;margin-bottom:22px;box-shadow:8px 8px 0 #D8D5CD}
+.deckhead b{font:700 30px/1 var(--sans)}
+.deckhead span{color:#6B6B72;font-size:15px}
+.deck{position:relative;height:370px;perspective:1600px;margin-right:22px}
+.fc{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .7s cubic-bezier(.3,1.3,.4,1),opacity .5s;cursor:pointer}
+.fc:nth-last-of-type(2){transform:translate(10px,10px) rotate(2deg)}
+.fc:nth-last-of-type(3){transform:translate(20px,20px) rotate(4deg)}
+.fc.flip{transform:rotateY(180deg)}
+.fc.out-r{transform:translateX(130%) rotate(24deg);opacity:0}
+.fc.out-l{transform:translate(-30%,120%) rotate(-18deg);opacity:0}
+.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:#fff;border:3px solid #141416;box-shadow:10px 10px 0 #D8D5CD;padding:22px 24px;display:flex;flex-direction:column}
+.face--b{transform:rotateY(180deg)}
+.tag{align-self:flex-start;border:2px solid #E4E1DA;font:400 15px/1 var(--slab);color:#6B6B72;padding:7px 10px}
+.face .q{font:500 clamp(21px,2vw,27px)/1.3 var(--sans);margin:auto 0}
+.face--b .q{font-size:17px;color:#6B6B72;margin:16px 0 10px}
+.face .a{font-size:16.5px;line-height:1.5;border-top:2px dashed #E4E1DA;padding-top:12px;margin:0}
+.face .hint{margin-top:auto;align-self:flex-end;font:700 12px/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;background:#141416;color:#fff;padding:12px 14px}
+.rates{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:auto;padding-top:12px}
+.rates button{border:2.5px solid #141416;background:#fff;font:700 12px/1 var(--sans);letter-spacing:.06em;text-transform:uppercase;padding:12px 4px;cursor:pointer;color:#141416}
+.rates button:nth-child(1){border-color:var(--red);color:var(--red)}
+.rates button:nth-child(4){border-color:var(--green);color:var(--green)}
+.rates button:hover{background:#3B2FE8;border-color:#3B2FE8;color:#fff}
+.done{position:absolute;inset:0;display:grid;place-items:center;text-align:center;border:3px dashed #141416;animation:pop .5s cubic-bezier(.3,1.6,.5,1) both}
+.done h4{font:700 30px/1.1 var(--slab);margin:0 0 18px}
+@media (max-width:620px){.deck{height:460px;margin-right:18px}.rates{grid-template-columns:repeat(2,1fr)}}
+
+/* --- 2. fiches d’arrêt --- */
+.frm{background:#fff;border:3px solid #141416;padding:20px 22px;box-shadow:8px 8px 0 #D8D5CD}
+.frm h4{font:700 24px/1 var(--slab);margin:0 0 16px}
+.row{display:grid;grid-template-columns:1.4fr 1fr;gap:12px}
+@media (max-width:520px){.row{grid-template-columns:1fr;gap:0}}
+.fl{display:block;margin-bottom:12px}
+.fl>span{display:flex;align-items:center;gap:8px;font:600 11px/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:#6B6B72;margin-bottom:6px;transition:color .2s}
+.fl>span i{display:grid;place-items:center;width:20px;height:20px;border-radius:50%;background:#3B2FE8;color:#fff;font:700 11px/1 var(--sans);font-style:normal;transform:scale(0);transition:transform .35s cubic-bezier(.3,1.6,.5,1)}
+.fl>div{min-height:44px;border:2.5px solid #141416;padding:10px 12px;font-size:15px;line-height:1.35;background:#fff;transition:border-color .2s,box-shadow .2s}
+.fl>div.ph{color:#9A9AA2}
+.fl.on>span{color:#3B2FE8}.fl.on>span i{transform:scale(1)}
+.fl.on>div{border-color:#3B2FE8;box-shadow:4px 4px 0 #3B2FE8}
+.caret::after{content:"";display:inline-block;width:2px;height:1.1em;background:#3B2FE8;vertical-align:-3px;margin-left:1px;animation:blink .8s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.save{display:flex;justify-content:flex-end}
+.save button{background:#141416;color:#fff;border:0;font:700 12px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;padding:14px 18px;cursor:pointer}
+.save button.pulse{animation:pb 1s infinite}
+@keyframes pb{50%{background:#3B2FE8;transform:scale(1.05)}}
+.list{display:grid;gap:12px;margin-top:18px}
+.item{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;background:#fff;border:3px solid #141416;padding:14px 16px;box-shadow:6px 6px 0 #D8D5CD;animation:pop .5s cubic-bezier(.3,1.6,.5,1) both}
+.item b{font:700 18px/1.2 var(--sans)}
+.item .t{border:2px solid #E4E1DA;font:400 14px/1 var(--slab);color:#6B6B72;padding:6px 8px}
+.item .d{margin-left:auto;font:500 14px/1 var(--mono);color:#6B6B72}
+@keyframes pop{from{transform:scale(.6) translateY(20px);opacity:0}}
+.frm.shrink{animation:shrink .55s cubic-bezier(.7,0,.2,1) forwards;transform-origin:50% 100%}
+@keyframes shrink{to{transform:scaleY(.1) scaleX(.96);opacity:0}}
+
+/* --- 3. codes & articles --- */
+.srch{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;background:#fff;border:3px solid #141416;padding:14px;box-shadow:8px 8px 0 #D8D5CD;margin-bottom:20px}
+@media (max-width:520px){.srch{grid-template-columns:1fr}}
+.srch input[type=search]{height:48px;border:2.5px solid #141416;padding:0 14px;font:500 17px var(--sans);background:#fff;color:#141416;min-width:0}
+.srch input[type=search]:focus{outline:none;border-color:#3B2FE8;box-shadow:4px 4px 0 #3B2FE8}
+.srch label{display:flex;align-items:center;gap:8px;font:600 12px/1.2 var(--sans);letter-spacing:.1em;text-transform:uppercase;color:#6B6B72;cursor:pointer}
+.srch label input{width:20px;height:20px;accent-color:#3B2FE8}
+.art{background:#fff;border:3px solid #141416;padding:18px 20px;box-shadow:8px 8px 0 #D8D5CD;margin-bottom:18px;animation:pop .4s cubic-bezier(.3,1.6,.5,1) both}
+.art.gone{display:none}
+.art__h{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin-bottom:12px}
+.art__h .code{color:#6B6B72;font-size:15px}
+.art__h b{font:700 24px/1 var(--sans)}
+.star{margin-left:auto;position:relative;border:2.5px solid #141416;background:#fff;font:700 12px/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;padding:11px 12px;cursor:pointer;color:#141416;transition:background .2s,color .2s,transform .2s}
+.star.on{background:#3B2FE8;border-color:#3B2FE8;color:#fff}
+.star:active{transform:scale(.9)}
+.art p{margin:0;font-size:16.5px;line-height:1.55}
+.art .nt{margin-top:12px;padding-top:10px;border-top:2px dashed #E4E1DA;font-size:14px;color:#6B6B72}
+.art .nt mark{background:linear-gradient(transparent 55%,rgba(59,47,232,.22) 55%);color:inherit}
+.empty{border:3px dashed #9A9AA2;padding:22px;text-align:center;color:#6B6B72;display:none}
+
+/* --- 4. suivi juridique (DA propre : marine / or) --- */
+.navy{color:#F2F2F2}
+.navy::before{content:"";position:absolute;inset:0;background:var(--navy);clip-path:inset(0 var(--cx,50%) 0 var(--cx,50%));z-index:-2}
+.navy .app__d,.navy .ul{color:#B8C0D2}
+.navy .app__k .lbl{color:var(--gold)}
+.navy h2::after{background:var(--gold)}
+.navy .big{-webkit-text-stroke-color:rgba(255,255,255,.08)}
+.navy .try{border-color:var(--gold);background:rgba(201,168,76,.12);color:#F2F2F2}
+.navy .try .lbl{color:var(--gold)}
+.navy .ul li::before{background:var(--gold)}
+.navy .demo{border-color:#F2F2F2;box-shadow:14px 14px 0 var(--gold);background:var(--navy)}
+.navy .demo__bar{border-bottom-color:#F2F2F2;background:#0E1830;color:#AEB8CC}
+.navy .demo__bar i{border-color:#F2F2F2}
+.navy .demo__in{background:var(--navy);color:#F2F2F2}
+.navy .note{color:#6E7C99}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
+.kpi{background:var(--navy-2);padding:14px;border-top:4px solid var(--c)}
+.kpi span{display:block;font:600 10px/1.2 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:#AEB8CC}
+.kpi b{display:block;font:400 34px/1.1 var(--sans);margin-top:8px}
+@media (max-width:620px){.kpis{grid-template-columns:repeat(2,1fr)}}
+.pipe{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;min-height:300px}
+.col{background:var(--navy-2);padding:8px;display:flex;flex-direction:column;gap:8px;transition:background .2s,outline-color .2s;outline:2px dashed transparent;outline-offset:-2px}
+.col.over{background:#1E335F;outline-color:var(--gold)}
+.col h5{margin:0;display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px;background:#0E1830;padding:9px 7px;border-top:3px solid var(--c);font:700 9.5px/1.1 var(--sans);letter-spacing:.04em;text-transform:uppercase;color:var(--c)}
+.col h5 em{font-style:normal;color:#8C98B0}
+.lit{background:#1C2F57;border-left:4px solid var(--c,#E06C5A);padding:10px;cursor:grab;touch-action:none;user-select:none;transition:transform .2s,box-shadow .2s}
+.lit:hover{transform:translateY(-2px);box-shadow:0 8px 0 rgba(0,0,0,.3)}
+.lit b{display:block;font:700 13px/1.25 var(--sans)}
+.lit span{display:block;font:500 11px/1.3 var(--mono);color:#8C98B0;margin-top:4px}
+.lit i{display:inline-block;margin-top:8px;font:700 9px/1 var(--sans);font-style:normal;letter-spacing:.1em;color:var(--gold);background:rgba(201,168,76,.18);padding:5px 6px}
+.lit.ghost{opacity:.25}
+.drag{position:fixed;left:0;top:0;z-index:95;pointer-events:none;box-shadow:12px 16px 0 rgba(0,0,0,.35);color:#F2F2F2}
+@media (max-width:700px){.pipe{grid-template-columns:repeat(5,150px);overflow-x:auto;padding-bottom:8px}}
+
+/* --- 5. considérant --- */
+.treebox{position:relative;overflow:auto;height:440px;background:#F4F2EC;background-image:radial-gradient(#DAD6CC 1.3px,transparent 1.4px);background-size:26px 26px;border:3px solid #141416;outline:none}
+.treebox:focus-visible{box-shadow:0 0 0 4px #3B2FE8}
+@media (max-width:620px){.treebox{height:380px}}
+.treebox.grabbing{user-select:none}
+.keys .hint2{align-self:center;font:500 12.5px/1.4 var(--mono);color:#9A9AA2}
+.tree{position:relative}
+.tree svg{position:absolute;left:0;top:0;overflow:visible;pointer-events:none}
+.tree path{fill:none;stroke-width:3;stroke-dasharray:var(--len);stroke-dashoffset:0;animation:draw .7s ease both}
+@keyframes draw{from{stroke-dashoffset:var(--len)}}
+.node{position:absolute;width:236px;background:#fff;border-left:4px solid var(--c);box-shadow:0 6px 16px rgba(0,0,0,.08);padding:8px 12px 10px;font:400 15px/1.3 var(--slab);color:#141416;transition:left .45s cubic-bezier(.2,.9,.2,1),top .45s cubic-bezier(.2,.9,.2,1),box-shadow .2s;animation:unfold .45s cubic-bezier(.3,1.5,.5,1) both;cursor:pointer}
+.node small{display:block;font:500 11px/1 var(--mono);color:var(--c);margin-bottom:4px}
+.node.root{background:#141416;color:#fff;font:700 18px/1.2 var(--slab);border-left:0;padding:14px 16px;width:200px}
+.tree.compact .node{width:168px;font-size:13.5px;padding:6px 9px 8px}
+.tree.compact .node.root{width:104px;font-size:15px;padding:10px 11px}
+.node.sel{box-shadow:0 0 0 3px #3B2FE8,0 10px 24px rgba(59,47,232,.25)}
+.node [contenteditable]{outline:none}
+@keyframes unfold{from{transform:scaleY(0) scaleX(.6);opacity:0}}
+.keys{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.keys button{display:inline-flex;align-items:center;gap:8px;border:2.5px solid #141416;background:#fff;color:#141416;font:600 14px/1 var(--sans);padding:9px 12px;cursor:pointer}
+.keys button:hover{background:#3B2FE8;color:#fff;border-color:#3B2FE8}
+.keys kbd{border-color:#141416;background:#E7E4DC;color:#141416}
+.flash{animation:fl .4s}
+@keyframes fl{50%{background:#3B2FE8;color:#fff;transform:translateY(3px)}}
+
+/* --- 6. quantième --- */
+.qh{font:700 clamp(26px,3vw,40px)/1.05 var(--slab);margin:0 0 18px}
+.qh span{color:#3B2FE8}
+.qsel{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:46px}
+.qsel div{border:2.5px solid #141416;background:#fff;padding:9px 12px;font:600 13px/1.2 var(--sans)}
+.frise{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));position:relative}
+@media (max-width:760px){.frise{grid-template-columns:1fr 1fr;row-gap:26px}}
+.stp{padding-right:14px;cursor:pointer}
+.stp .dy{font:600 11px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:#6B6B72;display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.stp .dy i{width:12px;height:12px;background:var(--c);flex:none}
+.stp .dt{font:700 clamp(28px,3vw,40px)/1 var(--slab);display:flex;flex-wrap:wrap;align-items:baseline;gap:0 6px}
+.stp .dt small{font:600 14px/1 var(--sans);color:var(--c)}
+.odo{display:inline-flex;flex:none;overflow:hidden;height:1em;line-height:1}
+.odo span{display:flex;flex:none;flex-direction:column;transition:transform 1.4s cubic-bezier(.2,.9,.2,1)}
+.odo span b{display:block;height:1em;font-weight:700}
+.band{height:74px;margin:14px 0 14px;background:var(--bg);color:var(--c);display:flex;align-items:center;justify-content:space-between;padding:0 14px;font:700 18px/1 var(--slab);clip-path:inset(0 calc(100% - var(--w,0%)) 0 0);transition:clip-path 1s cubic-bezier(.7,0,.2,1)}
+.stp:nth-child(2) .band{color:#fff;font:700 16px/1 var(--sans);letter-spacing:.06em}
+.stp h6{font:600 16px/1.3 var(--sans);margin:0 0 6px}
+.stp .ar{font:500 13px/1 var(--sans);color:var(--c);text-decoration:underline;text-underline-offset:3px}
+.stp ul{list-style:none;padding:0;margin:0;max-height:0;overflow:hidden;transition:max-height .5s ease}
+.stp.open ul{max-height:200px}
+.stp ul li{font-size:13px;color:#6B6B72;padding:3px 0}
+.stp ul li::before{content:"– "}
+.stp .more{display:block;font:700 10px/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;color:#6B6B72;margin-top:8px}
+.stp.open .more{color:#3B2FE8}
+.pin{position:absolute;top:-34px;left:0;background:#3B2FE8;color:#fff;font:600 12px/1 var(--sans);padding:7px 12px;border-radius:20px;white-space:nowrap;animation:bob 2s ease-in-out infinite}
+.pin::after{content:"";position:absolute;left:12px;top:100%;height:10px;border-left:2px dashed #3B2FE8}
+@keyframes bob{50%{transform:translateY(-4px)}}
+@media (max-width:760px){.pin{display:none}}
+.qfoot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;margin-top:22px;border-top:3px solid #141416;padding-top:18px}
+.cal{position:relative;display:inline-flex;align-items:center;gap:10px;background:#141416;color:#fff;border:0;font:700 12px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;padding:14px 16px;cursor:pointer}
+.cal svg{width:22px;height:22px}
+.cal em{position:absolute;top:-10px;right:-10px;min-width:24px;height:24px;border-radius:12px;background:#3B2FE8;color:#fff;font:700 12px/24px var(--sans);font-style:normal;text-align:center;transform:scale(0);transition:transform .35s cubic-bezier(.3,1.8,.5,1)}
+.cal.ok em{transform:scale(1)}
+.fly{position:fixed;z-index:96;width:18px;height:18px;margin:-9px 0 0 -9px;pointer-events:none;transition:transform .8s cubic-bezier(.5,-.4,.3,1),opacity .8s}
+
+/* ================= données locales ================= */
+.local{background:var(--ink);color:var(--paper)}
+.local .h2 em{color:var(--vio-2)}
+.local .lead{color:var(--soft)}
+.local__g{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:clamp(30px,5vw,80px);align-items:center}
+@media (max-width:960px){.local__g{grid-template-columns:minmax(0,1fr)}}
+.mon canvas{width:100%;aspect-ratio:16/10;height:auto;border:5px solid var(--paper);background:#1C1C21}
+.mon::after{content:"";display:block;width:30%;height:40px;margin:0 auto;border-inline:5px solid var(--paper);border-bottom:5px solid var(--paper)}
+.pts{display:grid;gap:18px;margin-top:34px}
+.pt{display:grid;grid-template-columns:48px 1fr;gap:16px;align-items:start}
+.pt .num{width:44px;height:44px}
+.pt h3{font:700 26px/1.1 var(--slab);margin:4px 0 4px}
+.pt p{margin:0;color:var(--soft);font-size:16px}
+
+/* ================= téléchargement ================= */
+.dl__g{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:34px;margin-top:56px}
+@media (max-width:800px){.dl__g{grid-template-columns:1fr}}
+.os{position:relative;background:var(--card);border:3px solid var(--ink);padding:clamp(24px,3vw,38px);box-shadow:12px 12px 0 var(--shadow)}
+.os.you{box-shadow:12px 12px 0 var(--vio)}
+.os .you-tag{position:absolute;top:-17px;right:20px;transform:rotate(3deg);background:var(--vio);color:#fff;font:700 11px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;padding:9px 11px;display:none}
+.os.you .you-tag{display:block}
+.os svg{width:54px;height:54px}
+.os h3{font:700 clamp(34px,3.6vw,48px)/1 var(--slab);margin:18px 0 8px}
+.os .spec{font:500 14px/1.5 var(--mono);color:var(--muted);margin:0 0 18px}
+.os ol{padding-left:1.2em;margin:0 0 26px;color:var(--muted);font-size:16px}
+.os .btn{width:100%}
+.btn[aria-disabled="true"]{background:var(--card);color:var(--soft);border-style:dashed;box-shadow:none}
+.shake{animation:shake .45s}
+@keyframes shake{20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
+.disc{margin-top:40px;max-width:70ch;padding:16px 20px;border-left:6px solid var(--vio);background:var(--wash);font-size:15px}
+
+.foot{border-top:3px solid var(--ink);padding:40px 0 60px}
+.foot .wrap{display:flex;flex-wrap:wrap;gap:16px 40px;align-items:center;justify-content:space-between}
+.foot p{margin:0;color:var(--muted);font-size:14px}
+.foot .legal{display:flex;flex-wrap:wrap;gap:6px 18px;width:100%}
+.foot .legal a{font-size:14px;color:var(--muted);text-underline-offset:3px}
+.foot .legal a:hover{color:var(--vio)}
+.disc a{color:var(--vio)}
+
+/* rideau d’ouverture */
+.curtain{position:fixed;inset:0;z-index:120;background:var(--vio);color:#fff;display:none;place-items:center;align-content:center;gap:10px;text-align:center;transition:transform .95s cubic-bezier(.8,0,.15,1),border-radius .95s cubic-bezier(.8,0,.15,1)}
+.js-curtain .curtain{display:grid}
+.curtain.up{transform:translateY(-102%);border-radius:0 0 50% 50%/0 0 26% 26%}
+.curtain__n{font:700 clamp(90px,16vw,220px)/.85 var(--slab);letter-spacing:-.04em;display:flex;align-items:baseline;justify-content:center}
+.curtain__n span{font-size:.3em;opacity:.55;margin-left:.1em}
+.curtain__t{font:600 clamp(16px,2vw,22px)/1 var(--sans);letter-spacing:.2em;text-transform:uppercase}
+#fx{position:fixed;inset:0;z-index:97;pointer-events:none;width:100%;height:100%}
+::view-transition-old(root),::view-transition-new(root){animation:none;mix-blend-mode:normal}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .rv{opacity:1;transform:none}[data-split] .w>span{transform:none}
+  .grain{display:none}
+}
+</style>
+<noscript><style>.rv{opacity:1;transform:none}[data-split] .w>span{transform:none}</style></noscript>
+<script>
+try{var th=localStorage.getItem('ml-theme');if(th)document.documentElement.setAttribute('data-theme',th);}catch(e){}
+try{if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&!sessionStorage.getItem('ml-vu'))document.documentElement.classList.add('js-curtain');}catch(e){}
+</script>
+</head>
+<body>
+<div class="curtain" id="curtain" aria-hidden="true"><div class="curtain__n"><b id="cN">01</b><span>/06</span></div><div class="curtain__t" id="cT">Fiches mémo</div></div>
+<div class="grain" aria-hidden="true"></div>
+<canvas id="fx" aria-hidden="true"></canvas>
+
+<svg class="sr" aria-hidden="true"><symbol id="logo" viewBox="0 0 40 40"><g fill="none" stroke="currentColor" stroke-linecap="round"><path d="M4 10H36M20 10V32M12 33H28" stroke-width="3.2"/><path d="M9 10V15M31 10V15" stroke-width="2"/></g><path d="M3 15Q9 23 15 15ZM25 15Q31 23 37 15Z" fill="currentColor"/><circle cx="20" cy="4.5" r="3.6" fill="#3B2FE8"/></symbol></svg>
+
+<header class="top" id="top">
+  <div class="top__in">
+    <a class="brand" href="#accueil"><svg aria-hidden="true"><use href="#logo"/></svg>Mes logiciels</a>
+    <nav class="links" aria-label="Navigation"><a href="#six">Les 6</a><a href="#film">Le film</a><a href="#memo">Essayer</a><a href="#telecharger">Télécharger</a></nav>
+    <button class="tb" id="theme" data-cursor="Thème">Nuit</button>
+    <a class="tb tb--vio" href="#telecharger">Télécharger</a>
+  </div>
+  <div class="prog" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+</header>
+
+<main>
+<!-- ============================ ACCUEIL ============================ -->
+<section class="hero" id="accueil">
+  <canvas id="grid" aria-hidden="true"></canvas>
+  <div class="hero__in">
+    <svg class="scale" id="scale" viewBox="-30 -8 100 70" aria-hidden="true" data-cursor="Peser">
+      <g stroke="currentColor" stroke-linecap="round" fill="none"><path d="M20 12V52M8 53H32" stroke-width="4.2"/></g>
+      <g id="beam" style="transform-origin:20px 12px"><path d="M-6 12H46" stroke="currentColor" stroke-width="4.2" stroke-linecap="round"/>
+        <g id="panL" style="transform-origin:-2px 12px"><path d="M-2 12V20" stroke="currentColor" stroke-width="2.6"/><path d="M-12 20Q-2 32 8 20Z" fill="currentColor"/></g>
+        <g id="panR" style="transform-origin:42px 12px"><path d="M42 12V20" stroke="currentColor" stroke-width="2.6"/><path d="M32 20Q42 32 52 20Z" fill="currentColor"/></g>
+      </g>
+      <circle cx="20" cy="4" r="5" fill="#3B2FE8"/>
+    </svg>
+    <h1 id="title" aria-label="Mes logiciels">Mes logiciels</h1>
+    <div class="hero__bar"></div>
+    <div class="roll"><span>Tout au même endroit :</span>
+      <span class="roll__win" aria-hidden="true"><span class="roll__list" id="roll"><span>les définitions.</span><span>les arrêts.</span><span>les articles.</span><span>les dossiers.</span><span>les raisonnements.</span><span>les délais.</span><span>les définitions.</span></span></span>
+    </div>
+    <p class="sub">Un seul point d’accès pour les outils d’études et les outils de pratique du droit. Six logiciels, une application, pour macOS et Windows.</p>
+    <div class="ctas">
+      <a class="btn btn--vio" href="#telecharger" data-magnet data-cursor="Go">Télécharger</a>
+      <a class="btn" href="#memo" data-magnet data-cursor="Jouer">Essayer ici ↓</a>
+    </div>
+  </div>
+  <div class="scroll-hint" aria-hidden="true">Défiler<i></i></div>
+</section>
+
+<div class="ticker" aria-hidden="true"><div class="ticker__t">
+  <span>Fiches mémo</span><span>Fiches d’arrêt</span><span>Codes &amp; articles</span><span>Suivi Juridique</span><span>Considérant</span><span>Quantième</span>
+  <span>Fiches mémo</span><span>Fiches d’arrêt</span><span>Codes &amp; articles</span><span>Suivi Juridique</span><span>Considérant</span><span>Quantième</span>
+</div></div>
+
+<!-- ============================ LES 6 ============================ -->
+<section class="sec" id="six">
+  <div class="wrap">
+    <div class="six__head">
+      <h2 class="h2" data-split><em>6</em> logiciels, deux familles.</h2>
+      <p class="lead rv">Comme sur l’écran d’accueil de l’application. Sauf qu’ici, un clic sur une carte t’emmène l’essayer.</p>
+    </div>
+    <p class="fam rv">Études de droit — Droit Toolkit</p>
+    <div class="cards">
+      <a class="tile" href="#memo" data-cursor="Essayer"><div class="tile__t"><span class="num">1</span><h3>Fiches mémo</h3></div><p>Révision par répétition espacée pour mémoriser définitions, articles et notions.</p><span class="go">Essayer →</span></a>
+      <a class="tile" href="#arret" data-cursor="Essayer"><div class="tile__t"><span class="num">2</span><h3>Fiches d’arrêt</h3></div><p>Fiches structurées (faits, procédure, problème, solution, portée) avec recherche par matière.</p><span class="go">Essayer →</span></a>
+      <a class="tile" href="#codes" data-cursor="Essayer"><div class="tile__t"><span class="num">3</span><h3>Codes &amp; articles</h3></div><p>Articles de loi classés par matière et par code, avec annotations personnelles.</p><span class="go">Essayer →</span></a>
+    </div>
+    <p class="fam rv">Pratique &amp; rédaction</p>
+    <div class="cards">
+      <a class="tile" href="#suivi" data-cursor="Essayer"><div class="tile__t"><span class="num">4</span><h3>Suivi Juridique</h3></div><p>Tableau de bord de suivi de dossiers : clients, échéances, finances, notes.</p><span class="go">Essayer →</span></a>
+      <a class="tile" href="#cons" data-cursor="Essayer"><div class="tile__t"><span class="num">5</span><h3>Considérant</h3></div><p>Fiches de raisonnement juridique — structurer un considérant, une argumentation.</p><span class="go">Essayer →</span></a>
+      <a class="tile" href="#quant" data-cursor="Essayer"><div class="tile__t"><span class="num">6</span><h3>Quantième</h3></div><p>Calcul des délais de procédure française à partir d’une date de départ.</p><span class="go">Essayer →</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ FILM ============================ -->
+<section class="sec film" id="film">
+  <div class="wrap">
+    <h2 class="h2" data-split>Le film, <em>en 1 min 19.</em></h2>
+    <p class="lead rv">Les six logiciels, étape par étape, avec les explications à l’écran.</p>
+    <div class="player" id="player">
+      <video id="vid" preload="metadata" playsinline poster="assets/media/poster.jpg">
+        <source src="assets/media/presentation.mp4" type="video/mp4">
+      </video>
+      <button class="play" id="play" aria-label="Lire la vidéo" data-cursor="Lecture"><b></b></button>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 1. FICHES MÉMO ============================ -->
+<section class="app" id="memo" data-app="0">
+  <span class="big" aria-hidden="true">01</span>
+  <div class="wrap app__g">
+    <div class="app__info rv">
+      <div class="app__k"><span class="num">1</span><span class="lbl">Révision</span></div>
+      <h2>Fiches mémo</h2>
+      <p class="app__d">Révision par répétition espacée : les cartes que tu maîtrises reviennent moins souvent, celles qui coincent reviennent vite.</p>
+      <ul class="ul"><li>Le nombre de cartes à revoir chaque jour.</li><li>Recto : la question ou le terme ; verso : la réponse.</li><li>Quatre réponses : Encore, Difficile, Correct, Facile.</li><li>Tes cartes par matière ; export JSON ou PDF.</li></ul>
+      <p class="try"><span class="lbl">À toi</span> Clique sur la carte ou appuie sur <kbd>Espace</kbd>, puis évalue-toi.</p>
+    </div>
+    <div class="demo rv">
+      <div class="demo__bar"><i></i><i></i><i></i><span>Fiches mémo</span><button class="rp" id="memoReset">Rejouer</button></div>
+      <div class="demo__in">
+        <div class="deckhead"><div><b id="cnt">3</b> <span>carte(s) à réviser aujourd’hui</span></div><span class="lbl" style="color:#3B2FE8">Démo</span></div>
+        <div class="deck" id="deck" data-cursor="Retourner"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 2. FICHES D’ARRÊT ============================ -->
+<section class="app" id="arret" data-app="1">
+  <span class="big" aria-hidden="true">02</span>
+  <div class="wrap app__g">
+    <div class="app__info rv">
+      <div class="app__k"><span class="num">2</span><span class="lbl">Analyse de jurisprudence</span></div>
+      <h2>Fiches d’arrêt</h2>
+      <p class="app__d">Chaque arrêt suit la même structure : faits, procédure, problème de droit, solution / motifs, portée.</p>
+      <ul class="ul"><li>Titre, juridiction, date et matière.</li><li>Recherche et filtres par matière et par juridiction.</li><li>Export JSON ou PDF, import.</li><li>Quelques arrêts de référence préchargés par matière pour démarrer.</li></ul>
+      <p class="try"><span class="lbl">À toi</span> Regarde la fiche se remplir, puis clique sur <b>Enregistrer</b>.</p>
+    </div>
+    <div class="demo rv" id="arretDemo">
+      <div class="demo__bar"><i></i><i></i><i></i><span>Fiches d’arrêt</span><button class="rp" id="arretReset">Rejouer</button></div>
+      <div class="demo__in">
+        <div class="frm" id="frm">
+          <h4>Nouvelle fiche</h4>
+          <div class="row"><div class="fl" data-k="titre"><span>Titre (nom de l’arrêt)</span><div class="ph">ex. Cass. civ. 1re, 28 janvier 1998</div></div><div class="fl" data-k="jur"><span>Juridiction</span><div>Cour de cassation</div></div></div>
+          <div class="row"><div class="fl" data-k="mat"><span>Matière</span><div class="ph">ex. Droit des obligations</div></div><div class="fl" data-k="date"><span>Date</span><div class="ph">jj/mm/aaaa</div></div></div>
+          <div class="fl" data-r="1"><span><i>1</i>Faits</span><div class="ph">Résumé des faits pertinents</div></div>
+          <div class="fl" data-r="2"><span><i>2</i>Procédure</span><div class="ph">Historique procédural, moyens des parties</div></div>
+          <div class="fl" data-r="3"><span><i>3</i>Problème de droit</span><div class="ph">Question de droit posée à la juridiction</div></div>
+          <div class="fl" data-r="4"><span><i>4</i>Solution / motifs</span><div class="ph">Décision rendue et raisonnement</div></div>
+          <div class="fl" data-r="5"><span><i>5</i>Portée</span><div class="ph">Apport de l’arrêt, revirement, portée future</div></div>
+          <div class="save"><button id="saveBtn" data-cursor="Enregistrer">Enregistrer la fiche</button></div>
+        </div>
+        <div class="list" id="list"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 3. CODES & ARTICLES ============================ -->
+<section class="app" id="codes" data-app="2">
+  <span class="big" aria-hidden="true">03</span>
+  <div class="wrap app__g">
+    <div class="app__info rv">
+      <div class="app__k"><span class="num">3</span><span class="lbl">Références</span></div>
+      <h2>Codes &amp; articles</h2>
+      <p class="app__d">Les articles que tu utilises souvent, classés par matière et par code, avec ta note personnelle et un marqueur « à retenir ».</p>
+      <ul class="ul"><li>Recherche par numéro, matière ou code.</li><li>Filtre « à retenir uniquement ».</li><li>Une base d’articles de référence par matière, préchargée — à vérifier sur Légifrance.</li></ul>
+      <p class="try"><span class="lbl">À toi</span> Tape <kbd>1833</kbd> dans la recherche, ou marque un article ☆.</p>
+    </div>
+    <div class="demo rv">
+      <div class="demo__bar"><i></i><i></i><i></i><span>Codes &amp; articles</span></div>
+      <div class="demo__in">
+        <div class="srch"><input id="art-q" type="search" placeholder="Rechercher un article" aria-label="Rechercher un article"><label><input type="checkbox" id="art-only"> À retenir uniquement</label></div>
+        <div class="art" data-s="1832 code civil droit des sociétés société contrat entreprise commune">
+          <div class="art__h"><span class="tag">Droit des sociétés</span><span class="code">Code civil</span><b>Art. 1832</b><button class="star on" data-cursor="Retenir">★ À retenir</button></div>
+          <p>La société est instituée par deux ou plusieurs personnes qui conviennent par un contrat d’affecter à une entreprise commune des biens ou leur industrie en vue de partager le bénéfice ou de profiter de l’économie qui pourra en résulter.</p>
+          <p class="nt">Note — <mark>Définition matricielle de la société, valable pour toutes les formes sociales.</mark></p>
+        </div>
+        <div class="art" data-s="1833 code civil droit des sociétés objet licite intérêt commun intérêt social">
+          <div class="art__h"><span class="tag">Droit des sociétés</span><span class="code">Code civil</span><b>Art. 1833</b><button class="star" data-cursor="Retenir">☆ À retenir</button></div>
+          <p>Toute société doit avoir un objet licite et être constituée dans l’intérêt commun des associés.</p>
+          <p style="margin-top:8px">La société est gérée dans son intérêt social, en prenant en considération les enjeux sociaux et environnementaux de son activité.</p>
+        </div>
+        <div class="empty" id="art-empty">Aucun article ne correspond.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 4. SUIVI JURIDIQUE ============================ -->
+<section class="app navy" id="suivi" data-app="3">
+  <span class="big" aria-hidden="true">04</span>
+  <div class="wrap app__g">
+    <div class="app__info rv">
+      <div class="app__k"><span class="num">4</span><span class="lbl">Pratique</span></div>
+      <h2>Suivi Juridique</h2>
+      <p class="app__d">Le tableau de bord de suivi de dossiers : clients, échéances, finances, notes.</p>
+      <ul class="ul"><li>Contrats actifs, litiges ouverts, échéances à 30 jours, risque total.</li><li>Le pipeline des litiges, par statut.</li><li>Sociétés, contrats, consultations, calendrier, prévisionnel, prescription, statistiques, graphe des relations, vue 360°, rapport exécutif.</li></ul>
+      <p class="try"><span class="lbl">À toi</span> Attrape un litige et glisse-le dans une autre colonne.</p>
+    </div>
+    <div class="demo rv">
+      <div class="demo__bar"><i></i><i></i><i></i><span>Suivi Juridique — Pipeline Litiges</span></div>
+      <div class="demo__in">
+        <div class="kpis" id="kpis">
+          <div class="kpi" style="--c:#5B8DEF"><span>Contrats actifs</span><b data-count="12">0</b></div>
+          <div class="kpi" style="--c:#E06C5A"><span>Litiges ouverts</span><b data-count="3">0</b></div>
+          <div class="kpi" style="--c:#C9A84C"><span>Échéances 30 j</span><b data-count="4">0</b></div>
+          <div class="kpi" style="--c:#58B27A"><span>Risque total</span><b data-count="48" data-suf=" k€">0</b></div>
+        </div>
+        <div class="pipe" id="pipe">
+          <div class="col" style="--c:#E06C5A"><h5>Actif <em>0</em></h5>
+            <div class="lit" style="--c:#E06C5A" data-cursor="Glisser"><b>Litige commercial</b><span>Réf. L-001 · démo</span><i>ÉLEVÉ</i></div>
+            <div class="lit" style="--c:#E06C5A" data-cursor="Glisser"><b>Bail commercial</b><span>Réf. L-002 · démo</span><i>MOYEN</i></div></div>
+          <div class="col" style="--c:#C9A84C"><h5>En appel <em>0</em></h5>
+            <div class="lit" style="--c:#C9A84C" data-cursor="Glisser"><b>Rupture de contrat</b><span>Réf. L-003 · démo</span><i>ÉLEVÉ</i></div></div>
+          <div class="col" style="--c:#5B8DEF"><h5>Transaction <em>0</em></h5></div>
+          <div class="col" style="--c:#58B27A" data-win><h5>Gagné <em>0</em></h5></div>
+          <div class="col" style="--c:#AEB8CC"><h5>Perdu <em>0</em></h5></div>
+        </div>
+        <p class="note">Données fictives de démonstration.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 5. CONSIDÉRANT ============================ -->
+<section class="app" id="cons" data-app="4">
+  <span class="big" aria-hidden="true">05</span>
+  <div class="wrap app__g">
+    <div class="app__info rv">
+      <div class="app__k"><span class="num">5</span><span class="lbl">Fiches de raisonnement</span></div>
+      <h2>Considérant</h2>
+      <p class="app__d">Structurer un considérant, une argumentation : le raisonnement prend la forme d’un arbre, branche par branche.</p>
+      <ul class="ul"><li>Double-clic pour écrire.</li><li><kbd>Tab</kbd> crée une branche enfant, <kbd>Entrée</kbd> une branche voisine.</li><li>Export image ou Markdown, impression, sauvegarde, import.</li></ul>
+      <p class="try"><span class="lbl">À toi</span> Choisis une branche, puis <kbd>Tab</kbd> ou <kbd>Entrée</kbd>. Double-clic pour écrire.</p>
+    </div>
+    <div class="demo rv">
+      <div class="demo__bar"><i></i><i></i><i></i><span>Considérant — Droit du travail</span><button class="rp" id="treeReset">Rejouer</button></div>
+      <div class="demo__in">
+        <div class="treebox" id="treebox" tabindex="0" aria-label="Arbre de raisonnement : Tab pour une branche enfant, Entrée pour une branche voisine, Échap pour sortir"><div class="tree" id="tree"></div></div>
+        <div class="keys"><button id="kTab"><kbd>Tab</kbd> enfant</button><button id="kEnt"><kbd>Entrée</kbd> voisin</button><button id="kDel"><kbd>Suppr</kbd> retirer</button><span class="hint2">Glisse le fond pour te déplacer.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 6. QUANTIÈME ============================ -->
+<section class="app" id="quant" data-app="5">
+  <span class="big" aria-hidden="true">06</span>
+  <div class="wrap app__g">
+    <div class="app__info rv">
+      <div class="app__k"><span class="num">6</span><span class="lbl">Délais de procédure</span></div>
+      <h2>Quantième</h2>
+      <p class="app__d">Choisis une procédure et la date de l’acte déclencheur : la frise calcule les échéances, les pièces à réunir et les exporte vers ton calendrier.</p>
+      <ul class="ul"><li>Juridiction, procédure, date de départ.</li><li>Chaque échéance avec son article.</li><li>Un dossier se garde dans un fichier ou dans un lien. Aucune donnée n’est envoyée sur un serveur.</li></ul>
+      <p class="try"><span class="lbl">À toi</span> Clique sur une échéance, puis sur <b>Ajouter au calendrier</b>.</p>
+    </div>
+    <div class="demo rv" id="qDemo">
+      <div class="demo__bar"><i></i><i></i><i></i><span>Quantième</span></div>
+      <div class="demo__in">
+        <p class="qh"><span>Délais</span>, <span>audiences</span>, prescriptions : tout se déplie d’un coup.</p>
+        <div class="qsel"><div>Cour d’appel</div><div>Appel civil — à compter de la signification du jugement</div><div>■ dim. 27 sept. 2026</div></div>
+        <div class="frise" id="frise">
+          <span class="pin">● aujourd’hui</span>
+          <div class="stp" style="--c:#3B2FE8;--bg:#3B2FE8"><div class="dy"><i></i>Dimanche · départ</div><div class="dt"><span class="odo" data-v="27"></span> sept <small>2026</small></div><div class="band">+1 MOIS <span>→</span></div><h6>Date de signification du jugement</h6><span class="more">Point de départ</span></div>
+          <div class="stp" data-cursor="Détails" style="--c:#E4553A;--bg:#F7DDD5"><div class="dy"><i></i>Mardi</div><div class="dt" style="color:#E4553A"><span class="odo" data-v="27"></span> oct <small>2026</small></div><div class="band">Immédiat <span>→</span></div><h6>Expiration du délai d’appel</h6><span class="ar">art. 538 CPC</span><ul><li>Déclaration d’appel (art. 901 CPC)</li><li>Copie du jugement signifié</li><li>Mandat de représentation du client</li></ul><span class="more">+ pièces à réunir</span></div>
+          <div class="stp" data-cursor="Détails" style="--c:#3E9A5E;--bg:#DCE9DF"><div class="dy"><i></i>Mardi</div><div class="dt"><span class="odo" data-v="27"></span> oct <small>2026</small></div><div class="band">+3 mois <span>→</span></div><h6>Signification + 1 mois — exécution</h6><span class="ar">art. 503 CPC</span><ul><li>Signification par commissaire de justice</li><li>Décompte des condamnations</li></ul><span class="more">+ pièces à réunir</span></div>
+          <div class="stp" data-cursor="Détails" style="--c:#C99A1C;--bg:#EFEDE7"><div class="dy"><i></i>Mercredi</div><div class="dt"><span class="odo" data-v="27"></span> janv <small>2027</small></div><div class="band" style="color:#8A8A92">Terme</div><h6>Conclusions de l’appelant (appel au dernier jour)</h6><span class="ar">art. 908 CPC</span><ul><li>Conclusions d’appelant</li><li>Bordereau de pièces</li></ul><span class="more">+ pièces à réunir</span></div>
+        </div>
+        <div class="qfoot"><span class="note" style="margin:0">Exemple tiré de l’application · délais indicatifs, à vérifier.</span>
+          <button class="cal" id="cal" data-cursor="Ajouter"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="3" y="5" width="18" height="16"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Ajouter au calendrier<em>3</em></button></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ DONNÉES LOCALES ============================ -->
+<section class="sec local" id="donnees">
+  <div class="wrap local__g">
+    <div>
+      <h2 class="h2" data-split>Tes données restent <em>chez toi.</em></h2>
+      <p class="lead rv" style="margin-top:20px">Rien ne quitte ta machine : chaque logiciel enregistre ses données localement, dans son propre fichier. Pense à exporter régulièrement quand l’outil le propose.</p>
+      <div class="pts">
+        <div class="pt rv"><span class="num">1</span><div><h3>Local</h3><p>Tout reste sur ton ordinateur.</p></div></div>
+        <div class="pt rv"><span class="num">2</span><div><h3>Exports</h3><p>JSON, PDF, Markdown, image ou calendrier, selon l’outil.</p></div></div>
+        <div class="pt rv"><span class="num">3</span><div><h3>Jour / Nuit</h3><p>Un thème clair et un thème sombre — essaie le bouton en haut.</p></div></div>
+      </div>
+    </div>
+    <div class="mon rv" data-cursor="Attirer"><canvas id="mon" role="img" aria-label="Des carrés de couleur rebondissent à l’intérieur d’un écran sans jamais en sortir"></canvas></div>
+  </div>
+</section>
+
+<!-- ============================ TÉLÉCHARGER ============================ -->
+<section class="sec" id="telecharger">
+  <div class="wrap">
+    <h2 class="h2" data-split>Télécharger <em>Mes logiciels.</em></h2>
+    <p class="lead rv" style="margin-top:18px">Version 1.0.0 — une seule installation pour les six logiciels.</p>
+    <div class="dl__g">
+      <div class="os rv" id="os-mac"><span class="you-tag">Pour cet ordinateur</span>
+        <svg viewBox="0 0 54 54" fill="none" stroke="currentColor" stroke-width="3.6"><rect x="9" y="10" width="36" height="24"/><path d="M3 43h48l-4-7H7z" fill="currentColor"/></svg>
+        <h3>macOS</h3><p class="spec">Universel (Apple Silicon et Intel) · .dmg · ≈ 6 Mo</p>
+        <ol><li>Ouvre le fichier .dmg.</li><li>Glisse Mes Logiciels dans Applications.</li></ol>
+        <a class="btn btn--ink" data-dl="mac" href="#telecharger" data-magnet data-cursor="Télécharger">Télécharger pour macOS</a></div>
+      <div class="os rv" id="os-win"><span class="you-tag">Pour cet ordinateur</span>
+        <svg viewBox="0 0 54 54" fill="none" stroke="currentColor" stroke-width="3.6"><rect x="10" y="5" width="34" height="44"/><path d="M17 15h20M17 23h20"/><circle cx="27" cy="39" r="3" fill="currentColor"/></svg>
+        <h3>Windows</h3><p class="spec">64 bits · installateur .exe · ≈ 2 Mo</p>
+        <ol><li>Lance l’installateur.</li><li>Suis les étapes, puis ouvre Mes Logiciels.</li></ol>
+        <a class="btn btn--ink" data-dl="windows" href="#telecharger" data-magnet data-cursor="Télécharger">Télécharger pour Windows</a></div>
+    </div>
+    <p class="disc rv">Les calculs de délais et de prescription sont fournis à titre indicatif et ne constituent pas un avis juridique : vérifie toujours les textes en vigueur. Le téléchargement vaut acceptation des <a href="mentions-legales.html#conditions">conditions d’utilisation</a>.</p>
+  </div>
+</section>
+</main>
+
+<footer class="foot"><div class="wrap"><a class="brand" href="#accueil"><svg aria-hidden="true"><use href="#logo"/></svg>Mes logiciels</a><p>Tout au même endroit · v1.0.0 · © 2026 Pierre-Antoine Ruat</p><nav class="legal" aria-label="Informations légales"><a href="mentions-legales.html#mentions">Mentions légales</a><a href="mentions-legales.html#confidentialite">Confidentialité</a><a href="mentions-legales.html#conditions">Conditions d’utilisation</a><a href="mentions-legales.html#credits">Crédits</a></nav></div></footer>
+
+<script>
+/* ============================================================
+   LIENS DE TÉLÉCHARGEMENT — à remplir une fois les fichiers en ligne
+   (vide = bouton « Bientôt disponible »)
+   ============================================================ */
+const LIENS = {
+  mac:     "logiciels/Mes Logiciels_1.0.0_universal.dmg",   // ex. "telechargements/Mes Logiciels_1.0.0_universal.dmg"
+  windows: "logiciels/Mes Logiciels_1.0.0_x64-setup.exe"    // ex. "telechargements/Mes Logiciels_1.0.0_x64-setup.exe"
+};
+
+(()=>{
+const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const FINE=matchMedia('(pointer: fine)').matches;
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x)),lerp=(a,b,k)=>a+(b-a)*k;
+let mx=innerWidth/2,my=-999;addEventListener('pointermove',e=>{mx=e.clientX;my=e.clientY;},{passive:true});
+const COLS=['#3B2FE8','#C9A84C','#E4553A','#3E9A5E','#E9B730'];
+const center=el=>{const r=el.getBoundingClientRect();return[r.left+r.width/2,r.top+r.height/2];};
+
+/* ---------- particules (confettis carrés, étoiles) ---------- */
+const fx=$('#fx'),fc=fx.getContext('2d');let P=[],fxOn=false;
+const fxSize=()=>{fx.width=innerWidth*devicePixelRatio;fx.height=innerHeight*devicePixelRatio;fc.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);};fxSize();addEventListener('resize',fxSize);
+function burst(x,y,n=40,cols=COLS,pow=1,glyph){if(RM)return;for(let i=0;i<n;i++){const a=Math.random()*Math.PI*2,v=(4+Math.random()*8)*pow;P.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v-4*pow,r:Math.random()*6,vr:(Math.random()-.5)*.4,s:6+Math.random()*8,c:cols[i%cols.length],l:1,g:glyph});}
+  if(!fxOn){fxOn=true;requestAnimationFrame(fxLoop);}}
+function fxLoop(){fc.clearRect(0,0,innerWidth,innerHeight);P=P.filter(p=>p.l>0);
+  for(const p of P){p.vy+=.35;p.vx*=.985;p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;p.l-=.013;fc.save();fc.globalAlpha=clamp(p.l*1.5,0,1);fc.translate(p.x,p.y);fc.rotate(p.r);fc.fillStyle=p.c;
+    if(p.g){fc.font='700 22px Archivo';fc.textAlign='center';fc.fillText(p.g,0,8);}else fc.fillRect(-p.s/2,-p.s/2,p.s,p.s);fc.restore();}
+  if(P.length)requestAnimationFrame(fxLoop);else fxOn=false;}
+
+/* ---------- rideau d’ouverture : les 6 logiciels défilent, puis le rideau se lève ---------- */
+const withCurtain=document.documentElement.classList.contains('js-curtain');let T0=0;
+if(withCurtain){T0=1250;const names=['Fiches mémo','Fiches d’arrêt','Codes & articles','Suivi Juridique','Considérant','Quantième'];let k=0;
+  const iv=setInterval(()=>{k++;if(k<6){$('#cN').textContent='0'+(k+1);$('#cT').textContent=names[k];}else{clearInterval(iv);$('#curtain').classList.add('up');try{sessionStorage.setItem('ml-vu','1');}catch(e){}setTimeout(()=>$('#curtain').remove(),1000);}},150);}
+
+/* ---------- curseur personnalisé ---------- */
+if(FINE&&!RM){document.body.classList.add('has-cur');const d=document.createElement('div'),r=document.createElement('div');d.className='cur';r.className='cur-ring';r.innerHTML='<span></span>';document.body.append(d,r);
+  let rx=mx,ry=my;(function loop(){rx=lerp(rx,mx,.18);ry=lerp(ry,my,.18);d.style.transform=`translate(${mx}px,${my}px)`;r.style.transform=`translate(${rx}px,${ry}px)`;requestAnimationFrame(loop);})();
+  document.addEventListener('pointerover',e=>{const t=e.target.closest('[data-cursor]');r.classList.toggle('big',!!t);r.firstChild.textContent=t?t.dataset.cursor:'';});}
+
+/* ---------- boutons magnétiques ---------- */
+if(FINE&&!RM)$$('[data-magnet]').forEach(b=>{b.addEventListener('pointermove',e=>{const r=b.getBoundingClientRect();b.style.transform=`translate(${(e.clientX-r.left-r.width/2)*.25}px,${(e.clientY-r.top-r.height/2)*.35}px)`;});
+  b.addEventListener('pointerleave',()=>{b.style.transition='transform .5s cubic-bezier(.3,1.6,.5,1),box-shadow .15s';b.style.transform='';setTimeout(()=>b.style.transition='',500);});});
+
+/* ---------- thème jour / nuit (révélation circulaire) ---------- */
+const root=document.documentElement,tb=$('#theme'),mq=matchMedia('(prefers-color-scheme: dark)');
+const isDark=()=>root.dataset.theme?root.dataset.theme==='dark':mq.matches;
+const lab=()=>{tb.textContent=isDark()?'Jour':'Nuit';$('meta[name=theme-color]').content=isDark()?'#141418':'#F6F5F1';};lab();
+tb.addEventListener('click',e=>{const go=()=>{root.dataset.theme=isDark()?'light':'dark';try{localStorage.setItem('ml-theme',root.dataset.theme);}catch(_){}lab();};
+  if(!document.startViewTransition||RM){go();return;}const x=e.clientX||innerWidth-60,y=e.clientY||30,R=Math.hypot(Math.max(x,innerWidth-x),Math.max(y,innerHeight-y));
+  document.startViewTransition(go).ready.then(()=>root.animate({clipPath:[`circle(0 at ${x}px ${y}px)`,`circle(${R}px at ${x}px ${y}px)`]},{duration:700,easing:'cubic-bezier(.7,0,.2,1)',pseudoElement:'::view-transition-new(root)'})).catch(()=>{});});
+
+/* ---------- apparitions ---------- */
+$$('[data-split]').forEach(h=>{const walk=n=>{[...n.childNodes].forEach(c=>{if(c.nodeType===3){const f=document.createDocumentFragment();c.textContent.split(/(\s+)/).forEach(w=>{if(!w)return;if(/^\s+$/.test(w)){f.append(w);return;}const s=document.createElement('span');s.className='w';const i=document.createElement('span');i.textContent=w;s.append(i);f.append(s);});c.replaceWith(f);}else walk(c);});};walk(h);
+  $$('.w>span',h).forEach((s,i)=>s.style.transitionDelay=(i*.06)+'s');});
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');if(e.target.onIn)e.target.onIn();io.unobserve(e.target);}}),{rootMargin:'0px 0px -12% 0px'});
+$$('.rv,[data-split],.app h2').forEach(el=>io.observe(el));
+
+/* ---------- ACCUEIL : grille magnétique ---------- */
+const gc=$('#grid'),gx=gc.getContext('2d');let GD=[],gw,gh,heroVis=true;
+function gridInit(){gw=gc.clientWidth;gh=gc.clientHeight;gc.width=gw*devicePixelRatio;gc.height=gh*devicePixelRatio;gx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);GD=[];const s=34;for(let y=s/2;y<gh;y+=s)for(let x=s/2;x<gw;x+=s)GD.push({bx:x,by:y,x,y});}
+gridInit();addEventListener('resize',gridInit);
+new IntersectionObserver(([e])=>heroVis=e.isIntersecting).observe($('.hero'));
+let lineCol='#E4E1DA';const readCol=()=>lineCol=getComputedStyle(root).getPropertyValue('--line').trim()||'#E4E1DA';readCol();new MutationObserver(readCol).observe(root,{attributes:true});mq.addEventListener&&mq.addEventListener('change',readCol);
+function gridLoop(){if(heroVis){const r=gc.getBoundingClientRect(),cx=mx-r.left,cy=my-r.top;gx.clearRect(0,0,gw,gh);
+  for(const d of GD){const dx=d.bx-cx,dy=d.by-cy,dist=Math.hypot(dx,dy),R=170;let tx=d.bx,ty=d.by,k=0;
+    if(dist<R&&!RM){k=1-dist/R;const f=k*k*34;tx+=dx/(dist||1)*f;ty+=dy/(dist||1)*f;}
+    d.x=lerp(d.x,tx,.16);d.y=lerp(d.y,ty,.16);const s=2.6+k*4;gx.fillStyle=k>.05?`rgba(59,47,232,${.25+k*.75})`:lineCol;gx.fillRect(d.x-s/2,d.y-s/2,s,s);}}
+  requestAnimationFrame(gridLoop);}
+requestAnimationFrame(gridLoop);
+
+/* ---------- ACCUEIL : la balance penche vers la souris ---------- */
+const beam=$('#beam'),pL=$('#panL'),pR=$('#panR');let ba=0,bv=0,sw=0,sv=0;
+(function scaleLoop(){const tgt=RM||my<0?0:clamp((mx/innerWidth-.5)*.5,-.28,.28);bv=(bv+(tgt-ba)*.08)*.86;ba+=bv;sv=(sv-sw*.12-bv*1.6)*.9;sw+=sv;
+  beam.style.transform=`rotate(${ba}rad)`;pL.style.transform=pR.style.transform=`rotate(${-ba+sw}rad)`;requestAnimationFrame(scaleLoop);})();
+$('#scale').addEventListener('click',()=>{bv+=.14;});
+
+/* ---------- ACCUEIL : lettres qui tombent puis fuient le curseur ---------- */
+const title=$('#title'),txt=title.textContent;title.textContent='';const CH=[];
+[...txt].forEach((c,i)=>{if(c===' '){title.append(' ');return;}const s=document.createElement('span');s.className='ch';s.textContent=c;s.setAttribute('aria-hidden','true');title.append(s);CH.push({el:s,x:0,y:0,r:0,vx:0,vy:0,busy:true});
+  setTimeout(()=>{s.classList.add('in');setTimeout(()=>{s.classList.remove('in');s.classList.add('ok');CH.find(o=>o.el===s).busy=false;},950);},T0+120+i*55);});
+let chC=[];const measure=()=>chC=CH.map(c=>{const r=c.el.getBoundingClientRect();return[r.left+r.width/2-c.x,r.top+r.height/2-c.y];});
+setTimeout(measure,T0+1500);addEventListener('resize',measure);addEventListener('scroll',()=>{if(heroVis)measure();},{passive:true});
+(function chLoop(){if(heroVis&&chC.length&&!RM&&FINE)CH.forEach((c,i)=>{if(c.busy)return;const [cx,cy]=chC[i],dx=cx-mx,dy=cy-my,d=Math.hypot(dx,dy)||1,R=180;let tx=0,ty=0,tr=0;
+    if(d<R){const k=1-d/R;tx=dx/d*k*38;ty=dy/d*k*46;tr=(dx>0?1:-1)*k*14;}
+    c.vx=(c.vx+(tx-c.x)*.12)*.78;c.vy=(c.vy+(ty-c.y)*.12)*.78;c.x+=c.vx;c.y+=c.vy;c.r=lerp(c.r,tr,.15);c.el.style.transform=`translate(${c.x}px,${c.y}px) rotate(${c.r}deg)`;});
+  requestAnimationFrame(chLoop);})();
+
+/* ---------- ACCUEIL : mots qui défilent ---------- */
+const roll=$('#roll'),rw=roll.parentElement,RS=[...roll.children];let ri=0;const fitW=()=>rw.style.width=RS[ri].offsetWidth+'px';document.fonts.ready.then(fitW);addEventListener('resize',fitW);
+if(!RM)setInterval(()=>{ri++;roll.style.transform=`translateY(${-ri*1.2}em)`;fitW();if(ri===6)setTimeout(()=>{roll.style.transition='none';ri=0;roll.style.transform='translateY(0)';void roll.offsetWidth;roll.style.transition='';},700);},1900);
+
+/* ---------- LES 6 : cartes éparpillées qui se rangent + inclinaison 3D ---------- */
+const tiles=$$('.tile');const SA=Math.min(1,innerWidth/1100);const SC=tiles.map(()=>({x:(Math.random()-.5)*260*SA,y:120+Math.random()*160,r:(Math.random()-.5)*26}));
+function scatter(){if(RM)return;tiles.forEach((t,i)=>{const r=t.getBoundingClientRect(),p=clamp((innerHeight-r.top)/(innerHeight*.55),0,1),e=1-Math.pow(1-p,3),s=SC[i];
+  t.style.setProperty('--scatter',`translate(${s.x*(1-e)}px,${s.y*(1-e)}px) rotate(${s.r*(1-e)}deg)`);});}
+if(FINE&&!RM)tiles.forEach(t=>{t.addEventListener('pointermove',e=>{const r=t.getBoundingClientRect(),px=(e.clientX-r.left)/r.width-.5,py=(e.clientY-r.top)/r.height-.5;
+  t.style.setProperty('--ry',(px*16)+'deg');t.style.setProperty('--rx',(-py*16)+'deg');t.style.setProperty('--sx',(12-px*18)+'px');t.style.setProperty('--sy',(12-py*18)+'px');});
+  t.addEventListener('pointerleave',()=>{t.style.transition='transform .6s cubic-bezier(.3,1.5,.5,1),box-shadow .2s';['--rx','--ry'].forEach(v=>t.style.setProperty(v,'0deg'));t.style.setProperty('--sx','12px');t.style.setProperty('--sy','12px');setTimeout(()=>t.style.transition='',600);});});
+
+/* ---------- défilement : barre du haut, progression, parallaxes ---------- */
+const top=$('#top'),segs=$$('.prog i'),apps=$$('[data-app]'),bigs=$$('.big'),sj=$('#suivi'),pl=$('#player');let lastY=scrollY,tick=false;
+function onScroll(){tick=false;const y=scrollY;top.classList.toggle('hide',y>lastY&&y>300);lastY=y;
+  apps.forEach((s,i)=>{const r=s.getBoundingClientRect();segs[i].style.setProperty('--p',clamp((innerHeight*.6-r.top)/r.height,0,1));});
+  bigs.forEach(b=>{const r=b.parentElement.getBoundingClientRect();b.style.setProperty('--py',(r.top*-.22)+'px');});
+  const s=sj.getBoundingClientRect();sj.style.setProperty('--cx',(clamp((s.top-innerHeight*.05)/(innerHeight*.6),0,1)*50)+'%');
+  const p=pl.getBoundingClientRect(),pp=clamp(1-(p.top-innerHeight*.12)/(innerHeight*.6),0,1);pl.style.setProperty('--fx',(14*(1-pp))+'deg');pl.style.setProperty('--fs',lerp(.9,1,pp));
+  scatter();}
+addEventListener('scroll',()=>{if(!tick){tick=true;requestAnimationFrame(onScroll);}},{passive:true});addEventListener('resize',onScroll);onScroll();
+
+/* ---------- bandeau : vitesse et sens suivent le défilement ---------- */
+const tkr=$('.ticker__t');if(!RM){tkr.style.animation='none';let tx=0,v=0,ly=scrollY,dir=1;
+  (function tl(){const d=scrollY-ly;ly=scrollY;v=lerp(v,d,.12);if(Math.abs(v)>.6)dir=v>0?1:-1;const half=tkr.scrollWidth/2;tx-=dir*(1.1+Math.min(Math.abs(v)*.9,40));
+    if(tx<=-half)tx+=half;if(tx>0)tx-=half;tkr.style.transform=`translateX(${tx}px) skewX(${clamp(-v*.5,-14,14)}deg)`;requestAnimationFrame(tl);})();}
+
+/* ---------- FILM ---------- */
+const vid=$('#vid');$('#play').addEventListener('click',()=>{vid.controls=true;vid.play();pl.classList.add('playing');burst(...center($('#play')),30,['#3B2FE8','#F6F5F1'],.8);});
+
+/* ============ 1. FICHES MÉMO : paquet de cartes qui se retournent ============ */
+const CARDS=[
+ {m:'Droit public des affaires',q:'Qu’est-ce que le droit public des affaires ?',a:'Branche du droit public qui régit l’intervention des personnes publiques dans la vie économique : réglementation économique, contrats publics, entreprises publiques, aides d’État.'},
+ {m:'Droit des sociétés',q:'Comment l’article 1832 du Code civil définit-il la société ?',a:'La société est instituée par deux ou plusieurs personnes qui conviennent par un contrat d’affecter à une entreprise commune des biens ou leur industrie en vue de partager le bénéfice ou de profiter de l’économie qui pourra en résulter.'},
+ {m:'Droit des obligations',q:'Quelle est la définition du contrat (art. 1101 C. civ.) ?',a:'Le contrat est un accord de volontés entre deux ou plusieurs personnes destiné à créer, modifier, transmettre ou éteindre des obligations.'}];
+const deck=$('#deck'),cnt=$('#cnt');let left=0;
+function cardEl(c){const d=document.createElement('div');d.className='fc';d.innerHTML=`<div class="face"><span class="tag">${c.m}</span><p class="q">${c.q}</p><span class="hint">Afficher la réponse (Espace)</span></div>
+  <div class="face face--b"><span class="tag">${c.m}</span><p class="q">${c.q}</p><p class="a">${c.a}</p><div class="rates"><button data-r="0">1 · Encore</button><button data-r="1">2 · Difficile</button><button data-r="2">3 · Correct</button><button data-r="3">4 · Facile</button></div></div>`;return d;}
+function memoReset(){deck.innerHTML='';[...CARDS].reverse().forEach(c=>deck.append(cardEl(c)));left=CARDS.length;cnt.textContent=left;}
+const topCard=()=>{const all=$$('.fc',deck).filter(c=>!c.classList.contains('out-r')&&!c.classList.contains('out-l'));return all[all.length-1];};
+function flip(){const c=topCard();if(c&&!c.classList.contains('flip'))c.classList.add('flip');}
+deck.addEventListener('click',e=>{const b=e.target.closest('[data-r]'),c=topCard();if(!c)return;
+  if(!b){flip();return;}e.stopPropagation();const r=+b.dataset.r,[x,y]=center(b);
+  if(r===0){c.classList.remove('flip');c.classList.add('out-l');setTimeout(()=>{c.classList.remove('out-l');deck.prepend(c);},480);}
+  else{c.classList.add('out-r');burst(x,y,r===3?46:26,r===3?['#3E9A5E','#3B2FE8','#E9B730']:COLS);left--;cnt.textContent=left;setTimeout(()=>{c.remove();if(!left)done();},600);}});
+function done(){const d=document.createElement('div');d.className='done';d.innerHTML='<div><h4>Révision du jour terminée ✓</h4><button class="btn btn--vio" id="again">Recommencer</button></div>';deck.append(d);burst(...center(deck),80);$('#again').onclick=e=>{e.stopPropagation();memoReset();};}
+$('#memoReset').onclick=memoReset;memoReset();
+let memoVis=false;new IntersectionObserver(([e])=>memoVis=e.isIntersecting,{threshold:.5}).observe(deck);
+addEventListener('keydown',e=>{const a=document.activeElement;if(e.code==='Space'&&memoVis&&!/INPUT|TEXTAREA|BUTTON|SELECT/.test(a.tagName)&&!a.isContentEditable&&a!==$('#treebox')){e.preventDefault();flip();}});
+
+/* ============ 2. FICHES D’ARRÊT : la fiche se remplit toute seule ============ */
+const frm=$('#frm'),list=$('#list'),saveBtn=$('#saveBtn');let run=0;
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+async function type(el,text,id){el.classList.remove('ph');el.textContent='';el.classList.add('caret');for(const ch of text){if(id!==run)return;el.textContent+=ch;await wait(40);}el.classList.remove('caret');}
+const INIT={};$$('.fl',frm).forEach(f=>{const k=f.dataset.k||f.dataset.r,d=f.querySelector(':scope>div');INIT[k]=[d.textContent,d.className];});
+function addItem(t,j,m,d,old){const it=document.createElement('div');it.className='item';it.innerHTML=`<b>${t}</b><span class="t">${j}</span><span class="t">${m}</span><span class="d">${d} ▾</span>`;old?list.append(it):list.prepend(it);return it;}
+async function arretPlay(){const id=++run;frm.classList.remove('shrink');frm.style.display='';list.innerHTML='';saveBtn.classList.remove('pulse');
+  $$('.fl',frm).forEach(f=>{const k=f.dataset.k||f.dataset.r,d=f.querySelector(':scope>div');f.classList.remove('on');d.textContent=INIT[k][0];d.className=INIT[k][1];});
+  addItem('APREI','Conseil d’État','Droit public des affaires','2007-02-22',true);
+  await wait(500);const F=k=>$(`[data-k="${k}"]>div`,frm);
+  await type(F('titre'),'QPC garde à vue',id);if(id!==run)return;
+  const j=F('jur');j.parentElement.classList.add('on');j.textContent='Conseil constitutionnel';await wait(450);j.parentElement.classList.remove('on');
+  await type(F('mat'),'Procédure pénale',id);await type(F('date'),'30/07/2010',id);if(id!==run)return;
+  for(let i=1;i<=5;i++){if(id!==run)return;$(`[data-r="${i}"]`,frm).classList.add('on');await wait(420);}
+  saveBtn.classList.add('pulse');}
+saveBtn.addEventListener('click',()=>{if(frm.classList.contains('shrink'))return;run++;saveBtn.classList.remove('pulse');burst(...center(saveBtn),30);frm.classList.add('shrink');
+  setTimeout(()=>{frm.style.display='none';const it=addItem('QPC garde à vue','Conseil constitutionnel','Procédure pénale','2010-07-30');burst(...center(it),24,['#3B2FE8','#141416','#E9B730']);},540);});
+$('#arretReset').onclick=arretPlay;$('#arretDemo').onIn=arretPlay;
+
+/* ============ 3. CODES & ARTICLES : recherche + étoile ============ */
+const arts=$$('#codes .art'),aq=$('#art-q'),only=$('#art-only');
+const norm=s=>s.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
+function filt(){const v=norm(aq.value.trim());let n=0;arts.forEach(a=>{const ok=(!v||norm(a.dataset.s+' '+a.textContent).includes(v))&&(!only.checked||a.querySelector('.star').classList.contains('on'));
+  const was=a.classList.contains('gone');a.classList.toggle('gone',!ok);if(ok&&was){a.style.animation='none';void a.offsetWidth;a.style.animation='';}if(ok)n++;});$('#art-empty').style.display=n?'none':'block';}
+aq.addEventListener('input',filt);only.addEventListener('change',filt);
+$$('#codes .star').forEach(s=>s.addEventListener('click',()=>{const on=s.classList.toggle('on');s.textContent=(on?'★':'☆')+' À retenir';if(on)burst(...center(s),18,['#3B2FE8','#E9B730'],.9,'★');filt();}));
+
+/* ============ 4. SUIVI JURIDIQUE : glisser-déposer entre statuts ============ */
+const pipe=$('#pipe');const upd=()=>$$('.col',pipe).forEach(c=>c.querySelector('h5 em').textContent=c.querySelectorAll('.lit').length);upd();
+let drag=null;
+const colAt=(x,y)=>{if(drag)drag.cl.style.visibility='hidden';const el=document.elementFromPoint(x,y);if(drag)drag.cl.style.visibility='';return el&&el.closest('#pipe .col');};
+pipe.addEventListener('pointerdown',e=>{const l=e.target.closest('.lit');if(!l)return;e.preventDefault();const r=l.getBoundingClientRect(),cl=l.cloneNode(true);cl.classList.add('drag');cl.style.width=r.width+'px';document.body.append(cl);l.classList.add('ghost');
+  drag={l,cl,ox:e.clientX-r.left,oy:e.clientY-r.top,lx:e.clientX,rot:0};moveDrag(e);});
+function moveDrag(e){if(!drag)return;const vx=e.clientX-drag.lx;drag.lx=e.clientX;drag.rot=lerp(drag.rot,clamp(vx*.8,-14,14),.3);
+  drag.cl.style.transform=`translate(${e.clientX-drag.ox}px,${e.clientY-drag.oy}px) rotate(${drag.rot}deg) scale(1.05)`;
+  $$('.col',pipe).forEach(c=>c.classList.remove('over'));const over=colAt(e.clientX,e.clientY);if(over)over.classList.add('over');}
+addEventListener('pointermove',moveDrag);
+addEventListener('pointerup',e=>{if(!drag)return;const c=colAt(e.clientX,e.clientY);$$('.col',pipe).forEach(k=>k.classList.remove('over'));
+  if(c&&c!==drag.l.parentElement){const f=drag.l.getBoundingClientRect();c.append(drag.l);drag.l.style.setProperty('--c',getComputedStyle(c).getPropertyValue('--c'));const t=drag.l.getBoundingClientRect();
+    drag.l.animate([{transform:`translate(${f.left-t.left}px,${f.top-t.top}px)`},{transform:'none'}],{duration:380,easing:'cubic-bezier(.3,1.4,.5,1)'});
+    if(c.hasAttribute('data-win'))burst(...center(drag.l),50,['#C9A84C','#58B27A','#F2F2F2']);}
+  drag.l.classList.remove('ghost');drag.cl.remove();drag=null;upd();});
+const kp=$('#kpis');io.observe(kp);kp.onIn=()=>$$('[data-count]',kp).forEach(b=>{const v=+b.dataset.count,suf=b.dataset.suf||'',t0=performance.now();(function f(t){const k=clamp((t-t0)/1200,0,1),e=1-Math.pow(1-k,3);b.textContent=Math.round(v*e)+suf;if(k<1)requestAnimationFrame(f);})(t0);});
+
+/* ============ 5. CONSIDÉRANT : arbre avec Tab / Entrée ============ */
+const tree=$('#tree'),tbox=$('#treebox');let N=[],sel=null,uid=0;
+const BASE=[{t:'Droit du travail',p:null,root:1},{t:'Introduction — informations administratives',p:0,c:'#6B7A99',n:'0'},{t:'I. De quoi le droit du travail est-il le nom ?',p:0,c:'#A5303C',n:'1'}];
+const GROW=[{t:'A. Une branche du droit — critère : la subordination',n:'1.1'},{t:'B. Une représentation de l’Homme au travail',n:'1.2'},{t:'C. L’expression d’une conflictualité',n:'1.3'},{t:'D. Qu’est-ce que le travail ? — trois sens',n:'1.4'}];
+let growT=[];
+const TCOL=['#A5303C','#3E7A5A','#24406E','#C9A84C','#6B7A99'];
+function treeReset(){growT.forEach(clearTimeout);growT=[];tree.innerHTML='';tbox.scrollTo(0,0);N=BASE.map((b,i)=>({id:i,t:b.t,p:b.p,c:b.c||'#141416',n:b.n||'',root:b.root}));uid=N.length;sel=2;layout(true);}
+const kids=id=>N.filter(n=>n.p===id);
+const dims=()=>tbox.clientWidth<560?{RW:104,NW:168,G:22,X0:12,Y0:14,c:1}:{RW:200,NW:236,G:34,X0:16,Y0:18,c:0};
+function layout(first){const D=dims(),colX=d=>D.X0+(d?D.RW+D.G+(d-1)*(D.NW+D.G):0);tree.classList.toggle('compact',!!D.c);
+  const have=new Set(),EL={};N.forEach(n=>{let el=tree.querySelector(`[data-id="${n.id}"]`);if(!el){el=document.createElement('div');el.className='node'+(n.root?' root':'');el.dataset.id=n.id;el.style.setProperty('--c',n.c);
+      el.innerHTML=(n.root?'':`<small>${n.n}</small>`)+`<span>${n.t}</span>`;tree.append(el);el.dataset.fresh='1';}
+    have.add(String(n.id));EL[n.id]=el;el.classList.toggle('sel',n.id===sel);});
+  $$('.node',tree).forEach(el=>{if(!have.has(el.dataset.id))el.remove();});
+  const HT={};N.forEach(n=>HT[n.id]=EL[n.id].offsetHeight);
+  let y=D.Y0;const pos={};
+  const place=(id,d)=>{const k=kids(id);if(!k.length){pos[id]={x:colX(d),y};y+=HT[id]+14;}
+    else{k.forEach(c=>place(c.id,d+1));const f=pos[k[0].id],l=pos[k[k.length-1].id],mid=(f.y+HT[k[0].id]/2+l.y+HT[k[k.length-1].id]/2)/2;pos[id]={x:colX(d),y:Math.max(D.Y0,mid-HT[id]/2)};y=Math.max(y,pos[id].y+HT[id]+14);}};
+  place(0,0);
+  const W=Math.max(...N.map(n=>pos[n.id].x+(n.root?D.RW:D.NW)))+D.X0,H=Math.max(...N.map(n=>pos[n.id].y+HT[n.id]))+D.Y0;tree.style.width=W+'px';tree.style.height=H+'px';
+  N.forEach(n=>{const el=EL[n.id];if(el.dataset.fresh){delete el.dataset.fresh;const from=first?pos[n.id]:(pos[n.p]||pos[n.id]);el.style.left=from.x+'px';el.style.top=from.y+'px';}
+    requestAnimationFrame(()=>{el.style.left=pos[n.id].x+'px';el.style.top=pos[n.id].y+'px';});});
+  let svg=tree.querySelector('svg');if(!svg){svg=document.createElementNS('http://www.w3.org/2000/svg','svg');tree.prepend(svg);}svg.setAttribute('width',W);svg.setAttribute('height',H);
+  const old=new Set([...svg.querySelectorAll('path')].map(p=>p.dataset.k));svg.innerHTML='';
+  N.forEach(n=>{if(n.p===null)return;const a=pos[n.p],b=pos[n.id],pw=N.find(m=>m.id===n.p).root?D.RW:D.NW,x1=a.x+pw,y1=a.y+HT[n.p]/2,x2=b.x,y2=b.y+HT[n.id]/2,m2=(x1+x2)/2;
+    const p=document.createElementNS('http://www.w3.org/2000/svg','path');p.setAttribute('d',`M${x1},${y1} C${m2},${y1} ${m2},${y2} ${x2},${y2}`);p.setAttribute('stroke',n.c);p.dataset.k=n.p+'-'+n.id;
+    svg.append(p);p.style.setProperty('--len',p.getTotalLength());if(old.has(p.dataset.k))p.style.animation='none';});}
+let lt;addEventListener('resize',()=>{clearTimeout(lt);lt=setTimeout(()=>{if(N.length)layout();},200);});
+function addNode(asChild){const s=N.find(n=>n.id===sel);if(!s)return;let parent=asChild||s.root?s.id:s.p;const par=N.find(n=>n.id===parent);
+  const sib=kids(parent).length+1,num=par.root?String(sib-1):(par.n?par.n+'.'+sib:String(sib));const c=par.root?TCOL[(sib)%TCOL.length]:par.c;
+  const nn={id:uid++,t:'Nouvelle idée',p:parent,c,n:num};N.push(nn);sel=nn.id;layout();follow(nn.id,c);}
+function follow(id,c){setTimeout(()=>{const el=tree.querySelector(`[data-id="${id}"]`);if(el){const b=tbox.getBoundingClientRect(),r=el.getBoundingClientRect();tbox.scrollBy({left:r.right>b.right?r.right-b.right+20:0,top:r.bottom>b.bottom?r.bottom-b.bottom+20:(r.top<b.top?r.top-b.top-20:0),behavior:'smooth'});burst(r.left+20,r.top+20,12,[c,'#3B2FE8']);}},480);}
+function treeGrow(){treeReset();GROW.forEach((g,i)=>growT.push(setTimeout(()=>{const n={id:uid++,t:g.t,p:2,c:'#A5303C',n:g.n};N.push(n);layout();follow(n.id,n.c);},900+i*700)));}
+/* glisser le fond pour se déplacer dans l’arbre (souris) */
+let pan=null;tbox.addEventListener('pointerdown',e=>{if(e.pointerType!=='mouse'||e.target.closest('.node'))return;pan={x:e.clientX,y:e.clientY,l:tbox.scrollLeft,t:tbox.scrollTop};tbox.classList.add('grabbing');});
+addEventListener('pointermove',e=>{if(!pan)return;tbox.scrollLeft=pan.l-(e.clientX-pan.x);tbox.scrollTop=pan.t-(e.clientY-pan.y);});
+addEventListener('pointerup',()=>{if(pan){pan=null;tbox.classList.remove('grabbing');}});
+function delNode(){const s=N.find(n=>n.id===sel);if(!s||s.root)return;const rm=new Set([s.id]);let ch=true;while(ch){ch=false;N.forEach(n=>{if(n.p!==null&&rm.has(n.p)&&!rm.has(n.id)){rm.add(n.id);ch=true;}});}N=N.filter(n=>!rm.has(n.id));sel=s.p;layout();}
+tree.addEventListener('click',e=>{const el=e.target.closest('.node');if(!el)return;sel=+el.dataset.id;$$('.node',tree).forEach(n=>n.classList.toggle('sel',+n.dataset.id===sel));tbox.focus({preventScroll:true});});
+tree.addEventListener('dblclick',e=>{const el=e.target.closest('.node');if(!el)return;const sp=el.querySelector('span');sp.contentEditable='true';sp.focus();document.getSelection().selectAllChildren(sp);
+  const end=()=>{sp.contentEditable='false';const n=N.find(n=>n.id===+el.dataset.id);if(n){n.t=sp.textContent.trim()||n.t;sp.textContent=n.t;}layout();};sp.addEventListener('blur',end,{once:true});
+  sp.addEventListener('keydown',k=>{if(k.key==='Enter'){k.preventDefault();sp.blur();}k.stopPropagation();});});
+const flashKey=s=>{const b=$(s);b.classList.remove('flash');void b.offsetWidth;b.classList.add('flash');};
+tbox.addEventListener('keydown',e=>{if(e.target!==tbox)return;if(e.key==='Tab'&&!e.shiftKey){e.preventDefault();addNode(true);flashKey('#kTab');}else if(e.key==='Enter'){e.preventDefault();addNode(false);flashKey('#kEnt');}
+  else if(e.key==='Delete'||e.key==='Backspace'){e.preventDefault();delNode();flashKey('#kDel');}else if(e.key==='Escape'){tbox.blur();}});
+$('#kTab').onclick=()=>addNode(true);$('#kEnt').onclick=()=>addNode(false);$('#kDel').onclick=delNode;$('#treeReset').onclick=treeGrow;
+treeReset();io.observe(tbox);tbox.onIn=treeGrow;
+
+/* ============ 6. QUANTIÈME : frise qui se déplie + calendrier ============ */
+const fr=$('#frise');$$('.odo',fr).forEach(o=>{const v=o.dataset.v;o.innerHTML=[...v].map(()=>`<span>${[...Array(20).keys()].map(n=>`<b>${n%10}</b>`).join('')}</span>`).join('');});
+$('#qDemo').onIn=()=>$$('.stp',fr).forEach((s,i)=>setTimeout(()=>{s.querySelector('.band').style.setProperty('--w','100%');const v=s.querySelector('.odo').dataset.v;$$('.odo>span',s).forEach((sp,j)=>sp.style.transform=`translateY(${-(10+ +v[j])}em)`);},250+i*450));
+$$('.stp',fr).forEach(s=>s.addEventListener('click',()=>{if(s.querySelector('ul'))s.classList.toggle('open');}));
+const cal=$('#cal');cal.addEventListener('click',()=>{if(cal.classList.contains('ok')){cal.classList.remove('ok');return;}const [tx,ty]=center(cal);
+  $$('.stp',fr).slice(1).forEach((s,i)=>{const [sx,sy]=center(s.querySelector('.dt'));const d=document.createElement('div');d.className='fly';d.style.background=getComputedStyle(s).getPropertyValue('--c');d.style.left=sx+'px';d.style.top=sy+'px';document.body.append(d);
+    setTimeout(()=>{d.style.transform=`translate(${tx-sx}px,${ty-sy}px) rotate(270deg) scale(.5)`;d.style.opacity='.3';},30+i*150);setTimeout(()=>d.remove(),1000+i*150);});
+  setTimeout(()=>{cal.classList.add('ok');burst(tx,ty,26);},950);});
+
+/* ============ DONNÉES : les carrés ne sortent jamais de l’écran ============ */
+const mc=$('#mon'),m2=mc.getContext('2d');let MS=[],mw=0,mh=0,monVis=false;
+function monInit(){mw=mc.clientWidth;mh=mc.clientHeight;if(!mw||!mh)return;mc.width=mw*devicePixelRatio;mc.height=mh*devicePixelRatio;m2.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
+  MS=[...Array(22)].map((_,i)=>({x:30+Math.random()*(mw-60),y:30+Math.random()*(mh-60),vx:(Math.random()-.5)*4,vy:(Math.random()-.5)*4,s:12+Math.random()*20,r:Math.random()*6,vr:(Math.random()-.5)*.06,c:i%6===5?'#F2F2F2':COLS[i%5]}));}
+monInit();addEventListener('resize',monInit);new IntersectionObserver(([e])=>{monVis=e.isIntersecting;if(monVis&&!MS.length)monInit();}).observe(mc);
+(function monLoop(){if(monVis&&mw){const r=mc.getBoundingClientRect(),inside=mx>r.left&&mx<r.right&&my>r.top&&my<r.bottom,cx=(mx-r.left)*mw/r.width,cy=(my-r.top)*mh/r.height;m2.clearRect(0,0,mw,mh);
+  for(const q of MS){if(inside&&!RM){const dx=cx-q.x,dy=cy-q.y,d=Math.hypot(dx,dy)+20;q.vx+=dx/d*.35;q.vy+=dy/d*.35;}
+    q.vx*=.99;q.vy*=.99;const sp=Math.hypot(q.vx,q.vy);if(sp<1.2){q.vx*=1.03;q.vy*=1.03;}if(sp>11){q.vx*=.9;q.vy*=.9;}
+    if(!RM){q.x+=q.vx;q.y+=q.vy;q.r+=q.vr;}const h=q.s/2;
+    if(q.x<h){q.x=h;q.vx=Math.abs(q.vx);}if(q.x>mw-h){q.x=mw-h;q.vx=-Math.abs(q.vx);}if(q.y<h){q.y=h;q.vy=Math.abs(q.vy);}if(q.y>mh-h){q.y=mh-h;q.vy=-Math.abs(q.vy);}
+    m2.save();m2.translate(q.x,q.y);m2.rotate(q.r);m2.fillStyle=q.c;m2.fillRect(-h,-h,q.s,q.s);m2.restore();}}
+  requestAnimationFrame(monLoop);})();
+
+/* ============ TÉLÉCHARGER ============ */
+const ua=navigator.userAgent||'',mob=/iPhone|iPad|iPod|Android/i.test(ua)||(/Macintosh/.test(ua)&&navigator.maxTouchPoints>1),os=mob?null:/Macintosh|Mac OS X/.test(ua)?'mac':/Windows/.test(ua)?'win':null;
+if(os)$('#os-'+os).classList.add('you');
+$$('[data-dl]').forEach(a=>{const u=LIENS[a.dataset.dl];if(u){a.href=u;a.setAttribute('download','');a.addEventListener('click',()=>burst(...center(a),70));}
+  else{a.setAttribute('aria-disabled','true');a.textContent='Bientôt disponible';a.addEventListener('click',e=>{e.preventDefault();a.classList.remove('shake');void a.offsetWidth;a.classList.add('shake');});}});
+})();
+</script>
+</body>
+</html>

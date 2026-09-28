@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mentions légales — Mes logiciels</title>
+<meta name="description" content="Mentions légales, confidentialité et conditions d’utilisation du site et des logiciels Mes logiciels.">
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+<style>
+@font-face{font-family:'Zilla Slab';font-weight:700;font-display:swap;src:url(assets/fonts/zilla-slab-latin-700-normal.woff2) format('woff2')}
+@font-face{font-family:'Archivo';font-weight:400;font-display:swap;src:url(assets/fonts/archivo-latin-400-normal.woff2) format('woff2')}
+@font-face{font-family:'Archivo';font-weight:600;font-display:swap;src:url(assets/fonts/archivo-latin-600-normal.woff2) format('woff2')}
+@font-face{font-family:'Archivo';font-weight:700;font-display:swap;src:url(assets/fonts/archivo-latin-700-normal.woff2) format('woff2')}
+:root{--paper:#F6F5F1;--card:#fff;--ink:#141416;--muted:#5E5E66;--line:#E4E1DA;--shadow:#D8D5CD;--vio:#3B2FE8;--wash:rgba(59,47,232,.08);--gut:clamp(16px,4vw,48px)}
+:root[data-theme="dark"]{--paper:#141418;--card:#1C1C21;--ink:#F0F0F0;--muted:#A8A8B0;--line:#2B2B33;--shadow:#050507;--vio:#8F87FF;--wash:rgba(143,135,255,.12)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#141418;--card:#1C1C21;--ink:#F0F0F0;--muted:#A8A8B0;--line:#2B2B33;--shadow:#050507;--vio:#8F87FF;--wash:rgba(143,135,255,.12)}}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 17px/1.65 'Archivo',system-ui,sans-serif}
+a{color:var(--vio);text-underline-offset:3px}
+:focus-visible{outline:3px solid var(--vio);outline-offset:3px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;height:66px;padding:0 var(--gut);border-bottom:3px solid var(--ink)}
+.brand{font:700 21px/1 'Zilla Slab',Georgia,serif;color:var(--ink);text-decoration:none}
+.back{font:700 12px/1 'Archivo',sans-serif;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);text-decoration:none;border:2.5px solid var(--ink);padding:12px 14px;background:var(--card)}
+main{max-width:860px;margin:0 auto;padding:clamp(40px,7vw,90px) var(--gut) 80px}
+h1{font:700 clamp(40px,7vw,72px)/1 'Zilla Slab',Georgia,serif;letter-spacing:-.02em;margin:0}
+h1::after{content:"";display:block;width:110px;height:10px;background:var(--vio);margin-top:18px}
+.maj{color:var(--muted);font-size:15px;margin:18px 0 30px}
+nav.toc{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:40px}
+nav.toc a{font:600 13px/1 'Archivo',sans-serif;color:var(--ink);text-decoration:none;border:2px solid var(--ink);padding:10px 12px;background:var(--card)}
+nav.toc a:hover{background:var(--vio);border-color:var(--vio);color:#fff}
+section{background:var(--card);border:3px solid var(--ink);box-shadow:10px 10px 0 var(--shadow);padding:clamp(20px,4vw,34px);margin-bottom:34px;scroll-margin-top:20px}
+h2{font:700 clamp(26px,3.4vw,34px)/1.1 'Zilla Slab',Georgia,serif;margin:0 0 14px;display:flex;gap:12px;align-items:center}
+h2 span{display:grid;place-items:center;width:38px;height:38px;border:2.5px solid currentColor;font:700 15px/1 'Archivo',sans-serif;flex:none;color:var(--vio)}
+h3{font:700 16px/1.3 'Archivo',sans-serif;letter-spacing:.08em;text-transform:uppercase;margin:22px 0 6px}
+p,li{margin:0 0 10px}
+ul{padding-left:1.2em;margin:0 0 10px}
+dl{display:grid;grid-template-columns:minmax(0,190px) minmax(0,1fr);gap:6px 18px;margin:0}
+dt{font-weight:600;color:var(--muted)}dd{margin:0}
+@media (max-width:560px){dl{grid-template-columns:1fr}dd{margin-bottom:8px}}
+.fill{background:#FFF1B8;color:#141416;padding:0 4px;font-weight:600}
+.box{border-left:6px solid var(--vio);background:var(--wash);padding:12px 16px;margin:14px 0}
+table{width:100%;border-collapse:collapse;font-size:15px;margin:8px 0 12px}
+th,td{border:2px solid var(--ink);padding:8px 10px;text-align:left;vertical-align:top}
+th{background:var(--ink);color:var(--paper);font-weight:600}
+code{font-size:.9em;background:var(--wash);padding:1px 5px}
+footer{border-top:3px solid var(--ink);padding:30px var(--gut);color:var(--muted);font-size:14px;text-align:center}
+</style>
+<script>try{var th=localStorage.getItem('ml-theme');if(th)document.documentElement.setAttribute('data-theme',th);}catch(e){}</script>
+</head>
+<body>
+<header class="top"><a class="brand" href="index.html">Mes logiciels</a><a class="back" href="index.html">← Retour</a></header>
+<main>
+<h1>Informations légales</h1>
+<p class="maj">Dernière mise à jour : 28 septembre 2026</p>
+<nav class="toc" aria-label="Sommaire">
+  <a href="#mentions">Mentions légales</a><a href="#confidentialite">Confidentialité</a><a href="#conditions">Conditions d’utilisation</a><a href="#credits">Crédits &amp; propriété</a>
+</nav>
+
+<!-- =============== 1. MENTIONS LÉGALES =============== -->
+<section id="mentions">
+<h2><span>1</span>Mentions légales</h2>
+<p>Informations fournies en application de la loi n° 2004-575 du 21 juin 2004 pour la confiance dans l’économie numérique (LCEN).</p>
+<h3>Éditeur du site</h3>
+<dl>
+  <dt>Éditeur</dt><dd>Pierre-Antoine Ruat, particulier — site personnel, non commercial</dd>
+  <dt>Directeur de la publication</dt><dd>Pierre-Antoine Ruat</dd>
+  <dt>Contact</dt><dd><span class="fill">[adresse e-mail à compléter]</span></dd>
+</dl>
+<p class="box">L’éditeur, personne physique agissant à titre non professionnel, a choisi de ne pas rendre publiques ses coordonnées personnelles, comme la LCEN le permet. Ses éléments d’identification sont détenus par l’hébergeur ci-dessous.</p>
+<h3>Hébergeur</h3>
+<dl>
+  <dt>Nom / raison sociale</dt><dd>GitHub, Inc. (service GitHub Pages)</dd>
+  <dt>Adresse</dt><dd>88 Colin P. Kelly Jr. Street, San Francisco, CA 94107, États-Unis</dd>
+  <dt>Site</dt><dd><a href="https://github.com" rel="noopener">github.com</a> — <a href="https://support.github.com" rel="noopener">support.github.com</a></dd>
+</dl>
+</section>
+
+<!-- =============== 2. CONFIDENTIALITÉ =============== -->
+<section id="confidentialite">
+<h2><span>2</span>Confidentialité &amp; données personnelles</h2>
+<h3>Sur ce site</h3>
+<ul>
+  <li>Aucun formulaire, aucun compte, aucune newsletter.</li>
+  <li>Aucune mesure d’audience, aucune publicité, aucun traceur tiers, aucun réseau social intégré.</li>
+  <li>Aucun cookie n’est déposé. Les polices et la vidéo sont hébergées avec le site : aucun appel n’est fait à un autre service que l’hébergeur.</li>
+</ul>
+<p>Le site utilise uniquement le stockage de ton propre navigateur, pour deux réglages d’affichage :</p>
+<table>
+  <tr><th>Nom</th><th>Type</th><th>Rôle</th><th>Durée</th></tr>
+  <tr><td><code>ml-theme</code></td><td>localStorage</td><td>Retenir le thème Jour / Nuit que tu as choisi</td><td>Jusqu’à suppression par toi</td></tr>
+  <tr><td><code>ml-vu</code></td><td>sessionStorage</td><td>Ne pas rejouer l’animation d’ouverture à chaque page</td><td>Fermeture de l’onglet</td></tr>
+</table>
+<p>Ces informations restent sur ton appareil, ne sont jamais transmises et ne servent pas à te suivre. Elles sont strictement nécessaires à une fonction que tu demandes et ne requièrent donc pas de consentement (article 82 de la loi Informatique et Libertés). Tu peux les effacer à tout moment depuis les réglages de ton navigateur.</p>
+<h3>Journaux techniques de l’hébergeur</h3>
+<p>Comme tout serveur web, l’hébergeur peut enregistrer des données techniques de connexion (adresse IP, date, page demandée) pour la sécurité et le bon fonctionnement du service. Ces journaux relèvent de sa politique de confidentialité (<a href="https://docs.github.com/fr/site-policy/privacy-policies/github-general-privacy-statement" rel="noopener">déclaration de confidentialité de GitHub</a>) ; l’éditeur n’y a pas accès.</p>
+<h3>Dans les logiciels</h3>
+<p>Les données saisies dans Mes logiciels (fiches, articles, dossiers, arbres, délais…) sont enregistrées <strong>uniquement sur ton ordinateur</strong>. L’éditeur n’y a pas accès et ne reçoit aucune information sur ton utilisation. Tu restes seul responsable de ces données et de leurs sauvegardes (utilise les exports proposés par chaque outil). Si tu y enregistres des informations concernant des tiers (clients, parties à un dossier), il t’appartient de respecter la réglementation applicable, notamment le RGPD et le secret professionnel.</p>
+<h3>Tes droits</h3>
+<p>Le site ne traitant pas de données personnelles, l’éditeur ne détient aucune donnée te concernant. Pour toute question : <span class="fill">[adresse e-mail à compléter]</span>. Tu peux aussi saisir la CNIL (<a href="https://www.cnil.fr" rel="noopener">cnil.fr</a>).</p>
+</section>
+
+<!-- =============== 3. CONDITIONS D’UTILISATION =============== -->
+<section id="conditions">
+<h2><span>3</span>Conditions d’utilisation des logiciels</h2>
+<p>Télécharger, installer ou utiliser Mes logiciels (Fiches mémo, Fiches d’arrêt, Codes &amp; articles, Suivi Juridique, Considérant, Quantième) vaut acceptation des conditions suivantes.</p>
+<h3>Licence</h3>
+<p>Les logiciels sont mis à disposition gratuitement, pour un usage personnel, d’études ou professionnel. Tu peux les installer sur tes propres appareils. Il est interdit de les vendre, de les redistribuer sous une forme modifiée ou de les présenter comme ta propre création sans l’accord écrit de l’auteur.</p>
+<h3>Pas de conseil juridique</h3>
+<p class="box">Les logiciels sont des outils d’aide à l’organisation et à la révision. Ils ne fournissent pas de conseil juridique et ne remplacent ni la consultation des textes officiels ni l’avis d’un professionnel du droit.</p>
+<ul>
+  <li><strong>Délais et prescription (Quantième, Suivi Juridique) :</strong> les calculs sont indicatifs. Ils ne tiennent pas forcément compte de toutes les règles particulières (jours fériés locaux, distance, suspension, interruption, réformes récentes…). Vérifie toujours chaque délai avant de t’y fier.</li>
+  <li><strong>Articles et arrêts préchargés :</strong> ils peuvent ne pas être à jour ou comporter des erreurs. Seule la version publiée sur <a href="https://www.legifrance.gouv.fr" rel="noopener">Légifrance</a> fait foi.</li>
+</ul>
+<h3>Absence de garantie</h3>
+<p>Les logiciels sont fournis « en l’état », sans garantie de fonctionnement, d’exactitude, de compatibilité ni d’absence d’erreur. Ils peuvent être modifiés, mis à jour ou retirés à tout moment.</p>
+<h3>Responsabilité</h3>
+<p>Dans toute la mesure permise par la loi, l’auteur ne peut être tenu responsable d’un dommage direct ou indirect résultant de l’utilisation ou de l’impossibilité d’utiliser les logiciels, notamment d’un délai manqué, d’une erreur de calcul ou d’une perte de données. Cette limitation ne s’applique pas en cas de faute lourde ou intentionnelle, ni aux dommages corporels.</p>
+<h3>Installation</h3>
+<p>Télécharge les logiciels uniquement depuis ce site. Ton système peut afficher un avertissement à la première ouverture d’une application qui ne provient pas d’une boutique officielle ; l’installation se fait sous ta responsabilité.</p>
+<h3>Droit applicable</h3>
+<p>Ces conditions sont soumises au droit français. En cas de litige, une solution amiable sera recherchée avant toute action ; à défaut, les juridictions françaises sont compétentes, sous réserve des règles protectrices du consommateur.</p>
+</section>
+
+<!-- =============== 4. CRÉDITS =============== -->
+<section id="credits">
+<h2><span>4</span>Crédits &amp; propriété intellectuelle</h2>
+<p>La conception, les textes, les visuels, la vidéo du site et les logiciels Mes logiciels sont la propriété de Pierre-Antoine Ruat, sauf mention contraire. Toute reproduction ou réutilisation, totale ou partielle, sans autorisation est interdite (articles L. 122-4 et L. 335-2 du Code de la propriété intellectuelle).</p>
+<p>Les textes de loi et décisions de justice cités sont des documents officiels, librement réutilisables.</p>
+<h3>Polices de caractères</h3>
+<p>Zilla Slab (Mozilla Foundation, Typotheque), Archivo (Omnibus-Type) et IBM Plex Mono (IBM) sont distribuées sous licence SIL Open Font License 1.1 — voir <code>assets/fonts/LICENCES.txt</code>.</p>
+<h3>Liens</h3>
+<p>Les liens vers des sites extérieurs (Légifrance, CNIL) sont fournis pour information ; l’éditeur n’est pas responsable de leur contenu.</p>
+</section>
+</main>
+<footer>Mes logiciels · v1.0.0 · © 2026 Pierre-Antoine Ruat · <a href="index.html">Retour à l’accueil</a></footer>
+</body>
+</html>

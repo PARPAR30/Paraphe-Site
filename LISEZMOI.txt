@@ -1,0 +1,44 @@
+MES LOGICIELS — SITE DE PRÉSENTATION
+=====================================
+
+Contenu du dossier
+- index.html ............ la page (HTML + CSS + JS dans un seul fichier)
+- assets/fonts/ ......... polices Zilla Slab, Archivo, IBM Plex Mono (hébergées avec le site)
+- assets/img/ ........... favicon et image de partage (og-image.jpg)
+- assets/media/ ......... vidéo de présentation (presentation.mp4) et son affiche (poster.jpg)
+
+1) Ajouter les liens de téléchargement
+   Ouvre index.html, cherche « LIENS DE TÉLÉCHARGEMENT » (en bas du fichier) et remplis :
+     mac:     "…/Mes Logiciels_1.0.0_universal.dmg"
+     windows: "…/Mes Logiciels_1.0.0_x64-setup.exe"
+   Tant qu’un lien est vide, le bouton affiche « Bientôt disponible ».
+   Tu peux soit déposer les fichiers dans un dossier du site (ex. telechargements/),
+   soit mettre une adresse complète (GitHub Releases, Google Drive partagé en « Tous les utilisateurs disposant du lien »…).
+
+2) Image de partage (réseaux sociaux)
+   Une fois le site en ligne, remplace dans index.html
+     <meta property="og:image" content="assets/img/og-image.jpg">
+   par l’adresse complète, ex. https://ton-site.fr/assets/img/og-image.jpg
+
+3) Mettre en ligne
+   Dépose tout le dossier tel quel (index.html à la racine) sur GitHub Pages, Netlify, OVH, etc.
+   Aucune dépendance externe : tout fonctionne hors ligne.
+
+4) Bon à savoir
+   - Les démos de la page (cartes, fiche d’arrêt, pipeline, arbre, frise…) sont des
+     reproductions simplifiées : rien n’est enregistré, un rechargement remet tout à zéro.
+   - Le rideau d’ouverture ne s’affiche qu’une fois par session de navigation.
+   - Si le visiteur a activé « réduire les animations » dans son système, les effets
+     sont coupés automatiquement.
+
+5) Pages légales (mentions-legales.html)
+   Avant la mise en ligne, compléter les passages surlignés en jaune « [à compléter] » :
+   - ton adresse e-mail de contact (2 endroits) ;
+   - l’hébergeur : nom, adresse, téléphone ou site. Exemples :
+       GitHub Pages : GitHub Inc., 88 Colin P. Kelly Jr Street, San Francisco, CA 94107, États-Unis — github.com
+       Netlify : Netlify Inc., 101 2nd Street, San Francisco, CA 94105, États-Unis — netlify.com
+       OVHcloud : OVH SAS, 2 rue Kellermann, 59100 Roubaix, France — 1007 (depuis la France)
+     (vérifie l’adresse à jour sur le site de ton hébergeur)
+   - Option « anonymat » : si tu préfères publier ton adresse et ton téléphone plutôt que de
+     t’appuyer sur l’hébergeur, ajoute-les dans « Éditeur » et supprime l’encadré violet.
+   Les licences des polices sont dans assets/fonts/LICENCES.txt (obligatoire avec les polices).
