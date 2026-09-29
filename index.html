@@ -3,16 +3,18 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Mes logiciels — six outils de droit, une seule application</title>
-<meta name="description" content="Fiches mémo, Fiches d’arrêt, Codes & articles, Suivi Juridique, Considérant, Quantième : six logiciels pour les études et la pratique du droit, réunis dans une seule application pour macOS et Windows.">
+<title>Paraphe — du cours au cabinet</title>
+<meta name="description" content="Paraphe réunit six outils pour les études et la pratique du droit : Fiches mémo, Fiches d’arrêt, Codes & articles, Diligences, Considérant, Quantième. Une application pour macOS et Windows.">
 <meta name="theme-color" content="#F6F5F1">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Mes logiciels — tout au même endroit">
-<meta property="og:description" content="Six logiciels pour les études et la pratique du droit, réunis dans une seule application. macOS et Windows.">
+<meta property="og:title" content="Paraphe — du cours au cabinet">
+<meta property="og:description" content="Six outils pour étudier et pratiquer le droit, réunis dans une seule application. macOS et Windows.">
 <!-- Une fois le site en ligne : remplacer par l’adresse complète, ex. https://mon-site.fr/assets/img/og-image.jpg -->
 <meta property="og:image" content="https://parpar30.github.io/mes-logiciels/assets/img/og-image.jpg">
 <meta property="og:url" content="https://parpar30.github.io/mes-logiciels/">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32.png">
 <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg">
+<link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
 <style>
 @font-face{font-family:'Zilla Slab';font-weight:400;font-display:swap;src:url(assets/fonts/zilla-slab-latin-400-normal.woff2) format('woff2')}
 @font-face{font-family:'Zilla Slab';font-weight:400;font-style:italic;font-display:swap;src:url(assets/fonts/zilla-slab-latin-400-italic.woff2) format('woff2')}
@@ -51,18 +53,11 @@ kbd{font:500 .8em/1 var(--mono);padding:4px 8px 3px;border:2px solid var(--ink);
 .lbl{font:700 12px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase}
 
 /* grain papier */
-.grain{position:fixed;inset:-50%;z-index:90;pointer-events:none;opacity:.05;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");animation:grain 1.2s steps(6) infinite}
+.grain{position:fixed;inset:0;z-index:90;pointer-events:none;opacity:.05;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
 @keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-3%,2%)}40%{transform:translate(2%,-3%)}60%{transform:translate(-2%,-1%)}80%{transform:translate(3%,3%)}100%{transform:translate(0,0)}}
 
-/* curseur personnalisé */
-.cur,.cur-ring{position:fixed;left:0;top:0;z-index:100;pointer-events:none;border-radius:50%}
-.cur{width:8px;height:8px;margin:-4px 0 0 -4px;background:var(--vio)}
-.cur-ring{width:40px;height:40px;margin:-20px 0 0 -20px;border:2px solid var(--vio);display:grid;place-items:center;transition:width .25s,height .25s,margin .25s,background .25s,border-color .25s}
-.cur-ring span{font:700 10px/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;color:#fff;opacity:0;transition:opacity .2s}
-.cur-ring.big{width:92px;height:92px;margin:-46px 0 0 -46px;background:var(--vio);border-color:var(--vio)}
-.cur-ring.big span{opacity:1}
-.has-cur,.has-cur *{cursor:none!important}
-.has-cur input,.has-cur [contenteditable="true"]{cursor:text!important}
+/* curseur du système ; la main sur tout ce qui se clique */
+button:not(:disabled),summary,.fc,.tile{cursor:pointer}
 
 /* ================= barre du haut ================= */
 .top{position:fixed;top:0;left:0;right:0;z-index:50;transition:transform .35s cubic-bezier(.2,.9,.2,1)}
@@ -92,7 +87,11 @@ kbd{font:500 .8em/1 var(--mono);padding:4px 8px 3px;border:2px solid var(--ink);
 .hero{position:relative;min-height:100svh;display:grid;place-items:center;overflow:hidden;padding:120px var(--gut) 90px}
 #grid{position:absolute;inset:0;width:100%;height:100%}
 .hero__in{position:relative;text-align:center;max-width:1100px}
-.scale{width:clamp(96px,11vw,150px);height:auto;margin:0 auto 10px;overflow:visible;cursor:pointer}
+.scale{width:clamp(84px,9vw,128px);height:auto;margin:0 auto 18px;overflow:visible;cursor:pointer}
+/* le point final carré du nom, à l’accent */
+.hero h1::after{content:"";display:inline-block;width:.14em;height:.14em;margin-left:.03em;background:var(--vio);animation:pointFinal .5s 1.25s cubic-bezier(.3,1.6,.5,1) both}
+.js-curtain .hero h1::after{animation-delay:2.45s}
+@keyframes pointFinal{from{transform:scale(0)}}
 .hero h1{font:700 clamp(60px,12.5vw,196px)/.9 var(--slab);letter-spacing:-.04em;margin:0;white-space:nowrap}
 .hero h1 .ch{display:inline-block;will-change:transform}
 .hero h1 .ch.in{animation:drop .9s cubic-bezier(.3,1.5,.5,1) both}
@@ -109,8 +108,9 @@ kbd{font:500 .8em/1 var(--mono);padding:4px 8px 3px;border:2px solid var(--ink);
 .hero p.sub{font-size:clamp(17px,1.6vw,20px);color:var(--muted);margin:18px auto 34px;max-width:46ch}
 .hero .ctas{display:flex;flex-wrap:wrap;justify-content:center;gap:18px}
 .scroll-hint{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);font:600 11px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--soft);display:flex;flex-direction:column;align-items:center;gap:10px}
-.scroll-hint i{width:2px;height:38px;background:linear-gradient(var(--ink) 50%,transparent 50%);background-size:2px 12px;animation:dash 1s linear infinite}
-@keyframes dash{to{background-position:0 12px}}
+.scroll-hint i{width:2px;height:38px;position:relative;overflow:hidden}
+.scroll-hint i::before{content:"";position:absolute;left:0;right:0;top:-12px;bottom:0;background:linear-gradient(var(--ink) 50%,transparent 50%);background-size:2px 12px;animation:dash 1s linear infinite}
+@keyframes dash{to{transform:translateY(12px)}}
 
 /* bandeau de mots */
 .ticker{border-block:3px solid var(--ink);background:var(--ink);color:var(--paper);overflow:hidden;white-space:nowrap}
@@ -154,10 +154,11 @@ section{position:relative}
 .player{position:relative;margin-top:50px;border:3px solid #F2F2F2;box-shadow:16px 16px 0 var(--vio);background:#000;transform:perspective(1400px) rotateX(var(--fx,14deg)) scale(var(--fs,.92));transform-origin:50% 100%}
 .player video{width:100%;aspect-ratio:16/9;height:auto}
 .play{position:absolute;inset:0;display:grid;place-items:center;background:transparent;border:0;cursor:pointer}
-.play b{width:clamp(90px,11vw,140px);aspect-ratio:1;border-radius:50%;background:var(--vio);display:grid;place-items:center;box-shadow:0 0 0 0 rgba(59,47,232,.6);animation:pulse 2s infinite;transition:transform .2s}
+.play b{width:clamp(90px,11vw,140px);aspect-ratio:1;border-radius:50%;background:var(--vio);display:grid;place-items:center;position:relative;isolation:isolate}
+.play b::after{content:"";position:absolute;inset:0;border-radius:50%;background:var(--vio);z-index:-1;animation:pulse 2s cubic-bezier(.2,.6,.3,1) infinite;transition:transform .2s}
 .play:hover b{transform:scale(1.08)}
 .play b::before{content:"";margin-left:8px;border-left:30px solid #fff;border-top:19px solid transparent;border-bottom:19px solid transparent}
-@keyframes pulse{70%{box-shadow:0 0 0 34px rgba(59,47,232,0)}100%{box-shadow:0 0 0 0 rgba(59,47,232,0)}}
+@keyframes pulse{0%{transform:scale(1);opacity:.55}70%{transform:scale(1.5);opacity:0}100%{transform:scale(1.5);opacity:0}}
 .player.playing .play{display:none}
 
 /* ================= sections « à toi de jouer » ================= */
@@ -179,6 +180,7 @@ section{position:relative}
 .ul li::before{content:"";position:absolute;left:0;top:.62em;width:10px;height:10px;background:var(--vio);transform:rotate(45deg)}
 .try{display:inline-block;border:2.5px dashed var(--vio);padding:12px 16px;font-size:15px;line-height:2;color:var(--ink);background:var(--wash);margin:0}
 .try .lbl{color:var(--vio);margin-right:10px}
+.decouvrir{margin:22px 0 0;font-weight:600}.decouvrir a{color:var(--vio);text-decoration:none;border-bottom:2px solid currentColor}.decouvrir a:hover{color:var(--ink)}
 .demo{position:relative;background:var(--card);border:3px solid var(--ink);box-shadow:14px 14px 0 var(--shadow)}
 .demo__bar{display:flex;align-items:center;gap:8px;height:40px;padding:0 14px;border-bottom:3px solid var(--ink);font:700 12px/1 var(--sans);color:var(--muted);background:var(--card)}
 .demo__bar i{width:12px;height:12px;border-radius:50%;border:2px solid var(--ink)}
@@ -262,36 +264,22 @@ section{position:relative}
 .art .nt mark{background:linear-gradient(transparent 55%,rgba(59,47,232,.22) 55%);color:inherit}
 .empty{border:3px dashed #9A9AA2;padding:22px;text-align:center;color:#6B6B72;display:none}
 
-/* --- 4. suivi juridique (DA propre : marine / or) --- */
-.navy{color:#F2F2F2}
-.navy::before{content:"";position:absolute;inset:0;background:var(--navy);clip-path:inset(0 var(--cx,50%) 0 var(--cx,50%));z-index:-2}
-.navy .app__d,.navy .ul{color:#B8C0D2}
-.navy .app__k .lbl{color:var(--gold)}
-.navy h2::after{background:var(--gold)}
-.navy .big{-webkit-text-stroke-color:rgba(255,255,255,.08)}
-.navy .try{border-color:var(--gold);background:rgba(201,168,76,.12);color:#F2F2F2}
-.navy .try .lbl{color:var(--gold)}
-.navy .ul li::before{background:var(--gold)}
-.navy .demo{border-color:#F2F2F2;box-shadow:14px 14px 0 var(--gold);background:var(--navy)}
-.navy .demo__bar{border-bottom-color:#F2F2F2;background:#0E1830;color:#AEB8CC}
-.navy .demo__bar i{border-color:#F2F2F2}
-.navy .demo__in{background:var(--navy);color:#F2F2F2}
-.navy .note{color:#6E7C99}
+/* --- 4. Diligences : même charte que les autres démos (papier, encre, violet) --- */
 .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
-.kpi{background:var(--navy-2);padding:14px;border-top:4px solid var(--c)}
-.kpi span{display:block;font:600 10px/1.2 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:#AEB8CC}
-.kpi b{display:block;font:400 34px/1.1 var(--sans);margin-top:8px}
+.kpi{background:#fff;border:2.5px solid #141416;border-top:6px solid var(--c);padding:12px 14px}
+.kpi span{display:block;font:600 10px/1.2 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:#65656D}
+.kpi b{display:block;font:600 34px/1.1 var(--slab);margin-top:8px;color:#141416}
 @media (max-width:620px){.kpis{grid-template-columns:repeat(2,1fr)}}
 .pipe{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;min-height:300px}
-.col{background:var(--navy-2);padding:8px;display:flex;flex-direction:column;gap:8px;transition:background .2s,outline-color .2s;outline:2px dashed transparent;outline-offset:-2px}
-.col.over{background:#1E335F;outline-color:var(--gold)}
-.col h5{margin:0;display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px;background:#0E1830;padding:9px 7px;border-top:3px solid var(--c);font:700 9.5px/1.1 var(--sans);letter-spacing:.04em;text-transform:uppercase;color:var(--c)}
-.col h5 em{font-style:normal;color:#8C98B0}
-.lit{background:#1C2F57;border-left:4px solid var(--c,#E06C5A);padding:10px;cursor:grab;touch-action:none;user-select:none;transition:transform .2s,box-shadow .2s}
-.lit:hover{transform:translateY(-2px);box-shadow:0 8px 0 rgba(0,0,0,.3)}
+.col{background:#EEECE5;padding:8px;display:flex;flex-direction:column;gap:8px;transition:background .2s,outline-color .2s;outline:2px dashed transparent;outline-offset:-2px}
+.col.over{background:rgba(59,47,232,.09);outline-color:#3B2FE8}
+.col h5{margin:0;display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px;background:#fff;padding:9px 7px;border:2px solid #141416;border-top:4px solid var(--c);font:700 9.5px/1.1 var(--sans);letter-spacing:.04em;text-transform:uppercase;color:var(--c)}
+.col h5 em{font-style:normal;color:#65656D}
+.lit{background:#fff;color:#141416;border:2.5px solid #141416;border-left:6px solid var(--c,#C62828);box-shadow:4px 4px 0 #141416;padding:10px;cursor:grab;touch-action:none;user-select:none;transition:transform .2s,box-shadow .2s}
+.lit:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 #3B2FE8}
 .lit b{display:block;font:700 13px/1.25 var(--sans)}
-.lit span{display:block;font:500 11px/1.3 var(--mono);color:#8C98B0;margin-top:4px}
-.lit i{display:inline-block;margin-top:8px;font:700 9px/1 var(--sans);font-style:normal;letter-spacing:.1em;color:var(--gold);background:rgba(201,168,76,.18);padding:5px 6px}
+.lit span{display:block;font:500 11px/1.3 var(--mono);color:#65656D;margin-top:4px}
+.lit i{display:inline-block;margin-top:8px;font:700 9px/1 var(--sans);font-style:normal;letter-spacing:.1em;color:#3B2FE8;background:rgba(59,47,232,.1);padding:5px 6px}
 .lit.ghost{opacity:.25}
 .drag{position:fixed;left:0;top:0;z-index:95;pointer-events:none;box-shadow:12px 16px 0 rgba(0,0,0,.35);color:#F2F2F2}
 @media (max-width:700px){.pipe{grid-template-columns:repeat(5,150px);overflow-x:auto;padding-bottom:8px}}
@@ -306,7 +294,7 @@ section{position:relative}
 .tree svg{position:absolute;left:0;top:0;overflow:visible;pointer-events:none}
 .tree path{fill:none;stroke-width:3;stroke-dasharray:var(--len);stroke-dashoffset:0;animation:draw .7s ease both}
 @keyframes draw{from{stroke-dashoffset:var(--len)}}
-.node{position:absolute;width:236px;background:#fff;border-left:4px solid var(--c);box-shadow:0 6px 16px rgba(0,0,0,.08);padding:8px 12px 10px;font:400 15px/1.3 var(--slab);color:#141416;transition:left .45s cubic-bezier(.2,.9,.2,1),top .45s cubic-bezier(.2,.9,.2,1),box-shadow .2s;animation:unfold .45s cubic-bezier(.3,1.5,.5,1) both;cursor:pointer}
+.node{position:absolute;width:236px;background:#fff;border-left:4px solid var(--c);box-shadow:0 6px 16px rgba(0,0,0,.08);padding:8px 12px 10px;font:400 15px/1.3 var(--slab);color:#141416;left:0;top:0;transition:translate .45s cubic-bezier(.2,.9,.2,1),box-shadow .2s;animation:unfold .45s cubic-bezier(.3,1.5,.5,1) both;cursor:pointer}
 .node small{display:block;font:500 11px/1 var(--mono);color:var(--c);margin-bottom:4px}
 .node.root{background:#141416;color:#fff;font:700 18px/1.2 var(--slab);border-left:0;padding:14px 16px;width:200px}
 .tree.compact .node{width:168px;font-size:13.5px;padding:6px 9px 8px}
@@ -423,12 +411,12 @@ try{if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&!sessionStorage.
 <div class="grain" aria-hidden="true"></div>
 <canvas id="fx" aria-hidden="true"></canvas>
 
-<svg class="sr" aria-hidden="true"><symbol id="logo" viewBox="0 0 40 40"><g fill="none" stroke="currentColor" stroke-linecap="round"><path d="M4 10H36M20 10V32M12 33H28" stroke-width="3.2"/><path d="M9 10V15M31 10V15" stroke-width="2"/></g><path d="M3 15Q9 23 15 15ZM25 15Q31 23 37 15Z" fill="currentColor"/><circle cx="20" cy="4.5" r="3.6" fill="#3B2FE8"/></symbol></svg>
+<svg class="sr" aria-hidden="true"><symbol id="logo" viewBox="0 0 32 32"><rect x="5.25" y="4.25" width="18.5" height="21.5" fill="none" stroke="currentColor" stroke-width="2.5"/><path d="M24 9h4v20H9v-4h15z" fill="currentColor"/><rect x="9" y="9" width="11" height="2.2" fill="currentColor"/><rect x="9" y="13.4" width="7" height="2.2" fill="currentColor"/><rect x="15" y="18" width="5" height="4.5" fill="#3B2FE8"/></symbol></svg>
 
 <header class="top" id="top">
   <div class="top__in">
-    <a class="brand" href="#accueil"><svg aria-hidden="true"><use href="#logo"/></svg>Mes logiciels</a>
-    <nav class="links" aria-label="Navigation"><a href="#six">Les 6</a><a href="#film">Le film</a><a href="#memo">Essayer</a><a href="#telecharger">Télécharger</a></nav>
+    <a class="brand" href="#accueil"><svg aria-hidden="true"><use href="#logo"/></svg>Paraphe</a>
+    <nav class="links" aria-label="Navigation"><a href="#six">Les 6</a><a href="#film">Le film</a><a href="#memo">Essayer</a><a href="diligences.html">Diligences</a><a href="#telecharger">Télécharger</a></nav>
     <button class="tb" id="theme" data-cursor="Thème">Nuit</button>
     <a class="tb tb--vio" href="#telecharger">Télécharger</a>
   </div>
@@ -440,20 +428,13 @@ try{if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&!sessionStorage.
 <section class="hero" id="accueil">
   <canvas id="grid" aria-hidden="true"></canvas>
   <div class="hero__in">
-    <svg class="scale" id="scale" viewBox="-30 -8 100 70" aria-hidden="true" data-cursor="Peser">
-      <g stroke="currentColor" stroke-linecap="round" fill="none"><path d="M20 12V52M8 53H32" stroke-width="4.2"/></g>
-      <g id="beam" style="transform-origin:20px 12px"><path d="M-6 12H46" stroke="currentColor" stroke-width="4.2" stroke-linecap="round"/>
-        <g id="panL" style="transform-origin:-2px 12px"><path d="M-2 12V20" stroke="currentColor" stroke-width="2.6"/><path d="M-12 20Q-2 32 8 20Z" fill="currentColor"/></g>
-        <g id="panR" style="transform-origin:42px 12px"><path d="M42 12V20" stroke="currentColor" stroke-width="2.6"/><path d="M32 20Q42 32 52 20Z" fill="currentColor"/></g>
-      </g>
-      <circle cx="20" cy="4" r="5" fill="#3B2FE8"/>
-    </svg>
-    <h1 id="title" aria-label="Mes logiciels">Mes logiciels</h1>
+    <svg class="scale" id="scale" viewBox="0 0 32 32" aria-hidden="true" data-cursor="Parapher"><rect id="pOmbre" x="9" y="8" width="19" height="21" fill="currentColor"/><rect x="5.25" y="4.25" width="18.5" height="21.5" style="fill:var(--paper)" stroke="currentColor" stroke-width="2.5"/><rect x="9" y="9" width="11" height="2.2" fill="currentColor"/><rect x="9" y="13.4" width="7" height="2.2" fill="currentColor"/><rect id="pMarque" x="15" y="18" width="5" height="4.5" style="fill:var(--vio)"/></svg>
+    <h1 id="title" aria-label="Paraphe">Paraphe</h1>
     <div class="hero__bar"></div>
-    <div class="roll"><span>Tout au même endroit :</span>
+    <div class="roll"><span>Du cours au cabinet :</span>
       <span class="roll__win" aria-hidden="true"><span class="roll__list" id="roll"><span>les définitions.</span><span>les arrêts.</span><span>les articles.</span><span>les dossiers.</span><span>les raisonnements.</span><span>les délais.</span><span>les définitions.</span></span></span>
     </div>
-    <p class="sub">Un seul point d’accès pour les outils d’études et les outils de pratique du droit. Six logiciels, une application, pour macOS et Windows.</p>
+    <p class="sub">Six outils pour étudier et pratiquer le droit, réunis dans une seule application pour macOS et Windows.</p>
     <div class="ctas">
       <a class="btn btn--vio" href="#telecharger" data-magnet data-cursor="Go">Télécharger</a>
       <a class="btn" href="#memo" data-magnet data-cursor="Jouer">Essayer ici ↓</a>
@@ -463,18 +444,18 @@ try{if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&!sessionStorage.
 </section>
 
 <div class="ticker" aria-hidden="true"><div class="ticker__t">
-  <span>Fiches mémo</span><span>Fiches d’arrêt</span><span>Codes &amp; articles</span><span>Suivi Juridique</span><span>Considérant</span><span>Quantième</span>
-  <span>Fiches mémo</span><span>Fiches d’arrêt</span><span>Codes &amp; articles</span><span>Suivi Juridique</span><span>Considérant</span><span>Quantième</span>
+  <span>Fiches mémo</span><span>Fiches d’arrêt</span><span>Codes &amp; articles</span><span>Diligences</span><span>Considérant</span><span>Quantième</span>
+  <span>Fiches mémo</span><span>Fiches d’arrêt</span><span>Codes &amp; articles</span><span>Diligences</span><span>Considérant</span><span>Quantième</span>
 </div></div>
 
 <!-- ============================ LES 6 ============================ -->
 <section class="sec" id="six">
   <div class="wrap">
     <div class="six__head">
-      <h2 class="h2" data-split><em>6</em> logiciels, deux familles.</h2>
+      <h2 class="h2" data-split><em>6</em> outils, deux familles.</h2>
       <p class="lead rv">Comme sur l’écran d’accueil de l’application. Sauf qu’ici, un clic sur une carte t’emmène l’essayer.</p>
     </div>
-    <p class="fam rv">Études de droit — Droit Toolkit</p>
+    <p class="fam rv">Études de droit</p>
     <div class="cards">
       <a class="tile" href="#memo" data-cursor="Essayer"><div class="tile__t"><span class="num">1</span><h3>Fiches mémo</h3></div><p>Révision par répétition espacée pour mémoriser définitions, articles et notions.</p><span class="go">Essayer →</span></a>
       <a class="tile" href="#arret" data-cursor="Essayer"><div class="tile__t"><span class="num">2</span><h3>Fiches d’arrêt</h3></div><p>Fiches structurées (faits, procédure, problème, solution, portée) avec recherche par matière.</p><span class="go">Essayer →</span></a>
@@ -482,7 +463,7 @@ try{if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&!sessionStorage.
     </div>
     <p class="fam rv">Pratique &amp; rédaction</p>
     <div class="cards">
-      <a class="tile" href="#suivi" data-cursor="Essayer"><div class="tile__t"><span class="num">4</span><h3>Suivi Juridique</h3></div><p>Tableau de bord de suivi de dossiers : clients, échéances, finances, notes.</p><span class="go">Essayer →</span></a>
+      <a class="tile" href="#suivi" data-cursor="Essayer"><div class="tile__t"><span class="num">4</span><h3>Diligences</h3></div><p>Le suivi de tes dossiers : sociétés, contrats, litiges, échéances, honoraires.</p><span class="go">Essayer →</span></a>
       <a class="tile" href="#cons" data-cursor="Essayer"><div class="tile__t"><span class="num">5</span><h3>Considérant</h3></div><p>Fiches de raisonnement juridique — structurer un considérant, une argumentation.</p><span class="go">Essayer →</span></a>
       <a class="tile" href="#quant" data-cursor="Essayer"><div class="tile__t"><span class="num">6</span><h3>Quantième</h3></div><p>Calcul des délais de procédure française à partir d’une date de départ.</p><span class="go">Essayer →</span></a>
     </div>
@@ -493,7 +474,7 @@ try{if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&!sessionStorage.
 <section class="sec film" id="film">
   <div class="wrap">
     <h2 class="h2" data-split>Le film, <em>en 50 secondes.</em></h2>
-    <p class="lead rv">Les six logiciels en 50 secondes chrono : le tour complet de l’application, en mouvement.</p>
+    <p class="lead rv">Les six outils de Paraphe en 50 secondes : le tour complet de l’application, en mouvement.</p>
     <div class="player" id="player">
       <video id="vid" preload="metadata" playsinline poster="assets/media/poster.jpg">
         <source src="assets/media/presentation.mp4" type="video/mp4">
@@ -586,35 +567,36 @@ try{if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&!sessionStorage.
   </div>
 </section>
 
-<!-- ============================ 4. SUIVI JURIDIQUE ============================ -->
-<section class="app navy" id="suivi" data-app="3">
+<!-- ============================ 4. DILIGENCES ============================ -->
+<section class="app" id="suivi" data-app="3">
   <span class="big" aria-hidden="true">04</span>
   <div class="wrap app__g">
     <div class="app__info rv">
       <div class="app__k"><span class="num">4</span><span class="lbl">Pratique</span></div>
-      <h2>Suivi Juridique</h2>
-      <p class="app__d">Le tableau de bord de suivi de dossiers : clients, échéances, finances, notes.</p>
+      <h2>Diligences</h2>
+      <p class="app__d">Le suivi de tes dossiers : sociétés, contrats, litiges, échéances, pièces et honoraires.</p>
       <ul class="ul"><li>Contrats actifs, litiges ouverts, échéances à 30 jours, risque total.</li><li>Le pipeline des litiges, par statut.</li><li>Sociétés, contrats, consultations, calendrier, prévisionnel, prescription, statistiques, graphe des relations, vue 360°, rapport exécutif.</li></ul>
       <p class="try"><span class="lbl">À toi</span> Attrape un litige et glisse-le dans une autre colonne.</p>
+      <p class="decouvrir"><a href="diligences.html" data-cursor="Voir">Toutes les fonctions de Diligences, en images →</a></p>
     </div>
     <div class="demo rv">
-      <div class="demo__bar"><i></i><i></i><i></i><span>Suivi Juridique — Pipeline Litiges</span></div>
+      <div class="demo__bar"><i></i><i></i><i></i><span>Diligences — Pipeline des litiges</span></div>
       <div class="demo__in">
         <div class="kpis" id="kpis">
-          <div class="kpi" style="--c:#5B8DEF"><span>Contrats actifs</span><b data-count="12">0</b></div>
-          <div class="kpi" style="--c:#E06C5A"><span>Litiges ouverts</span><b data-count="3">0</b></div>
-          <div class="kpi" style="--c:#C9A84C"><span>Échéances 30 j</span><b data-count="4">0</b></div>
-          <div class="kpi" style="--c:#58B27A"><span>Risque total</span><b data-count="48" data-suf=" k€">0</b></div>
+          <div class="kpi" style="--c:#3B2FE8"><span>Contrats actifs</span><b data-count="12">0</b></div>
+          <div class="kpi" style="--c:#C62828"><span>Litiges ouverts</span><b data-count="3">0</b></div>
+          <div class="kpi" style="--c:#B7791F"><span>Échéances 30 j</span><b data-count="4">0</b></div>
+          <div class="kpi" style="--c:#2E7D52"><span>Risque total</span><b data-count="48" data-suf=" k€">0</b></div>
         </div>
         <div class="pipe" id="pipe">
-          <div class="col" style="--c:#E06C5A"><h5>Actif <em>0</em></h5>
-            <div class="lit" style="--c:#E06C5A" data-cursor="Glisser"><b>Litige commercial</b><span>Réf. L-001 · démo</span><i>ÉLEVÉ</i></div>
-            <div class="lit" style="--c:#E06C5A" data-cursor="Glisser"><b>Bail commercial</b><span>Réf. L-002 · démo</span><i>MOYEN</i></div></div>
-          <div class="col" style="--c:#C9A84C"><h5>En appel <em>0</em></h5>
-            <div class="lit" style="--c:#C9A84C" data-cursor="Glisser"><b>Rupture de contrat</b><span>Réf. L-003 · démo</span><i>ÉLEVÉ</i></div></div>
-          <div class="col" style="--c:#5B8DEF"><h5>Transaction <em>0</em></h5></div>
-          <div class="col" style="--c:#58B27A" data-win><h5>Gagné <em>0</em></h5></div>
-          <div class="col" style="--c:#AEB8CC"><h5>Perdu <em>0</em></h5></div>
+          <div class="col" style="--c:#C62828"><h5>Actif <em>0</em></h5>
+            <div class="lit" style="--c:#C62828" data-cursor="Glisser"><b>Litige commercial</b><span>Réf. L-001 · démo</span><i>ÉLEVÉ</i></div>
+            <div class="lit" style="--c:#C62828" data-cursor="Glisser"><b>Bail commercial</b><span>Réf. L-002 · démo</span><i>MOYEN</i></div></div>
+          <div class="col" style="--c:#B7791F"><h5>En appel <em>0</em></h5>
+            <div class="lit" style="--c:#B7791F" data-cursor="Glisser"><b>Rupture de contrat</b><span>Réf. L-003 · démo</span><i>ÉLEVÉ</i></div></div>
+          <div class="col" style="--c:#3B2FE8"><h5>Transaction <em>0</em></h5></div>
+          <div class="col" style="--c:#2E7D52" data-win><h5>Gagné <em>0</em></h5></div>
+          <div class="col" style="--c:#8F8F89"><h5>Perdu <em>0</em></h5></div>
         </div>
         <p class="note">Données fictives de démonstration.</p>
       </div>
@@ -678,7 +660,7 @@ try{if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&!sessionStorage.
   <div class="wrap local__g">
     <div>
       <h2 class="h2" data-split>Tes données restent <em>chez toi.</em></h2>
-      <p class="lead rv" style="margin-top:20px">Rien ne quitte ta machine : chaque logiciel enregistre ses données localement, dans son propre fichier. Pense à exporter régulièrement quand l’outil le propose.</p>
+      <p class="lead rv" style="margin-top:20px">Rien ne quitte ta machine : chaque outil enregistre ses données localement, dans son propre fichier. Pense à exporter régulièrement quand l’outil le propose.</p>
       <div class="pts">
         <div class="pt rv"><span class="num">1</span><div><h3>Local</h3><p>Tout reste sur ton ordinateur.</p></div></div>
         <div class="pt rv"><span class="num">2</span><div><h3>Exports</h3><p>JSON, PDF, Markdown, image ou calendrier, selon l’outil.</p></div></div>
@@ -692,18 +674,18 @@ try{if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&!sessionStorage.
 <!-- ============================ TÉLÉCHARGER ============================ -->
 <section class="sec" id="telecharger">
   <div class="wrap">
-    <h2 class="h2" data-split>Télécharger <em>Mes logiciels.</em></h2>
-    <p class="lead rv" style="margin-top:18px">Version 1.0.0 — une seule installation pour les six logiciels.</p>
+    <h2 class="h2" data-split>Télécharger <em>Paraphe.</em></h2>
+    <p class="lead rv" style="margin-top:18px">Version 1.0.0 — une seule installation pour les six outils.</p>
     <div class="dl__g">
       <div class="os rv" id="os-mac"><span class="you-tag">Pour cet ordinateur</span>
         <svg viewBox="0 0 54 54" fill="none" stroke="currentColor" stroke-width="3.6"><rect x="9" y="10" width="36" height="24"/><path d="M3 43h48l-4-7H7z" fill="currentColor"/></svg>
-        <h3>macOS</h3><p class="spec">Universel (Apple Silicon et Intel) · .dmg · ≈ 6 Mo</p>
-        <ol><li>Ouvre le fichier .dmg.</li><li>Glisse Mes Logiciels dans Applications.</li></ol>
+        <h3>macOS</h3><p class="spec">Universel (Apple Silicon et Intel) · .dmg · ≈ 14 Mo</p>
+        <ol><li>Ouvre le fichier .dmg.</li><li>Glisse Paraphe dans Applications.</li></ol>
         <a class="btn btn--ink" data-dl="mac" href="#telecharger" data-magnet data-cursor="Télécharger">Télécharger pour macOS</a></div>
       <div class="os rv" id="os-win"><span class="you-tag">Pour cet ordinateur</span>
         <svg viewBox="0 0 54 54" fill="none" stroke="currentColor" stroke-width="3.6"><rect x="10" y="5" width="34" height="44"/><path d="M17 15h20M17 23h20"/><circle cx="27" cy="39" r="3" fill="currentColor"/></svg>
-        <h3>Windows</h3><p class="spec">64 bits · installateur .exe · ≈ 2 Mo</p>
-        <ol><li>Lance l’installateur.</li><li>Suis les étapes, puis ouvre Mes Logiciels.</li></ol>
+        <h3>Windows</h3><p class="spec">64 bits · installateur .exe · ≈ 5 Mo</p>
+        <ol><li>Lance l’installateur.</li><li>Suis les étapes, puis ouvre Paraphe.</li></ol>
         <a class="btn btn--ink" data-dl="windows" href="#telecharger" data-magnet data-cursor="Télécharger">Télécharger pour Windows</a></div>
     </div>
     <p class="disc rv">Les calculs de délais et de prescription sont fournis à titre indicatif et ne constituent pas un avis juridique : vérifie toujours les textes en vigueur. Le téléchargement vaut acceptation des <a href="mentions-legales.html#conditions">conditions d’utilisation</a>.</p>
@@ -711,7 +693,7 @@ try{if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&!sessionStorage.
 </section>
 </main>
 
-<footer class="foot"><div class="wrap"><a class="brand" href="#accueil"><svg aria-hidden="true"><use href="#logo"/></svg>Mes logiciels</a><p>Tout au même endroit · v1.0.0 · © 2026 Pierre-Antoine Ruat</p><nav class="legal" aria-label="Informations légales"><a href="mentions-legales.html#mentions">Mentions légales</a><a href="mentions-legales.html#confidentialite">Confidentialité</a><a href="mentions-legales.html#conditions">Conditions d’utilisation</a><a href="mentions-legales.html#credits">Crédits</a></nav></div></footer>
+<footer class="foot"><div class="wrap"><a class="brand" href="#accueil"><svg aria-hidden="true"><use href="#logo"/></svg>Paraphe</a><p>Du cours au cabinet · v1.0.0 · © 2026 Pierre-Antoine Ruat</p><nav class="legal" aria-label="Informations légales"><a href="mentions-legales.html#mentions">Mentions légales</a><a href="mentions-legales.html#confidentialite">Confidentialité</a><a href="mentions-legales.html#conditions">Conditions d’utilisation</a><a href="mentions-legales.html#credits">Crédits</a></nav></div></footer>
 
 <script>
 /* ============================================================
@@ -719,8 +701,8 @@ try{if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&!sessionStorage.
    (vide = bouton « Bientôt disponible »)
    ============================================================ */
 const LIENS = {
-  mac:     "logiciels/Mes Logiciels_1.0.0_universal.dmg",   // ex. "telechargements/Mes Logiciels_1.0.0_universal.dmg"
-  windows: "logiciels/Mes Logiciels_1.0.0_x64-setup.exe"    // ex. "telechargements/Mes Logiciels_1.0.0_x64-setup.exe"
+  mac:     "logiciels/Paraphe_1.0.0_universal.dmg",
+  windows: "logiciels/Paraphe_1.0.0_x64-setup.exe"
 };
 
 (()=>{
@@ -731,6 +713,11 @@ const clamp=(x,a,b)=>Math.max(a,Math.min(b,x)),lerp=(a,b,k)=>a+(b-a)*k;
 let mx=innerWidth/2,my=-999;addEventListener('pointermove',e=>{mx=e.clientX;my=e.clientY;},{passive:true});
 const COLS=['#3B2FE8','#C9A84C','#E4553A','#3E9A5E','#E9B730'];
 const center=el=>{const r=el.getBoundingClientRect();return[r.left+r.width/2,r.top+r.height/2];};
+/* boucle d’animation qui s’arrête d’elle-même au repos : pas() renvoie true tant qu’il reste du mouvement ;
+   l’appel renvoyé la relance (mouvement de souris, défilement, apparition à l’écran) */
+const boucle=pas=>{let on=false;const f=()=>{if(pas())requestAnimationFrame(f);else on=false;};return()=>{if(!on){on=true;requestAnimationFrame(f);}};};
+/* géométrie lue une seule fois par image, dans onScroll, avant toute écriture de style */
+const G={hero:null,pg:null,mon:null};
 
 /* ---------- particules (confettis carrés, étoiles) ---------- */
 const fx=$('#fx'),fc=fx.getContext('2d');let P=[],fxOn=false;
@@ -742,15 +729,11 @@ function fxLoop(){fc.clearRect(0,0,innerWidth,innerHeight);P=P.filter(p=>p.l>0);
     if(p.g){fc.font='700 22px Archivo';fc.textAlign='center';fc.fillText(p.g,0,8);}else fc.fillRect(-p.s/2,-p.s/2,p.s,p.s);fc.restore();}
   if(P.length)requestAnimationFrame(fxLoop);else fxOn=false;}
 
-/* ---------- rideau d’ouverture : les 6 logiciels défilent, puis le rideau se lève ---------- */
+/* ---------- rideau d’ouverture : les 6 outils défilent, puis le rideau se lève ---------- */
 const withCurtain=document.documentElement.classList.contains('js-curtain');let T0=0;
-if(withCurtain){T0=1250;const names=['Fiches mémo','Fiches d’arrêt','Codes & articles','Suivi Juridique','Considérant','Quantième'];let k=0;
+if(withCurtain){T0=1250;const names=['Fiches mémo','Fiches d’arrêt','Codes & articles','Diligences','Considérant','Quantième'];let k=0;
   const iv=setInterval(()=>{k++;if(k<6){$('#cN').textContent='0'+(k+1);$('#cT').textContent=names[k];}else{clearInterval(iv);$('#curtain').classList.add('up');try{sessionStorage.setItem('ml-vu','1');}catch(e){}setTimeout(()=>$('#curtain').remove(),1000);}},150);}
 
-/* ---------- curseur personnalisé ---------- */
-if(FINE&&!RM){document.body.classList.add('has-cur');const d=document.createElement('div'),r=document.createElement('div');d.className='cur';r.className='cur-ring';r.innerHTML='<span></span>';document.body.append(d,r);
-  let rx=mx,ry=my;(function loop(){rx=lerp(rx,mx,.18);ry=lerp(ry,my,.18);d.style.transform=`translate(${mx}px,${my}px)`;r.style.transform=`translate(${rx}px,${ry}px)`;requestAnimationFrame(loop);})();
-  document.addEventListener('pointerover',e=>{const t=e.target.closest('[data-cursor]');r.classList.toggle('big',!!t);r.firstChild.textContent=t?t.dataset.cursor:'';});}
 
 /* ---------- boutons magnétiques ---------- */
 if(FINE&&!RM)$$('[data-magnet]').forEach(b=>{b.addEventListener('pointermove',e=>{const r=b.getBoundingClientRect();b.style.transform=`translate(${(e.clientX-r.left-r.width/2)*.25}px,${(e.clientY-r.top-r.height/2)*.35}px)`;});
@@ -773,32 +756,38 @@ $$('.rv,[data-split],.app h2').forEach(el=>io.observe(el));
 /* ---------- ACCUEIL : grille magnétique ---------- */
 const gc=$('#grid'),gx=gc.getContext('2d');let GD=[],gw,gh,heroVis=true;
 function gridInit(){gw=gc.clientWidth;gh=gc.clientHeight;gc.width=gw*devicePixelRatio;gc.height=gh*devicePixelRatio;gx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);GD=[];const s=34;for(let y=s/2;y<gh;y+=s)for(let x=s/2;x<gw;x+=s)GD.push({bx:x,by:y,x,y});}
-gridInit();addEventListener('resize',gridInit);
-new IntersectionObserver(([e])=>heroVis=e.isIntersecting).observe($('.hero'));
-let lineCol='#E4E1DA';const readCol=()=>lineCol=getComputedStyle(root).getPropertyValue('--line').trim()||'#E4E1DA';readCol();new MutationObserver(readCol).observe(root,{attributes:true});mq.addEventListener&&mq.addEventListener('change',readCol);
-function gridLoop(){if(heroVis){const r=gc.getBoundingClientRect(),cx=mx-r.left,cy=my-r.top;gx.clearRect(0,0,gw,gh);
+gridInit();addEventListener('resize',()=>{gridInit();grille();});
+new IntersectionObserver(([e])=>{heroVis=e.intersectionRatio>0;if(heroVis){onScroll();grille();pageAnim();lettres();}},{threshold:[0,.01]}).observe($('.hero'));
+let lineCol='#E4E1DA';const readCol=()=>{lineCol=getComputedStyle(root).getPropertyValue('--line').trim()||'#E4E1DA';try{grille();}catch(e){}};readCol();new MutationObserver(readCol).observe(root,{attributes:true});mq.addEventListener&&mq.addEventListener('change',readCol);
+const grille=boucle(()=>{if(!heroVis||!G.hero)return false;const cx=mx-G.hero.left,cy=my-G.hero.top;gx.clearRect(0,0,gw,gh);let bouge=false;
   for(const d of GD){const dx=d.bx-cx,dy=d.by-cy,dist=Math.hypot(dx,dy),R=170;let tx=d.bx,ty=d.by,k=0;
     if(dist<R&&!RM){k=1-dist/R;const f=k*k*34;tx+=dx/(dist||1)*f;ty+=dy/(dist||1)*f;}
-    d.x=lerp(d.x,tx,.16);d.y=lerp(d.y,ty,.16);const s=2.6+k*4;gx.fillStyle=k>.05?`rgba(59,47,232,${.25+k*.75})`:lineCol;gx.fillRect(d.x-s/2,d.y-s/2,s,s);}}
-  requestAnimationFrame(gridLoop);}
-requestAnimationFrame(gridLoop);
+    const nx=lerp(d.x,tx,.16),ny=lerp(d.y,ty,.16);if(Math.abs(nx-d.x)+Math.abs(ny-d.y)>.04)bouge=true;d.x=nx;d.y=ny;
+    const s=2.6+k*4;gx.fillStyle=k>.05?`rgba(59,47,232,${.25+k*.75})`:lineCol;gx.fillRect(d.x-s/2,d.y-s/2,s,s);}
+  return bouge;});
 
-/* ---------- ACCUEIL : la balance penche vers la souris ---------- */
-const beam=$('#beam'),pL=$('#panL'),pR=$('#panR');let ba=0,bv=0,sw=0,sv=0;
-(function scaleLoop(){const tgt=RM||my<0?0:clamp((mx/innerWidth-.5)*.5,-.28,.28);bv=(bv+(tgt-ba)*.08)*.86;ba+=bv;sv=(sv-sw*.12-bv*1.6)*.9;sw+=sv;
-  beam.style.transform=`rotate(${ba}rad)`;pL.style.transform=pR.style.transform=`rotate(${-ba+sw}rad)`;requestAnimationFrame(scaleLoop);})();
-$('#scale').addEventListener('click',()=>{bv+=.14;});
+/* ---------- ACCUEIL : l’ombre plate suit la lumière, un clic appose le paraphe ---------- */
+const pg=$('#scale'),ombre=$('#pOmbre'),marque=$('#pMarque');let ox=0,oy=0,sm=1,vs=0;
+const pageAnim=boucle(()=>{if(!G.pg)return false;const cx=G.pg.left+G.pg.width/2,cy=G.pg.top+G.pg.height/2;
+  const tx=RM||my<0?0:clamp((cx-mx)/innerWidth*7,-2.6,2.6),ty=RM||my<0?0:clamp((cy-my)/innerHeight*7,-2.6,2.6);
+  ox=lerp(ox,tx,.09);oy=lerp(oy,ty,.09);ombre.setAttribute('transform',`translate(${ox.toFixed(3)} ${oy.toFixed(3)})`);
+  vs=(vs+(1-sm)*.22)*.74;sm+=vs;marque.setAttribute('transform',`translate(17.5 20.25) scale(${sm.toFixed(3)}) translate(-17.5 -20.25)`);
+  return heroVis&&(Math.abs(ox-tx)+Math.abs(oy-ty)>.005||Math.abs(sm-1)+Math.abs(vs)>.002);});
+const apposer=()=>{if(RM)return;sm=2.5;vs=0;pageAnim();const r=marque.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2,22,['#3B2FE8','#8F87FF','#141416'],.7);};
+pg.addEventListener('click',apposer);setTimeout(apposer,T0+1250);
 
 /* ---------- ACCUEIL : lettres qui tombent puis fuient le curseur ---------- */
 const title=$('#title'),txt=title.textContent;title.textContent='';const CH=[];
 [...txt].forEach((c,i)=>{if(c===' '){title.append(' ');return;}const s=document.createElement('span');s.className='ch';s.textContent=c;s.setAttribute('aria-hidden','true');title.append(s);CH.push({el:s,x:0,y:0,r:0,vx:0,vy:0,busy:true});
   setTimeout(()=>{s.classList.add('in');setTimeout(()=>{s.classList.remove('in');s.classList.add('ok');CH.find(o=>o.el===s).busy=false;},950);},T0+120+i*55);});
 let chC=[];const measure=()=>chC=CH.map(c=>{const r=c.el.getBoundingClientRect();return[r.left+r.width/2-c.x,r.top+r.height/2-c.y];});
-setTimeout(measure,T0+1500);addEventListener('resize',measure);addEventListener('scroll',()=>{if(heroVis)measure();},{passive:true});
-(function chLoop(){if(heroVis&&chC.length&&!RM&&FINE)CH.forEach((c,i)=>{if(c.busy)return;const [cx,cy]=chC[i],dx=cx-mx,dy=cy-my,d=Math.hypot(dx,dy)||1,R=180;let tx=0,ty=0,tr=0;
+setTimeout(()=>{measure();lettres();},T0+1500);addEventListener('resize',measure);
+const lettres=boucle(()=>{if(!heroVis||!chC.length||RM||!FINE)return false;let bouge=false;CH.forEach((c,i)=>{if(c.busy)return;const [cx,cy]=chC[i],dx=cx-mx,dy=cy-my,d=Math.hypot(dx,dy)||1,R=180;let tx=0,ty=0,tr=0;
     if(d<R){const k=1-d/R;tx=dx/d*k*38;ty=dy/d*k*46;tr=(dx>0?1:-1)*k*14;}
-    c.vx=(c.vx+(tx-c.x)*.12)*.78;c.vy=(c.vy+(ty-c.y)*.12)*.78;c.x+=c.vx;c.y+=c.vy;c.r=lerp(c.r,tr,.15);c.el.style.transform=`translate(${c.x}px,${c.y}px) rotate(${c.r}deg)`;});
-  requestAnimationFrame(chLoop);})();
+    c.vx=(c.vx+(tx-c.x)*.12)*.78;c.vy=(c.vy+(ty-c.y)*.12)*.78;c.x+=c.vx;c.y+=c.vy;c.r=lerp(c.r,tr,.15);
+    if(Math.abs(c.vx)+Math.abs(c.vy)+Math.abs(tx-c.x)+Math.abs(ty-c.y)+Math.abs(tr-c.r)>.02){bouge=true;c.el.style.transform=`translate3d(${c.x}px,${c.y}px,0) rotate(${c.r}deg)`;}});
+  return bouge;});
+addEventListener('pointermove',()=>{if(heroVis){grille();pageAnim();lettres();}},{passive:true});
 
 /* ---------- ACCUEIL : mots qui défilent ---------- */
 const roll=$('#roll'),rw=roll.parentElement,RS=[...roll.children];let ri=0;const fitW=()=>rw.style.width=RS[ri].offsetWidth+'px';document.fonts.ready.then(fitW);addEventListener('resize',fitW);
@@ -806,26 +795,32 @@ if(!RM)setInterval(()=>{ri++;roll.style.transform=`translateY(${-ri*1.2}em)`;fit
 
 /* ---------- LES 6 : cartes éparpillées qui se rangent + inclinaison 3D ---------- */
 const tiles=$$('.tile');const SA=Math.min(1,innerWidth/1100);const SC=tiles.map(()=>({x:(Math.random()-.5)*260*SA,y:120+Math.random()*160,r:(Math.random()-.5)*26}));
-function scatter(){if(RM)return;tiles.forEach((t,i)=>{const r=t.getBoundingClientRect(),p=clamp((innerHeight-r.top)/(innerHeight*.55),0,1),e=1-Math.pow(1-p,3),s=SC[i];
+function scatter(rt){if(RM)return;tiles.forEach((t,i)=>{const r=rt[i],p=clamp((innerHeight-r.top)/(innerHeight*.55),0,1),e=1-Math.pow(1-p,3),s=SC[i];
   t.style.setProperty('--scatter',`translate(${s.x*(1-e)}px,${s.y*(1-e)}px) rotate(${s.r*(1-e)}deg)`);});}
 if(FINE&&!RM)tiles.forEach(t=>{t.addEventListener('pointermove',e=>{const r=t.getBoundingClientRect(),px=(e.clientX-r.left)/r.width-.5,py=(e.clientY-r.top)/r.height-.5;
   t.style.setProperty('--ry',(px*16)+'deg');t.style.setProperty('--rx',(-py*16)+'deg');t.style.setProperty('--sx',(12-px*18)+'px');t.style.setProperty('--sy',(12-py*18)+'px');});
   t.addEventListener('pointerleave',()=>{t.style.transition='transform .6s cubic-bezier(.3,1.5,.5,1),box-shadow .2s';['--rx','--ry'].forEach(v=>t.style.setProperty(v,'0deg'));t.style.setProperty('--sx','12px');t.style.setProperty('--sy','12px');setTimeout(()=>t.style.transition='',600);});});
 
 /* ---------- défilement : barre du haut, progression, parallaxes ---------- */
-const top=$('#top'),segs=$$('.prog i'),apps=$$('[data-app]'),bigs=$$('.big'),sj=$('#suivi'),pl=$('#player');let lastY=scrollY,tick=false;
-function onScroll(){tick=false;const y=scrollY;top.classList.toggle('hide',y>lastY&&y>300);lastY=y;
-  apps.forEach((s,i)=>{const r=s.getBoundingClientRect();segs[i].style.setProperty('--p',clamp((innerHeight*.6-r.top)/r.height,0,1));});
-  bigs.forEach(b=>{const r=b.parentElement.getBoundingClientRect();b.style.setProperty('--py',(r.top*-.22)+'px');});
-  const s=sj.getBoundingClientRect();sj.style.setProperty('--cx',(clamp((s.top-innerHeight*.05)/(innerHeight*.6),0,1)*50)+'%');
-  const p=pl.getBoundingClientRect(),pp=clamp(1-(p.top-innerHeight*.12)/(innerHeight*.6),0,1);pl.style.setProperty('--fx',(14*(1-pp))+'deg');pl.style.setProperty('--fs',lerp(.9,1,pp));
-  scatter();}
-addEventListener('scroll',()=>{if(!tick){tick=true;requestAnimationFrame(onScroll);}},{passive:true});addEventListener('resize',onScroll);onScroll();
+const top=$('#top'),segs=$$('.prog i'),apps=$$('[data-app]'),bigs=$$('.big'),pl=$('#player');let lastY=scrollY,tick=false;
+function onScroll(){tick=false;const y=scrollY;
+  // 1) lectures
+  const ra=apps.map(s=>s.getBoundingClientRect()),rb=bigs.map(b=>b.parentElement.getBoundingClientRect()),p=pl.getBoundingClientRect(),rt=RM?null:tiles.map(t=>t.getBoundingClientRect());
+  G.hero=gc.getBoundingClientRect();G.pg=pg.getBoundingClientRect();if(monVis)G.mon=mc.getBoundingClientRect();if(heroVis)measure();
+  // 2) écritures
+  top.classList.toggle('hide',y>lastY&&y>300);lastY=y;
+  ra.forEach((r,i)=>segs[i].style.setProperty('--p',clamp((innerHeight*.6-r.top)/r.height,0,1)));
+  rb.forEach((r,i)=>bigs[i].style.setProperty('--py',(r.top*-.22)+'px'));
+  const pp=clamp(1-(p.top-innerHeight*.12)/(innerHeight*.6),0,1);pl.style.setProperty('--fx',(14*(1-pp))+'deg');pl.style.setProperty('--fs',lerp(.9,1,pp));
+  scatter(rt);if(heroVis){grille();pageAnim();}}
+addEventListener('scroll',()=>{if(!tick){tick=true;requestAnimationFrame(onScroll);}},{passive:true});addEventListener('resize',onScroll);document.fonts.ready.then(onScroll);
 
 /* ---------- bandeau : vitesse et sens suivent le défilement ---------- */
 const tkr=$('.ticker__t');if(!RM){tkr.style.animation='none';let tx=0,v=0,ly=scrollY,dir=1;
-  (function tl(){const d=scrollY-ly;ly=scrollY;v=lerp(v,d,.12);if(Math.abs(v)>.6)dir=v>0?1:-1;const half=tkr.scrollWidth/2;tx-=dir*(1.1+Math.min(Math.abs(v)*.9,40));
-    if(tx<=-half)tx+=half;if(tx>0)tx-=half;tkr.style.transform=`translateX(${tx}px) skewX(${clamp(-v*.5,-14,14)}deg)`;requestAnimationFrame(tl);})();}
+  let half=0,tkVis=false;const mesTk=()=>half=tkr.scrollWidth/2;mesTk();document.fonts.ready.then(mesTk);addEventListener('resize',mesTk);
+  const defile=boucle(()=>{const d=scrollY-ly;ly=scrollY;v=lerp(v,d,.12);if(Math.abs(v)>.6)dir=v>0?1:-1;tx-=dir*(1.1+Math.min(Math.abs(v)*.9,40));
+    if(tx<=-half)tx+=half;if(tx>0)tx-=half;tkr.style.transform=`translate3d(${tx}px,0,0) skewX(${clamp(-v*.5,-14,14)}deg)`;return tkVis;});
+  new IntersectionObserver(([e])=>{tkVis=e.intersectionRatio>0;if(tkVis){ly=scrollY;defile();}},{threshold:[0,.01]}).observe(tkr.parentElement);}
 
 /* ---------- FILM ---------- */
 const vid=$('#vid');$('#play').addEventListener('click',()=>{vid.controls=true;vid.play();pl.classList.add('playing');burst(...center($('#play')),30,['#3B2FE8','#F6F5F1'],.8);});
@@ -877,7 +872,7 @@ function filt(){const v=norm(aq.value.trim());let n=0;arts.forEach(a=>{const ok=
 aq.addEventListener('input',filt);only.addEventListener('change',filt);
 $$('#codes .star').forEach(s=>s.addEventListener('click',()=>{const on=s.classList.toggle('on');s.textContent=(on?'★':'☆')+' À retenir';if(on)burst(...center(s),18,['#3B2FE8','#E9B730'],.9,'★');filt();}));
 
-/* ============ 4. SUIVI JURIDIQUE : glisser-déposer entre statuts ============ */
+/* ============ 4. DILIGENCES : glisser-déposer entre statuts ============ */
 const pipe=$('#pipe');const upd=()=>$$('.col',pipe).forEach(c=>c.querySelector('h5 em').textContent=c.querySelectorAll('.lit').length);upd();
 let drag=null;
 const colAt=(x,y)=>{if(drag)drag.cl.style.visibility='hidden';const el=document.elementFromPoint(x,y);if(drag)drag.cl.style.visibility='';return el&&el.closest('#pipe .col');};
@@ -890,7 +885,7 @@ addEventListener('pointermove',moveDrag);
 addEventListener('pointerup',e=>{if(!drag)return;const c=colAt(e.clientX,e.clientY);$$('.col',pipe).forEach(k=>k.classList.remove('over'));
   if(c&&c!==drag.l.parentElement){const f=drag.l.getBoundingClientRect();c.append(drag.l);drag.l.style.setProperty('--c',getComputedStyle(c).getPropertyValue('--c'));const t=drag.l.getBoundingClientRect();
     drag.l.animate([{transform:`translate(${f.left-t.left}px,${f.top-t.top}px)`},{transform:'none'}],{duration:380,easing:'cubic-bezier(.3,1.4,.5,1)'});
-    if(c.hasAttribute('data-win'))burst(...center(drag.l),50,['#C9A84C','#58B27A','#F2F2F2']);}
+    if(c.hasAttribute('data-win'))burst(...center(drag.l),50,['#2E7D52','#3B2FE8','#E9B730']);}
   drag.l.classList.remove('ghost');drag.cl.remove();drag=null;upd();});
 const kp=$('#kpis');io.observe(kp);kp.onIn=()=>$$('[data-count]',kp).forEach(b=>{const v=+b.dataset.count,suf=b.dataset.suf||'',t0=performance.now();(function f(t){const k=clamp((t-t0)/1200,0,1),e=1-Math.pow(1-k,3);b.textContent=Math.round(v*e)+suf;if(k<1)requestAnimationFrame(f);})(t0);});
 
@@ -914,8 +909,8 @@ function layout(first){const D=dims(),colX=d=>D.X0+(d?D.RW+D.G+(d-1)*(D.NW+D.G):
     else{k.forEach(c=>place(c.id,d+1));const f=pos[k[0].id],l=pos[k[k.length-1].id],mid=(f.y+HT[k[0].id]/2+l.y+HT[k[k.length-1].id]/2)/2;pos[id]={x:colX(d),y:Math.max(D.Y0,mid-HT[id]/2)};y=Math.max(y,pos[id].y+HT[id]+14);}};
   place(0,0);
   const W=Math.max(...N.map(n=>pos[n.id].x+(n.root?D.RW:D.NW)))+D.X0,H=Math.max(...N.map(n=>pos[n.id].y+HT[n.id]))+D.Y0;tree.style.width=W+'px';tree.style.height=H+'px';
-  N.forEach(n=>{const el=EL[n.id];if(el.dataset.fresh){delete el.dataset.fresh;const from=first?pos[n.id]:(pos[n.p]||pos[n.id]);el.style.left=from.x+'px';el.style.top=from.y+'px';}
-    requestAnimationFrame(()=>{el.style.left=pos[n.id].x+'px';el.style.top=pos[n.id].y+'px';});});
+  N.forEach(n=>{const el=EL[n.id];if(el.dataset.fresh){delete el.dataset.fresh;const from=first?pos[n.id]:(pos[n.p]||pos[n.id]);el.style.translate=`${from.x}px ${from.y}px`;}
+    requestAnimationFrame(()=>{el.style.translate=`${pos[n.id].x}px ${pos[n.id].y}px`;});});
   let svg=tree.querySelector('svg');if(!svg){svg=document.createElementNS('http://www.w3.org/2000/svg','svg');tree.prepend(svg);}svg.setAttribute('width',W);svg.setAttribute('height',H);
   const old=new Set([...svg.querySelectorAll('path')].map(p=>p.dataset.k));svg.innerHTML='';
   N.forEach(n=>{if(n.p===null)return;const a=pos[n.p],b=pos[n.id],pw=N.find(m=>m.id===n.p).root?D.RW:D.NW,x1=a.x+pw,y1=a.y+HT[n.p]/2,x2=b.x,y2=b.y+HT[n.id]/2,m2=(x1+x2)/2;
@@ -955,14 +950,16 @@ const cal=$('#cal');cal.addEventListener('click',()=>{if(cal.classList.contains(
 const mc=$('#mon'),m2=mc.getContext('2d');let MS=[],mw=0,mh=0,monVis=false;
 function monInit(){mw=mc.clientWidth;mh=mc.clientHeight;if(!mw||!mh)return;mc.width=mw*devicePixelRatio;mc.height=mh*devicePixelRatio;m2.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
   MS=[...Array(22)].map((_,i)=>({x:30+Math.random()*(mw-60),y:30+Math.random()*(mh-60),vx:(Math.random()-.5)*4,vy:(Math.random()-.5)*4,s:12+Math.random()*20,r:Math.random()*6,vr:(Math.random()-.5)*.06,c:i%6===5?'#F2F2F2':COLS[i%5]}));}
-monInit();addEventListener('resize',monInit);new IntersectionObserver(([e])=>{monVis=e.isIntersecting;if(monVis&&!MS.length)monInit();}).observe(mc);
-(function monLoop(){if(monVis&&mw){const r=mc.getBoundingClientRect(),inside=mx>r.left&&mx<r.right&&my>r.top&&my<r.bottom,cx=(mx-r.left)*mw/r.width,cy=(my-r.top)*mh/r.height;m2.clearRect(0,0,mw,mh);
+monInit();addEventListener('resize',monInit);new IntersectionObserver(([e])=>{monVis=e.intersectionRatio>0;if(monVis){if(!MS.length)monInit();G.mon=mc.getBoundingClientRect();ecran();}},{threshold:[0,.01]}).observe(mc);
+const ecran=boucle(()=>{if(monVis&&mw&&G.mon){const r=G.mon,inside=mx>r.left&&mx<r.right&&my>r.top&&my<r.bottom,cx=(mx-r.left)*mw/r.width,cy=(my-r.top)*mh/r.height;m2.clearRect(0,0,mw,mh);
   for(const q of MS){if(inside&&!RM){const dx=cx-q.x,dy=cy-q.y,d=Math.hypot(dx,dy)+20;q.vx+=dx/d*.35;q.vy+=dy/d*.35;}
     q.vx*=.99;q.vy*=.99;const sp=Math.hypot(q.vx,q.vy);if(sp<1.2){q.vx*=1.03;q.vy*=1.03;}if(sp>11){q.vx*=.9;q.vy*=.9;}
     if(!RM){q.x+=q.vx;q.y+=q.vy;q.r+=q.vr;}const h=q.s/2;
     if(q.x<h){q.x=h;q.vx=Math.abs(q.vx);}if(q.x>mw-h){q.x=mw-h;q.vx=-Math.abs(q.vx);}if(q.y<h){q.y=h;q.vy=Math.abs(q.vy);}if(q.y>mh-h){q.y=mh-h;q.vy=-Math.abs(q.vy);}
     m2.save();m2.translate(q.x,q.y);m2.rotate(q.r);m2.fillStyle=q.c;m2.fillRect(-h,-h,q.s,q.s);m2.restore();}}
-  requestAnimationFrame(monLoop);})();
+  return monVis;});
+
+onScroll();
 
 /* ============ TÉLÉCHARGER ============ */
 const ua=navigator.userAgent||'',mob=/iPhone|iPad|iPod|Android/i.test(ua)||(/Macintosh/.test(ua)&&navigator.maxTouchPoints>1),os=mob?null:/Macintosh|Mac OS X/.test(ua)?'mac':/Windows/.test(ua)?'win':null;
