@@ -1,6 +1,6 @@
 PARAPHE — SITE DE PRÉSENTATION
 ==============================
-(anciennement « Mes Logiciels » ; devise : Du cours au cabinet.)
+(devise : Du cours au cabinet.)
 
 Contenu du dossier
 - index.html ............ la page (HTML + CSS + JS dans un seul fichier)
@@ -57,8 +57,7 @@ Contenu du dossier
    - Ils ne sont pas signés par un certificat d'éditeur : à la première ouverture, macOS
      (clic droit → Ouvrir) et Windows (SmartScreen → Informations complémentaires → Exécuter
      quand même) affichent un avertissement.
-   - Les données des utilisateurs sont conservées : l'identifiant technique de l'application
-     (com.mes-logiciels.app) n'a pas changé. Sur Mac, l'ancienne app « Mes Logiciels » peut
-     être supprimée après installation de Paraphe.
+   - Les données des utilisateurs sont reprises automatiquement au premier lancement de la
+     nouvelle version (l'ancien dossier de données n'est pas modifié).
    - L'adresse du site reste https://parpar30.github.io/mes-logiciels/ tant que le dépôt garde
      ce nom. Si tu renommes le dépôt en « paraphe », mets à jour og:image et og:url dans index.html.

@@ -159,7 +159,7 @@ dialog button:hover{background:var(--encre);color:var(--fond)}
 
 <nav class="sommaire" aria-label="Sommaire">
   <ol>
-    <li><a href="#tableau"><span class="num">1</span>Tableau de bord</a></li>
+    <li><a href="#tableau"><span class="num">1</span>Accueil</a></li>
     <li><a href="#referentiel"><span class="num">2</span>Référentiel</a></li>
     <li><a href="#dossier"><span class="num">3</span>Dossier d'un litige</a></li>
     <li><a href="#echeances"><span class="num">4</span>Échéances</a></li>
@@ -173,17 +173,17 @@ dialog button:hover{background:var(--encre);color:var(--fond)}
 
   <section class="chapitre" id="tableau">
     <header><span class="etiquette">Chapitre 1</span><h2>Ce qui demande votre attention, en un écran</h2>
-      <p>À l'ouverture, le tableau de bord réunit les chiffres, les échéances proches et les tâches en retard de tous vos dossiers.</p></header>
+      <p>À l'ouverture, l'Accueil dit où vous en êtes : ce qui arrive bientôt, ce qui est en retard, et par où commencer si vous démarrez.</p></header>
     <div class="fonc">
       <div class="texte">
-        <h3>Tableau de bord</h3>
-        <p>Les indicateurs se choisissent et se réordonnent dans l'écran Apparence.</p>
+        <h3>Accueil</h3>
+        <p>La première fois, trois étapes vous guident : ajouter une société, puis un contrat ou un litige, puis revenir ici. Ensuite, l'Accueil se lit de haut en bas.</p>
         <ul>
-          <li>Contrats actifs, litiges ouverts, échéances à 30 jours, risque exposé en euros.</li>
-          <li>Synthèse financière : exposition des litiges ouverts, honoraires engagés, valeur des contrats en cours.</li>
-          <li>Contrats arrivant à terme et audiences, avec un compte à rebours <span class="ref">J-4</span>.</li>
-          <li>Actions en attente, tirées des checklists de procédure.</li>
-          <li>Bandeau « Alertes du jour » à la première ouverture de la journée.</li>
+          <li>Des actions rapides : ajouter une société, un contrat, ouvrir un litige, noter une consultation, calculer une prescription.</li>
+          <li>Une phrase de synthèse, par exemple « Dans les 30 prochains jours : 1 contrat arrive à échéance, 2 audiences sont prévues ».</li>
+          <li>Quatre chiffres : contrats en cours, litiges en cours, contrats qui finissent sous 30 jours, montant en jeu.</li>
+          <li>Les échéances et audiences avec un compte à rebours <span class="ref">J-4</span>, et les actions en attente tirées des tâches des dossiers.</li>
+          <li>Des statistiques et un glossaire des mots juridiques, repliés en bas de page ; un bandeau « Alertes du jour » à la première ouverture de la journée.</li>
         </ul>
       </div>
       <button class="cadre" type="button" data-legende="Tableau de bord"><img loading="lazy" src="assets/img/diligences/dashboard.jpg" alt="Tableau de bord" width="1440" height="900"></button>
@@ -199,7 +199,7 @@ dialog button:hover{background:var(--encre);color:var(--fond)}
 
   <section class="chapitre" id="referentiel">
     <header><span class="etiquette">Chapitre 2</span><h2>Un référentiel qui relie tout</h2>
-      <p>Quatre registres, reliés entre eux : un litige pointe vers son contrat, qui pointe vers la société cliente.</p></header>
+      <p>Quatre registres, rangés dans le menu sous « Mes dossiers » (Contrats, Litiges, Consultations, Sociétés) et reliés entre eux : un litige pointe vers son contrat, qui pointe vers la société cliente.</p></header>
     <div class="fonc">
       <div class="texte">
         <h3>Litiges</h3>
@@ -239,10 +239,14 @@ dialog button:hover{background:var(--encre);color:var(--fond)}
       <p>Un clic sur un litige ouvre sa fiche complète. C'est là que se fait l'essentiel du travail quotidien.</p></header>
     <div class="fonc">
       <div class="texte">
-        <h3>La fiche</h3>
-        <p>Informations générales, puis le bloc « Procédure et suivi » : type de prescription détecté, juridiction, numéro RG, date d'ouverture, audience prévue, risque estimé et honoraires. Les notes internes restent attachées au dossier.</p>
+        <h3>La fiche, en cinq onglets</h3>
+        <p>L'en-tête réunit les actions du dossier : « Modifier ce litige », « Calculer les délais », « Rédiger un courrier », « Ajouter les étapes d'une procédure » et « Imprimer / PDF ». En dessous, cinq onglets :</p>
         <ul>
-          <li>Depuis l'en-tête : calcul des délais, courrier, modèle de procédure, export PDF de la fiche.</li>
+          <li><b>Résumé</b> : « Où en est ce litige ? » (statut, prochaine audience, montant en jeu, dernier événement) et ce qu'il reste à faire, puis les informations générales et le bloc « Où en est la procédure ? ».</li>
+          <li><b>Chronologie et tâches</b> : la frise des événements, le formulaire pour en ajouter, et les tâches à faire.</li>
+          <li><b>Documents et notes</b> : les pièces jointes PDF et les notes internes du dossier.</li>
+          <li><b>Temps et honoraires</b> : le chronomètre, la saisie libre et le relevé.</li>
+          <li><b>Historique</b> : la trace des modifications du dossier.</li>
         </ul>
       </div>
       <button class="cadre" type="button" data-legende="Fiche d'un litige"><img loading="lazy" src="assets/img/diligences/dossier.jpg" alt="Fiche d'un litige" width="1440" height="900"></button>
@@ -250,39 +254,39 @@ dialog button:hover{background:var(--encre);color:var(--fond)}
     <div class="fonc inv">
       <div class="texte">
         <h3>Frise chronologique</h3>
-        <p>Les événements (mise en demeure, assignation, audience, jugement, appel, expertise, transaction) se placent sur une frise horizontale à l'échelle. Zoom sur 7, 30 ou 90 jours, filtre par type.</p>
+        <p>Les événements (mise en demeure, assignation, audience, jugement, appel, expertise, transaction) se placent sur une frise horizontale à l'échelle : faites-la défiler en la faisant glisser, cliquez sur un événement pour le modifier. Les boutons « 7j », « 30j » et « 90j » ne gardent que les événements proches d'aujourd'hui ; « Tout » les remontre tous.</p>
         <ul>
+          <li>Filtre par mot et par type, impression de la fiche.</li>
           <li>Chaque événement peut porter des documents et des PDF.</li>
-          <li>Un historique garde la trace des modifications du dossier.</li>
         </ul>
       </div>
-      <button class="cadre" type="button" data-legende="Frise chronologique du litige"><img loading="lazy" src="assets/img/diligences/frise.jpg" alt="Frise chronologique" width="1136" height="433"></button>
+      <button class="cadre" type="button" data-legende="Frise chronologique du litige"><img loading="lazy" src="assets/img/diligences/frise.jpg" alt="Frise chronologique" width="1136" height="556"></button>
     </div>
     <div class="fonc">
       <div class="texte">
         <h3>Temps et honoraires</h3>
-        <p>Un chronomètre par dossier, ou une saisie libre (« 1h30 », « 45min », « 0,75 »). Le taux horaire et la TVA donnent les totaux HT, TVA et TTC.</p>
+        <p>Dans l'onglet du même nom : un chronomètre par dossier, ou une saisie libre (« 1h30 », « 45min », « 0,75 »). Le taux horaire et la TVA donnent les totaux HT, TVA et TTC.</p>
         <ul>
           <li>Relevé d'honoraires en PDF, prêt à envoyer au client.</li>
           <li>Report du total dans les honoraires engagés du litige.</li>
           <li>Le chronomètre continue si vous changez de page, et l'onglet affiche ⏱ tant qu'il tourne.</li>
         </ul>
       </div>
-      <button class="cadre" type="button" data-legende="Temps et honoraires"><img loading="lazy" src="assets/img/diligences/temps.jpg" alt="Panneau temps et honoraires" width="1136" height="388"></button>
+      <button class="cadre" type="button" data-legende="Temps et honoraires"><img loading="lazy" src="assets/img/diligences/temps.jpg" alt="Panneau temps et honoraires" width="1136" height="386"></button>
     </div>
     <div class="fonc inv">
       <div class="texte">
         <h3>Pièces jointes PDF</h3>
-        <p>Glissez les PDF du dossier (10 Mo maximum chacun). Ils sont rangés dans une base du navigateur séparée, pour ne pas saturer l'espace des données, et chiffrés si le profil est protégé par un code.</p>
+        <p>Dans l'onglet « Documents et notes », glissez les PDF du dossier (10 Mo maximum chacun). Ils sont rangés dans une base du navigateur séparée, pour ne pas saturer l'espace des données, et chiffrés si le profil est protégé par un code.</p>
       </div>
-      <button class="cadre" type="button" data-legende="Pièces jointes"><img loading="lazy" src="assets/img/diligences/pieces.jpg" alt="Pièces jointes du litige" width="1136" height="289"></button>
+      <button class="cadre" type="button" data-legende="Pièces jointes"><img loading="lazy" src="assets/img/diligences/pieces.jpg" alt="Pièces jointes du litige" width="1136" height="358"></button>
     </div>
     <div class="fonc">
       <div class="texte">
         <h3>Checklist de procédure</h3>
-        <p>Des listes de tâches par phase, avec une barre de progression. Cinq modèles sont prêts à l'emploi : litige commercial, procédure d'appel, expertise judiciaire, recouvrement, prud'hommes. Les tâches non faites remontent dans le tableau de bord.</p>
+        <p>Dans l'onglet « Chronologie et tâches », « Tâches à faire » propose des listes par phase, avec une barre de progression. Cinq modèles sont prêts à l'emploi : litige commercial, procédure d'appel, expertise judiciaire, recouvrement, prud'hommes. Les tâches non faites remontent dans le tableau de bord.</p>
       </div>
-      <button class="cadre" type="button" data-legende="Checklist de procédure"><img loading="lazy" src="assets/img/diligences/checklist.jpg" alt="Checklist de procédure" width="1136" height="398"></button>
+      <button class="cadre" type="button" data-legende="Checklist de procédure"><img loading="lazy" src="assets/img/diligences/checklist.jpg" alt="Checklist de procédure" width="1136" height="710"></button>
     </div>
     <div class="fonc inv">
       <div class="texte">
@@ -299,7 +303,7 @@ dialog button:hover{background:var(--encre);color:var(--fond)}
     <div class="fonc">
       <div class="texte">
         <h3>Délais calculés avec Quantième</h3>
-        <p>Le bouton « Délais (Quantième) » ouvre le calculateur de délais de la suite, à la date de l'assignation. Vous choisissez la procédure parmi 125, vous vérifiez la frise, puis « Envoyer au litige » verse les échéances dans la frise du dossier, sans doublon.</p>
+        <p>Le bouton « Calculer les délais » ouvre Quantième, le calculateur de délais de la suite, à la date de l'assignation. Vous choisissez la procédure parmi 123, vous vérifiez la frise, puis « Envoyer au litige » verse les échéances dans la frise du dossier, sans doublon.</p>
       </div>
       <button class="cadre" type="button" data-legende="Quantième, ouvert depuis un litige"><img loading="lazy" src="assets/img/diligences/quantieme.jpg" alt="Quantième ouvert depuis un litige" width="1440" height="900"></button>
     </div>
@@ -317,10 +321,10 @@ dialog button:hover{background:var(--encre);color:var(--fond)}
       <p>Quatre vues pour ne rien laisser passer : le statut des litiges, le calendrier, les renouvellements et la prescription.</p></header>
     <div class="fonc">
       <div class="texte">
-        <h3>Pipeline des litiges</h3>
-        <p>Un tableau en colonnes (actif, en appel, transaction, gagné, perdu). Faites glisser une carte pour changer le statut d'un litige. En tête : total, dossiers ouverts, critiques, audiences à 30 jours et exposition.</p>
+        <h3>Litiges par étape</h3>
+        <p>Un tableau en colonnes (actif, en appel, transaction, gagné, perdu), appelé « Litiges par étape » dans le menu. Faites glisser une carte pour changer le statut d'un litige. En tête : total, dossiers ouverts, critiques, audiences à 30 jours et exposition.</p>
       </div>
-      <button class="cadre" type="button" data-legende="Pipeline des litiges"><img loading="lazy" src="assets/img/diligences/kanban.jpg" alt="Pipeline des litiges en colonnes" width="1440" height="900"></button>
+      <button class="cadre" type="button" data-legende="Litiges par étape"><img loading="lazy" src="assets/img/diligences/kanban.jpg" alt="Litiges rangés par étape, en colonnes" width="1440" height="900"></button>
     </div>
     <div class="fonc inv">
       <div class="texte">
@@ -387,7 +391,7 @@ dialog button:hover{background:var(--encre);color:var(--fond)}
       <p>Tout s'exporte, tout se réimporte, et l'interface s'adapte à vos habitudes.</p></header>
     <div class="fonc">
       <div class="texte">
-        <h3>Données et export</h3>
+        <h3>Sauvegarde et exports</h3>
         <ul>
           <li>Sauvegarde JSON complète, PDF compris, et restauration.</li>
           <li>CSV des contrats et des litiges, réimportables : une ligne dont la référence existe déjà met la fiche à jour.</li>
