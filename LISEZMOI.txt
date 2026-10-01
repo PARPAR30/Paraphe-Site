@@ -46,18 +46,19 @@ Contenu du dossier
    Les licences des polices sont dans assets/fonts/LICENCES.txt (obligatoire avec les polices).
 
 6) En ligne
-   Adresse du site : https://parpar30.github.io/mes-logiciels/
-   Dépôt GitHub    : https://github.com/PARPAR30/mes-logiciels (branche main, GitHub Pages)
-   Pour mettre à jour : modifie les fichiers ici, puis sur github.com/PARPAR30/mes-logiciels
-   « Add file → Upload files » (ou GitHub Desktop). Le site se met à jour en ~1 minute.
+   Adresse du site : https://parpar30.github.io/Paraphe-Site/
+   Dépôt GitHub    : https://github.com/PARPAR30/Paraphe-Site (branche main, GitHub Pages)
+   Pour mettre à jour : modifie les fichiers ici, puis « git push » depuis ce dossier (ou
+   « Add file → Upload files » sur github.com/PARPAR30/Paraphe-Site). Le site se met à jour en ~1 minute.
 
-7) Nom Paraphe et installateurs (septembre 2026)
-   - logiciels/ contient Paraphe_1.0.0_universal.dmg (macOS, Intel + Apple Silicon) et
+7) Installateurs (logiciels/)
+   - Paraphe_1.0.0_universal.dmg (macOS, Intel + Apple Silicon) et
      Paraphe_1.0.0_x64-setup.exe (Windows 64 bits), compilés depuis le dossier Code.
    - Ils ne sont pas signés par un certificat d'éditeur : à la première ouverture, macOS
      (clic droit → Ouvrir) et Windows (SmartScreen → Informations complémentaires → Exécuter
      quand même) affichent un avertissement.
-   - Les données des utilisateurs sont reprises automatiquement au premier lancement de la
-     nouvelle version (l'ancien dossier de données n'est pas modifié).
-   - L'adresse du site reste https://parpar30.github.io/mes-logiciels/ tant que le dépôt garde
-     ce nom. Si tu renommes le dépôt en « paraphe », mets à jour og:image et og:url dans index.html.
+   - Les données des utilisateurs sont reprises automatiquement au premier lancement
+     (l'ancien dossier de données n'est pas modifié).
+
+8) Vidéo de présentation (assets/media/presentation.mp4, 50 s)
+   Refaite le 1er octobre 2026 avec l'interface actuelle des six outils (affiche : poster.jpg).
