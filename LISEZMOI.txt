@@ -60,5 +60,7 @@ Contenu du dossier
    - Les données des utilisateurs sont reprises automatiquement au premier lancement
      (l'ancien dossier de données n'est pas modifié).
 
-8) Vidéo de présentation (assets/media/presentation.mp4, 50 s)
+8) Vidéo de présentation (assets/media/presentation.mp4, 52 s, avec son)
    Refaite le 1er octobre 2026 avec l'interface actuelle des six outils (affiche : poster.jpg).
+   La musique et les bruitages sont originaux, générés par programme pour cette vidéo :
+   aucun morceau ni échantillon tiers, donc pas de droits à déclarer.
