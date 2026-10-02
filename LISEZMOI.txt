@@ -60,7 +60,9 @@ Contenu du dossier
    - Les données des utilisateurs sont reprises automatiquement au premier lancement
      (l'ancien dossier de données n'est pas modifié).
 
-8) Vidéo de présentation (assets/media/presentation.mp4, 52 s, avec son)
-   Refaite le 1er octobre 2026 avec l'interface actuelle des six outils (affiche : poster.jpg).
-   La musique et les bruitages sont originaux, générés par programme pour cette vidéo :
-   aucun morceau ni échantillon tiers, donc pas de droits à déclarer.
+8) Vidéo de présentation (assets/media/presentation.mp4, 2 min, avec son)
+   Refaite le 2 octobre 2026 : les six outils utilisés pour de vrai dans l'application, étape par étape
+   (légendes numérotées, élément mis en évidence, caméra qui suit l'action). Affiche : poster.jpg.
+   Musique et bruitages originaux, générés par programme : un menuet écrit sur les notes du mot
+   PARAPHE (si, la, ré, la, si, la, mi). Aucun morceau ni échantillon tiers, pas de droits à déclarer.
+   Sources et marche à suivre pour la refaire : Code/docs/video/.
