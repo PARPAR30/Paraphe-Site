@@ -60,9 +60,9 @@ Contenu du dossier
    - Les données des utilisateurs sont reprises automatiquement au premier lancement
      (l'ancien dossier de données n'est pas modifié).
 
-8) Vidéo de présentation (assets/media/presentation.mp4, 2 min, avec son)
-   Refaite le 2 octobre 2026 : les six outils utilisés pour de vrai dans l'application, étape par étape
-   (légendes numérotées, élément mis en évidence, caméra qui suit l'action). Affiche : poster.jpg.
-   Musique et bruitages originaux, générés par programme : un menuet écrit sur les notes du mot
-   PARAPHE (si, la, ré, la, si, la, mi). Aucun morceau ni échantillon tiers, pas de droits à déclarer.
-   Sources et marche à suivre pour la refaire : Code/docs/video/.
+8) Vidéo de présentation (assets/media/presentation.mp4, 62 s, 60 i/s, avec son)
+   Montage « motion design » (2 octobre 2026) : les six outils filmés dans l'application, coupes et
+   zooms calés sur une musique à 120 BPM. Affiche : poster.jpg.
+   Musique et bruitages originaux, générés par programme, sur un thème qui écrit PARAPHE en notes
+   (si, la, ré, la, si, la, mi). Aucun morceau ni échantillon tiers, pas de droits à déclarer.
+   Sources et marche à suivre : Code/docs/video/ (dossier dyn/ pour ce montage).
