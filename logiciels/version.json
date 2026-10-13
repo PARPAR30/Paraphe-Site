@@ -3,7 +3,9 @@
   "date": "2026-10-13",
   "lien": "https://parpar30.github.io/Paraphe-Site/#telecharger",
   "nouveautes": [
-    "Vos données sont désormais doublées : copie de secours permanente et copie de sécurité automatique, avec un dossier de votre choix (cloud, clé USB) en option",
+    "Plus de limite de taille pour vos données : elles sont rangées dans des fichiers de l'application",
+    "Copie de sécurité automatique, avec un dossier de votre choix (cloud, clé USB) en option",
+    "Copies et sauvegardes protégeables par un mot de passe (chiffrement AES-256)",
     "Vos clés d'IA sont rangées dans le trousseau sécurisé de l'ordinateur",
     "Quantième : 168 procédures à jour au 13 octobre 2026, dont le droit des sociétés et l'arbitrage",
     "Windows : menu natif, enregistrement des fichiers et fenêtre qui retrouve sa taille",
