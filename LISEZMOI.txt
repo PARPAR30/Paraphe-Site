@@ -11,8 +11,8 @@ Contenu du dossier
 
 1) Ajouter les liens de téléchargement
    Ouvre index.html, cherche « LIENS DE TÉLÉCHARGEMENT » (en bas du fichier) et remplis :
-     mac:     "…/Paraphe_1.1.0_universal.dmg"
-     windows: "…/Paraphe_1.1.0_x64-setup.exe"
+     mac:     "…/Paraphe_1.1.1_universal.dmg"
+     windows: "…/Paraphe_1.1.1_x64-setup.exe"
    Tant qu’un lien est vide, le bouton affiche « Bientôt disponible ».
    Tu peux soit déposer les fichiers dans un dossier du site (ex. telechargements/),
    soit mettre une adresse complète (GitHub Releases, Google Drive partagé en « Tous les utilisateurs disposant du lien »…).
@@ -52,8 +52,8 @@ Contenu du dossier
    « Add file → Upload files » sur github.com/PARPAR30/Paraphe-Site). Le site se met à jour en ~1 minute.
 
 7) Installateurs (logiciels/)
-   - Paraphe_1.1.0_universal.dmg (macOS, Intel + Apple Silicon) et
-     Paraphe_1.1.0_x64-setup.exe (Windows 64 bits), compilés depuis le dossier Code.
+   - Paraphe_1.1.1_universal.dmg (macOS, Intel + Apple Silicon) et
+     Paraphe_1.1.1_x64-setup.exe (Windows 64 bits), compilés depuis le dossier Code.
    - Ils ne sont pas signés par un certificat d'éditeur : à la première ouverture, macOS
      (clic droit → Ouvrir) et Windows (SmartScreen → Informations complémentaires → Exécuter
      quand même) affichent un avertissement.
