@@ -1,10 +1,10 @@
 {
-  "version": "1.1.1",
+  "version": "1.1.2",
   "date": "2026-10-13",
   "lien": "https://parpar30.github.io/Paraphe-Site/#telecharger",
   "nouveautes": [
+    "Le bouton « Accueil » est toujours à gauche, dans tous les outils",
     "352 fiches d'arrêt préchargées, de la L1 au M2, avec un filtre par niveau d'étude",
-    "Boutons « Tout supprimer » dans les fiches mémo et les fiches d'arrêt, avec double confirmation",
-    "Quantième : procédures d'arbitrage mises à jour du décret n° 2026-741 (appel du jugement du juge d'appui en 15 jours)"
+    "Boutons « Tout supprimer » dans les fiches mémo et les fiches d'arrêt, avec double confirmation"
   ]
 }
