@@ -34,8 +34,8 @@ Contenu du dossier
      sont coupés automatiquement.
 
 5) Pages légales (mentions-legales.html)
-   Avant la mise en ligne, compléter les passages surlignés en jaune « [à compléter] » :
-   - ton adresse e-mail de contact (2 endroits) ;
+   Adresse e-mail de contact : paraphe.droit@gmail.com (renseignée aux 2 endroits prévus, et dans le pied de page
+   de index.html). Avant la mise en ligne, compléter s'il en reste les passages surlignés en jaune « [à compléter] » :
    - l’hébergeur : nom, adresse, téléphone ou site. Exemples :
        GitHub Pages : GitHub Inc., 88 Colin P. Kelly Jr Street, San Francisco, CA 94107, États-Unis — github.com
        Netlify : Netlify Inc., 101 2nd Street, San Francisco, CA 94105, États-Unis — netlify.com
@@ -53,7 +53,7 @@ Contenu du dossier
 
 7) Installateurs (logiciels/)
    - Paraphe_1.1.1_universal.dmg (macOS, Intel + Apple Silicon) et
-     Paraphe_1.1.1_x64-setup.exe (Windows 64 bits), compilés depuis le dossier Code.
+     Paraphe_1.1.1_x64-setup.exe (Windows 64 bits), compilés depuis le dossier 1-Logiciel.
    - Ils ne sont pas signés par un certificat d'éditeur : à la première ouverture, macOS
      (clic droit → Ouvrir) et Windows (SmartScreen → Informations complémentaires → Exécuter
      quand même) affichent un avertissement.
@@ -65,6 +65,6 @@ Contenu du dossier
    sur une île que parcourt le cube violet du logo, puis « 100 % local ». Affiche : paraphe-film.jpg.
    Voix off : Gemini (voix « Algieba »). Musique et bruitages originaux, générés par programme ;
    aucun morceau ni échantillon tiers.
-   Sources et marche à suivre : dossier video-iso/ à côté de Site/ (voir son LISEZMOI.md).
-   L'ancien film (presentation.mp4, poster.jpg ; sources dans Code/docs/video/) n'est plus utilisé
+   Sources et marche à suivre : dossier 5-Videos/Film-isometrique/ du dossier Paraphe (voir son LISEZMOI.md).
+   L'ancien film (presentation.mp4, poster.jpg ; sources dans 1-Logiciel/docs/video/) n'est plus utilisé
    par index.html.
