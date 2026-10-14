@@ -7,7 +7,7 @@ Contenu du dossier
 - diligences.html ....... la visite guidée de Diligences (ex-Suivi Juridique), captures dans assets/img/diligences/
 - assets/fonts/ ......... polices Zilla Slab, Archivo, IBM Plex Mono (hébergées avec le site)
 - assets/img/ ........... favicon et image de partage (og-image.jpg)
-- assets/media/ ......... vidéo de présentation (presentation.mp4) et son affiche (poster.jpg)
+- assets/media/ ......... vidéo de présentation (paraphe-film.mp4) et son affiche (paraphe-film.jpg)
 
 1) Ajouter les liens de téléchargement
    Ouvre index.html, cherche « LIENS DE TÉLÉCHARGEMENT » (en bas du fichier) et remplis :
@@ -60,9 +60,11 @@ Contenu du dossier
    - Les données des utilisateurs sont reprises automatiquement au premier lancement
      (l'ancien dossier de données n'est pas modifié).
 
-8) Vidéo de présentation (assets/media/presentation.mp4, 62 s, 60 i/s, avec son)
-   Montage « motion design » (2 octobre 2026) : les six outils filmés dans l'application, coupes et
-   zooms calés sur une musique à 120 BPM. Affiche : poster.jpg.
-   Musique et bruitages originaux, générés par programme, sur un thème qui écrit PARAPHE en notes
-   (si, la, ré, la, si, la, mi). Aucun morceau ni échantillon tiers, pas de droits à déclarer.
-   Sources et marche à suivre : Code/docs/video/ (dossier dyn/ pour ce montage).
+8) Vidéo de présentation (assets/media/paraphe-film.mp4, 62 s, 60 i/s, avec son)
+   Film d'animation en 3D isométrique (14 octobre 2026), réalisé avec HyperFrames : les six outils
+   sur une île que parcourt le cube violet du logo, puis « 100 % local ». Affiche : paraphe-film.jpg.
+   Voix off : Gemini (voix « Algieba »). Musique et bruitages originaux, générés par programme ;
+   aucun morceau ni échantillon tiers.
+   Sources et marche à suivre : dossier video-iso/ à côté de Site/ (voir son LISEZMOI.md).
+   L'ancien film (presentation.mp4, poster.jpg ; sources dans Code/docs/video/) n'est plus utilisé
+   par index.html.
