@@ -46,7 +46,7 @@ Contenu du dossier
    Les licences des polices sont dans assets/fonts/LICENCES.txt (obligatoire avec les polices).
 
 6) En ligne
-   Adresse du site : https://parpar30.github.io/Paraphe-Site/
+   Adresse du site : https://paraphe-app.fr/ (hébergé par Cloudflare ; l'ancienne adresse https://parpar30.github.io/Paraphe-Site/ reste active : l'application installée y lit version.json)
    Dépôt GitHub    : https://github.com/PARPAR30/Paraphe-Site (branche main, GitHub Pages)
    Pour mettre à jour : modifie les fichiers ici, puis « git push » depuis ce dossier (ou
    « Add file → Upload files » sur github.com/PARPAR30/Paraphe-Site). Le site se met à jour en ~1 minute.
