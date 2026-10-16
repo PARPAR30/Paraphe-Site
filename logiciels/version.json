@@ -1,9 +1,11 @@
 {
-  "version": "1.1.3",
-  "date": "2026-10-14",
+  "version": "1.1.4",
+  "date": "2026-10-17",
   "lien": "https://parpar30.github.io/Paraphe-Site/#telecharger",
   "nouveautes": [
-    "Sous Windows, la fenêtre n'a plus de barre de menus",
-    "Adresse de contact (paraphe.droit@gmail.com) dans la page Confidentialité"
+    "Sur les grands écrans, les outils occupent toute la largeur : filtres dans une colonne à gauche, listes sur deux ou trois colonnes",
+    "Contrastes plus francs : barre du haut en noir, textes secondaires plus lisibles",
+    "Une couleur par matière dans les fiches mémo, les fiches d'arrêt et les codes",
+    "Violet plus doux en mode nuit, ombres plus discrètes"
   ]
 }
