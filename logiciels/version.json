@@ -1,10 +1,10 @@
 {
-  "version": "1.1.4",
+  "version": "1.1.5",
   "date": "2026-10-17",
   "lien": "https://parpar30.github.io/Paraphe-Site/#telecharger",
   "nouveautes": [
-    "Sur les grands écrans, les outils occupent toute la largeur : filtres dans une colonne à gauche, listes sur deux ou trois colonnes",
-    "Contrastes plus francs : barre du haut en noir, textes secondaires plus lisibles",
+    "Barre du haut et barre latérale plus légères en mode jour : fond clair, filet discret",
+    "Sur les grands écrans, les outils occupent toute la largeur : filtres dans une colonne à gauche",
     "Une couleur par matière dans les fiches mémo, les fiches d'arrêt et les codes",
     "Violet plus doux en mode nuit, ombres plus discrètes"
   ]
