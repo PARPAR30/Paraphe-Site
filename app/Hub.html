@@ -1,0 +1,682 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="robots" content="noindex"><script src="demo-donnees.js"></script><script src="demo-bac.js"></script><script src="donnees.js"></script>
+<title>Paraphe — Du cours au cabinet</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Paraphe">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#131316">
+<script src="taille.js"></script><script src="clavier.js" defer></script>
+<script src="migration.js"></script>
+<link rel="stylesheet" href="fonts/fonts.css">
+<script src="pwa.js" defer></script>
+<link rel="icon" type="image/svg+xml" href="icons/favicon.svg">
+<link rel="stylesheet" href="style.css">
+<style>
+  /* Page d'ouverture de l'application : on choisit un outil. La sauvegarde vit dans sa propre fenêtre. */
+  .hub-barre{display:flex;align-items:center;justify-content:space-between;gap:var(--e4);padding:var(--e4) max(var(--pad), calc((100% - var(--largeur-contenu)) / 2))}   /* aplat d'encre et filet violet : style.css ; bords alignés sur ceux des outils */
+  .hub-marque{display:inline-flex;align-items:center;gap:var(--e2);font:700 calc(20px * var(--ech))/1 var(--marque);color:var(--encre);text-decoration:none;letter-spacing:-.01em}
+  .hub-marque svg{display:block;flex:none}
+  .hub-actions{display:flex;align-items:center;gap:var(--e2)}
+  .hub-sauver{position:relative}
+  /* taille du texte : trois « A » de plus en plus grands */
+  .taille{display:flex;padding:3px;gap:2px;background:var(--carte-2);border:1px solid var(--filet);border-radius:10px;margin-right:var(--e2)}
+  .taille button{border:0;box-shadow:none;height:32px;min-height:32px;min-width:34px;padding:0 8px;border-radius:7px;font-family:var(--sans);font-weight:700;line-height:1;text-transform:none;letter-spacing:0;background:transparent;color:var(--encre)}
+  
+  .taille button:nth-child(1){font-size:13px}.taille button:nth-child(2){font-size:16px}.taille button:nth-child(3){font-size:19px}
+  .taille button[aria-pressed="true"]{background:var(--carte);color:var(--encre);box-shadow:var(--ombre)}
+  .hub-sauver .pastille{position:absolute;top:-4px;right:-4px;width:10px;height:10px;border-radius:50%;background:rgb(var(--acc-fond));border:2px solid var(--fond)}
+
+  .hub{max-width:1040px;margin:0 auto;padding:var(--e8) var(--pad) var(--e8)}
+  .hub-accueil{margin-bottom:var(--e6)}
+  .hub-accueil h1{font:700 calc(56px * var(--ech))/1 var(--marque);letter-spacing:-.02em;margin:0 0 var(--e3)}
+  .hub-accueil h1 .point-final{display:inline-block;width:.15em;height:.15em;margin-left:.04em;background:rgb(var(--acc-fond))}
+  .hub-accueil p{margin:0;color:var(--encre-2);font-size:calc(17px * var(--ech));max-width:56ch}
+  .hub-accueil p.eyebrow{color:rgb(var(--acc));font-size:calc(13px * var(--ech));margin-bottom:var(--e2)}
+
+  .hub #recherche-globale{max-width:none;margin:0}
+  .rappel{margin:var(--e6) 0 0}
+  .rappel .row{gap:var(--e2)}
+
+  .famille{margin-top:var(--e8)}
+  .famille-tete{display:flex;align-items:baseline;flex-wrap:wrap;gap:var(--e1) var(--e4);padding-bottom:var(--e1)}
+  .famille-tete h2{margin:0;font-size:calc(26px * var(--ech))}
+  .famille-tete p{margin:0;color:var(--encre-2);font-size:calc(14px * var(--ech))}
+  .famille .grid-links{grid-template-columns:repeat(auto-fit,minmax(260px,1fr));margin-top:var(--e5)}
+  .famille .grid-links a.tool{display:flex;flex-direction:column}
+  .famille .grid-links a.tool p{flex:1}
+  .tool-contenu{margin-top:var(--e4);padding-top:var(--e3);border-top:1px solid var(--filet);display:flex;justify-content:space-between;align-items:center;gap:var(--e3);
+    font-size:calc(13px * var(--ech));font-weight:600;letter-spacing:0;text-transform:none;color:var(--gris)}
+  .tool-contenu b{color:var(--encre);font-weight:700}
+  .tool-contenu .ouvrir{color:rgb(var(--acc))}
+  .grid-links a.tool:hover .tool-contenu .ouvrir{text-decoration:underline}
+
+  .hub-pied{margin-top:var(--e8);padding-top:var(--e4);border-top:1px solid var(--filet);display:flex;flex-wrap:wrap;gap:var(--e2) var(--e4);align-items:center;justify-content:space-between;color:var(--gris);font-size:calc(13px * var(--ech))}
+  .lien{border:0;background:none;padding:0;min-height:0;font:inherit;font-weight:600;color:rgb(var(--acc));text-decoration:underline;text-underline-offset:3px;cursor:pointer;letter-spacing:0;text-transform:none}
+  .lien:hover{background:none;color:var(--encre)}
+
+  /* fenêtre « Sauvegarde » */
+  dialog.fenetre{max-height:calc(100vh - 32px);overflow-y:auto;border:1px solid var(--filet);border-radius:var(--r-l);background:var(--carte);color:var(--encre);padding:0;max-width:min(560px,calc(100vw - 32px));width:100%;box-shadow:var(--ombre-fenetre);border-radius:var(--r-l)}
+  dialog.fenetre::backdrop{background:rgba(17,17,20,.45)}
+  .fenetre-tete{display:flex;align-items:center;justify-content:space-between;gap:var(--e3);padding:var(--e4) var(--e5);border-bottom:1px solid var(--filet)}
+  .fenetre-tete h2{margin:0;font-size:calc(22px * var(--ech))}
+  .fenetre-corps{padding:var(--e5)}
+  .fenetre-corps > p{margin:0 0 var(--e4);color:var(--encre-2);font-size:calc(14.5px * var(--ech));line-height:1.55}
+  .etat-sauvegarde{display:flex;align-items:center;gap:var(--e3);padding:var(--e3) var(--e4);border:1px solid var(--filet);border-radius:var(--r-m);background:var(--carte-2);margin-bottom:var(--e5);font-size:calc(14px * var(--ech))}
+  .etat-sauvegarde i{width:10px;height:10px;flex:none;border-radius:50%;background:var(--succes)}
+  .etat-sauvegarde.ancienne i{background:rgb(var(--acc))}
+  .fenetre-actions{display:grid;grid-template-columns:1fr;gap:var(--e3)}
+  .fenetre-actions button{min-height:48px}
+  .fenetre-corps > p.fenetre-note{margin:var(--e4) 0 0;color:var(--gris);font-size:calc(12.5px * var(--ech));line-height:1.5}
+  details.avance > summary{cursor:pointer;font-weight:700;margin-bottom:var(--e4);font-size:calc(14px * var(--ech))}
+  details.avance:not([open]) > summary{margin-bottom:0}
+  .copies-auto{margin-top:var(--e5);padding-top:var(--e5);border-top:1px solid var(--filet)}
+  .copies-auto[hidden]{display:none}
+  .copies-auto h3{margin:0 0 var(--e3);font-size:calc(17px * var(--ech))}
+  .copies-auto > p{margin:0 0 var(--e4);color:var(--encre-2);font-size:calc(14px * var(--ech));line-height:1.55}
+  .copies-auto .fenetre-actions{margin-bottom:var(--e4)}
+  .copies-auto label{display:block;margin-bottom:var(--e3);font-size:calc(13px * var(--ech));color:var(--encre-2)}
+  .copies-auto select{display:block;width:100%;margin-top:var(--e2);min-height:44px;font:inherit;color:var(--encre);background:var(--carte);border:1px solid var(--filet);border-radius:var(--r-m)}
+  #fenetreMdp label{display:block;font-size:calc(13px * var(--ech));color:var(--encre-2)}
+  #fenetreMdp label[hidden],#fenetreMdp input[hidden]{display:none}
+  #fenetreMdp input[type=password]{display:block;width:100%;min-height:46px;margin:var(--e2) 0 var(--e4);padding:0 var(--e3);font:inherit;color:var(--encre);background:var(--carte);border:1px solid var(--filet);border-radius:var(--r-m)}
+  #fenetreMdp .alerte-espace{margin:0 0 var(--e4)}
+  .alerte-espace{margin:var(--e4) 0 0;padding:var(--e3) var(--e4);border:1px solid var(--alerte);border-radius:var(--r-m);background:var(--alerte-doux);color:var(--alerte);font-size:calc(13px * var(--ech))}
+  /* premier lancement : trois écrans */
+  dialog.bienvenue{max-width:min(640px,calc(100vw - 32px))}
+  dialog.bienvenue .fenetre-corps{min-height:410px}   /* même hauteur aux trois étapes : les boutons ne sautent pas */
+  .etape[hidden]{display:none}
+  .etape-visuel{border:1px solid var(--filet);border-radius:var(--r-m);background:var(--carte-2);padding:var(--e5);margin-bottom:var(--e5);min-height:150px;display:grid;place-items:center}
+  .etape .eyebrow{margin-bottom:var(--e2)}
+  .etape h2{font-size:calc(28px * var(--ech));margin:0 0 var(--e3);line-height:1.1}
+  .etape p{margin:0;color:var(--encre-2);font-size:calc(15px * var(--ech));line-height:1.6}
+  .v-outils{display:grid;gap:var(--e3);width:100%}
+  .v-outils > div{display:grid;grid-template-columns:92px 1fr;align-items:center;gap:var(--e3)}
+  .v-outils b{font:660 calc(13px * var(--ech))/1 var(--sans);color:rgb(var(--acc))}
+  .v-outils span{display:flex;flex-wrap:wrap;gap:var(--e2)}
+  .v-outils i{font-style:normal;border:1px solid var(--filet);border-radius:999px;background:var(--carte);padding:5px 12px;font-size:calc(13px * var(--ech));font-weight:600;white-space:nowrap}
+  .v-local{display:flex;align-items:center;gap:var(--e6);flex-wrap:wrap;justify-content:center}
+  .v-local ul{list-style:none;margin:0;padding:0;display:grid;gap:var(--e2);font-weight:600;font-size:calc(14px * var(--ech))}
+  .v-local li::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;background:rgb(var(--acc-fond));margin-right:10px;vertical-align:1px}
+  .v-sauve{display:flex;align-items:center;gap:var(--e4);flex-wrap:wrap;justify-content:center;font-size:calc(14px * var(--ech));color:var(--encre-2)}
+  .v-sauve .faux-bouton{position:relative;border:1px solid var(--filet);border-radius:var(--r-m);background:var(--carte);color:var(--encre);padding:10px 16px;font:700 calc(12px * var(--ech))/1 var(--sans);letter-spacing:0;text-transform:none}
+  .v-sauve .faux-bouton::after{content:"";position:absolute;top:-5px;right:-5px;width:10px;height:10px;border-radius:50%;background:rgb(var(--acc-fond));border:2px solid var(--fond)}
+  .bienvenue-pied{display:flex;align-items:center;justify-content:space-between;gap:var(--e3);padding:var(--e4) var(--e5);border-top:1px solid var(--filet)}
+  .points{display:flex;gap:6px}
+  .points i{width:22px;height:6px;border-radius:99px;background:var(--filet)}
+  .points i.on{background:rgb(var(--acc))}
+  .bienvenue-pied .droite{display:flex;gap:var(--e2);align-items:center}
+  @media (max-width:560px){
+    .hub-accueil h1{font-size:calc(40px * var(--ech))}
+    .hub-barre{flex-wrap:wrap;row-gap:var(--e3)}
+    .hub-actions{width:100%;justify-content:space-between;flex-wrap:wrap;row-gap:var(--e2)}
+    .taille{margin-right:0}
+    .v-outils > div{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+  <script src="theme.js"></script>
+  <header class="hub-barre">
+    <a class="hub-marque" href="Hub.html" aria-label="Paraphe, accueil">
+      <svg width="24" height="24" viewBox="0 0 32 32" aria-hidden="true"><rect x="5.25" y="4.25" width="18.5" height="21.5" fill="none" stroke="currentColor" stroke-width="2.5"/><path d="M24 9h4v20H9v-4h15z" fill="currentColor"/><rect x="9" y="9" width="11" height="2.2" fill="currentColor"/><rect x="9" y="13.4" width="7" height="2.2" fill="currentColor"/><rect x="15" y="18" width="5" height="4.5" style="fill:rgb(var(--acc,80,52,220))"/></svg>
+      Paraphe
+    </a>
+    <div class="hub-actions">
+      <div class="taille" role="group" aria-label="Taille du texte" title="Taille du texte, dans tous les outils">
+        <button type="button" data-taille="1" aria-label="Texte normal">A</button><button type="button" data-taille="1.12" aria-label="Texte grand">A</button><button type="button" data-taille="1.25" aria-label="Texte très grand">A</button>
+      </div>
+      <button type="button" class="hub-sauver" id="ouvrirSauvegarde">Sauvegarde<span class="pastille" id="pastilleSauvegarde" hidden></span></button>
+      <button type="button" id="theme-toggle" aria-pressed="false">Nuit</button>
+    </div>
+  </header>
+
+  <main class="hub">
+    <section class="hub-accueil">
+      <h1>Paraphe<span class="point-final" aria-hidden="true"></span></h1>
+      <p>Six outils pour étudier et pratiquer le droit. Choisissez-en un pour commencer, ou cherchez directement dans tout ce que vous avez déjà saisi.</p>
+    </section>
+
+    <div id="recherche-globale"></div>
+
+    <div class="rappel" id="rappelSauvegarde" hidden>
+      <span id="rappelTexte"></span>
+      <div class="row">
+        <button type="button" class="primary" id="rappelSauver">Sauvegarder maintenant</button>
+        <button type="button" id="rappelPlusTard">Plus tard</button>
+      </div>
+    </div>
+
+    <div class="rappel" id="bandeauMaj" hidden>
+      <span id="majTexte"></span>
+      <div class="row">
+        <button type="button" class="primary" id="majVoir">Voir la nouveauté</button>
+        <button type="button" id="majPlusTard">Plus tard</button>
+      </div>
+    </div>
+
+    <section class="famille" aria-labelledby="t-etudier">
+      <div class="famille-tete">
+        <h2 id="t-etudier">Étudier</h2>
+        <p>Réviser le cours et préparer les examens.</p>
+      </div>
+      <div class="grid-links">
+        <a class="tool" href="flashcards.html">
+          <h3><span class="tool-num" aria-hidden="true">1</span>Fiches mémo</h3>
+          <p>Des cartes question-réponse pour retenir définitions et articles. Celles que vous connaissez bien reviennent moins souvent.</p>
+          <div class="tool-contenu"><span data-compte="memo"></span><span class="ouvrir">Ouvrir →</span></div>
+        </a>
+        <a class="tool" href="fiches-arret.html">
+          <h3><span class="tool-num" aria-hidden="true">2</span>Fiches d'arrêt</h3>
+          <p>Une fiche par décision&nbsp;: faits, procédure, problème de droit, solution et portée.</p>
+          <div class="tool-contenu"><span data-compte="arret"></span><span class="ouvrir">Ouvrir →</span></div>
+        </a>
+        <a class="tool" href="codes.html">
+          <h3><span class="tool-num" aria-hidden="true">3</span>Codes &amp; articles</h3>
+          <p>Vos articles de référence, classés par code, avec vos notes et ceux à retenir.</p>
+          <div class="tool-contenu"><span data-compte="codes"></span><span class="ouvrir">Ouvrir →</span></div>
+        </a>
+      </div>
+    </section>
+
+    <section class="famille" aria-labelledby="t-pratiquer">
+      <div class="famille-tete">
+        <h2 id="t-pratiquer">Pratiquer</h2>
+        <p>Suivre les dossiers, construire un raisonnement, calculer les délais.</p>
+      </div>
+      <div class="grid-links">
+        <a class="tool" href="diligences.html">
+          <h3><span class="tool-num" aria-hidden="true">4</span>Diligences</h3>
+          <p>Le suivi des dossiers&nbsp;: sociétés, contrats, litiges, échéances et honoraires.</p>
+          <div class="tool-contenu"><span data-compte="diligences"></span><span class="ouvrir">Ouvrir →</span></div>
+        </a>
+        <a class="tool" href="considerant.html">
+          <h3><span class="tool-num" aria-hidden="true">5</span>Considérant</h3>
+          <p>Un raisonnement en arbre, une idée par cube, pour structurer une argumentation.</p>
+          <div class="tool-contenu"><span data-compte="considerant"></span><span class="ouvrir">Ouvrir →</span></div>
+        </a>
+        <a class="tool" href="quantieme.html">
+          <h3><span class="tool-num" aria-hidden="true">6</span>Quantième</h3>
+          <p>Les délais de procédure calculés à partir d'une date, du plus proche au plus lointain.</p>
+          <div class="tool-contenu"><span data-compte="quantieme"></span><span class="ouvrir">Ouvrir →</span></div>
+        </a>
+      </div>
+    </section>
+
+    <footer class="hub-pied">
+      <span>Vos données restent sur cet appareil. Aucun compte, aucun envoi sur internet — sauf si vous utilisez l'assistant IA de Diligences, avec votre clé et votre accord.</span>
+      <span class="row" style="gap:var(--e4)"><button type="button" class="lien" id="revoirBienvenue">Revoir la présentation</button><a class="lien" href="confidentialite.html">Confidentialité et informations légales</a><button type="button" class="lien" id="piedSauvegarde">Mettre mes données à l'abri</button></span>
+    </footer>
+  </main>
+
+  <dialog class="fenetre" id="fenetreSauvegarde" aria-labelledby="t-sauvegarde">
+    <div class="fenetre-tete">
+      <h2 id="t-sauvegarde">Sauvegarde</h2>
+      <button type="button" id="fermerSauvegarde">Fermer</button>
+    </div>
+    <div class="fenetre-corps">
+      <p id="introSauvegarde">Vos fiches, dossiers et réglages sont enregistrés sur cet appareil. Une sauvegarde les réunit dans un seul fichier, pièces jointes comprises (vos clés d'IA n'y sont jamais)&nbsp;: rangez-le sur une clé USB ou dans votre cloud, ou servez-vous-en pour tout retrouver sur un autre ordinateur.</p>
+      <div class="etat-sauvegarde" id="etatSauvegarde"><i aria-hidden="true"></i><span id="derniereSauvegarde">Aucune sauvegarde pour l'instant.</span></div>
+      <details class="avance" id="avance"><summary id="avanceTitre">Sauvegarde manuelle</summary>
+      <div class="fenetre-actions">
+        <button type="button" class="primary" id="toutExporter">Créer une sauvegarde</button>
+        <button type="button" id="toutRestaurer">Restaurer une sauvegarde…</button>
+      </div>
+      <input type="file" id="fichierRestauration" accept="application/json,.json" hidden>
+      <p class="fenetre-note">Restaurer remplace les données actuelles par celles du fichier choisi. Chaque outil garde aussi ses propres exports (PDF, fichiers de révision…) dans son menu.</p>
+      <p class="alerte-espace" id="alerteEspace" hidden></p>
+
+      <div class="copies-auto" id="copiesAuto" hidden>
+        <h3>Copie automatique</h3>
+        <p id="copiesTexte"></p>
+        <div class="fenetre-actions">
+          <button type="button" id="copiesDossier">Choisir un dossier pour une seconde copie…</button>
+          <button type="button" id="copiesRetirer" hidden>Ne plus copier dans ce dossier</button>
+        </div>
+        <h3>Protection par mot de passe</h3>
+        <p id="mdpTexte"></p>
+        <div class="fenetre-actions">
+          <button type="button" id="mdpActiver">Protéger mes copies par un mot de passe…</button>
+          <button type="button" id="mdpRetirer" hidden>Retirer la protection</button>
+        </div>
+        <label for="copiesListe">Copies gardées par l'application
+          <select id="copiesListe"></select>
+        </label>
+        <div class="fenetre-actions">
+          <button type="button" id="copiesRestaurer">Restaurer cette copie…</button>
+          <button type="button" id="copiesMontrer">Afficher le dossier des copies</button>
+        </div>
+      </div>
+      </details>
+    </div>
+  </dialog>
+
+  <dialog class="fenetre" id="fenetreMdp" aria-labelledby="mdpTitre">
+    <form id="formMdp" method="dialog">
+      <div class="fenetre-tete"><h2 id="mdpTitre">Mot de passe</h2></div>
+      <div class="fenetre-corps">
+        <p id="mdpExplication"></p>
+        <label for="mdpUn">Mot de passe</label>
+        <input type="password" id="mdpUn" autocomplete="off">
+        <label for="mdpDeux" id="mdpDeuxEt">Confirmez le mot de passe</label>
+        <input type="password" id="mdpDeux" autocomplete="off">
+        <p class="alerte-espace" id="mdpErreur" hidden></p>
+        <div class="fenetre-actions">
+          <button type="submit" class="primary" id="mdpValider">Valider</button>
+          <button type="button" id="mdpAnnuler">Annuler</button>
+        </div>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog class="fenetre bienvenue" id="bienvenue" aria-labelledby="bv-titre-1">
+    <div class="fenetre-corps">
+      <section class="etape" data-etape="1">
+        <div class="etape-visuel" aria-hidden="true">
+          <div class="v-outils">
+            <div><b>Étudier</b><span><i>Fiches mémo</i><i>Fiches d'arrêt</i><i>Codes &amp; articles</i></span></div>
+            <div><b>Pratiquer</b><span><i>Diligences</i><i>Considérant</i><i>Quantième</i></span></div>
+          </div>
+        </div>
+        <p class="eyebrow">Bienvenue · 1 sur 3</p>
+        <h2 id="bv-titre-1">Six outils pour le droit, au même endroit</h2>
+        <p>Pour étudier : des fiches mémo, des fiches d'arrêt et vos articles de référence. Pour pratiquer : le suivi des dossiers, la construction d'un raisonnement et le calcul des délais de procédure. Tout s'ouvre depuis cet accueil.</p>
+      </section>
+      <section class="etape" data-etape="2" hidden>
+        <div class="etape-visuel" aria-hidden="true">
+          <div class="v-local">
+            <svg width="92" height="92" viewBox="0 0 32 32"><rect x="5.25" y="4.25" width="18.5" height="21.5" fill="none" stroke="currentColor" stroke-width="2.5"/><path d="M24 9h4v20H9v-4h15z" fill="currentColor"/><rect x="9" y="9" width="11" height="2.2" fill="currentColor"/><rect x="9" y="13.4" width="7" height="2.2" fill="currentColor"/><rect x="15" y="18" width="5" height="4.5" style="fill:rgb(var(--acc))"/></svg>
+            <ul><li>Aucun compte à créer</li><li>Rien n'est envoyé sur internet</li><li>Fonctionne sans connexion</li></ul>
+          </div>
+        </div>
+        <p class="eyebrow">Bienvenue · 2 sur 3</p>
+        <h2 id="bv-titre-2">Vos données restent sur cet appareil</h2>
+        <p>Ce que vous saisissez (fiches, dossiers, raisonnements) est enregistré sur cet ordinateur, et nulle part ailleurs. Personne d'autre n'y a accès, pas même l'auteur de Paraphe.</p>
+      </section>
+      <section class="etape" data-etape="3" hidden>
+        <div class="etape-visuel" aria-hidden="true">
+          <div class="v-sauve"><span class="faux-bouton" id="bvFauxBouton">Sauvegarde</span><span id="bvFauxTexte">en haut de l'accueil</span></div>
+        </div>
+        <p class="eyebrow">Bienvenue · 3 sur 3</p>
+        <h2 id="bv-titre-3">Pensez à faire une sauvegarde</h2>
+        <p id="bvTexte3">Comme vos données ne sont qu'ici, une panne ou un changement d'ordinateur peut les faire disparaître. Le bouton « Sauvegarde » les réunit dans un seul fichier, à ranger sur une clé USB ou dans votre cloud. Paraphe vous le rappellera si vous oubliez.</p>
+      </section>
+    </div>
+    <div class="bienvenue-pied">
+      <button type="button" class="lien" id="bvPasser">Passer</button>
+      <div class="points" aria-hidden="true"><i class="on"></i><i></i><i></i></div>
+      <div class="droite">
+        <button type="button" id="bvPrecedent" hidden>Précédent</button>
+        <button type="button" class="primary" id="bvSuivant">Suivant</button>
+      </div>
+    </div>
+  </dialog>
+
+<script>
+(() => {
+  const CLE_DERNIERE = 'paraphe_derniere_sauvegarde';
+  const CLE_PLUS_TARD = 'paraphe_rappel_plus_tard';
+  const QUOTA = window.parapheStockage ? Infinity : 5 * 1024 * 1024;   // ~5 millions de caractères par site (navigateur) ; aucun plafond dans l'application
+  const $ = id => document.getElementById(id);
+  const lire = k => { try { return JSON.parse(localStorage.getItem(k)); } catch { return null; } };
+  const pluriel = (n, un, plusieurs) => n + ' ' + (n > 1 ? plusieurs : un);
+
+  // ── taille du texte (commune aux six outils, voir taille.js) ──
+  const boutonsTaille = [...document.querySelectorAll('[data-taille]')];
+  const majTaille = () => boutonsTaille.forEach(b => b.setAttribute('aria-pressed', String(Number(b.dataset.taille) === (window.PARAPHE_TAILLE || 1))));
+  boutonsTaille.forEach(b => b.addEventListener('click', () => { window.parapheTaille && window.parapheTaille(Number(b.dataset.taille)); majTaille(); }));
+  majTaille();
+
+  // ── ce que chaque outil contient déjà ──
+  (() => {
+    const compte = {};
+    const tab = k => { const v = lire(k); return Array.isArray(v) ? v.length : 0; };
+    const n1 = tab('droit_flashcards'), n2 = tab('droit_fiches_arret'), n3 = tab('droit_codes');
+    if (n1) compte.memo = pluriel(n1, 'carte', 'cartes');
+    if (n2) compte.arret = pluriel(n2, 'fiche', 'fiches');
+    if (n3) compte.codes = pluriel(n3, 'article', 'articles');
+    const profils = lire('sj-profiles') || [];
+    if (Array.isArray(profils) && profils.length) {
+      let dossiers = 0;
+      // profils chiffrés par code PIN : illisibles ici, on ne compte que les autres
+      profils.forEach(p => { const d = lire('sjp-' + p.id + '-data'); if (d && (Array.isArray(d.lit) || Array.isArray(d.ctr) || Array.isArray(d.cons))) dossiers += (d.lit || []).length + (d.ctr || []).length + (d.cons || []).length; });
+      compte.diligences = dossiers ? pluriel(dossiers, 'dossier', 'dossiers') : pluriel(profils.length, 'profil', 'profils');
+    }
+    const c = lire('attendu-cubes-v1');
+    if (c && Array.isArray(c.fiches) && c.fiches.length) compte.considerant = pluriel(c.fiches.length, 'fiche', 'fiches');
+    document.querySelectorAll('[data-compte]').forEach(el => {
+      const v = compte[el.dataset.compte];
+      if (!v) { el.textContent = ''; el.nextElementSibling.textContent = 'Commencer →'; return; }
+      const [n, ...mots] = v.split(' ');
+      el.innerHTML = '<b>' + n + '</b> ' + mots.join(' ');
+    });
+  })();
+
+  // ── pièces jointes PDF de Diligences (IndexedDB) ──
+  const ouvrirPieces = () => window.parapheOuvrirPJ();   // base IndexedDB des PDF (migration.js)
+  async function lirePieces() {
+    try {
+      const db = await ouvrirPieces();
+      return await new Promise((ok, ko) => {
+        const st = db.transaction('pieces').objectStore('pieces'), out = {};
+        const rq = st.openCursor();
+        rq.onsuccess = () => { const c = rq.result; if (c) { out[c.key] = c.value; c.continue(); } else ok(out); };
+        rq.onerror = () => ko(rq.error);
+      });
+    } catch { return {}; }
+  }
+  async function ecrirePieces(pieces) {
+    const ids = Object.keys(pieces || {});
+    if (!ids.length) return;
+    const db = await ouvrirPieces();
+    await new Promise((ok, ko) => {
+      const t = db.transaction('pieces', 'readwrite');
+      ids.forEach(id => t.objectStore('pieces').put(pieces[id], id));
+      t.oncomplete = ok; t.onerror = t.onabort = () => ko(t.error);
+    });
+  }
+
+  // ── état de la sauvegarde ──
+  const joursDepuis = iso => iso ? Math.floor((Date.now() - new Date(iso)) / 86400000) : null;
+  function afficherEtat() {
+    let derniere = null, total = 0;
+    try {
+      derniere = localStorage.getItem(CLE_DERNIERE);
+      for (let i = 0; i < localStorage.length; i++) {
+        const k = localStorage.key(i);
+        total += k.length + (localStorage.getItem(k) || '').length;
+      }
+    } catch {}
+    const j = joursDepuis(derniere);
+    $('derniereSauvegarde').textContent = derniere
+      ? 'Dernière sauvegarde le ' + new Date(derniere).toLocaleString('fr-FR', { dateStyle: 'long', timeStyle: 'short' }) + (j >= 1 ? ' (il y a ' + pluriel(j, 'jour', 'jours') + ')' : '') + '.'
+      : 'Aucune sauvegarde pour l’instant.';
+    $('etatSauvegarde').classList.toggle('ancienne', !derniere || j > 14);
+    const pct = Math.round(total / QUOTA * 100);
+    $('alerteEspace').hidden = pct < 80;
+    $('alerteEspace').textContent = 'L’espace de stockage est presque plein (' + pct + ' %). Créez une sauvegarde, puis faites du tri dans les outils.';
+  }
+
+  const fenetre = $('fenetreSauvegarde');
+  const ouvrir = () => { afficherEtat(); fenetre.showModal ? fenetre.showModal() : fenetre.setAttribute('open', ''); };
+  const fermer = () => fenetre.close ? fenetre.close() : fenetre.removeAttribute('open');
+  $('ouvrirSauvegarde').addEventListener('click', ouvrir);
+  $('piedSauvegarde').addEventListener('click', ouvrir);
+  $('fermerSauvegarde').addEventListener('click', fermer);
+  fenetre.addEventListener('click', e => { if (e.target === fenetre) fermer(); });   // clic hors de la fenêtre
+
+  // ── créer une sauvegarde (les sauvegardes de l'ancien format restent restaurables) ──
+  $('toutExporter').addEventListener('click', async () => {
+    const donnees = {};
+    for (let i = 0; i < localStorage.length; i++) {
+      const k = localStorage.key(i);
+      if (!['sj_ai_keys', CLE_DERNIERE, 'paraphe_auto_derniere', 'paraphe_maj_verifiee'].includes(k)) donnees[k] = localStorage.getItem(k);   // les clés d'IA restent sur l'appareil
+    }
+    const paquet = { format: 'paraphe-sauvegarde', version: 1, date: new Date().toISOString(),
+                     localStorage: donnees, pieces: await lirePieces() };
+    // protégée par mot de passe si l'utilisateur l'a demandé (application de bureau)
+    const contenu = window.parapheCoffre && window.parapheCoffre.proteger ? await window.parapheCoffre.proteger(paquet) : paquet;
+    const protegee = !!(window.parapheCoffre && window.parapheCoffre.estChiffre(contenu));
+    const url = URL.createObjectURL(new Blob([JSON.stringify(contenu)], { type: 'application/json' }));
+    const a = document.createElement('a');
+    a.href = url; a.download = 'paraphe-sauvegarde' + (protegee ? '-protegee-' : '-') + new Date().toLocaleDateString('sv-SE') + '.json';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 4000);
+    // dans l'application, le fichier n'existe qu'une fois le panneau « Enregistrer sous » validé :
+    // annuler ne doit pas compter comme une sauvegarde faite
+    if (window.parapheSortie && !(await window.parapheSortie)) return;
+    try { localStorage.setItem(CLE_DERNIERE, paquet.date); } catch {}
+    afficherEtat(); majRappel();
+  });
+
+  // ── restaurer ──
+  const fichier = $('fichierRestauration');
+  $('toutRestaurer').addEventListener('click', () => fichier.click());
+  fichier.addEventListener('change', async () => {
+    const f = fichier.files[0]; fichier.value = '';
+    if (!f) return;
+    let paquet;
+    // FileReader plutôt que f.text() : compatible avec les anciennes vues web (Safari < 14)
+    const lireFichier = () => new Promise((ok, ko) => { const fr = new FileReader(); fr.onload = () => ok(fr.result); fr.onerror = ko; fr.readAsText(f); });
+    try { paquet = JSON.parse(await lireFichier()); } catch { alert('Ce fichier n\'est pas lisible.'); return; }
+    paquet = await ouvrirPaquet(paquet);
+    if (paquet === null) return;   // mot de passe non saisi
+    if (!paquet || !['paraphe-sauvegarde', 'mes-logiciels-sauvegarde'].includes(paquet.format) || typeof paquet.localStorage !== 'object') {
+      alert('Ce fichier n\'est pas une sauvegarde de Paraphe.\n(Les exports d\'un seul outil se réimportent depuis l\'outil lui-même.)');
+      return;
+    }
+    await restaurerPaquet(paquet);
+  });
+
+  // ── mot de passe : fenêtre de saisie ──
+  function demanderMdp({ titre, texte, confirmer = false, erreur = '' }) {
+    return new Promise(ok => {
+      const d = $('fenetreMdp'), un = $('mdpUn'), deux = $('mdpDeux'), err = $('mdpErreur');
+      $('mdpTitre').textContent = titre; $('mdpExplication').textContent = texte;
+      un.value = deux.value = ''; $('mdpDeuxEt').hidden = deux.hidden = !confirmer;
+      err.hidden = !erreur; err.textContent = erreur;
+      let fini = false;
+      const clore = v => {
+        if (fini) return; fini = true;
+        $('formMdp').onsubmit = null; $('mdpAnnuler').onclick = null; d.onclose = null;
+        if (d.open) d.close();
+        un.value = deux.value = ''; ok(v);
+      };
+      const refuser = m => { err.hidden = false; err.textContent = m; };
+      $('formMdp').onsubmit = e => {
+        e.preventDefault();
+        if (confirmer) {
+          if (un.value.length < 8) return refuser('Au moins 8 caractères.');
+          if (un.value !== deux.value) return refuser('Les deux saisies ne sont pas identiques.');
+        } else if (!un.value) return;
+        clore(un.value);
+      };
+      $('mdpAnnuler').onclick = () => clore(null);
+      d.onclose = () => clore(null);
+      d.showModal ? d.showModal() : d.setAttribute('open', '');
+      un.focus();
+    });
+  }
+  // Rend le contenu d'une sauvegarde : tel quel, ou déchiffré (mot de passe du trousseau, sinon demandé).
+  // null si l'utilisateur renonce à saisir le mot de passe.
+  async function ouvrirPaquet(objet) {
+    const coffre = window.parapheCoffre;
+    if (!coffre || !coffre.estChiffre(objet)) return objet;
+    try {
+      return await coffre.ouvrir(objet, erreur => demanderMdp({
+        titre: 'Sauvegarde protégée',
+        texte: 'Cette sauvegarde est protégée par un mot de passe. Saisissez celui que vous aviez choisi en la créant.',
+        erreur }));
+    } catch { alert('Cette sauvegarde n\'a pas pu être ouverte.'); return null; }
+  }
+
+  // remplace les données actuelles par celles d'une sauvegarde (fichier ou copie automatique)
+  async function restaurerPaquet(paquet) {
+    const quand = new Date(paquet.date).toLocaleString('fr-FR', { dateStyle: 'long', timeStyle: 'short' });
+    if (!confirm('Restaurer la sauvegarde du ' + quand + ' ?\n\nLes données actuelles seront remplacées par celles du fichier.')) return;
+    const echecs = [];
+    // PDF d'abord : les fiches qui les référencent ne doivent pas arriver sans eux
+    try { await ecrirePieces(paquet.pieces); } catch { echecs.push('pièces jointes PDF'); }
+    Object.keys(paquet.localStorage).forEach(k => {
+      try { localStorage.setItem(k, paquet.localStorage[k]); } catch { echecs.push(k); }
+    });
+    alert(echecs.length
+      ? 'Restauration incomplète (espace plein ?) pour : ' + echecs.join(', ')
+      : 'Sauvegarde restaurée : vos six outils ont retrouvé leurs données.');
+    location.reload();
+  }
+
+  // ── copie automatique (application de bureau) ──
+  const donneesApp = window.parapheDonnees;
+  if (!donneesApp) $('avance').open = true;   // site web : la sauvegarde manuelle est l'essentiel
+  if (donneesApp) {
+    const zone = $('copiesAuto');
+    zone.hidden = false;
+    const taille = o => o > 1048576 ? (o / 1048576).toFixed(1).replace('.', ',') + '\u00a0Mo' : Math.max(1, Math.round(o / 1024)) + '\u00a0Ko';
+    const dateDeNom = n => { const m = /(\d{4})-(\d{2})-(\d{2})/.exec(n); return m ? new Date(+m[1], m[2] - 1, +m[3]).toLocaleDateString('fr-FR', { dateStyle: 'long' }) : n; };
+    async function majCopies() {
+      const [dossier, liste] = await Promise.all([donneesApp.dossier().catch(() => null), donneesApp.copies().catch(() => [])]);
+      const derniere = donneesApp.derniere();
+      $('copiesTexte').textContent = 'Paraphe fait lui-même une copie de vos données, pièces jointes comprises, au plus toutes les six heures d’utilisation, et garde les sept derniers jours dans l’application'
+        + (derniere ? ' (dernière copie le ' + new Date(derniere).toLocaleString('fr-FR', { dateStyle: 'long', timeStyle: 'short' }) + ')' : '') + '.'
+        + (dossier ? ' Une seconde copie est déposée dans « ' + dossier + ' ».' : ' Pour qu’une copie survive à la perte de cet ordinateur, choisissez un dossier de votre cloud ou d’une clé USB.');
+      $('copiesRetirer').hidden = !dossier;
+      $('copiesDossier').textContent = dossier ? 'Changer de dossier…' : 'Choisir un dossier pour une seconde copie…';
+      const sel = $('copiesListe');
+      sel.innerHTML = '';
+      liste.forEach(c => { const o = document.createElement('option'); o.value = c.nom; o.textContent = dateDeNom(c.nom) + ' — ' + taille(c.taille); sel.appendChild(o); });
+      $('copiesRestaurer').disabled = !liste.length;
+      if (!liste.length) { const o = document.createElement('option'); o.textContent = 'Aucune copie pour l’instant'; sel.appendChild(o); }
+    }
+    const baseAfficherEtat = afficherEtat;
+    afficherEtat = function () {
+      baseAfficherEtat(); majCopies(); majProtection();
+      const d = donneesApp.derniere();
+      $('derniereSauvegarde').textContent = d
+        ? 'Tout est enregistré. Dernière copie de sécurité le ' + new Date(d).toLocaleString('fr-FR', { dateStyle: 'long', timeStyle: 'short' }) + '.'
+        : 'Tout est enregistré. La première copie de sécurité se fait dans quelques instants.';
+      $('etatSauvegarde').classList.remove('ancienne');
+    };
+    // vocabulaire de l'application : rien à faire, les options sont repliées
+    $('t-sauvegarde').textContent = 'Mes données';
+    $('ouvrirSauvegarde').firstChild.nodeValue = 'Mes données';
+    $('piedSauvegarde').hidden = true;
+    $('introSauvegarde').textContent = 'Paraphe enregistre tout automatiquement, à chaque modification, et fait lui-même une copie de sécurité chaque jour d\u2019utilisation. Vous n\u2019avez rien à faire. Les options ci-dessous servent à déménager vos données sur un autre ordinateur ou à en garder une copie ailleurs.';
+    $('avanceTitre').textContent = 'Options avancées';
+    $('bvFauxBouton').textContent = 'Mes données';
+    $('bvFauxTexte').textContent = 'en haut de l\u2019accueil';
+    document.getElementById('bv-titre-3').textContent = 'Vos données sont à l\u2019abri';
+    $('bvTexte3').textContent = 'Paraphe enregistre tout automatiquement sur cet ordinateur et en garde une copie de sécurité chaque jour. Vous n\u2019avez rien à faire. Si vous changez d\u2019ordinateur, le bouton « Mes données » vous aide à tout déménager.';
+    const prot = donneesApp.protection;
+    async function majProtection() {
+      const active = await prot.active();
+      $('mdpTexte').textContent = active
+        ? 'Vos copies, automatiques et manuelles, sont chiffrées avec votre mot de passe, gardé dans le trousseau de cet ordinateur. Pour les rouvrir ailleurs, il faudra le saisir : ne le perdez pas, personne ne peut le retrouver. Les copies faites avant restent telles qu\u2019elles étaient.'
+        : 'Vos copies contiennent vos dossiers en clair. Si vous les rangez dans un cloud ou sur une clé USB, protégez-les par un mot de passe : sans lui, elles sont illisibles.';
+      $('mdpActiver').textContent = active ? 'Changer le mot de passe…' : 'Protéger mes copies par un mot de passe…';
+      $('mdpRetirer').hidden = !active;
+    }
+    $('mdpActiver').addEventListener('click', async () => {
+      const mdp = await demanderMdp({
+        titre: 'Mot de passe des copies',
+        texte: 'Choisissez un mot de passe d\u2019au moins 8 caractères. Si vous l\u2019oubliez, les copies protégées seront définitivement illisibles : ni vous ni l\u2019éditeur ne pourrez les ouvrir. Notez-le en lieu sûr.',
+        confirmer: true });
+      if (!mdp) return;
+      try {
+        await prot.activer(mdp);
+        await donneesApp.copierMaintenant();   // la copie du jour est refaite, chiffrée
+        alert('Vos copies sont maintenant protégées.\n\nLes copies des jours précédents restent en clair jusqu\u2019à ce qu\u2019elles soient remplacées (sept jours dans l\u2019application, trente dans le dossier que vous avez choisi).');
+      } catch (e) { alert('La protection n\u2019a pas pu être activée.\n' + (e && e.message || e)); }
+      majProtection(); majCopies();
+    });
+    $('mdpRetirer').addEventListener('click', async () => {
+      if (!confirm('Retirer la protection par mot de passe ?\n\nLes prochaines copies seront de nouveau en clair. Celles déjà protégées resteront protégées.')) return;
+      try { await prot.retirer(); } catch (e) { alert('La protection n\u2019a pas pu être retirée.\n' + (e && e.message || e)); }
+      majProtection();
+    });
+    $('copiesDossier').addEventListener('click', async () => {
+      try {
+        const choisi = await donneesApp.choisirDossier();
+        if (choisi) { await donneesApp.copierMaintenant().then(r => { if (r && r.externe && r.externe !== 'ok' && r.externe !== 'aucun') alert('Le dossier a été retenu, mais la copie n\u2019y a pas pu être écrite.\n' + r.externe); }); }
+      } catch (e) { alert('Ce dossier n\u2019a pas pu être retenu.\n' + (e && e.message || e)); }
+      majCopies();
+    });
+    $('copiesRetirer').addEventListener('click', async () => { await donneesApp.oublierDossier(); majCopies(); });
+    $('copiesMontrer').addEventListener('click', () => donneesApp.montrer().catch(() => alert('Le dossier n\u2019a pas pu être ouvert.')));
+    $('copiesRestaurer').addEventListener('click', async () => {
+      const nom = $('copiesListe').value;
+      if (!nom) return;
+      let paquet;
+      try { paquet = await donneesApp.lireCopie(nom); } catch { alert('Cette copie n\u2019est pas lisible.'); return; }
+      paquet = await ouvrirPaquet(paquet);
+      if (paquet === null) return;
+      if (!paquet || !['paraphe-sauvegarde'].includes(paquet.format) || typeof paquet.localStorage !== 'object') { alert('Cette copie n\u2019est pas lisible.'); return; }
+      await restaurerPaquet(paquet);
+    });
+  }
+
+  // ── rappel : aucune sauvegarde depuis plus de 14 jours (ou jamais) alors que des données existent ──
+  function majRappel() {
+    if (window.parapheDonnees) { $('pastilleSauvegarde').hidden = true; $('rappelSauvegarde').hidden = true; return; }   // l'application sauvegarde seule
+    let derniere = null, donnees = false, plusTard = null;
+    try {
+      derniere = localStorage.getItem(CLE_DERNIERE);
+      plusTard = localStorage.getItem(CLE_PLUS_TARD);
+      donnees = ['droit_flashcards', 'droit_fiches_arret', 'droit_codes', 'attendu-cubes-v1', 'sj-profiles']
+        .some(k => localStorage.getItem(k));
+    } catch {}
+    const j = joursDepuis(derniere);
+    const aFaire = donnees && (j === null || j > 14);
+    $('pastilleSauvegarde').hidden = !aFaire;
+    const reporte = plusTard && joursDepuis(plusTard) < 7;
+    $('rappelSauvegarde').hidden = !aFaire || !!reporte;
+    if (aFaire) $('rappelTexte').innerHTML = j === null
+      ? '<b>Vos données ne sont que sur cet appareil.</b> Une sauvegarde permet de les retrouver en cas de panne ou de changement d’ordinateur.'
+      : '<b>Dernière sauvegarde il y a ' + j + '\u00a0jours.</b> Pensez à en refaire une.';
+  }
+  $('rappelSauver').addEventListener('click', () => $('toutExporter').click());
+  $('rappelPlusTard').addEventListener('click', () => { try { localStorage.setItem(CLE_PLUS_TARD, new Date().toISOString()); } catch {} majRappel(); });
+  majRappel();
+
+  // ── nouvelle version (version téléchargée sur le site : parapheMaj n'existe pas ailleurs) ──
+  (() => {
+    if (!window.parapheMaj) return;
+    const CLE_VERIF = 'paraphe_maj_verifiee', CLE_REPORT = 'paraphe_maj_plus_tard';
+    const aujourdhui = new Date().toLocaleDateString('sv-SE');
+    if (location.hash === '#maj') { history.replaceState(null, '', location.pathname); window.parapheMaj(true).catch(() => {}); return; }
+    let deja = null;
+    try { deja = localStorage.getItem(CLE_VERIF); } catch {}
+    if (deja === aujourdhui) return;                       // une vérification par jour au plus
+    setTimeout(() => window.parapheMaj(false).then(r => {
+      if (!r || !r.nouvelle) return;
+      let reporte = null;
+      try { reporte = localStorage.getItem(CLE_REPORT); } catch {}
+      if (reporte === r.derniere) return;
+      $('majTexte').innerHTML = '<b>Paraphe ' + r.derniere + ' est disponible</b> (vous avez la ' + r.courante + ').';
+      $('bandeauMaj').hidden = false;
+      $('majPlusTard').onclick = () => { try { localStorage.setItem(CLE_REPORT, r.derniere); } catch {} $('bandeauMaj').hidden = true; };
+    }).catch(() => {}), 3000);
+    $('majVoir').addEventListener('click', () => window.parapheMaj(true).catch(() => {}));
+  })();
+
+  // ── premier lancement : trois écrans, une seule fois, pour un nouvel utilisateur ──
+  const CLE_BIENVENUE = 'paraphe_bienvenue_vue';
+  const bv = $('bienvenue'), etapes = [...bv.querySelectorAll('.etape')], points = [...bv.querySelectorAll('.points i')];
+  let etape = 0;
+  const montrer = i => {
+    etape = i;
+    etapes.forEach((e, k) => e.hidden = k !== i);
+    points.forEach((p, k) => p.classList.toggle('on', k <= i));
+    $('bvPrecedent').hidden = i === 0;
+    $('bvSuivant').textContent = i === etapes.length - 1 ? 'Commencer' : 'Suivant';
+    bv.setAttribute('aria-labelledby', 'bv-titre-' + (i + 1));
+  };
+  const terminer = () => { try { localStorage.setItem(CLE_BIENVENUE, '1'); } catch {} if (bv.open) bv.close(); };
+  const lancer = () => { montrer(0); bv.showModal ? bv.showModal() : bv.setAttribute('open', ''); $('bvSuivant').focus(); };
+  $('bvSuivant').addEventListener('click', () => etape < etapes.length - 1 ? montrer(etape + 1) : terminer());
+  $('bvPrecedent').addEventListener('click', () => montrer(Math.max(0, etape - 1)));
+  $('bvPasser').addEventListener('click', terminer);
+  bv.addEventListener('close', terminer);                     // Échap compte comme « vu »
+  bv.addEventListener('keydown', e => { if (e.key === 'ArrowRight') $('bvSuivant').click(); if (e.key === 'ArrowLeft' && etape) montrer(etape - 1); });
+  $('revoirBienvenue').addEventListener('click', lancer);
+  (() => {
+    let vue = true, donnees = false;
+    try {
+      vue = localStorage.getItem(CLE_BIENVENUE) === '1';
+      donnees = ['droit_flashcards', 'droit_fiches_arret', 'droit_codes', 'attendu-cubes-v1', 'sj-profiles', 'quantieme_agenda']
+        .some(k => localStorage.getItem(k));
+    } catch {}
+    if (vue) return;
+    // quelqu'un qui utilise déjà les outils n'a pas besoin de la présentation
+    if (donnees) { try { localStorage.setItem(CLE_BIENVENUE, '1'); } catch {} return; }
+    lancer();
+  })();
+})();
+</script>
+<script src="recherche.js"></script>
+</body>
+</html>

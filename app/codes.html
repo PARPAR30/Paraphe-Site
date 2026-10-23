@@ -1,0 +1,575 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="robots" content="noindex"><script src="demo-donnees.js"></script><script src="demo-bac.js"></script><script src="donnees.js"></script>
+<title>Codes &amp; articles — Paraphe</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#131316">
+<script src="taille.js"></script><script src="clavier.js" defer></script><script src="navigation.js" defer></script>
+<link rel="stylesheet" href="fonts/fonts.css">
+<script src="pwa.js" defer></script>
+<link rel="icon" type="image/svg+xml" href="icons/favicon.svg">
+<link rel="stylesheet" href="style.css">
+<style>
+  .liste-arrets{max-height:170px;overflow:auto;border:1px solid var(--filet-2);border-radius:var(--r-s);padding:var(--e2) var(--e3)}
+  .liste-arrets label{display:flex;gap:var(--e2);align-items:baseline;margin:var(--e1) 0;text-transform:none;letter-spacing:0;font-weight:500;font-size:calc(13.5px * var(--ech));color:var(--encre)}
+  .liste-arrets input{width:auto;flex:none}
+  .liens-article{margin:var(--e2) 0 0;font-size:calc(13px * var(--ech))}
+  .liens-article a{color:rgb(var(--acc));font-weight:600;text-decoration:none}
+  .liens-article a:hover{text-decoration:underline}
+  .card.cible,.art.cible{outline:2px solid rgb(var(--acc));outline-offset:2px;border-radius:var(--r-m)}
+
+  .barre .etoile-filtre{display:flex;align-items:center;gap:6px;margin:0;text-transform:none;letter-spacing:0;font-weight:600;color:var(--encre)}
+  /* un article = une ligne, qui se déplie */
+  .liste-art{border:1px solid var(--filet);border-radius:var(--r-l);overflow:hidden;background:var(--carte)}
+  .art{border-bottom:1px solid var(--filet);background:var(--carte)}
+  .art-tete{height:auto;box-shadow:none;border-radius:0;display:grid;grid-template-columns:150px 1fr auto;gap:var(--e4);align-items:start;width:100%;text-align:left;border:0;background:none;
+    padding:var(--e3) var(--e4);min-height:0;text-transform:none;letter-spacing:0;font-weight:400;color:var(--encre);cursor:pointer}
+  .art-tete:hover{background:var(--carte-2);color:var(--encre);border-color:transparent}
+  .art-tete:active{transform:none}
+  .art-ref b{display:block;font:700 calc(16px * var(--ech))/1.2 var(--sans);letter-spacing:-.01em}
+  .art-ref span{display:block;font-size:calc(12.5px * var(--ech));color:var(--gris);margin-top:2px}
+  .art-milieu{min-width:0}
+  .art-milieu .badge{margin-bottom:4px}
+  .art-extrait{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-size:calc(14px * var(--ech));color:var(--encre-2);line-height:1.5}
+  .art.ouvert .art-extrait{display:none}
+  .art-etat{display:flex;align-items:center;gap:var(--e3);font-size:calc(13px * var(--ech));color:var(--gris)}
+  .art-etat .etoile{color:rgb(var(--acc));font-size:calc(16px * var(--ech))}
+  .art-etat .chevron{transition:transform .15s}
+  .art.ouvert .art-etat .chevron{transform:rotate(180deg)}
+  .art-corps{padding:0 var(--e4) var(--e4) calc(150px + var(--e4) * 2)}
+  .art-corps[hidden]{display:none}
+  .art-texte{margin:0 0 var(--e3);font-size:calc(15px * var(--ech));line-height:1.65;white-space:pre-line}
+  .art-note{margin:0 0 var(--e3);padding-top:var(--e2);border-top:1px solid var(--filet);color:var(--encre-2);font-size:calc(14px * var(--ech))}
+  .art-note b{text-transform:none;font-size:calc(12.5px * var(--ech));letter-spacing:0;color:var(--gris);margin-right:6px}
+  .art-actions{display:flex;flex-wrap:wrap;gap:var(--e4);margin-top:var(--e3);padding-top:var(--e2);border-top:1px solid var(--filet)}
+  .lien-action{border:0;background:none;box-shadow:none;padding:0;height:auto;min-height:28px;font-size:calc(13.5px * var(--ech));font-weight:620;letter-spacing:0;text-transform:none;color:var(--encre-2)}
+  .lien-action:hover{background:none;color:rgb(var(--acc))}
+  .lien-action.actif{color:rgb(var(--acc))}
+  .lien-action.danger{color:var(--gris)}
+  .lien-action.danger:hover{background:none;color:var(--alerte)}
+  dialog.fenetre-article{border:1px solid var(--filet);border-radius:var(--r-l);background:var(--carte);color:var(--encre);padding:var(--e6);width:min(720px,calc(100vw - 32px));box-shadow:var(--ombre-fenetre);border-radius:var(--r-l)}
+  dialog.fenetre-article::backdrop{background:rgba(17,17,20,.45)}
+  dialog.fenetre-article h2,dialog.fenetre-article h3{margin-top:0}
+  @media (max-width:640px){
+    .art-tete{grid-template-columns:1fr auto}
+    .art-ref{grid-column:1 / -1}
+    .art-corps{padding-left:var(--e4)}
+  }
+</style>
+</head>
+<body>
+<script src="theme.js"></script>
+<header class="topnav">
+  <div class="topnav-g">
+    <a class="brand" href="Hub.html"><span class="brand-mark" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 32 32"><rect x="5.25" y="4.25" width="18.5" height="21.5" fill="none" stroke="currentColor" stroke-width="2.5"/><path d="M24 9h4v20H9v-4h15z" fill="currentColor"/><rect x="9" y="9" width="11" height="2.2" fill="currentColor"/><rect x="9" y="13.4" width="7" height="2.2" fill="currentColor"/><rect x="15" y="18" width="5" height="4.5" style="fill:rgb(var(--acc,80,52,220))"/></svg></span>Paraphe</a>
+    <span data-paraphe-nav></span>
+  </div>
+  <nav>
+    <a href="flashcards.html">Fiches mémo</a>
+    <a href="fiches-arret.html">Fiches d'arrêt</a>
+    <a href="codes.html" class="active">Codes &amp; articles</a>
+    <button id="theme-toggle" aria-pressed="false">Nuit</button>
+  </nav>
+</header>
+<main class="codes large">
+  <p class="eyebrow">Références</p>
+  <h1>Codes &amp; articles</h1>
+  <p class="muted">Vos articles de référence, avec une note personnelle et un marqueur « à retenir ». Une base d'articles par matière est préchargée pour démarrer : vérifiez toujours le texte en vigueur sur Légifrance.</p>
+
+  <div class="mise-cote">
+  <div class="card barre">
+    <div class="barre-filtres">
+      <input type="search" id="searchBox" placeholder="Rechercher un article, un numéro, une note…" aria-label="Rechercher un article">
+      <select id="filterMatiere" aria-label="Filtrer par matière"><option value="">Toutes les matières</option></select>
+      <select id="filterCode" aria-label="Filtrer par code"><option value="">Tous les codes</option></select>
+      <label class="etoile-filtre"><input type="checkbox" id="filterStar" style="width:auto;"> À retenir</label>
+    </div>
+    <div class="barre-actions">
+      <button type="button" id="nouvelArticle" class="primary">+ Nouvel article</button>
+      <div class="barre-groupe" role="group" aria-label="Importer">
+        <span class="barre-titre">Importer</span>
+        <button type="button" id="importBtn" title="Reprendre un fichier .json enregistré depuis cet outil">Depuis un fichier</button>
+        <button type="button" id="promptIA" title="Copier un prompt qui fait convertir votre document (PDF, Word, texte…) par une IA au format d’import">Avec une IA</button>
+      </div>
+      <div class="barre-groupe" role="group" aria-label="Exporter">
+        <span class="barre-titre">Exporter</span>
+        <button type="button" id="exportBtn" title="Enregistrer une copie de vos articles (fichier .json)">Sauvegarde</button>
+        <button type="button" id="exportPdfBtn" title="Mettre en page vos articles pour les imprimer ou les enregistrer en PDF">Imprimer / PDF</button>
+      </div>
+      <input type="file" id="importFile" accept="application/json" hidden>
+    </div>
+  </div>
+
+  <p class="compte-liste" id="compteListe"></p>
+  <div id="articleList" class="liste-art"></div>
+  </div>
+</main>
+
+<dialog class="fenetre-article" id="formArticle" aria-labelledby="formTitle">
+  <h2 id="formTitle" class="titre-3">Nouvel article</h2>
+  <div class="row">
+    <div style="flex:1; min-width:180px;">
+      <label for="fMatiere">Matière</label>
+      <input type="text" id="fMatiere" list="matiereList" placeholder="ex. Droit des sociétés">
+      <datalist id="matiereList"></datalist>
+    </div>
+    <div style="flex:1; min-width:180px;">
+      <label for="fCode">Code</label>
+      <input type="text" id="fCode" list="codeList" placeholder="ex. Code civil">
+      <datalist id="codeList"></datalist>
+    </div>
+    <div style="flex:1; min-width:120px;">
+      <label for="fNumero">Numéro</label>
+      <input type="text" id="fNumero" placeholder="ex. 1240">
+    </div>
+  </div>
+  <label for="fTexte">Texte de l'article</label>
+  <textarea id="fTexte" placeholder="Collez le texte de l'article ici"></textarea>
+  <label for="fNote">Note personnelle</label>
+  <textarea id="fNote" placeholder="Votre note, exemple d'application, arrêt lié…"></textarea>
+  <div class="row" style="margin-top:0.4rem;">
+    <label style="display:flex; align-items:center; gap:0.3rem; margin:0;">
+      <input type="checkbox" id="fStar" style="width:auto;"> Marquer « à retenir »
+    </label>
+  </div>
+  <label>Arrêts liés <span class="muted" style="text-transform:none;letter-spacing:0;font-weight:400;">(depuis Fiches d'arrêt)</span></label>
+  <div id="fArrets" class="liste-arrets"></div>
+  <div class="row end" style="margin-top:var(--e4);">
+    <button type="button" id="cancelEditBtn">Annuler</button>
+    <button type="button" id="addBtn" class="primary">Ajouter l'article</button>
+  </div>
+</dialog>
+<div id="printArea"></div>
+
+<script src="commun.js"></script>
+<script>
+const STORAGE_KEY = "droit_codes";
+// Articles d'exemple supprimés par l'utilisateur : sans cette liste, ils revenaient à chaque chargement
+const DELETED_SEEDS_KEY = "droit_codes_seeds_supprimees";
+
+function mkSeedArticle(matiere, code, numero, texte, note, star) {
+  return { matiere, code, numero, texte, note, star: !!star };
+}
+
+const SEED = [
+// Droit public des affaires
+mkSeedArticle("Droit public des affaires", "Constitution du 4 octobre 1958", "34",
+  "La loi fixe les règles concernant... la création de catégories d'établissements publics... les nationalisations d'entreprises et les transferts de propriété d'entreprises du secteur public au secteur privé.",
+  "Fonde la compétence du législateur sur les grandes opérations touchant au secteur public économique.", false),
+mkSeedArticle("Droit public des affaires", "Code de la commande publique", "L1111-1",
+  "Les contrats de la commande publique conclus par les acheteurs et les autorités concédantes soumis au présent code sont les marchés publics et les concessions définis au présent titre.",
+  "Article d'entrée du code : distingue les deux grandes familles de contrats de la commande publique.", true),
+mkSeedArticle("Droit public des affaires", "Code général des collectivités territoriales", "L1411-1 (notion de DSP)",
+  "Une délégation de service public est un contrat par lequel une personne morale de droit public confie la gestion d'un service public à un délégataire dont la rémunération est substantiellement liée aux résultats de l'exploitation.",
+  "Notion aujourd'hui reprise par la catégorie des concessions de service dans le Code de la commande publique (2019) — vérifier la numérotation en vigueur.", false),
+mkSeedArticle("Droit public des affaires", "Code général de la propriété des personnes publiques", "L2111-1",
+  "Le domaine public d'une personne publique est constitué des biens lui appartenant qui sont soit affectés à l'usage direct du public, soit affectés à un service public pourvu qu'ils fassent alors l'objet d'un aménagement indispensable à l'exécution des missions de ce service public.",
+  "Définition légale du domaine public, issue de la codification de 2006.", false),
+
+// Droit des sociétés
+mkSeedArticle("Droit des sociétés", "Code civil", "1832",
+  "La société est instituée par deux ou plusieurs personnes qui conviennent par un contrat d'affecter à une entreprise commune des biens ou leur industrie en vue de partager le bénéfice ou de profiter de l'économie qui pourra en résulter. Elle peut être instituée, dans les cas prévus par la loi, par l'acte de volonté d'une seule personne. Les associés s'engagent à contribuer aux pertes.",
+  "Définition matricielle de la société, valable pour toutes les formes sociales.", true),
+mkSeedArticle("Droit des sociétés", "Code civil", "1833",
+  "Toute société doit avoir un objet licite et être constituée dans l'intérêt commun des associés. La société est gérée dans son intérêt social, en prenant en considération les enjeux sociaux et environnementaux de son activité.",
+  "Deuxième alinéa issu de la loi PACTE (2019) : introduit la prise en compte des enjeux sociaux et environnementaux.", false),
+mkSeedArticle("Droit des sociétés", "Code de commerce", "L210-6",
+  "Les sociétés commerciales jouissent de la personnalité morale à dater de leur immatriculation au registre du commerce et des sociétés.",
+  "Marque le moment de naissance de la personnalité morale — avant, on parle de société en formation.", false),
+mkSeedArticle("Droit des sociétés", "Code de commerce", "L223-1",
+  "La société à responsabilité limitée est instituée par une ou plusieurs personnes qui ne supportent les pertes qu'à concurrence de leurs apports.",
+  "Définition de la SARL (et de l'EURL lorsqu'un seul associé).", false),
+mkSeedArticle("Droit des sociétés", "Code de commerce", "L227-1",
+  "Une société par actions simplifiée peut être instituée par une ou plusieurs personnes qui ne supportent les pertes qu'à concurrence de leurs apports.",
+  "Définition de la SAS (et de la SASU) — grande liberté statutaire dans l'organisation des pouvoirs.", false),
+
+// Droit du travail
+mkSeedArticle("Droit du travail", "Code du travail", "L1221-1",
+  "Le contrat de travail est soumis aux règles de droit commun. Il peut être établi selon les formes que les parties contractantes décident d'adopter.",
+  "Pas de formalisme imposé : le contrat de travail peut être écrit ou verbal (sauf CDD, temps partiel...).", false),
+mkSeedArticle("Droit du travail", "Code du travail", "L1231-1",
+  "Le contrat de travail à durée indéterminée peut être rompu à l'initiative de l'employeur ou du salarié, ou d'un commun accord, dans les conditions prévues par les dispositions du présent titre.",
+  "Article d'ouverture du titre relatif à la rupture du contrat de travail (licenciement, démission, rupture conventionnelle...).", false),
+mkSeedArticle("Droit du travail", "Code du travail", "L1232-1",
+  "Tout licenciement pour motif personnel est motivé dans les conditions définies par le présent chapitre. Il est justifié par une cause réelle et sérieuse.",
+  "Fondement textuel de l'exigence de cause réelle et sérieuse.", true),
+mkSeedArticle("Droit du travail", "Code du travail", "L3121-27",
+  "La durée légale de travail effectif des salariés à temps complet est fixée à trente-cinq heures par semaine.",
+  "Durée légale, non maximale : les heures effectuées au-delà sont en principe des heures supplémentaires majorées.", false),
+
+// Libertés fondamentales
+mkSeedArticle("Libertés fondamentales", "Déclaration des droits de l'homme et du citoyen (1789)", "1er",
+  "Les hommes naissent et demeurent libres et égaux en droits. Les distinctions sociales ne peuvent être fondées que sur l'utilité commune.",
+  "Fondement textuel du principe d'égalité, à valeur constitutionnelle.", true),
+mkSeedArticle("Libertés fondamentales", "Déclaration des droits de l'homme et du citoyen (1789)", "4",
+  "La liberté consiste à pouvoir faire tout ce qui ne nuit pas à autrui : ainsi, l'exercice des droits naturels de chaque homme n'a de bornes que celles qui assurent aux autres membres de la société la jouissance de ces mêmes droits. Ces bornes ne peuvent être déterminées que par la loi.",
+  "Définition classique de la liberté, souvent citée pour introduire la théorie des libertés publiques.", false),
+mkSeedArticle("Libertés fondamentales", "Déclaration des droits de l'homme et du citoyen (1789)", "11",
+  "La libre communication des pensées et des opinions est un des droits les plus précieux de l'homme : tout citoyen peut donc parler, écrire, imprimer librement, sauf à répondre de l'abus de cette liberté dans les cas déterminés par la loi.",
+  "Fondement constitutionnel de la liberté d'expression et de la presse.", false),
+mkSeedArticle("Libertés fondamentales", "Convention EDH", "8",
+  "Toute personne a droit au respect de sa vie privée et familiale, de son domicile et de sa correspondance. Il ne peut y avoir ingérence d'une autorité publique dans l'exercice de ce droit que pour autant que cette ingérence est prévue par la loi et nécessaire dans une société démocratique.",
+  "Article très mobilisé par la CEDH (vie privée, filiation, données personnelles, expulsion des étrangers...).", true),
+mkSeedArticle("Libertés fondamentales", "Convention EDH", "10",
+  "Toute personne a droit à la liberté d'expression. Ce droit comprend la liberté d'opinion et la liberté de recevoir ou de communiquer des informations ou des idées sans qu'il puisse y avoir ingérence d'autorités publiques.",
+  "Complète l'article 11 DDHC au niveau conventionnel européen.", false),
+mkSeedArticle("Libertés fondamentales", "Constitution du 4 octobre 1958", "66",
+  "Nul ne peut être arbitrairement détenu. L'autorité judiciaire, gardienne de la liberté individuelle, assure le respect de ce principe dans les conditions prévues par la loi.",
+  "Fondement du rôle protecteur du juge judiciaire à l'égard de la liberté individuelle (détention, garde à vue...).", false),
+
+// Procédure pénale
+mkSeedArticle("Procédure pénale", "Code de procédure pénale", "préliminaire",
+  "La procédure pénale doit être équitable et contradictoire et préserver l'équilibre des droits des parties. [...] Toute personne suspectée ou poursuivie est présumée innocente tant que sa culpabilité n'a pas été établie.",
+  "Article-cadre énonçant les grands principes directeurs du procès pénal.", true),
+mkSeedArticle("Procédure pénale", "Code de procédure pénale", "63",
+  "L'officier de police judiciaire peut, pour les nécessités de l'enquête, placer en garde à vue toute personne à l'encontre de laquelle il existe une ou plusieurs raisons plausibles de soupçonner qu'elle a commis ou tenté de commettre une infraction.",
+  "Fondement légal de la garde à vue, mesure de contrainte encadrée depuis la réforme de 2011.", false),
+mkSeedArticle("Procédure pénale", "Code de procédure pénale", "80-1",
+  "Le juge d'instruction ne peut mettre en examen que les personnes à l'encontre desquelles il existe des indices graves ou concordants rendant vraisemblable qu'elles aient pu participer, comme auteur ou complice, à la commission des infractions dont il est saisi.",
+  "Encadre le pouvoir de mise en examen pour éviter les mises en cause trop précoces.", false),
+mkSeedArticle("Procédure pénale", "Code de procédure pénale", "137",
+  "La personne mise en examen, présumée innocente, reste libre. Toutefois, en raison des nécessités de l'instruction ou à titre de mesure de sûreté, elle peut être astreinte à une ou plusieurs obligations du contrôle judiciaire [...] ; à titre exceptionnel, elle peut être placée en détention provisoire.",
+  "Pose le principe de liberté et le caractère exceptionnel de la détention provisoire.", false),
+mkSeedArticle("Procédure pénale", "Code de procédure pénale", "7 à 9",
+  "L'action publique se prescrit par vingt années révolues à compter du jour où l'infraction a été commise pour les crimes, par six années révolues pour les délits, par une année révolue pour les contraventions.",
+  "Délais issus de la réforme de la prescription pénale du 27 février 2017.", false),
+
+// Droit fiscal
+mkSeedArticle("Droit fiscal", "Livre des procédures fiscales", "L64",
+  "Afin d'en restituer le véritable caractère, l'administration est en droit d'écarter, comme ne lui étant pas opposables, les actes constitutifs d'un abus de droit, soit que ces actes ont un caractère fictif, soit que [...] ils n'ont pu être inspirés par aucun autre motif que celui d'éluder ou d'atténuer les charges fiscales.",
+  "Texte fondateur de la procédure de répression des abus de droit fiscal (fictivité ou fraude à la loi).", true),
+mkSeedArticle("Droit fiscal", "Code général des impôts", "1729",
+  "Les inexactitudes ou omissions relevées dans une déclaration [...] entraînent l'application d'une majoration de 40 % en cas de manquement délibéré et de 80 % en cas d'abus de droit ou de manœuvres frauduleuses.",
+  "Sanctions applicables en cas de rectification fiscale, à moduler selon la gravité du manquement.", false),
+mkSeedArticle("Droit fiscal", "Livre des procédures fiscales", "L169",
+  "Pour l'impôt sur le revenu et l'impôt sur les sociétés, le droit de reprise de l'administration des impôts s'exerce jusqu'à la fin de la troisième année suivant celle au titre de laquelle l'imposition est due.",
+  "Délai de reprise (prescription) de droit commun, sauf délais spéciaux plus longs (activité occulte...).", false),
+mkSeedArticle("Droit fiscal", "Code général des impôts", "4 B",
+  "Sont considérées comme ayant leur domicile fiscal en France les personnes qui ont en France leur foyer ou le lieu de leur séjour principal, qui y exercent une activité professionnelle [...] ou qui ont en France le centre de leurs intérêts économiques.",
+  "Critères alternatifs de détermination du domicile fiscal, point de départ de la territorialité de l'IR.", false),
+
+// Régime général des obligations
+mkSeedArticle("Régime général des obligations", "Code civil", "1231-1",
+  "Le débiteur est condamné, s'il y a lieu, au paiement de dommages et intérêts soit à raison de l'inexécution de l'obligation, soit à raison du retard dans l'exécution, s'il ne justifie pas que l'exécution a été empêchée par la force majeure.",
+  "Fondement de la responsabilité contractuelle de droit commun.", true),
+mkSeedArticle("Régime général des obligations", "Code civil", "1346",
+  "La subrogation a lieu par le seul effet de la loi au profit de celui qui, y ayant un intérêt légitime, paie dès lors que ce paiement le libère envers le créancier.",
+  "Subrogation légale — à distinguer de la subrogation conventionnelle (art. 1346-1).", false),
+mkSeedArticle("Régime général des obligations", "Code civil", "1327",
+  "Le débiteur peut, avec l'accord du créancier, céder sa dette à un tiers.",
+  "Consacre explicitement la cession de dette depuis la réforme du droit des obligations de 2016.", false),
+mkSeedArticle("Régime général des obligations", "Code civil", "2224",
+  "Les actions personnelles ou mobilières se prescrivent par cinq ans à compter du jour où le titulaire d'un droit a connu ou aurait dû connaître les faits lui permettant de l'exercer.",
+  "Délai de prescription extinctive de droit commun.", true),
+mkSeedArticle("Régime général des obligations", "Code civil", "1216",
+  "Un contractant, le cédant, peut céder sa qualité de partie au contrat à un tiers, le cessionnaire, avec l'accord de son cocontractant, le cédé.",
+  "Consacre la cession de contrat (transmission de la qualité de partie), également issue de la réforme de 2016.", false),
+].map((a, i) => Object.assign({ id: "seed-art-" + i }, a));
+
+const OBSOLETE_SEED_IDS = new Set(["seed-1", "seed-2"]); // ancien jeu d'exemple (Code civil 1240/1103)
+
+const loadArticles = () =>
+  Commun.avecExemples(STORAGE_KEY, SEED, DELETED_SEEDS_KEY).filter(a => !OBSOLETE_SEED_IDS.has(a.id));
+const saveArticles = list => Commun.ecrire(STORAGE_KEY, list);
+const escapeHtml = Commun.echapper;
+
+let articles = loadArticles();
+saveArticles(articles);
+
+
+function highlight(text, term) {
+  if (!term) return escapeHtml(text);
+  const re = new RegExp("(" + term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + ")", "ig");
+  // découpage sur le texte brut, puis échappement de chaque morceau
+  return String(text || "").split(re).map((part, i) => i % 2 ? "<mark>" + escapeHtml(part) + "</mark>" : escapeHtml(part)).join("");
+}
+
+function refreshCodeOptions() {
+  const codes = [...new Set(articles.map(a => a.code).filter(Boolean))].sort();
+  document.getElementById("codeList").innerHTML = codes.map(c => `<option value="${escapeHtml(c)}">`).join("");
+  const sel = document.getElementById("filterCode");
+  const cur = sel.value;
+  sel.innerHTML = '<option value="">Tous les codes</option>' + codes.map(c => `<option value="${escapeHtml(c)}">${escapeHtml(c)}</option>`).join("");
+  sel.value = cur;
+
+  const matieres = [...new Set(articles.map(a => a.matiere).filter(Boolean))].sort();
+  document.getElementById("matiereList").innerHTML = matieres.map(m => `<option value="${escapeHtml(m)}">`).join("");
+  const selM = document.getElementById("filterMatiere");
+  const curM = selM.value;
+  selM.innerHTML = '<option value="">Toutes les matières</option>' + matieres.map(m => `<option value="${escapeHtml(m)}">${escapeHtml(m)}</option>`).join("");
+  selM.value = curM;
+}
+
+document.getElementById("addBtn").addEventListener("click", () => {
+  const matiere = document.getElementById("fMatiere").value.trim();
+  const code = document.getElementById("fCode").value.trim();
+  const numero = document.getElementById("fNumero").value.trim();
+  const texte = document.getElementById("fTexte").value.trim();
+  if (!code || !numero || !texte) { alert("Merci de remplir le code, le numéro et le texte."); return; }
+  const champs = {
+    matiere, code, numero, texte,
+    note: document.getElementById("fNote").value.trim(),
+    star: document.getElementById("fStar").checked,
+    arrets: [...document.querySelectorAll("#fArrets input:checked")].map(i => i.value)
+  };
+  let id = editingId;
+  if (editingId) {
+    const a = articles.find(x => x.id === editingId);
+    if (a) Object.assign(a, champs);
+  } else {
+    id = crypto.randomUUID();
+    articles.push(Object.assign({ id }, champs));
+  }
+  saveArticles(articles);
+  endEdit();
+  refreshCodeOptions();
+  ouverts.add(id);
+  renderList();
+  Commun.montrer(document.getElementById("art-" + id));   // l'article enregistré, déplié sous vos yeux
+});
+
+// --- Arrêts disponibles (lus dans Fiches d'arrêt) ---
+const lireFichesArret = () => Commun.lire("droit_fiches_arret", []);
+function renderArretsChoix(selection) {
+  const fiches = lireFichesArret().slice().sort((a, b) => (a.titre || "").localeCompare(b.titre || ""));
+  const sel = new Set(selection || []);
+  document.getElementById("fArrets").innerHTML = fiches.length
+    ? fiches.map(f => `<label><input type="checkbox" value="${escapeHtml(f.id)}"${sel.has(f.id) ? " checked" : ""}> ${escapeHtml(f.titre)}${f.date ? " <span class=\"muted\">(" + escapeHtml(f.date.slice(0, 4)) + ")</span>" : ""}</label>`).join("")
+    : '<span class="muted">Aucune fiche d\'arrêt pour l\'instant.</span>';
+}
+
+// --- Modification : le formulaire d'ajout passe en mode édition ---
+let editingId = null;
+function startEdit(id) {
+  const a = articles.find(x => x.id === id);
+  if (!a) return;
+  editingId = id;
+  document.getElementById("fMatiere").value = a.matiere || "";
+  document.getElementById("fCode").value = a.code || "";
+  document.getElementById("fNumero").value = a.numero || "";
+  document.getElementById("fTexte").value = a.texte || "";
+  document.getElementById("fNote").value = a.note || "";
+  document.getElementById("fStar").checked = !!a.star;
+  renderArretsChoix(a.arrets);
+  document.getElementById("formTitle").textContent = "Modifier l'article";
+  document.getElementById("addBtn").textContent = "Enregistrer";
+  ouvrirFormulaire();
+}
+const fenetre = document.getElementById("formArticle");
+function ouvrirFormulaire() { fenetre.showModal ? fenetre.showModal() : fenetre.setAttribute("open", ""); document.getElementById(editingId ? "fTexte" : "fCode").focus(); }
+function nouvelArticle() {
+  editingId = null;
+  ["fNumero", "fTexte", "fNote"].forEach(id => document.getElementById(id).value = "");
+  document.getElementById("fStar").checked = false;
+  renderArretsChoix([]);
+  document.getElementById("formTitle").textContent = "Nouvel article";
+  document.getElementById("addBtn").textContent = "Ajouter l'article";
+  ouvrirFormulaire();
+}
+document.getElementById("nouvelArticle").addEventListener("click", nouvelArticle);
+function endEdit() {
+  editingId = null;
+  ["fNumero", "fTexte", "fNote"].forEach(id => document.getElementById(id).value = "");
+  document.getElementById("fStar").checked = false;
+  renderArretsChoix([]);
+  if (fenetre.open) fenetre.close();
+}
+document.getElementById("cancelEditBtn").addEventListener("click", endEdit);
+
+// Même forme de requête que Quantième : « article 1240 Code civil »
+function lienLegifrance(a) {
+  return "https://www.legifrance.gouv.fr/search/all?tab_selection=all&searchField=ALL&query="
+    + encodeURIComponent("article " + String(a.numero).trim() + " " + (a.code || "")) + "&page=1&init=true";
+}
+
+function toggleStar(id) {
+  const a = articles.find(x => x.id === id);
+  if (a) { a.star = !a.star; saveArticles(articles); renderList(); }
+}
+
+function deleteArticle(id) {
+  if (!confirm("Supprimer cet article ?")) return;
+  Commun.oublierExemple(DELETED_SEEDS_KEY, id);
+  articles = articles.filter(a => a.id !== id);
+  saveArticles(articles);
+  refreshCodeOptions();
+  renderList();
+}
+
+// Articles correspondant à la recherche et aux filtres, triés matière › code › numéro (liste et PDF)
+function articlesFiltres() {
+  const search = document.getElementById("searchBox").value.trim().toLowerCase();
+  const code = document.getElementById("filterCode").value;
+  const matiere = document.getElementById("filterMatiere").value;
+  const starOnly = document.getElementById("filterStar").checked;
+  return articles
+    .filter(a => (!code || a.code === code) && (!matiere || a.matiere === matiere) && (!starOnly || a.star) &&
+      (!search || [a.matiere, a.code, a.numero, a.texte, a.note].filter(Boolean).join(" ").toLowerCase().includes(search)))
+    .sort((a, b) => (a.matiere || "").localeCompare(b.matiere || "") || (a.code || "").localeCompare(b.code || "") ||
+      String(a.numero || "").localeCompare(String(b.numero || ""), undefined, { numeric: true }));
+}
+
+const ouverts = new Set();          // articles dépliés : conservés d'un affichage à l'autre
+function renderList() {
+  const search = document.getElementById("searchBox").value.trim().toLowerCase();
+  const list = document.getElementById("articleList");
+  const filtered = articlesFiltres();
+  document.getElementById("compteListe").textContent = filtered.length
+    ? filtered.length + (filtered.length > 1 ? " articles" : " article") + (filtered.length < articles.length ? " sur " + articles.length : "")
+    : "";
+
+  if (filtered.length === 0) {
+    list.innerHTML = articles.length
+      ? '<div class="empty-state">Aucun article ne correspond à cette recherche.</div>'
+      : '<div class="empty-state">Aucun article. Ajoutez-en un avec « + Nouvel article ».</div>';
+    return;
+  }
+
+  const titresArrets = Object.fromEntries(lireFichesArret().map(f => [f.id, f.titre + (f.date ? " (" + f.date.slice(0, 4) + ")" : "")]));
+  list.innerHTML = filtered.map(a => {
+    const ouvert = ouverts.has(a.id);
+    const mat = Commun.classeMatiere(a.matiere);
+    return `
+    <article class="art${mat ? " repere " + mat : ""}${ouvert ? " ouvert" : ""}" id="art-${escapeHtml(a.id)}">
+      <button type="button" class="art-tete" data-ouvrir="${escapeHtml(a.id)}" aria-expanded="${ouvert}">
+        <span class="art-ref"><b>Art. ${escapeHtml(a.numero)}</b><span>${escapeHtml(a.code)}</span></span>
+        <span class="art-milieu">${a.matiere ? `<span class="badge${mat ? " matiere" : ""}">${escapeHtml(a.matiere)}</span><br>` : ""}<span class="art-extrait">${highlight(a.texte, search)}</span></span>
+        <span class="art-etat">${a.star ? '<span class="etoile" title="À retenir" aria-label="À retenir">★</span>' : ""}<span class="chevron" aria-hidden="true">▾</span></span>
+      </button>
+      <div class="art-corps"${ouvert ? "" : " hidden"}>
+        <p class="art-texte">${highlight(a.texte, search)}</p>
+        ${a.note ? `<p class="art-note"><b>Note</b>${highlight(a.note, search)}</p>` : ""}
+        <p class="liens-article">
+          <a href="${lienLegifrance(a)}" target="_blank" rel="noopener">Vérifier sur Légifrance ↗</a>
+          ${(a.arrets || []).filter(id => titresArrets[id]).map(id =>
+            ` · <a href="fiches-arret.html#${encodeURIComponent(id)}">${escapeHtml(titresArrets[id])}</a>`).join("")}
+        </p>
+        <div class="art-actions">
+          <button type="button" class="lien-action${a.star ? " actif" : ""}" data-star="${escapeHtml(a.id)}">${a.star ? "★ À retenir" : "☆ Marquer à retenir"}</button>
+          <button type="button" class="lien-action" data-edit="${escapeHtml(a.id)}">Modifier</button>
+          <button type="button" class="lien-action danger" data-delete="${escapeHtml(a.id)}">Supprimer</button>
+        </div>
+      </div>
+    </article>`;
+  }).join("");
+}
+
+document.getElementById("articleList").addEventListener("click", (e) => {
+  const el = e.target.closest("[data-ouvrir], [data-star], [data-delete], [data-edit]");
+  if (!el) return;
+  if (el.dataset.ouvrir) {
+    const id = el.dataset.ouvrir, art = el.closest(".art"), ouvrir = !ouverts.has(id);
+    ouvrir ? ouverts.add(id) : ouverts.delete(id);
+    art.classList.toggle("ouvert", ouvrir); el.setAttribute("aria-expanded", String(ouvrir));
+    art.querySelector(".art-corps").hidden = !ouvrir;
+    return;
+  }
+  if (el.dataset.star) toggleStar(el.dataset.star);
+  else if (el.dataset.edit) startEdit(el.dataset.edit);
+  else deleteArticle(el.dataset.delete);
+});
+
+document.getElementById("searchBox").addEventListener("input", renderList);
+document.getElementById("filterCode").addEventListener("change", renderList);
+document.getElementById("filterMatiere").addEventListener("change", renderList);
+document.getElementById("filterStar").addEventListener("change", renderList);
+
+document.getElementById("exportBtn").addEventListener("click", () =>
+  Commun.telecharger("codes-articles-" + Commun.dateLocale() + ".json", JSON.stringify(articles, null, 2)));
+
+document.getElementById("exportPdfBtn").addEventListener("click", () => {
+  const filtered = articlesFiltres();
+  if (!filtered.length) { alert("Aucun article à exporter avec ces filtres."); return; }
+
+  const groups = {};
+  filtered.forEach(a => {
+    const m = a.matiere || "Sans matière";
+    (groups[m] = groups[m] || []).push(a);
+  });
+
+  const today = new Date().toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
+  let html = `<div class="print-header">
+      <div><p class="print-brand">Paraphe</p><h1>Codes &amp; articles</h1></div>
+      <div class="print-meta"><b>${filtered.length}</b> article(s)<br>${today}</div>
+    </div>`;
+  Object.keys(groups).sort().forEach(m => {
+    html += `<div class="print-group-title">${escapeHtml(m)}</div>`;
+    groups[m].forEach(a => {
+      html += `<div class="print-item">
+        <h3>Art. ${escapeHtml(a.numero)}
+          <span class="print-tag">${escapeHtml(a.code)}</span>
+          ${a.star ? `<span class="print-tag accent">À retenir</span>` : ""}
+        </h3>
+        <p>${escapeHtml(a.texte).replace(/\n/g, "<br>")}</p>
+        ${a.note ? `<div class="print-note"><b>Note —</b> ${escapeHtml(a.note).replace(/\n/g, "<br>")}</div>` : ""}
+      </div>`;
+    });
+  });
+  html += `<div class="print-footer"><span>Paraphe — Codes &amp; articles</span><span>${today}</span></div>`;
+
+  document.getElementById("printArea").innerHTML = html;
+  window.print();
+});
+
+document.getElementById("importBtn").addEventListener("click", () => document.getElementById("importFile").click());
+const PROMPT_IA = `Tu vas extraire les articles de loi ou de règlement contenus dans le document ci-dessous (PDF, Word, page Légifrance copiée, polycopié…) et les convertir en JSON pour l'outil « Codes & articles » de Paraphe.
+
+FORMAT : un tableau JSON, un objet par article.
+[
+  {
+    "matiere": "Responsabilité civile",
+    "code": "Code civil",
+    "numero": "1240",
+    "texte": "Tout fait quelconque de l'homme, qui cause à autrui un dommage, oblige celui par la faute duquel il est arrivé à le réparer.",
+    "note": "",
+    "star": false
+  }
+]
+
+RÈGLES
+- code (obligatoire) : nom du code, seule la première lettre en majuscule : « Code civil », « Code de commerce », « Code du travail », « Code de procédure civile », « Code pénal », « Code de la consommation »… Pour un texte hors code, son intitulé : « Loi n° 89-462 du 6 juillet 1989 », « Règlement (UE) 2016/679 ».
+- numero (obligatoire) : le numéro seul, sans « Article » ni « art. », avec la lettre éventuelle : « 1240 », « L. 110-4 », « R. 1234-9 », « 1792-6 ».
+- texte : le texte de l'article recopié mot pour mot, alinéas séparés par \\n. Ne résume pas, ne reformule pas, ne modernise pas.
+- matiere : le thème de l'article (titre de la partie ou du chapitre du document, ou la matière évidente : « Contrats spéciaux », « Procédure civile »…).
+- note : commentaire du document sur cet article (jurisprudence citée, remarque de l'auteur), sinon "".
+- star : true seulement si le document signale l'article comme essentiel, sinon false.
+- Ne crée un objet que pour les articles dont le texte figure dans le document ; une simple mention (« v. art. 1231-1 ») ne suffit pas.
+- Un article qui apparaît plusieurs fois n'est repris qu'une fois.` + Commun.FIN_PROMPT("codes-articles.json");
+const IMPORT = {
+  liste: () => articles,
+  valide: a => a.code && a.numero,
+  defauts: () => ({ matiere: "", texte: "", note: "", star: false, arrets: [] }),
+  apres: n => { saveArticles(articles); refreshCodeOptions(); renderList(); alert(n + " article(s) importé(s)."); }
+};
+Commun.importerJSON(document.getElementById("importFile"), IMPORT);
+Commun.promptIA(document.getElementById("promptIA"), { prompt: PROMPT_IA, quoi: "des articles", input: document.getElementById("importFile"), options: IMPORT });
+
+refreshCodeOptions();
+renderList();
+renderArretsChoix([]);
+
+// Ouverture directe via codes.html#art-<id> (liens depuis Fiches d'arrêt)
+function ouvrirDepuisAncre() {
+  const id = decodeURIComponent(location.hash.replace(/^#art-/, ""));
+  if (!id) return;
+  if (!document.getElementById("art-" + id)) {        // filtré : on efface les filtres pour le montrer
+    document.getElementById("searchBox").value = ""; document.getElementById("filterCode").value = "";
+    document.getElementById("filterMatiere").value = ""; document.getElementById("filterStar").checked = false;
+  }
+  ouverts.add(id); renderList();
+  const el = document.getElementById("art-" + id);
+  if (!el) return;
+  document.querySelectorAll(".cible").forEach(c => c.classList.remove("cible"));
+  el.classList.add("cible");
+  el.scrollIntoView({ block: "center" });
+}
+window.addEventListener("hashchange", ouvrirDepuisAncre);
+ouvrirDepuisAncre();
+</script>
+</body>
+</html>

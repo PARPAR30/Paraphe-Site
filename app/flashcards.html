@@ -1,0 +1,740 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="robots" content="noindex"><script src="demo-donnees.js"></script><script src="demo-bac.js"></script><script src="donnees.js"></script>
+<title>Fiches mémo — Paraphe</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#131316">
+<script src="taille.js"></script><script src="clavier.js" defer></script><script src="navigation.js" defer></script>
+<link rel="stylesheet" href="fonts/fonts.css">
+<script src="pwa.js" defer></script>
+<link rel="icon" type="image/svg+xml" href="icons/favicon.svg">
+<link rel="stylesheet" href="style.css">
+<style>
+  .stats-grille{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:var(--e3)}
+  .stats-grille>div{border:1px solid var(--filet);border-radius:var(--r-m);padding:var(--e3) var(--e4);background:var(--carte-2)}
+  .stat-val{display:block;font-family:var(--slab);font-weight:700;font-size:calc(26px * var(--ech));font-variant-numeric:lining-nums tabular-nums;line-height:1.1}
+  .stat-lbl{display:block;font-size:calc(12px * var(--ech));font-weight:600;letter-spacing:0;text-transform:none;color:var(--gris)}
+  .histo{display:flex;align-items:flex-end;gap:var(--e1);height:64px;margin-top:var(--e4);border-bottom:1px solid var(--filet-2)}
+  .histo>div{flex:1;background:rgb(var(--acc-fond));min-height:1px;border-radius:3px 3px 0 0}
+  .histo>div.vide{background:var(--filet)}
+  .histo-vide{margin:auto;align-self:center;color:var(--gris);font-size:calc(12px * var(--ech));font-style:italic}
+  .histo.sans-donnees{height:40px}
+
+  /* une page, deux tâches : réviser / gérer ses cartes */
+  /* Réviser : sur grand écran, le compteur et les statistiques côte à côte */
+  @media (min-width:1200px){
+    #vueReviser:not([hidden]){display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:0 var(--gouttiere);align-items:stretch}
+    #vueReviser > .card{margin:0}
+    #vueReviser .stats-grille{grid-template-columns:repeat(2,minmax(0,1fr))}
+  }
+  .onglets{display:inline-flex;gap:2px;margin:var(--e6) 0 var(--e5);padding:3px;background:var(--carte-2);border:1px solid var(--filet);border-radius:10px}
+  .onglets button{border:0;background:none;box-shadow:none;min-height:36px;height:36px;padding:0 var(--e4);border-radius:8px;
+    font-size:calc(14px * var(--ech));color:var(--encre-2)}
+  .onglets button[aria-selected="true"]{background:var(--carte);color:var(--encre);box-shadow:var(--ombre)}
+  .onglets button:not([aria-selected="true"]):hover{background:none;color:var(--encre)}
+  .onglets .compte{display:inline-block;margin-left:6px;padding:1px 7px;border-radius:999px;background:var(--carte-2);font-size:calc(12px * var(--ech));letter-spacing:0}
+  .a-reviser{display:grid;grid-template-columns:1fr auto;gap:var(--e3) var(--e6);align-items:center;padding:var(--e6)}
+  .card.a-reviser{box-shadow:var(--ombre-forte)}   /* l'élément clé de la page */
+  .a-reviser-chiffre{display:flex;align-items:baseline;gap:var(--e3);flex-wrap:wrap}
+  .a-reviser-chiffre b{font:700 calc(56px * var(--ech))/1 var(--slab);letter-spacing:-.03em}
+  .a-reviser-chiffre span{font-size:calc(17px * var(--ech));color:var(--encre-2)}
+  .a-reviser #statMatieres{grid-column:1}
+  .puces-mat{display:flex;flex-wrap:wrap;gap:var(--e2);margin-top:var(--e2)}
+  .puce-mat{display:inline-flex;gap:6px;align-items:center;padding:3px var(--e3);border:1px solid var(--filet);border-radius:999px;
+    background:var(--carte);color:var(--encre);font-weight:600;font-size:calc(13px * var(--ech))}
+  .puce-mat::before{content:"";flex:none;width:8px;height:8px;border-radius:2px;background:var(--c,transparent)}
+  .puce-mat b{font-weight:800}
+  .a-reviser #startReview{grid-column:2;grid-row:1 / span 2}
+  button.grand{min-height:56px;padding:0 var(--e6);font-size:calc(14px * var(--ech))}
+  .liste-cartes{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:var(--e4)}
+  .carte-item{border:1px solid var(--filet);border-radius:var(--r-m);background:var(--carte);transition:border-color .18s var(--ease),box-shadow .18s var(--ease);padding:var(--e4);display:flex;flex-direction:column;gap:var(--e2)}
+  .carte-item .meta{display:flex;justify-content:space-between;gap:var(--e3);align-items:center;font-size:calc(12px * var(--ech));color:var(--gris)}
+  .carte-item .meta .due{color:rgb(var(--acc));font-weight:650;text-transform:none;letter-spacing:0}
+  .carte-item h4{margin:0;font:600 calc(16px * var(--ech))/1.35 var(--slab)}
+  .carte-item p{margin:0;color:var(--encre-2);font-size:calc(14px * var(--ech));display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .carte-item .actions{display:flex;gap:var(--e4);margin-top:auto;padding-top:var(--e2);border-top:1px solid var(--filet)}
+  .lien-action{border:0;background:none;box-shadow:none;padding:0;height:auto;min-height:28px;font-size:calc(13.5px * var(--ech));font-weight:620;letter-spacing:0;text-transform:none;color:var(--encre-2)}
+  .lien-action:hover{background:none;color:rgb(var(--acc))}
+  .lien-action.danger{color:var(--gris)}
+  .lien-action.danger:hover{background:none;color:var(--alerte)}
+
+  /* révision en plein écran : la carte seule, au centre */
+  .revision{position:fixed;inset:0;z-index:60;background:var(--fond);color:var(--encre);display:flex;flex-direction:column}
+  .revision[hidden]{display:none}
+  .rev-barre{display:flex;align-items:center;gap:var(--e4);padding:var(--e3) var(--pad);border-bottom:1px solid var(--filet)}
+  .rev-prog{flex:1;height:6px;background:var(--filet);border-radius:99px;overflow:hidden}
+  .rev-prog i{display:block;height:100%;width:0;background:rgb(var(--acc));transition:width .3s}
+  #reviewProgress{font-size:calc(13px * var(--ech));font-weight:600;color:var(--encre-2);white-space:nowrap}
+  .rev-centre{flex:1;overflow:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--e6);padding:var(--e6) var(--pad)}
+  .rev-carte{width:100%;max-width:780px;background:var(--carte);border:1px solid var(--filet);border-radius:var(--r-l);box-shadow:var(--ombre-forte);padding:clamp(24px,5vw,48px)}
+  #reviewRecto{font:600 calc(26px * var(--ech))/1.35 var(--slab);white-space:pre-line}
+  #reviewVerso{font-size:calc(19px * var(--ech));line-height:1.6;margin-top:var(--e6);padding-top:var(--e6);border-top:1px solid var(--filet);white-space:pre-line}
+  kbd{display:inline-block;min-width:22px;padding:2px 6px;border:1px solid var(--filet-2);border-bottom-width:2px;border-radius:5px;font:600 calc(12px * var(--ech))/1.2 var(--sans);text-align:center;margin-left:8px}
+  .rev-notes{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--e3);width:100%;max-width:780px}
+  .rev-notes[hidden],.rev-actions[hidden],.rev-fin[hidden],#reviewVerso[hidden]{display:none}
+  .rev-notes button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:84px;height:auto;text-transform:none;letter-spacing:0}
+  .rev-notes button kbd{margin:0 0 2px}
+  .rev-notes button b{font-size:calc(15px * var(--ech))}
+  .rev-notes button small{font-size:calc(12px * var(--ech));font-weight:500;opacity:.75}
+  .rev-notes .encore{border-color:var(--alerte);color:var(--alerte)}
+  .rev-notes .facile{border-color:var(--succes);color:var(--succes)}
+  .rev-fin{text-align:center;max-width:560px}
+  .rev-fin h2{font-size:calc(34px * var(--ech));margin:var(--e3) 0}
+  .rev-fin p{margin:0 0 var(--e6)}
+
+  /* fenêtre d'ajout / modification */
+  dialog.fenetre-carte{border:1px solid var(--filet);border-radius:var(--r-l);background:var(--carte);color:var(--encre);padding:var(--e6);width:min(620px,calc(100vw - 32px));box-shadow:var(--ombre-fenetre);border-radius:var(--r-l)}
+  dialog.fenetre-carte::backdrop{background:rgba(17,17,20,.45)}
+  dialog.fenetre-carte h2,dialog.fenetre-carte h3{margin-top:0}
+  dialog.fenetre-carte textarea{min-height:90px}
+  @media (max-width:640px){
+    .a-reviser{grid-template-columns:1fr}
+    .a-reviser #startReview{grid-column:1;grid-row:auto;width:100%}
+    .rev-notes{grid-template-columns:1fr 1fr}
+  }
+  .barre-cartes{margin-bottom:var(--e6)}
+</style>
+</head>
+<body>
+<script src="theme.js"></script>
+<header class="topnav">
+  <div class="topnav-g">
+    <a class="brand" href="Hub.html"><span class="brand-mark" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 32 32"><rect x="5.25" y="4.25" width="18.5" height="21.5" fill="none" stroke="currentColor" stroke-width="2.5"/><path d="M24 9h4v20H9v-4h15z" fill="currentColor"/><rect x="9" y="9" width="11" height="2.2" fill="currentColor"/><rect x="9" y="13.4" width="7" height="2.2" fill="currentColor"/><rect x="15" y="18" width="5" height="4.5" style="fill:rgb(var(--acc,80,52,220))"/></svg></span>Paraphe</a>
+    <span data-paraphe-nav></span>
+  </div>
+  <nav>
+    <a href="flashcards.html" class="active">Fiches mémo</a>
+    <a href="fiches-arret.html">Fiches d'arrêt</a>
+    <a href="codes.html">Codes &amp; articles</a>
+    <button id="theme-toggle" aria-pressed="false">Nuit</button>
+  </nav>
+</header>
+<main class="memo large">
+  <p class="eyebrow">Révision</p>
+  <h1>Fiches mémo</h1>
+  <p class="muted">Des cartes question-réponse pour retenir définitions et articles. Celles que vous maîtrisez reviennent moins souvent, celles qui coincent reviennent vite.</p>
+
+  <div class="onglets" role="tablist" aria-label="Fiches mémo">
+    <button type="button" role="tab" id="ongReviser" aria-selected="true" aria-controls="vueReviser">Réviser</button>
+    <button type="button" role="tab" id="ongCartes" aria-selected="false" aria-controls="vueCartes">Mes cartes<span class="compte" id="totalCount">0</span></button>
+  </div>
+
+  <section id="vueReviser" role="tabpanel" aria-labelledby="ongReviser">
+    <div class="card a-reviser">
+      <div class="a-reviser-chiffre"><b id="dueCount">0</b><span id="dueLibelle">carte(s) à réviser aujourd'hui</span></div>
+      <div class="muted" id="statMatieres"></div>
+      <button type="button" id="startReview" class="primary grand">Commencer la révision</button>
+    </div>
+
+    <div class="card">
+      <h2 class="titre-3">Statistiques</h2>
+      <div class="stats-grille">
+        <div><span class="stat-val" id="statJour">0</span><span class="stat-lbl">révisions aujourd'hui</span></div>
+        <div><span class="stat-val" id="statSerie">0</span><span class="stat-lbl">jour(s) d'affilée</span></div>
+        <div><span class="stat-val" id="statMaitrisees">0</span><span class="stat-lbl">cartes maîtrisées (≥ 21 j)</span></div>
+        <div><span class="stat-val" id="statNouvelles">0</span><span class="stat-lbl">jamais révisées</span></div>
+      </div>
+      <div class="histo" id="statHisto" aria-label="Révisions des 14 derniers jours"></div>
+    </div>
+  </section>
+
+  <section id="vueCartes" role="tabpanel" aria-labelledby="ongCartes" hidden>
+    <div class="mise-cote">
+    <div class="card barre barre-cartes">
+      <div class="barre-filtres">
+        <input type="search" id="searchBox" placeholder="Rechercher une carte…" aria-label="Rechercher une carte">
+        <select id="filterMatiere" aria-label="Filtrer par matière"><option value="">Toutes les matières</option></select>
+      </div>
+      <div class="barre-actions">
+      <button type="button" id="nouvelleCarte" class="primary">+ Nouvelle carte</button>
+      <div class="barre-groupe" role="group" aria-label="Importer">
+        <span class="barre-titre">Importer</span>
+        <button type="button" id="importBtn" title="Reprendre un fichier .json enregistré depuis cet outil">Depuis un fichier</button>
+        <button type="button" id="promptIA" title="Copier un prompt qui fait convertir votre document (PDF, Word, texte…) par une IA au format d’import">Avec une IA</button>
+      </div>
+      <div class="barre-groupe" role="group" aria-label="Exporter">
+        <span class="barre-titre">Exporter</span>
+        <button type="button" id="exportBtn" title="Enregistrer une copie de vos cartes (fichier .json)">Sauvegarde</button>
+        <button type="button" id="exportPdfBtn" title="Mettre en page vos cartes pour les imprimer ou les enregistrer en PDF">Imprimer / PDF</button>
+      </div>
+      <div class="barre-groupe" role="group" aria-label="Supprimer">
+        <span class="barre-titre">Supprimer</span>
+        <button type="button" id="toutSupprimer" class="danger" title="Effacer toutes vos cartes (double confirmation)">Tout supprimer…</button>
+      </div>
+      <input type="file" id="importFile" accept="application/json" hidden>
+    </div>
+    </div>
+    <p class="compte-liste" id="compteListe"></p>
+    <div id="cardList" class="liste-cartes"></div>
+    </div>
+  </section>
+
+  <footer class="tip">Pendant la révision : <kbd>Espace</kbd> affiche la réponse, <kbd>1</kbd> à <kbd>4</kbd> notent la carte, <kbd>Échap</kbd> quitte.</footer>
+</main>
+
+<!-- Révision en plein écran -->
+<div class="revision" id="reviewArea" role="dialog" aria-modal="true" aria-label="Révision" hidden>
+  <div class="rev-barre">
+    <span class="badge" id="reviewMatiere">—</span>
+    <div class="rev-prog" aria-hidden="true"><i id="reviewBar"></i></div>
+    <span id="reviewProgress"></span>
+    <button type="button" id="quitterRevision">Quitter</button>
+  </div>
+  <div class="rev-centre">
+    <div class="rev-carte" id="revCarte">
+      <div id="reviewRecto"></div>
+      <div id="reviewVerso" hidden></div>
+    </div>
+    <div class="rev-actions" id="showAnswerRow">
+      <button type="button" id="showAnswerBtn" class="primary grand">Afficher la réponse<kbd>Espace</kbd></button>
+    </div>
+    <div class="rev-notes" id="ratingRow" hidden>
+      <button type="button" data-rating="0" class="encore"><kbd>1</kbd><b>Encore</b><small>revient dans la séance</small></button>
+      <button type="button" data-rating="1"><kbd>2</kbd><b>Difficile</b><small>revient plus tôt</small></button>
+      <button type="button" data-rating="2"><kbd>3</kbd><b>Correct</b><small>intervalle normal</small></button>
+      <button type="button" data-rating="3" class="facile"><kbd>4</kbd><b>Facile</b><small>revient plus tard</small></button>
+    </div>
+    <div class="rev-fin" id="reviewDone" hidden>
+      <span class="badge">Séance terminée</span>
+      <h2 id="finTitre">Tout est à jour.</h2>
+      <p class="muted" id="finTexte"></p>
+      <button type="button" id="fermerRevision" class="primary grand">Terminer</button>
+    </div>
+  </div>
+</div>
+
+<!-- Ajout / modification d'une carte -->
+<dialog class="fenetre-carte" id="formCard" aria-labelledby="formTitle">
+  <h2 id="formTitle" class="titre-3">Nouvelle carte</h2>
+  <label for="fMatiere">Matière</label>
+  <input type="text" id="fMatiere" list="matiereList" placeholder="ex. Droit civil">
+  <datalist id="matiereList"></datalist>
+  <label for="fRecto">Recto (question / terme)</label>
+  <textarea id="fRecto" placeholder="ex. Définition de la faute délictuelle ?"></textarea>
+  <label for="fVerso">Verso (réponse / définition)</label>
+  <textarea id="fVerso" placeholder="ex. Comportement contraire à une norme de conduite…"></textarea>
+  <div class="row end" style="margin-top:var(--e4);">
+    <button type="button" id="cancelEditBtn">Annuler</button>
+    <button type="button" id="addAnotherBtn">Ajouter et en créer une autre</button>
+    <button type="button" id="addCardBtn" class="primary">Ajouter la carte</button>
+  </div>
+</dialog>
+<div id="printArea"></div>
+
+<script src="commun.js"></script>
+<script>
+const STORAGE_KEY = "droit_flashcards";
+// Cartes d'exemple supprimées par l'utilisateur : sans cette liste, elles revenaient à chaque chargement
+const DELETED_SEEDS_KEY = "droit_flashcards_seeds_supprimees";
+
+const localISO = Commun.dateLocale;           // AAAA-MM-JJ en heure locale
+const todayISO = () => Commun.dateLocale();
+const escapeHtml = Commun.echapper;
+const nouvelleProgression = () => ({ ease: 2.5, interval: 0, reps: 0, dueDate: todayISO() });
+
+function mkSeedCard(id, matiere, recto, verso) {
+  return { id, matiere, recto, verso, ...nouvelleProgression() };
+}
+
+const SEED_RAW = [
+["Droit public des affaires", "Qu'est-ce que le droit public des affaires ?", "Branche du droit public qui régit l'intervention des personnes publiques dans la vie économique : réglementation économique, contrats publics, entreprises publiques, aides d'État."],
+["Droit public des affaires", "Définition du service public", "Activité d'intérêt général assurée ou assumée par une personne publique, soumise à un régime juridique spécifique (principes de continuité, d'égalité et de mutabilité/adaptabilité)."],
+["Droit public des affaires", "Différence entre SPA et SPIC ?", "Le SPA (service public administratif) est soumis au droit administratif. Le SPIC (service public industriel et commercial) est soumis principalement au droit privé pour ses usagers et son personnel, sauf le dirigeant et le comptable public."],
+["Droit public des affaires", "Critères \"Narcy\" de la mission de service public confiée à une personne privée", "Mission d'intérêt général, contrôle exercé par l'administration, prérogatives de puissance publique — critères assouplis ensuite par l'arrêt APREI (2007) en faisceau d'indices."],
+["Droit public des affaires", "Qu'est-ce qu'un marché public ?", "Contrat conclu à titre onéreux entre un acheteur public et un opérateur économique, pour répondre à ses besoins en matière de travaux, de fournitures ou de services."],
+["Droit public des affaires", "Qu'est-ce qu'une délégation de service public / concession ?", "Contrat par lequel une personne publique confie la gestion d'un service public à un délégataire dont la rémunération est substantiellement liée aux résultats de l'exploitation."],
+["Droit public des affaires", "Principe de liberté du commerce et de l'industrie", "Principe selon lequel toute personne est libre d'exercer l'activité économique de son choix ; il encadre et limite l'intervention des personnes publiques dans l'économie."],
+["Droit public des affaires", "Qu'est-ce qu'une société d'économie mixte (SEM) ?", "Société commerciale dont le capital est détenu conjointement par des personnes publiques (majoritaires) et des personnes privées."],
+["Droit public des affaires", "Comment identifier un contrat administratif ?", "Critère organique (une personne publique est partie au contrat) combiné à un critère matériel : clauses exorbitantes du droit commun, ou objet lié à l'exécution même du service public."],
+["Droit public des affaires", "Qu'est-ce qu'une aide d'État (droit de l'Union) ?", "Avantage sélectif accordé par une autorité publique, faussant la concurrence et affectant les échanges entre États membres (art. 107 TFUE) ; interdite en principe, sauf dérogations."],
+
+["Droit des sociétés", "Définition légale de la société (art. 1832 C. civ.)", "Contrat par lequel deux ou plusieurs personnes conviennent d'affecter à une entreprise commune des biens ou leur industrie en vue de partager le bénéfice ou de profiter de l'économie qui pourra en résulter, et de contribuer aux pertes."],
+["Droit des sociétés", "Qu'est-ce que l'affectio societatis ?", "Volonté des associés de collaborer ensemble, sur un pied d'égalité, à la réussite de l'entreprise commune ; élément constitutif du contrat de société."],
+["Droit des sociétés", "Effet de l'immatriculation au RCS ?", "La société acquiert la personnalité morale : patrimoine propre, capacité d'agir en justice, nom, siège et nationalité distincts de ceux des associés."],
+["Droit des sociétés", "Les trois types d'apports en société", "Apport en numéraire (somme d'argent), en nature (bien), en industrie (travail, savoir-faire) ; seuls les deux premiers forment le capital social."],
+["Droit des sociétés", "Différence SARL / SAS ?", "La SARL a un cadre légal rigide (gérant, parts sociales peu cessibles). La SAS offre une grande liberté statutaire (président, organisation des actions largement libre)."],
+["Droit des sociétés", "Qu'est-ce que l'abus de majorité ?", "Décision prise contrairement à l'intérêt général de la société et dans l'unique dessein de favoriser les associés majoritaires au détriment des minoritaires."],
+["Droit des sociétés", "Qu'est-ce que l'abus de biens sociaux ?", "Infraction pénale : le fait, pour un dirigeant, d'user des biens ou du crédit de la société de manière contraire à l'intérêt social, à des fins personnelles."],
+["Droit des sociétés", "Effet de la nullité d'une société ?", "En principe pas d'effet rétroactif entre associés ni à l'égard des tiers ; les causes de nullité sont limitativement encadrées par la loi (régime protecteur)."],
+["Droit des sociétés", "Qu'est-ce qu'une action \"ut singuli\" ?", "Action en responsabilité exercée par un ou plusieurs associés au nom et pour le compte de la société contre ses dirigeants, en cas de préjudice social."],
+["Droit des sociétés", "Rôle du commissaire aux comptes ?", "Contrôler la régularité et la sincérité des comptes sociaux et certifier les comptes annuels, dans les sociétés dépassant certains seuils légaux."],
+
+["Droit du travail", "Définition du contrat de travail", "Convention par laquelle une personne s'engage à travailler pour le compte et sous la subordination d'une autre, moyennant rémunération."],
+["Droit du travail", "Critère du lien de subordination", "Pouvoir de l'employeur de donner des ordres et directives, d'en contrôler l'exécution, et de sanctionner les manquements du salarié (Cass. soc., Société Générale, 1996)."],
+["Droit du travail", "Différence CDI / CDD ?", "Le CDI est le contrat de droit commun, sans terme fixé. Le CDD est un contrat d'exception, à terme précis, réservé aux cas prévus par la loi (remplacement, surcroît temporaire d'activité...)."],
+["Droit du travail", "Qu'est-ce que la période d'essai ?", "Période initiale du contrat permettant à chaque partie d'évaluer si la relation convient, durant laquelle la rupture est facilitée (en principe sans motif ni indemnité)."],
+["Droit du travail", "Qu'est-ce qu'une cause réelle et sérieuse de licenciement ?", "Motif objectif, existant et vérifiable, suffisamment grave pour justifier la rupture du contrat, apprécié souverainement par le juge en cas de litige."],
+["Droit du travail", "Différence faute grave / faute lourde ?", "La faute grave rend impossible le maintien du salarié dans l'entreprise (prive de préavis et d'indemnité de licenciement). La faute lourde suppose en plus une intention de nuire à l'employeur."],
+["Droit du travail", "Qu'est-ce qu'une convention collective ?", "Accord négocié entre organisations syndicales et patronales fixant les conditions de travail et garanties sociales applicables à une branche ou une entreprise."],
+["Droit du travail", "Qu'est-ce que le CSE ?", "Comité social et économique : instance unique de représentation du personnel, issue de la fusion des anciennes instances (délégués du personnel, comité d'entreprise, CHSCT)."],
+["Droit du travail", "Durée légale du travail effectif ?", "35 heures par semaine (durée légale, non maximale) ; au-delà, les heures sont en principe majorées (heures supplémentaires)."],
+["Droit du travail", "Qu'est-ce que le pouvoir de direction de l'employeur ?", "Prérogative permettant à l'employeur d'organiser, diriger et contrôler l'activité de l'entreprise et de ses salariés, dans le respect de la loi et des libertés individuelles."],
+
+["Libertés fondamentales", "Qu'est-ce que le bloc de constitutionnalité ?", "Ensemble des normes de valeur constitutionnelle utilisées par le Conseil constitutionnel : Constitution de 1958, préambule de 1946, DDHC de 1789, Charte de l'environnement, PFRLR."],
+["Libertés fondamentales", "Qu'est-ce que la QPC ?", "Question prioritaire de constitutionnalité : mécanisme permettant à tout justiciable de contester, à l'occasion d'une instance, la conformité d'une disposition législative aux droits et libertés garantis par la Constitution."],
+["Libertés fondamentales", "Apport de l'arrêt CE, Commune de Morsang-sur-Orge (1995)", "Le respect de la dignité de la personne humaine est une composante de l'ordre public, permettant à une autorité de police d'interdire une activité même sans circonstances locales particulières."],
+["Libertés fondamentales", "Apport de l'arrêt CE, Benjamin (1933)", "Contrôle maximum (proportionnalité) du juge administratif sur les mesures de police restreignant une liberté publique : la mesure doit être nécessaire, adaptée et proportionnée."],
+["Libertés fondamentales", "Qu'est-ce que le référé-liberté ?", "Procédure d'urgence permettant au juge administratif d'ordonner, en principe sous 48 heures, toute mesure nécessaire à la sauvegarde d'une liberté fondamentale gravement et manifestement illégalement atteinte."],
+["Libertés fondamentales", "Qu'est-ce que le contrôle de conventionnalité ?", "Contrôle par lequel tout juge (judiciaire ou administratif) écarte l'application d'une loi contraire à un traité international (ex. CESDH) — à la différence du contrôle de constitutionnalité, réservé au Conseil constitutionnel."],
+["Libertés fondamentales", "Article 8 de la CESDH", "Droit au respect de la vie privée et familiale, du domicile et de la correspondance, sous réserve d'ingérences prévues par la loi et nécessaires dans une société démocratique."],
+["Libertés fondamentales", "Liberté publique vs droit fondamental ?", "\"Liberté publique\" est une notion historiquement liée à la loi et au juge administratif français. \"Droit fondamental\" est une notion plus large, d'origine constitutionnelle et européenne, incluant aussi les droits sociaux."],
+["Libertés fondamentales", "Principe d'égalité devant la loi", "La loi doit traiter de manière identique les personnes placées dans une situation identique, sans empêcher un traitement différencié entre situations différentes ou pour un motif d'intérêt général."],
+["Libertés fondamentales", "Théorie des circonstances exceptionnelles", "Théorie jurisprudentielle permettant à l'administration, en période de crise grave, d'étendre ses pouvoirs au-delà du cadre légal ordinaire, sous le contrôle du juge."],
+
+["Procédure pénale", "Qu'est-ce que la présomption d'innocence ?", "Toute personne suspectée ou poursuivie est présumée innocente tant que sa culpabilité n'a pas été légalement établie (art. préliminaire CPP, art. 9 DDHC)."],
+["Procédure pénale", "Qu'est-ce que la garde à vue ?", "Mesure de contrainte par laquelle une personne soupçonnée est retenue dans les locaux d'un service d'enquête, sous le contrôle d'un magistrat, pour les nécessités de l'enquête."],
+["Procédure pénale", "Qu'est-ce que la mise en examen ?", "Décision du juge d'instruction plaçant sous statut procédural protecteur (accès au dossier, avocat...) une personne contre laquelle existent des indices graves ou concordants."],
+["Procédure pénale", "Différence contrôle judiciaire / détention provisoire ?", "Le contrôle judiciaire impose des obligations à une personne mise en examen laissée libre. La détention provisoire est une mesure exceptionnelle de privation de liberté avant jugement, décidée par le JLD."],
+["Procédure pénale", "Qu'est-ce que l'action publique ?", "Action exercée au nom de la société par le ministère public (procureur) pour l'application de la loi pénale à l'auteur d'une infraction."],
+["Procédure pénale", "Rôle de la chambre de l'instruction ?", "Juridiction d'appel des décisions du juge d'instruction et du JLD ; contrôle aussi la régularité de la procédure (nullités)."],
+["Procédure pénale", "Qu'est-ce qu'une nullité de procédure ?", "Sanction d'un acte de procédure accompli en violation d'une formalité substantielle, entraînant son annulation et celle des actes qui en découlent."],
+["Procédure pénale", "Délais de prescription de l'action publique ?", "20 ans pour les crimes, 6 ans pour les délits, 1 an pour les contraventions, à compter du jour de l'infraction (sauf règles particulières)."],
+["Procédure pénale", "Qu'est-ce que la comparution immédiate ?", "Procédure de jugement rapide d'une personne majeure pour un délit, lorsque les charges sont suffisantes et l'affaire en état d'être jugée."],
+["Procédure pénale", "Rôle du juge des libertés et de la détention (JLD) ?", "Magistrat du siège compétent pour statuer sur les mesures les plus attentatoires à la liberté individuelle : détention provisoire, certaines perquisitions, prolongation de garde à vue."],
+
+["Droit fiscal", "Définition de l'impôt", "Prestation pécuniaire requise des contribuables par voie d'autorité, à titre définitif, sans contrepartie directe, en vue de la couverture des charges publiques."],
+["Droit fiscal", "Principe de territorialité de l'IS", "Seuls les bénéfices réalisés par des entreprises exploitées en France sont en principe soumis à l'impôt sur les sociétés français, indépendamment de la nationalité de la société."],
+["Droit fiscal", "Qu'est-ce que l'abus de droit fiscal (art. L64 LPF) ?", "Procédure permettant à l'administration d'écarter des actes fictifs, ou recherchant par une application littérale des textes un but exclusivement fiscal contraire à l'intention de leurs auteurs."],
+["Droit fiscal", "Évasion fiscale vs fraude fiscale ?", "L'évasion fiscale utilise des montages légaux pour minimiser l'impôt (avec risque de requalification en abus de droit). La fraude fiscale est une violation intentionnelle et pénalement sanctionnée de la loi fiscale."],
+["Droit fiscal", "Qu'est-ce que l'acte anormal de gestion ?", "Acte contraire à l'intérêt de l'entreprise, l'exposant à une charge ou la privant d'une recette sans contrepartie, permettant à l'administration de rectifier le résultat imposable."],
+["Droit fiscal", "Les trois grandes catégories d'impôts", "Impôts sur le revenu (IR, IS), impôts sur la dépense (TVA), impôts sur le capital/patrimoine (droits de mutation, IFI)."],
+["Droit fiscal", "Qu'est-ce que la taxation d'office ?", "Procédure permettant à l'administration d'évaluer unilatéralement les bases d'imposition d'un contribuable défaillant, en renversant la charge de la preuve."],
+["Droit fiscal", "Délai de reprise de droit commun", "L'administration peut en principe exercer son droit de reprise jusqu'à la fin de la 3e année suivant celle au titre de laquelle l'imposition est due."],
+["Droit fiscal", "Qu'est-ce que le rescrit fiscal ?", "Prise de position formelle de l'administration sur l'application d'un texte fiscal à une situation de fait précise, qui lui devient opposable si la présentation était exacte et complète."],
+["Droit fiscal", "Principe de légalité de l'impôt", "La loi fixe les règles concernant l'assiette, le taux et les modalités de recouvrement des impositions de toute nature (art. 34 Constitution)."],
+
+["Régime général des obligations", "Définition de l'obligation", "Lien de droit unissant un créancier et un débiteur, en vertu duquel ce dernier est tenu envers le premier d'une prestation (donner, faire ou ne pas faire)."],
+["Régime général des obligations", "Obligation de moyens vs obligation de résultat ?", "Dans l'obligation de moyens, le débiteur s'engage à mettre en œuvre tous les moyens raisonnables (faute à prouver par le créancier). Dans l'obligation de résultat, sa non-atteinte suffit à établir la faute."],
+["Régime général des obligations", "Qu'est-ce que la solidarité entre débiteurs ?", "Modalité permettant au créancier d'exiger de l'un quelconque des codébiteurs solidaires le paiement de la totalité de la dette, à charge pour lui de se retourner contre les autres."],
+["Régime général des obligations", "Qu'est-ce que la cession de créance ?", "Convention par laquelle le créancier cédant transmet sa créance à un tiers cessionnaire ; opposable au débiteur cédé dès qu'il en est informé ou y intervient."],
+["Régime général des obligations", "Qu'est-ce que la novation ?", "Opération qui éteint une obligation en la remplaçant par une nouvelle (changement de créancier, de débiteur, ou d'objet)."],
+["Régime général des obligations", "Qu'est-ce que la subrogation personnelle ?", "Mécanisme par lequel un tiers qui paie la dette d'autrui est substitué dans les droits du créancier payé contre le débiteur."],
+["Régime général des obligations", "Qu'est-ce que la compensation ?", "Mode d'extinction simultanée de deux dettes réciproques, liquides et exigibles, entre les mêmes personnes, à hauteur de la plus faible des deux."],
+["Régime général des obligations", "Qu'est-ce que la délégation ?", "Opération par laquelle une personne (le délégant) obtient d'une autre (le délégué) qu'elle s'engage envers un tiers (le délégataire), qui accepte cette obligation nouvelle."],
+["Régime général des obligations", "Délai de prescription extinctive de droit commun", "Cinq ans à compter du jour où le titulaire d'un droit a connu ou aurait dû connaître les faits lui permettant de l'exercer (art. 2224 C. civ.)."],
+["Régime général des obligations", "Qu'est-ce que la cession de dette ?", "Convention par laquelle un débiteur cédant transmet sa dette à un tiers cessionnaire, avec l'accord du créancier, qui peut ou non libérer le débiteur originaire."],
+];
+
+const SEED = SEED_RAW.map(([m, r, v], i) => mkSeedCard("seed-fc-" + i, m, r, v));
+
+const loadCards = () => Commun.avecExemples(STORAGE_KEY, SEED, DELETED_SEEDS_KEY);
+const saveCards = list => Commun.ecrire(STORAGE_KEY, list);
+
+let cards = loadCards();
+saveCards(cards);
+let reviewQueue = [];
+let currentCard = null;
+let reviewTotal = 0;
+
+function isDue(card) {
+  return !card.dueDate || card.dueDate <= todayISO();
+}
+
+function refreshMatiereOptions() {
+  const matieres = [...new Set(cards.map(c => c.matiere).filter(Boolean))].sort();
+  const dl = document.getElementById("matiereList");
+  dl.innerHTML = matieres.map(m => `<option value="${escapeHtml(m)}">`).join("");
+  const sel = document.getElementById("filterMatiere");
+  const current = sel.value;
+  sel.innerHTML = '<option value="">Toutes les matières</option>' +
+    matieres.map(m => `<option value="${escapeHtml(m)}">${escapeHtml(m)}</option>`).join("");
+  sel.value = current;
+}
+
+function updateCounts() {
+  document.getElementById("totalCount").textContent = cards.length;
+  const aReviser = cards.filter(isDue).length;
+  document.getElementById("dueCount").textContent = aReviser;
+  document.getElementById("dueLibelle").textContent = aReviser > 1 ? "cartes à réviser aujourd'hui" : (aReviser ? "carte à réviser aujourd'hui" : "carte à réviser aujourd'hui — tout est à jour");
+  document.getElementById("startReview").disabled = !aReviser;
+  renderStats();
+}
+
+// --- Statistiques : nombre de révisions par jour, conservé à part des cartes ---
+const STATS_KEY = "droit_flashcards_stats";
+function loadStats() {
+  const s = Commun.lire(STATS_KEY, null);
+  return s && s.jours ? s : { jours: {} };
+}
+function logReview() {
+  const s = loadStats(), j = todayISO();
+  s.jours[j] = (s.jours[j] || 0) + 1;
+  try { localStorage.setItem(STATS_KEY, JSON.stringify(s)); } catch {}
+}
+function renderStats() {
+  const jours = loadStats().jours;
+  const d = new Date();
+  // série : jours consécutifs avec au moins une révision, en partant d'aujourd'hui (ou d'hier si rien encore aujourd'hui)
+  if (!jours[localISO(d)]) d.setDate(d.getDate() - 1);
+  let serie = 0;
+  while (jours[localISO(d)]) { serie++; d.setDate(d.getDate() - 1); }
+  document.getElementById("statJour").textContent = jours[todayISO()] || 0;
+  document.getElementById("statSerie").textContent = serie;
+  document.getElementById("statMaitrisees").textContent = cards.filter(c => (c.interval || 0) >= 21).length;
+  document.getElementById("statNouvelles").textContent = cards.filter(c => !c.reps && !c.interval).length;
+
+  const derniers = [];
+  for (let i = 13; i >= 0; i--) { const x = new Date(); x.setDate(x.getDate() - i); derniers.push([localISO(x), jours[localISO(x)] || 0]); }
+  const max = Math.max(1, ...derniers.map(x => x[1]));
+  const histo = document.getElementById("statHisto");
+  const vide = derniers.every(x => !x[1]);
+  histo.classList.toggle("sans-donnees", vide);
+  if (vide) { histo.innerHTML = '<span class="histo-vide">Aucune révision ces 14 derniers jours — lancez une séance !</span>'; }
+  else histo.innerHTML = derniers.map(([j, n]) =>
+    `<div class="${n ? "" : "vide"}" style="height:${n ? Math.max(4, Math.round(n / max * 100)) : 2}%" title="${j} : ${n} révision(s)"></div>`).join("");
+
+  const parMatiere = {};
+  cards.filter(isDue).forEach(c => { const m = c.matiere || "Sans matière"; parMatiere[m] = (parMatiere[m] || 0) + 1; });
+  const liste = Object.entries(parMatiere).sort((a, b) => b[1] - a[1])
+    .map(([m, n]) => `<span class="puce-mat ${Commun.classeMatiere(m)}">${escapeHtml(m)} <b>${n}</b></span>`);
+  document.getElementById("statMatieres").innerHTML = liste.length ? 'À réviser, par matière :<span class="puces-mat">' + liste.join("") + "</span>" : "Rien à réviser aujourd'hui.";
+}
+
+// Cartes correspondant à la recherche et au filtre (liste et export PDF)
+function cartesFiltrees() {
+  const search = document.getElementById("searchBox").value.trim().toLowerCase();
+  const matiereFilter = document.getElementById("filterMatiere").value;
+  return cards.filter(c =>
+    (!matiereFilter || c.matiere === matiereFilter) &&
+    (!search || [c.matiere, c.recto, c.verso].join(" ").toLowerCase().includes(search)));
+}
+
+function renderList() {
+  const list = document.getElementById("cardList");
+  const filtered = cartesFiltrees();
+
+  if (filtered.length === 0) {
+    document.getElementById("compteListe").textContent = "";
+    list.innerHTML = cards.length
+      ? '<div class="empty-state">Aucune carte ne correspond à cette recherche.</div>'
+      : '<div class="empty-state">Aucune carte pour l\'instant. Créez-en une avec « + Nouvelle carte ».</div>';
+    return;
+  }
+
+  filtered.sort((a, b) => (a.matiere || "").localeCompare(b.matiere || ""));
+
+  document.getElementById("compteListe").textContent = filtered.length + (filtered.length > 1 ? " cartes" : " carte") + (filtered.length < cards.length ? " sur " + cards.length : "");
+  list.innerHTML = filtered.map(c => { const mat = Commun.classeMatiere(c.matiere); return `
+    <article class="carte-item${mat ? " repere " + mat : ""}">
+      <div class="meta">
+        <span class="badge${mat ? " matiere" : ""}">${escapeHtml(c.matiere || "Sans matière")}</span>
+        ${isDue(c) ? '<span class="due">à réviser</span>' : "<span>prochaine révision : " + new Date(c.dueDate + "T12:00").toLocaleDateString("fr-FR", { day: "numeric", month: "long" }) + "</span>"}
+      </div>
+      <h4>${escapeHtml(c.recto)}</h4>
+      <p>${escapeHtml(c.verso)}</p>
+      <div class="actions">
+        <button type="button" class="lien-action" data-edit="${escapeHtml(c.id)}">Modifier</button>
+        <button type="button" class="lien-action danger" data-delete="${escapeHtml(c.id)}">Supprimer</button>
+      </div>
+    </article>  `; }).join("");
+}
+
+document.getElementById("cardList").addEventListener("click", (e) => {
+  const btn = e.target.closest("button[data-delete], button[data-edit]");
+  if (!btn) return;
+  if (btn.dataset.edit) startEdit(btn.dataset.edit);
+  else deleteCard(btn.dataset.delete);
+});
+
+// --- Modification d'une carte : le formulaire d'ajout passe en mode édition ---
+let editingId = null;
+const fenetre = document.getElementById("formCard");
+function ouvrirFormulaire() { fenetre.showModal ? fenetre.showModal() : fenetre.setAttribute("open", ""); document.getElementById("fRecto").focus(); }
+function startEdit(id) {
+  const c = cards.find(x => x.id === id);
+  if (!c) return;
+  editingId = id;
+  document.getElementById("fMatiere").value = c.matiere || "";
+  document.getElementById("fRecto").value = c.recto || "";
+  document.getElementById("fVerso").value = c.verso || "";
+  document.getElementById("formTitle").textContent = "Modifier la carte";
+  document.getElementById("addCardBtn").textContent = "Enregistrer";
+  document.getElementById("addAnotherBtn").hidden = true;
+  ouvrirFormulaire();
+}
+function nouvelleCarte() {
+  editingId = null;
+  document.getElementById("fRecto").value = "";
+  document.getElementById("fVerso").value = "";
+  document.getElementById("formTitle").textContent = "Nouvelle carte";
+  document.getElementById("addCardBtn").textContent = "Ajouter la carte";
+  document.getElementById("addAnotherBtn").hidden = false;
+  ouvrirFormulaire();
+}
+function endEdit() {
+  editingId = null;
+  document.getElementById("fRecto").value = "";
+  document.getElementById("fVerso").value = "";
+  if (fenetre.open) fenetre.close();
+}
+document.getElementById("nouvelleCarte").addEventListener("click", nouvelleCarte);
+document.getElementById("cancelEditBtn").addEventListener("click", endEdit);
+
+function deleteCard(id) {
+  if (!confirm("Supprimer cette carte ?")) return;
+  Commun.oublierExemple(DELETED_SEEDS_KEY, id);
+  cards = cards.filter(c => c.id !== id);
+  saveCards(cards);
+  refreshMatiereOptions();
+  updateCounts();
+  renderList();
+}
+
+document.getElementById("toutSupprimer").addEventListener("click", () => {
+  Commun.toutSupprimer({
+    cleDonnees: STORAGE_KEY, cleSupprimes: DELETED_SEEDS_KEY, exemples: SEED, nombre: cards.length,
+    un: "cartes", des: "toutes vos cartes",
+    apres: () => { cards = []; refreshMatiereOptions(); updateCounts(); renderList(); }
+  });
+});
+
+function enregistrerCarte(continuer) {
+  const matiere = document.getElementById("fMatiere").value.trim();
+  const recto = document.getElementById("fRecto").value.trim();
+  const verso = document.getElementById("fVerso").value.trim();
+  if (!recto || !verso) { alert("Merci de remplir le recto et le verso."); return; }
+  let id = editingId;
+  if (editingId) {
+    // on garde la progression de révision (ease, interval, échéance)
+    const c = cards.find(x => x.id === editingId);
+    if (c) Object.assign(c, { matiere, recto, verso });
+  } else {
+    id = crypto.randomUUID();
+    cards.push({ id, matiere, recto, verso, ...nouvelleProgression() });
+  }
+  saveCards(cards);
+  refreshMatiereOptions();
+  updateCounts();
+  renderList();
+  if (continuer) {                      // la matière reste : on enchaîne les cartes d'un même cours
+    document.getElementById("fRecto").value = "";
+    document.getElementById("fVerso").value = "";
+    document.getElementById("fRecto").focus();
+  } else {
+    endEdit();
+    const bouton = document.querySelector(`.carte-item [data-edit="${CSS.escape(id)}"]`);
+    Commun.montrer(bouton && bouton.closest(".carte-item"));   // la carte enregistrée, sous vos yeux
+  }
+}
+document.getElementById("addCardBtn").addEventListener("click", () => enregistrerCarte(false));
+document.getElementById("addAnotherBtn").addEventListener("click", () => enregistrerCarte(true));
+
+document.getElementById("searchBox").addEventListener("input", renderList);
+document.getElementById("filterMatiere").addEventListener("change", renderList);
+
+document.getElementById("exportBtn").addEventListener("click", () =>
+  Commun.telecharger("fiches-memo-" + todayISO() + ".json", JSON.stringify(cards, null, 2)));
+
+document.getElementById("exportPdfBtn").addEventListener("click", () => {
+  const filtered = cartesFiltrees();
+  if (!filtered.length) { alert("Aucune carte à exporter avec ces filtres."); return; }
+  filtered.sort((a, b) => (a.matiere || "").localeCompare(b.matiere || ""));
+
+  const groups = {};
+  filtered.forEach(c => {
+    const m = c.matiere || "Sans matière";
+    (groups[m] = groups[m] || []).push(c);
+  });
+
+  const today = new Date().toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
+  let html = `<div class="print-header">
+      <div><p class="print-brand">Paraphe</p><h1>Fiches mémo</h1></div>
+      <div class="print-meta"><b>${filtered.length}</b> carte(s)<br>${today}</div>
+    </div>`;
+  Object.keys(groups).sort().forEach(m => {
+    html += `<div class="print-group-title">${escapeHtml(m)}</div>`;
+    groups[m].forEach(c => {
+      html += `<div class="print-item">
+        <h3>${escapeHtml(c.recto)}</h3>
+        <p>${escapeHtml(c.verso).replace(/\n/g, "<br>")}</p>
+      </div>`;
+    });
+  });
+  html += `<div class="print-footer"><span>Paraphe — Fiches mémo</span><span>${today}</span></div>`;
+
+  document.getElementById("printArea").innerHTML = html;
+  window.print();
+});
+
+document.getElementById("importBtn").addEventListener("click", () => {
+  document.getElementById("importFile").click();
+});
+const PROMPT_IA = `Tu vas transformer le document ci-dessous (cours, fiche de révision, polycopié, arrêt, export Anki ou Quizlet…) en cartes de révision pour l'outil « Mémo » de Paraphe, qui les fait réviser par répétition espacée.
+
+FORMAT : un tableau JSON, un objet par carte.
+[
+  {
+    "matiere": "Droit des obligations",
+    "recto": "Quel est le délai de prescription de droit commun des actions personnelles ou mobilières ?",
+    "verso": "Cinq ans à compter du jour où le titulaire du droit a connu ou aurait dû connaître les faits lui permettant de l'exercer (art. 2224 C. civ.)."
+  }
+]
+
+RÈGLES
+- Si le document contient déjà des paires question / réponse (export Anki ou Quizlet, liste de questions), reprends-les telles quelles, une carte par paire, sans les réécrire.
+- Sinon, rédige des cartes qui couvrent les notions importantes du document : définitions, conditions, régimes, délais, exceptions, arrêts de principe.
+- Une carte = une seule notion. La question (recto) se suffit à elle-même et appelle une réponse précise ; évite les questions fermées (oui / non).
+- La réponse (verso) est courte (une à trois phrases), exacte et fidèle au document, avec la référence entre parenthèses quand le document la donne (« art. 1231-1 C. civ. », « Cass. ch. mixte, 22 avr. 2005 »).
+- matiere : la matière du document (« Droit des contrats », « Procédure pénale »…), la même pour toutes les cartes d'un même thème.
+- Pas de doublons. Formule les questions de façon impersonnelle.
+- Ne crée aucune carte sur une information qui ne figure pas dans le document.` + Commun.FIN_PROMPT("memo-cartes.json");
+const IMPORT = {
+  liste: () => cards,
+  valide: c => c.recto && c.verso,
+  defauts: () => ({ matiere: "", ...nouvelleProgression() }),
+  apres: n => {
+    saveCards(cards);
+    refreshMatiereOptions();
+    updateCounts();
+    renderList();
+    alert(n + " carte(s) importée(s).");
+  }
+};
+Commun.importerJSON(document.getElementById("importFile"), IMPORT);
+Commun.promptIA(document.getElementById("promptIA"), { prompt: PROMPT_IA, quoi: "des cartes", input: document.getElementById("importFile"), options: IMPORT });
+
+// --- Review logic (simplified SM-2) ---
+let reviewDoneIds = new Set();
+const zone = document.getElementById("reviewArea");
+function afficherFin() {
+  document.getElementById("revCarte").hidden = true;
+  document.getElementById("showAnswerRow").hidden = true;
+  document.getElementById("ratingRow").hidden = true;
+  const n = reviewDoneIds.size;
+  document.getElementById("finTitre").textContent = n ? "Bravo, séance terminée." : "Rien à réviser aujourd'hui.";
+  document.getElementById("finTexte").textContent = n
+    ? n + (n > 1 ? " cartes révisées" : " carte révisée") + ". Les prochaines reviendront au bon moment."
+    : "Toutes vos cartes sont à jour. Revenez demain, ou ajoutez de nouvelles cartes.";
+  document.getElementById("reviewDone").hidden = false;
+  document.getElementById("reviewBar").style.width = "100%";
+  document.getElementById("fermerRevision").focus();
+  updateCounts();
+  renderList();
+}
+function quitterRevision() {
+  zone.hidden = true;
+  document.body.style.overflow = "";
+  updateCounts();
+  renderList();
+  document.getElementById("startReview").focus();
+}
+function startReview() {
+  reviewQueue = cards.filter(isDue);
+  reviewTotal = reviewQueue.length;
+  reviewDoneIds = new Set();
+  zone.hidden = false;
+  document.body.style.overflow = "hidden";
+  document.getElementById("reviewDone").hidden = true;
+  if (reviewQueue.length === 0) { afficherFin(); return; }
+  nextCard();
+}
+
+function nextCard() {
+  if (reviewQueue.length === 0) { afficherFin(); return; }
+  currentCard = reviewQueue.shift();
+  document.getElementById("revCarte").hidden = false;
+  const badgeMatiere = document.getElementById("reviewMatiere"), mat = Commun.classeMatiere(currentCard.matiere);
+  badgeMatiere.textContent = currentCard.matiere || "Sans matière";
+  badgeMatiere.className = "badge" + (mat ? " matiere " + mat : "");
+  // les cartes « Encore » reviennent en fin de séance : on compte les cartes validées, pas les passages
+  document.getElementById("reviewProgress").textContent =
+    reviewDoneIds.size + " / " + reviewTotal + (currentCard.retour ? " · 2e passage" : "");
+  document.getElementById("reviewBar").style.width = (reviewTotal ? reviewDoneIds.size / reviewTotal * 100 : 0) + "%";
+  document.getElementById("reviewRecto").textContent = currentCard.recto;
+  document.getElementById("reviewVerso").textContent = currentCard.verso;
+  document.getElementById("reviewVerso").hidden = true;
+  document.getElementById("showAnswerRow").hidden = false;
+  document.getElementById("ratingRow").hidden = true;
+  document.getElementById("showAnswerBtn").focus();
+}
+
+function showAnswer() {
+  document.getElementById("reviewVerso").hidden = false;
+  document.getElementById("showAnswerRow").hidden = true;
+  document.getElementById("ratingRow").hidden = false;
+  document.querySelector('#ratingRow [data-rating="2"]').focus();
+}
+
+function rateCard(rating) {
+  const c = cards.find(x => x.id === currentCard.id);
+  if (!c) { nextCard(); return; }
+  c.ease = c.ease || 2.5;
+  c.reps = c.reps || 0;
+  c.interval = c.interval || 0;
+
+  if (rating === 0) {
+    c.reps = 0;
+    c.interval = 0;
+    c.ease = Math.max(1.3, c.ease - 0.2);
+  } else {
+    if (rating === 1) c.ease = Math.max(1.3, c.ease - 0.15);
+    if (rating === 3) c.ease = c.ease + 0.15;
+
+    if (c.reps === 0) c.interval = 1;
+    else if (c.reps === 1) c.interval = 6;
+    else c.interval = Math.round(c.interval * c.ease);
+
+    c.reps += 1;
+  }
+
+  const due = new Date();
+  due.setDate(due.getDate() + Math.max(c.interval, rating === 0 ? 0 : 1));
+  c.dueDate = localISO(due);
+
+  saveCards(cards);
+  logReview();
+  if (rating === 0) reviewQueue.push({ id: c.id, matiere: c.matiere, recto: c.recto, verso: c.verso, retour: true });
+  else reviewDoneIds.add(c.id);
+  nextCard();
+}
+
+document.getElementById("startReview").addEventListener("click", startReview);
+document.getElementById("quitterRevision").addEventListener("click", quitterRevision);
+document.getElementById("fermerRevision").addEventListener("click", quitterRevision);
+document.getElementById("showAnswerBtn").addEventListener("click", showAnswer);
+document.getElementById("ratingRow").addEventListener("click", (e) => {
+  const btn = e.target.closest("button[data-rating]");
+  if (btn) rateCard(Number(btn.dataset.rating));
+});
+
+document.addEventListener("keydown", (e) => {
+  if (zone.hidden) return;
+  if (e.key === "Escape") { e.preventDefault(); quitterRevision(); return; }
+  const t = e.target;
+  if (t.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)) return;
+  if (e.code === "Space" && !document.getElementById("showAnswerRow").hidden) { e.preventDefault(); showAnswer(); }
+  if (["1","2","3","4"].includes(e.key) && !document.getElementById("ratingRow").hidden) { e.preventDefault(); rateCard(Number(e.key) - 1); }
+});
+
+// --- Onglets : Réviser / Mes cartes (l'onglet choisi reste dans l'adresse : #cartes) ---
+function montrerOnglet(nom) {
+  const cartes = nom === "cartes";
+  document.getElementById("ongReviser").setAttribute("aria-selected", String(!cartes));
+  document.getElementById("ongCartes").setAttribute("aria-selected", String(cartes));
+  document.getElementById("vueReviser").hidden = cartes;
+  document.getElementById("vueCartes").hidden = !cartes;
+  history.replaceState(null, "", cartes ? "#cartes" : location.pathname + location.search);
+}
+document.getElementById("ongReviser").addEventListener("click", () => montrerOnglet("reviser"));
+document.getElementById("ongCartes").addEventListener("click", () => montrerOnglet("cartes"));
+
+refreshMatiereOptions();
+updateCounts();
+renderList();
+if (location.hash === "#cartes") montrerOnglet("cartes");
+
+// Lien depuis la recherche globale du Hub : flashcards.html?q=…
+const rechercheInitiale = new URLSearchParams(location.search).get("q");
+if (rechercheInitiale) {
+  document.getElementById("searchBox").value = rechercheInitiale;
+  montrerOnglet("cartes");
+  renderList();
+}
+</script>
+</body>
+</html>

@@ -5,118 +5,123 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Diligences — Paraphe</title>
 <meta name="description" content="Visite guidée de Diligences, l’outil de suivi des dossiers de Paraphe : sociétés, contrats, litiges, échéances, pièces et honoraires.">
-<meta name="theme-color" content="#131316">
+<meta name="theme-color" content="#F6F6FA" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0F0F16" media="(prefers-color-scheme: dark)">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/img/paraphe-icone-32.png">
 <link rel="icon" type="image/svg+xml" href="assets/img/paraphe-icone.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="assets/img/paraphe-icone-180.png">
 <style>
-@font-face{font-family:'Zilla Slab';font-weight:400;font-display:swap;src:url(assets/fonts/zilla-slab-latin-400-normal.woff2) format('woff2')}
-@font-face{font-family:'Zilla Slab';font-weight:600;font-display:swap;src:url(assets/fonts/zilla-slab-latin-600-normal.woff2) format('woff2')}
-@font-face{font-family:'Zilla Slab';font-weight:700;font-display:swap;src:url(assets/fonts/zilla-slab-latin-700-normal.woff2) format('woff2')}
-@font-face{font-family:'Archivo';font-weight:400;font-display:swap;src:url(assets/fonts/archivo-latin-400-normal.woff2) format('woff2')}
-@font-face{font-family:'Archivo';font-weight:500;font-display:swap;src:url(assets/fonts/archivo-latin-500-normal.woff2) format('woff2')}
-@font-face{font-family:'Archivo';font-weight:600;font-display:swap;src:url(assets/fonts/archivo-latin-600-normal.woff2) format('woff2')}
-@font-face{font-family:'Archivo';font-weight:700;font-display:swap;src:url(assets/fonts/archivo-latin-700-normal.woff2) format('woff2')}
-</style>
-<style>
-/* Mise en page : une visite guidée en sept chapitres, texte à gauche et capture à droite (alternées),
-   sommaire collant en haut. Charte Paraphe : aplats, coins vifs, ombres plates décalées. */
+@font-face{font-family:"Funnel Sans";font-weight:300 800;font-display:swap;src:url(assets/fonts/FunnelSans-variable-latin.woff2) format("woff2")}
+@font-face{font-family:"Funnel Display";font-weight:300 800;font-display:swap;src:url(assets/fonts/FunnelDisplay-variable-latin.woff2) format("woff2")}
+/* Visite guidée en sept chapitres : texte et capture alternés, sommaire en verre qui reste en haut.
+   Style du site (23 oct. 2026) : Funnel, un seul accent Iris, coins doux, ombres douces. */
 :root{
-  --fond:#F7F6F2; --carte:#FFFFFF; --encre:#131316; --encre-2:#5C5C63; --gris:#8F8F89; --filet:#DEDCD5;
-  --acc:#3B2FE8; --acc-texte:#3B2FE8; --acc-fond:rgba(59,47,232,.07); --alerte:#C62828;
-  --ombre:8px 8px 0 rgba(19,19,22,.12); --ombre-forte:12px 12px 0 rgba(19,19,22,.16);
-  --slab:"Zilla Slab",Georgia,serif; --sans:"Archivo",system-ui,-apple-system,sans-serif;
+  --fond:#F6F6FA; --carte:#FFFFFF; --carte-2:#EEEEF5; --encre:#14141C; --encre-2:#474756; --gris:#5F5F6E; --filet:#E2E2EB; --filet-2:#CFCFDC;
+  --acc:#5034DC; --acc-survol:#4127C4; --acc-texte:#4A2FD0; --acc-fond:#ECE8FD; --alerte:#B42318;
+  --ombre:0 1px 2px rgba(17,17,24,.06),0 1px 1px rgba(17,17,24,.04);
+  --ombre-forte:0 0 0 1px rgba(17,17,24,.07),0 12px 24px -12px rgba(17,17,24,.18),0 40px 80px -30px rgba(17,17,24,.3);
+  --verre:rgba(255,255,255,.72); --verre-bord:rgba(255,255,255,.75); --verre-reflet:rgba(255,255,255,.95);
+  --titre:"Funnel Display","Funnel Sans",system-ui,sans-serif; --sans:"Funnel Sans",system-ui,-apple-system,sans-serif;
+  --slab:var(--titre);
   --e1:4px; --e2:8px; --e3:12px; --e4:16px; --e5:20px; --e6:24px; --e7:32px; --e8:40px;
+  --ease:cubic-bezier(.23,1,.32,1);
 }
 body.sombre{
-  --fond:#131316; --carte:#1C1C20; --encre:#F4F3EE; --encre-2:#A9A9A2; --gris:#7C7C76; --filet:#2C2C31;
-  --acc:#5B50F0; --acc-texte:#9D96F8; --acc-fond:rgba(157,150,248,.10); --alerte:#EF6B6B;
-  --ombre:8px 8px 0 rgba(244,243,238,.07); --ombre-forte:12px 12px 0 rgba(244,243,238,.10); color-scheme:dark }
+  --fond:#0F0F16; --carte:#181822; --carte-2:#20202C; --encre:#EEEEF4; --encre-2:#BDBDCC; --gris:#9898AA; --filet:#262634; --filet-2:#363648;
+  --acc:#5034DC; --acc-survol:#6248EA; --acc-texte:#B3A3FF; --acc-fond:rgba(80,52,220,.26); --alerte:#F0786A;
+  --ombre:0 1px 2px rgba(0,0,0,.4);
+  --ombre-forte:0 0 0 1px rgba(255,255,255,.08),0 12px 24px -12px rgba(0,0,0,.6),0 40px 80px -30px rgba(0,0,0,.8);
+  --verre:rgba(26,26,38,.7); --verre-bord:rgba(255,255,255,.12); --verre-reflet:rgba(255,255,255,.12);
+  color-scheme:dark }
 
 *{box-sizing:border-box}
-body{margin:0;background:var(--fond);transition:background .15s ease,color .15s ease;color:var(--encre);font-family:var(--sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+body{margin:0;background:var(--fond);transition:background-color .15s ease,color .15s ease;color:var(--encre);font-family:var(--sans);font-size:16.5px;line-height:1.6;-webkit-font-smoothing:antialiased}
+::selection{background:var(--acc);color:#fff}
 .page{max-width:1180px;margin:0 auto;padding-inline:clamp(16px,4vw,48px)}
-h1,h2,h3{font-family:var(--slab);font-weight:700;letter-spacing:-.02em;margin:0;text-wrap:balance}
+h1,h2,h3{font-family:var(--titre);font-weight:700;letter-spacing:-.03em;margin:0;text-wrap:balance}
 p{margin:0}
-a{color:var(--acc-texte)}
-:focus-visible{outline:3px solid var(--acc-texte);outline-offset:2px}
-.etiquette{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--acc-texte)}
+a{color:var(--acc-texte);text-underline-offset:3px}
+:focus-visible{outline:2px solid var(--acc-texte);outline-offset:3px;border-radius:6px}
 
 /* ── En-tête ── */
-.tete{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:var(--e8);align-items:center;padding-block:56px 48px}
-.tete h1{font-size:clamp(40px,5.2vw,64px);line-height:1.02;margin:var(--e3) 0 var(--e4)}
-.tete .accroche{font-size:19px;color:var(--encre-2);max-width:34ch}
-.faits{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0;margin-top:var(--e7);border-top:2px solid var(--encre)}
-.faits div{padding:var(--e3) 0;border-bottom:1px solid var(--filet)}
-.faits b{display:block;font-family:var(--slab);font-size:26px;font-weight:700;line-height:1.1;font-variant-numeric:lining-nums tabular-nums}
-.faits span{font-size:13px;color:var(--encre-2)}
-.cadre{display:block;width:100%;padding:0;border:2px solid var(--encre);background:var(--carte);box-shadow:var(--ombre-forte);cursor:zoom-in}
+.tete{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:var(--e8);align-items:center;padding-block:48px 48px}
+.tete h1{font-size:clamp(42px,5.4vw,68px);line-height:1;letter-spacing:-.04em;font-weight:720;margin:0 0 var(--e4)}
+.tete .accroche{font-size:19px;color:var(--encre-2);max-width:36ch}
+.faits{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:var(--e7)}
+.faits div{padding:var(--e3) var(--e4);background:var(--carte);border:1px solid var(--filet);border-radius:14px}
+.faits b{display:block;font-family:var(--titre);font-size:26px;font-weight:700;letter-spacing:-.03em;line-height:1.1;font-variant-numeric:tabular-nums}
+.faits span{font-size:14px;color:var(--encre-2)}
+.cadre{display:block;width:100%;padding:0;border:0;border-radius:16px;overflow:hidden;background:var(--carte);box-shadow:var(--ombre-forte);cursor:zoom-in}
 .cadre img{display:block;width:100%;height:auto}
-.cadre:hover{transform:translate(-2px,-2px);box-shadow:14px 14px 0 rgba(59,47,232,.22)}
-@media (prefers-reduced-motion:no-preference){.cadre{transition:transform .15s ease,box-shadow .15s ease}}
+@media (prefers-reduced-motion:no-preference){.cadre{transition:transform .25s var(--ease),box-shadow .25s var(--ease)}.cadre:hover{transform:translateY(-3px)}}
 
-/* ── Sommaire ── */
-.sommaire{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--fond);border-block:2px solid var(--encre)}
-.sommaire ol{list-style:none;margin:0 auto;padding:0 clamp(16px,4vw,48px);max-width:1180px;display:flex;gap:var(--e1);overflow-x:auto;scrollbar-width:none}
+/* ── Sommaire : une barre en verre qui reste en haut ── */
+.sommaire{position:sticky;top:10px;z-index:10;max-width:1180px;margin:0 auto;padding-inline:clamp(16px,4vw,48px)}
+.sommaire ol{list-style:none;margin:0;padding:6px;display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;border-radius:999px;
+  background:var(--verre);-webkit-backdrop-filter:blur(18px) saturate(180%);backdrop-filter:blur(18px) saturate(180%);
+  box-shadow:inset 0 1px 0 var(--verre-reflet),0 0 0 1px var(--verre-bord),0 12px 32px -14px rgba(17,17,24,.32)}
+@media (prefers-reduced-transparency:reduce){.sommaire ol{background:var(--carte);-webkit-backdrop-filter:none;backdrop-filter:none}}
 .sommaire ol::-webkit-scrollbar{display:none}
-.sommaire a{display:block;white-space:nowrap;padding:var(--e3) var(--e3);font-size:12.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--encre-2);text-decoration:none;border-bottom:3px solid transparent}
-.sommaire a:hover,.sommaire a.actif{color:var(--encre);border-bottom-color:var(--acc)}
-.sommaire .num{font-family:var(--slab);color:var(--acc-texte);margin-right:6px}
+.sommaire a{display:block;white-space:nowrap;padding:8px 14px;border-radius:999px;font-size:14.5px;font-weight:580;color:var(--encre-2);text-decoration:none;transition:background-color .2s var(--ease),color .2s var(--ease)}
+.sommaire a:hover{color:var(--encre);background:var(--carte-2)}
+.sommaire a.actif{color:var(--encre);background:var(--acc-fond)}
+.sommaire .num{color:var(--acc-texte);margin-right:6px;font-variant-numeric:tabular-nums}
 
 /* ── Chapitres ── */
-.chapitre{padding-block:72px 16px;scroll-margin-top:52px}
-.chapitre>header{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--e2);max-width:760px;margin-bottom:var(--e7)}
-.chapitre>header h2{font-size:clamp(30px,3.6vw,42px);line-height:1.08}
+.chapitre{padding-block:72px 16px;scroll-margin-top:72px}
+.chapitre>header{display:grid;grid-template-columns:minmax(0,1fr);gap:var(--e3);max-width:760px;margin-bottom:var(--e7)}
+.chapitre>header h2{font-size:clamp(32px,3.8vw,46px);line-height:1.04;letter-spacing:-.04em}
 .chapitre>header p{font-size:18px;color:var(--encre-2)}
 .fonc{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:var(--e8);align-items:start;padding-block:var(--e7);border-top:1px solid var(--filet)}
 .fonc.inv{grid-template-columns:minmax(0,7fr) minmax(0,5fr)}
 .fonc.inv .texte{order:2}
-.texte h3{font-size:24px;line-height:1.2;margin-bottom:var(--e3)}
+.texte h3{font-size:24px;line-height:1.2;letter-spacing:-.025em;margin-bottom:var(--e3)}
 .texte p{color:var(--encre-2);max-width:62ch}
 .texte ul{margin:var(--e4) 0 0;padding:0;list-style:none;display:grid;gap:var(--e2)}
-.texte li{position:relative;padding-left:22px;font-size:15px}
-.texte li::before{content:"";position:absolute;left:0;top:.62em;width:10px;height:2px;background:var(--acc-texte)}
-.ref{font-family:var(--slab);font-weight:600;white-space:nowrap}
+.texte li{position:relative;padding-left:22px;font-size:15.5px}
+.texte li::before{content:"";position:absolute;left:0;top:.66em;width:10px;height:2px;border-radius:1px;background:var(--acc-texte)}
+.ref{font-weight:650;white-space:nowrap;font-variant-numeric:tabular-nums}
 .duo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--e5)}
-.legende{font-size:12.5px;color:var(--gris);margin-top:var(--e2)}
-.note{margin-top:var(--e4);padding:var(--e3) var(--e4);border-left:3px solid var(--acc-texte);background:var(--acc-fond);font-size:14px;color:var(--encre-2)}
-.note.alerte{border-left-color:var(--alerte)}
+.legende{font-size:13.5px;color:var(--gris);margin-top:var(--e2)}
+.note{margin-top:var(--e4);padding:var(--e3) var(--e4);border-radius:12px;background:var(--acc-fond);font-size:15px;color:var(--encre)}
+.note.alerte{background:color-mix(in srgb,var(--alerte) 12%,var(--carte))}
 
 /* ── Fin de page ── */
-.fin{margin-block:72px 56px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;border:2px solid var(--encre);background:var(--carte);box-shadow:var(--ombre)}
+.fin{margin-block:72px 56px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;border:1px solid var(--filet);border-radius:24px;background:var(--carte);box-shadow:var(--ombre);overflow:hidden}
 .fin>div{padding:var(--e6)}
 .fin>div+div{border-left:1px solid var(--filet)}
-.fin h3{font-size:20px;margin-bottom:var(--e2)}
-.fin p{font-size:14.5px;color:var(--encre-2)}
-.pied{padding-block:0 40px;font-size:12.5px;color:var(--gris)}
+.fin h3{font-size:21px;margin-bottom:var(--e2)}
+.fin p{font-size:15px;color:var(--encre-2)}
+.pied{padding-block:0 40px;font-size:13.5px;color:var(--gris)}
 
 /* ── Loupe ── */
-dialog{padding:0;border:2px solid var(--encre);background:var(--carte);color:var(--encre);max-width:min(1440px,96vw);max-height:94vh;box-shadow:var(--ombre-forte)}
-dialog::backdrop{background:rgba(19,19,22,.78)}
-dialog img{display:block;max-width:100%;max-height:calc(94vh - 56px);width:auto;height:auto}
-dialog .barre{display:flex;justify-content:space-between;align-items:center;gap:var(--e4);padding:var(--e2) var(--e4);border-top:1px solid var(--filet);font-size:13.5px}
-dialog button{font:600 12px var(--sans);letter-spacing:.06em;text-transform:uppercase;padding:var(--e2) var(--e4);border:2px solid var(--encre);background:transparent;color:var(--encre);cursor:pointer}
-dialog button:hover{background:var(--encre);color:var(--fond)}
+dialog{padding:0;border:0;border-radius:18px;overflow:hidden;background:var(--carte);color:var(--encre);max-width:min(1440px,96vw);max-height:94vh;box-shadow:var(--ombre-forte)}
+dialog::backdrop{background:rgba(15,15,22,.7)}
+dialog img{display:block;max-width:100%;max-height:calc(94vh - 60px);width:auto;height:auto}
+dialog .barre{display:flex;justify-content:space-between;align-items:center;gap:var(--e4);padding:var(--e2) var(--e4);border-top:1px solid var(--filet);font-size:14px}
+dialog button{font:600 14px var(--sans);padding:8px 16px;border-radius:999px;border:1px solid var(--filet-2);background:var(--carte);color:var(--encre);cursor:pointer}
+dialog button:hover{border-color:var(--gris)}
 
 @media (max-width:860px){
   .tete,.fonc,.fonc.inv{grid-template-columns:minmax(0,1fr);gap:var(--e5)}
   .fonc.inv .texte{order:0}
-  .tete{padding-block:32px 32px}
+  .tete{padding-block:28px 32px}
   .fin{grid-template-columns:minmax(0,1fr)}
   .fin>div+div{border-left:0;border-top:1px solid var(--filet)}
 }
 @media (max-width:520px){ .duo{grid-template-columns:minmax(0,1fr)} }
 
 /* ── Barre du site ── */
-.barre-site{display:flex;align-items:center;justify-content:space-between;gap:var(--e3);padding:var(--e3) clamp(16px,4vw,48px);border-bottom:3px solid var(--encre);max-width:none}
-.barre-site a{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--encre-2);text-decoration:none}
+.barre-site{display:flex;align-items:center;justify-content:space-between;gap:var(--e3);max-width:1180px;margin:0 auto;padding:var(--e4) clamp(16px,4vw,48px) 0}
+.barre-site a{font-size:15px;font-weight:580;color:var(--encre-2);text-decoration:none}
 .barre-site a:hover{color:var(--encre)}
 .barre-site .actions{display:flex;gap:var(--e2);align-items:center}
-.barre-site .ouvrir{color:var(--fond);background:var(--encre);padding:var(--e2) var(--e3)}
-.barre-site .ouvrir:hover{color:#fff;background:var(--acc)}
-#theme-toggle{font:600 11px var(--sans);letter-spacing:.08em;text-transform:uppercase;padding:var(--e2) var(--e3);border:2px solid var(--encre);background:transparent;color:var(--encre);cursor:pointer}
-#theme-toggle:hover{background:var(--encre);color:var(--fond)}
+.barre-site .ouvrir,#theme-toggle{display:inline-flex;align-items:center;min-height:42px;padding:0 18px;border-radius:999px;font:600 15px var(--sans)}
+.barre-site .ouvrir{color:#fff;background:var(--acc);box-shadow:inset 0 1px 0 rgba(255,255,255,.22)}
+.barre-site .ouvrir:hover{color:#fff;background:var(--acc-survol)}
+#theme-toggle{border:1px solid var(--filet-2);background:var(--carte);color:var(--encre);cursor:pointer}
+#theme-toggle:hover{border-color:var(--gris)}
 </style>
 </head>
 <body>
@@ -135,7 +140,7 @@ dialog button:hover{background:var(--encre);color:var(--fond)}
 })();
 </script>
 <nav class="barre-site" aria-label="Navigation du site">
-  <a href="index.html#six">← Paraphe, les six outils</a>
+  <a href="index.html">← Paraphe, les six outils</a>
   <div class="actions">
     <a class="ouvrir" href="index.html#telecharger">Télécharger Paraphe</a>
     <button id="theme-toggle" type="button" aria-pressed="false">Nuit</button>
@@ -144,7 +149,6 @@ dialog button:hover{background:var(--encre);color:var(--fond)}
 <div class="page">
   <header class="tete">
     <div>
-      <span class="etiquette">Paraphe · outil de pratique</span>
       <h1>Diligences</h1>
       <p class="accroche">Le poste de pilotage du juriste : sociétés, contrats, litiges et consultations, avec leurs échéances, leurs pièces et leurs honoraires. Tout reste sur votre machine.</p>
       <div class="faits">
@@ -154,7 +158,7 @@ dialog button:hover{background:var(--encre);color:var(--fond)}
         <div><b>Hors ligne</b><span>aucun serveur, aucun compte</span></div>
       </div>
     </div>
-    <button class="cadre" type="button" data-legende="Le tableau de bord, en thème clair"><img src="assets/img/diligences/dashboard.jpg" alt="Tableau de bord de Diligences : indicateurs, graphiques, échéances et litiges actifs" width="1440" height="900"></button>
+    <button class="cadre" type="button" data-legende="Le tableau de bord, en thème clair"><img src="assets/img/diligences/dashboard.jpg" srcset="assets/img/diligences/dashboard.jpg 1440w, assets/img/diligences/dashboard@2x.jpg 2880w" sizes="(max-width: 860px) 92vw, 700px" alt="Tableau de bord de Diligences : indicateurs, graphiques, échéances et litiges actifs" width="1440" height="900"></button>
   </header>
 </div>
 
@@ -173,7 +177,7 @@ dialog button:hover{background:var(--encre);color:var(--fond)}
 <main class="page">
 
   <section class="chapitre" id="tableau">
-    <header><span class="etiquette">Chapitre 1</span><h2>Ce qui demande votre attention, en un écran</h2>
+    <header><h2>Ce qui demande votre attention, en un écran</h2>
       <p>À l'ouverture, l'Accueil dit où vous en êtes : ce qui arrive bientôt, ce qui est en retard, et par où commencer si vous démarrez.</p></header>
     <div class="fonc">
       <div class="texte">
@@ -187,19 +191,19 @@ dialog button:hover{background:var(--encre);color:var(--fond)}
           <li>Des statistiques et un glossaire des mots juridiques, repliés en bas de page ; un bandeau « Alertes du jour » à la première ouverture de la journée.</li>
         </ul>
       </div>
-      <button class="cadre" type="button" data-legende="Tableau de bord"><img loading="lazy" src="assets/img/diligences/dashboard.jpg" alt="Tableau de bord" width="1440" height="900"></button>
+      <button class="cadre" type="button" data-legende="Tableau de bord"><img loading="lazy" src="assets/img/diligences/dashboard.jpg" srcset="assets/img/diligences/dashboard.jpg 1440w, assets/img/diligences/dashboard@2x.jpg 2880w" sizes="(max-width: 860px) 92vw, 700px" alt="Tableau de bord" width="1440" height="900"></button>
     </div>
     <div class="fonc inv">
       <div class="texte">
         <h3>Rapport exécutif</h3>
         <p>Une synthèse d'une page à remettre à une direction : litiges prioritaires classés par risque, échéances et audiences à 30 jours, répartition par niveau et par statut. Elle s'imprime ou s'enregistre en PDF.</p>
       </div>
-      <button class="cadre" type="button" data-legende="Rapport exécutif"><img loading="lazy" src="assets/img/diligences/rapport.jpg" alt="Rapport exécutif" width="1440" height="900"></button>
+      <button class="cadre" type="button" data-legende="Rapport exécutif"><img loading="lazy" src="assets/img/diligences/rapport.jpg" srcset="assets/img/diligences/rapport.jpg 1440w, assets/img/diligences/rapport@2x.jpg 2880w" sizes="(max-width: 860px) 92vw, 700px" alt="Rapport exécutif" width="1440" height="900"></button>
     </div>
   </section>
 
   <section class="chapitre" id="referentiel">
-    <header><span class="etiquette">Chapitre 2</span><h2>Un référentiel qui relie tout</h2>
+    <header><h2>Un référentiel qui relie tout</h2>
       <p>Quatre registres, rangés dans le menu sous « Mes dossiers » (Contrats, Litiges, Consultations, Sociétés) et reliés entre eux : un litige pointe vers son contrat, qui pointe vers la société cliente.</p></header>
     <div class="fonc">
       <div class="texte">
@@ -211,7 +215,7 @@ dialog button:hover{background:var(--encre);color:var(--fond)}
           <li>Vue liste ou vue cartes, export CSV réimportable.</li>
         </ul>
       </div>
-      <button class="cadre" type="button" data-legende="Liste des litiges"><img loading="lazy" src="assets/img/diligences/litiges.jpg" alt="Liste des litiges" width="1440" height="900"></button>
+      <button class="cadre" type="button" data-legende="Liste des litiges"><img loading="lazy" src="assets/img/diligences/litiges.jpg" srcset="assets/img/diligences/litiges.jpg 1440w, assets/img/diligences/litiges@2x.jpg 2880w" sizes="(max-width: 860px) 92vw, 700px" alt="Liste des litiges" width="1440" height="900"></button>
     </div>
     <div class="fonc inv">
       <div class="texte">
@@ -221,7 +225,7 @@ dialog button:hover{background:var(--encre);color:var(--fond)}
           <li>Filtre par période de fin, duplication d'un contrat, export CSV.</li>
         </ul>
       </div>
-      <button class="cadre" type="button" data-legende="Contrats"><img loading="lazy" src="assets/img/diligences/contrats.jpg" alt="Liste des contrats" width="1440" height="900"></button>
+      <button class="cadre" type="button" data-legende="Contrats"><img loading="lazy" src="assets/img/diligences/contrats.jpg" srcset="assets/img/diligences/contrats.jpg 1440w, assets/img/diligences/contrats@2x.jpg 2880w" sizes="(max-width: 860px) 92vw, 700px" alt="Liste des contrats" width="1440" height="900"></button>
     </div>
     <div class="fonc">
       <div class="texte">
@@ -229,14 +233,14 @@ dialog button:hover{background:var(--encre);color:var(--fond)}
         <p>Les sociétés (forme, SIREN, adresse, capital, statut) servent de clients et de parties. Les consultations suivent les demandes internes, avec leur priorité (normale, urgente, critique) et leur statut jusqu'à la réponse.</p>
       </div>
       <div class="duo">
-        <div><button class="cadre" type="button" data-legende="Sociétés, vue cartes"><img loading="lazy" src="assets/img/diligences/societes.jpg" alt="Sociétés en vue cartes" width="1440" height="900"></button><p class="legende">Sociétés, vue cartes</p></div>
-        <div><button class="cadre" type="button" data-legende="Consultations"><img loading="lazy" src="assets/img/diligences/consultations.jpg" alt="Consultations" width="1440" height="900"></button><p class="legende">Consultations</p></div>
+        <div><button class="cadre" type="button" data-legende="Sociétés, vue cartes"><img loading="lazy" src="assets/img/diligences/societes.jpg" srcset="assets/img/diligences/societes.jpg 1440w, assets/img/diligences/societes@2x.jpg 2880w" sizes="(max-width: 860px) 92vw, 700px" alt="Sociétés en vue cartes" width="1440" height="900"></button><p class="legende">Sociétés, vue cartes</p></div>
+        <div><button class="cadre" type="button" data-legende="Consultations"><img loading="lazy" src="assets/img/diligences/consultations.jpg" srcset="assets/img/diligences/consultations.jpg 1440w, assets/img/diligences/consultations@2x.jpg 2880w" sizes="(max-width: 860px) 92vw, 700px" alt="Consultations" width="1440" height="900"></button><p class="legende">Consultations</p></div>
       </div>
     </div>
   </section>
 
   <section class="chapitre" id="dossier">
-    <header><span class="etiquette">Chapitre 3</span><h2>Le dossier d'un litige, de l'assignation au relevé d'honoraires</h2>
+    <header><h2>Le dossier d'un litige, de l'assignation au relevé d'honoraires</h2>
       <p>Un clic sur un litige ouvre sa fiche complète. C'est là que se fait l'essentiel du travail quotidien.</p></header>
     <div class="fonc">
       <div class="texte">
@@ -250,7 +254,7 @@ dialog button:hover{background:var(--encre);color:var(--fond)}
           <li><b>Historique</b> : la trace des modifications du dossier.</li>
         </ul>
       </div>
-      <button class="cadre" type="button" data-legende="Fiche d'un litige"><img loading="lazy" src="assets/img/diligences/dossier.jpg" alt="Fiche d'un litige" width="1440" height="900"></button>
+      <button class="cadre" type="button" data-legende="Fiche d'un litige"><img loading="lazy" src="assets/img/diligences/dossier.jpg" srcset="assets/img/diligences/dossier.jpg 1440w, assets/img/diligences/dossier@2x.jpg 2880w" sizes="(max-width: 860px) 92vw, 700px" alt="Fiche d'un litige" width="1440" height="900"></button>
     </div>
     <div class="fonc inv">
       <div class="texte">
@@ -261,7 +265,7 @@ dialog button:hover{background:var(--encre);color:var(--fond)}
           <li>Chaque événement peut porter des documents et des PDF.</li>
         </ul>
       </div>
-      <button class="cadre" type="button" data-legende="Frise chronologique du litige"><img loading="lazy" src="assets/img/diligences/frise.jpg" alt="Frise chronologique" width="1136" height="556"></button>
+      <button class="cadre" type="button" data-legende="Frise chronologique du litige"><img loading="lazy" src="assets/img/diligences/frise.jpg" srcset="assets/img/diligences/frise.jpg 1440w, assets/img/diligences/frise@2x.jpg 2880w" sizes="(max-width: 860px) 92vw, 700px" alt="Frise chronologique" width="1136" height="556"></button>
     </div>
     <div class="fonc">
       <div class="texte">
@@ -273,21 +277,21 @@ dialog button:hover{background:var(--encre);color:var(--fond)}
           <li>Le chronomètre continue si vous changez de page, et l'onglet affiche ⏱ tant qu'il tourne.</li>
         </ul>
       </div>
-      <button class="cadre" type="button" data-legende="Temps et honoraires"><img loading="lazy" src="assets/img/diligences/temps.jpg" alt="Panneau temps et honoraires" width="1136" height="386"></button>
+      <button class="cadre" type="button" data-legende="Temps et honoraires"><img loading="lazy" src="assets/img/diligences/temps.jpg" srcset="assets/img/diligences/temps.jpg 1440w, assets/img/diligences/temps@2x.jpg 2880w" sizes="(max-width: 860px) 92vw, 700px" alt="Panneau temps et honoraires" width="1136" height="386"></button>
     </div>
     <div class="fonc inv">
       <div class="texte">
         <h3>Pièces jointes PDF</h3>
         <p>Dans l'onglet « Documents et notes », glissez les PDF du dossier (10 Mo maximum chacun). Ils sont rangés dans une base du navigateur séparée, pour ne pas saturer l'espace des données, et chiffrés si le profil est protégé par un code.</p>
       </div>
-      <button class="cadre" type="button" data-legende="Pièces jointes"><img loading="lazy" src="assets/img/diligences/pieces.jpg" alt="Pièces jointes du litige" width="1136" height="358"></button>
+      <button class="cadre" type="button" data-legende="Pièces jointes"><img loading="lazy" src="assets/img/diligences/pieces.jpg" srcset="assets/img/diligences/pieces.jpg 1440w, assets/img/diligences/pieces@2x.jpg 2880w" sizes="(max-width: 860px) 92vw, 700px" alt="Pièces jointes du litige" width="1136" height="358"></button>
     </div>
     <div class="fonc">
       <div class="texte">
         <h3>Checklist de procédure</h3>
         <p>Dans l'onglet « Chronologie et tâches », « Tâches à faire » propose des listes par phase, avec une barre de progression. Cinq modèles sont prêts à l'emploi : litige commercial, procédure d'appel, expertise judiciaire, recouvrement, prud'hommes. Les tâches non faites remontent dans le tableau de bord.</p>
       </div>
-      <button class="cadre" type="button" data-legende="Checklist de procédure"><img loading="lazy" src="assets/img/diligences/checklist.jpg" alt="Checklist de procédure" width="1136" height="710"></button>
+      <button class="cadre" type="button" data-legende="Checklist de procédure"><img loading="lazy" src="assets/img/diligences/checklist.jpg" srcset="assets/img/diligences/checklist.jpg 1440w, assets/img/diligences/checklist@2x.jpg 2880w" sizes="(max-width: 860px) 92vw, 700px" alt="Checklist de procédure" width="1136" height="710"></button>
     </div>
     <div class="fonc inv">
       <div class="texte">
@@ -299,47 +303,47 @@ dialog button:hover{background:var(--encre);color:var(--fond)}
           <li>Copie, export Word ou impression en PDF.</li>
         </ul>
       </div>
-      <button class="cadre" type="button" data-legende="Courrier prérempli"><img loading="lazy" src="assets/img/diligences/courrier.jpg" alt="Fenêtre de courrier prérempli" width="1440" height="900"></button>
+      <button class="cadre" type="button" data-legende="Courrier prérempli"><img loading="lazy" src="assets/img/diligences/courrier.jpg" srcset="assets/img/diligences/courrier.jpg 1440w, assets/img/diligences/courrier@2x.jpg 2880w" sizes="(max-width: 860px) 92vw, 700px" alt="Fenêtre de courrier prérempli" width="1440" height="900"></button>
     </div>
     <div class="fonc">
       <div class="texte">
         <h3>Délais calculés avec Quantième</h3>
         <p>Le bouton « Calculer les délais » ouvre Quantième, le calculateur de délais de la suite, à la date de l'assignation. Vous choisissez la procédure parmi 123, vous vérifiez la frise, puis « Envoyer au litige » verse les échéances dans la frise du dossier, sans doublon.</p>
       </div>
-      <button class="cadre" type="button" data-legende="Quantième, ouvert depuis un litige"><img loading="lazy" src="assets/img/diligences/quantieme.jpg" alt="Quantième ouvert depuis un litige" width="1440" height="900"></button>
+      <button class="cadre" type="button" data-legende="Quantième, ouvert depuis un litige"><img loading="lazy" src="assets/img/diligences/quantieme.jpg" srcset="assets/img/diligences/quantieme.jpg 1440w, assets/img/diligences/quantieme@2x.jpg 2880w" sizes="(max-width: 860px) 92vw, 700px" alt="Quantième ouvert depuis un litige" width="1440" height="900"></button>
     </div>
     <div class="fonc inv">
       <div class="texte">
         <h3>Alerte de conflit d'intérêts</h3>
         <p>Pendant la saisie de l'adversaire, Diligences le compare à vos sociétés clientes et aux clients de vos contrats, sans tenir compte des accents ni des formes sociales. « Acme Industries » correspond donc à « ACME Industries SAS ». La création demande une confirmation explicite.</p>
       </div>
-      <button class="cadre" type="button" data-legende="Alerte de conflit d'intérêts"><img loading="lazy" src="assets/img/diligences/conflit.jpg" alt="Alerte de conflit d'intérêts dans le formulaire" width="1440" height="900"></button>
+      <button class="cadre" type="button" data-legende="Alerte de conflit d'intérêts"><img loading="lazy" src="assets/img/diligences/conflit.jpg" srcset="assets/img/diligences/conflit.jpg 1440w, assets/img/diligences/conflit@2x.jpg 2880w" sizes="(max-width: 860px) 92vw, 700px" alt="Alerte de conflit d'intérêts dans le formulaire" width="1440" height="900"></button>
     </div>
   </section>
 
   <section class="chapitre" id="echeances">
-    <header><span class="etiquette">Chapitre 4</span><h2>Piloter les échéances</h2>
+    <header><h2>Piloter les échéances</h2>
       <p>Quatre vues pour ne rien laisser passer : le statut des litiges, le calendrier, les renouvellements et la prescription.</p></header>
     <div class="fonc">
       <div class="texte">
         <h3>Litiges par étape</h3>
         <p>Un tableau en colonnes (actif, en appel, transaction, gagné, perdu), appelé « Litiges par étape » dans le menu. Faites glisser une carte pour changer le statut d'un litige. En tête : total, dossiers ouverts, critiques, audiences à 30 jours et exposition.</p>
       </div>
-      <button class="cadre" type="button" data-legende="Litiges par étape"><img loading="lazy" src="assets/img/diligences/kanban.jpg" alt="Litiges rangés par étape, en colonnes" width="1440" height="900"></button>
+      <button class="cadre" type="button" data-legende="Litiges par étape"><img loading="lazy" src="assets/img/diligences/kanban.jpg" srcset="assets/img/diligences/kanban.jpg 1440w, assets/img/diligences/kanban@2x.jpg 2880w" sizes="(max-width: 860px) 92vw, 700px" alt="Litiges rangés par étape, en colonnes" width="1440" height="900"></button>
     </div>
     <div class="fonc inv">
       <div class="texte">
         <h3>Calendrier et export .ics</h3>
         <p>Vue mensuelle des audiences, événements et fins de contrats, avec la liste des prochains événements. L'export .ics les envoie dans Calendrier, Outlook ou Google Agenda, avec rappels : 2 jours avant une audience, 30 jours avant la fin d'un contrat.</p>
       </div>
-      <button class="cadre" type="button" data-legende="Calendrier"><img loading="lazy" src="assets/img/diligences/calendrier.jpg" alt="Calendrier mensuel" width="1440" height="900"></button>
+      <button class="cadre" type="button" data-legende="Calendrier"><img loading="lazy" src="assets/img/diligences/calendrier.jpg" srcset="assets/img/diligences/calendrier.jpg 1440w, assets/img/diligences/calendrier@2x.jpg 2880w" sizes="(max-width: 860px) 92vw, 700px" alt="Calendrier mensuel" width="1440" height="900"></button>
     </div>
     <div class="fonc">
       <div class="texte">
         <h3>Prévisionnel</h3>
         <p>Les renouvellements de contrats par mois sur 6, 12 ou 24 mois, les contrats expirés, les échéances à 30 et 90 jours, et les audiences à préparer.</p>
       </div>
-      <button class="cadre" type="button" data-legende="Échéances et prévisionnel"><img loading="lazy" src="assets/img/diligences/previsionnel.jpg" alt="Prévisionnel des échéances" width="1440" height="900"></button>
+      <button class="cadre" type="button" data-legende="Échéances et prévisionnel"><img loading="lazy" src="assets/img/diligences/previsionnel.jpg" srcset="assets/img/diligences/previsionnel.jpg 1440w, assets/img/diligences/previsionnel@2x.jpg 2880w" sizes="(max-width: 860px) 92vw, 700px" alt="Prévisionnel des échéances" width="1440" height="900"></button>
     </div>
     <div class="fonc inv">
       <div class="texte">
@@ -351,19 +355,19 @@ dialog button:hover{background:var(--encre);color:var(--fond)}
         </ul>
         <p class="note">Les délais sont indicatifs : ils ne tiennent pas compte des causes d'interruption ou de suspension, et ne remplacent pas une vérification.</p>
       </div>
-      <button class="cadre" type="button" data-legende="Calcul de prescription"><img loading="lazy" src="assets/img/diligences/prescription.jpg" alt="Calcul de prescription par litige" width="1440" height="900"></button>
+      <button class="cadre" type="button" data-legende="Calcul de prescription"><img loading="lazy" src="assets/img/diligences/prescription.jpg" srcset="assets/img/diligences/prescription.jpg 1440w, assets/img/diligences/prescription@2x.jpg 2880w" sizes="(max-width: 860px) 92vw, 700px" alt="Calcul de prescription par litige" width="1440" height="900"></button>
     </div>
   </section>
 
   <section class="chapitre" id="analyse">
-    <header><span class="etiquette">Chapitre 5</span><h2>Analyser et retrouver</h2>
+    <header><h2>Analyser et retrouver</h2>
       <p>Des vues de synthèse pour comprendre le portefeuille, et deux façons de retrouver n'importe quelle fiche en quelques touches.</p></header>
     <div class="fonc">
       <div class="texte">
         <h3>Statistiques</h3>
         <p>Contrats par statut et par type, litiges par niveau de risque, taux de succès, budget juridique par dossier et répartition du risque entre les litiges ouverts.</p>
       </div>
-      <button class="cadre" type="button" data-legende="Statistiques"><img loading="lazy" src="assets/img/diligences/stats.jpg" alt="Statistiques" width="1440" height="900"></button>
+      <button class="cadre" type="button" data-legende="Statistiques"><img loading="lazy" src="assets/img/diligences/stats.jpg" srcset="assets/img/diligences/stats.jpg 1440w, assets/img/diligences/stats@2x.jpg 2880w" sizes="(max-width: 860px) 92vw, 700px" alt="Statistiques" width="1440" height="900"></button>
     </div>
     <div class="fonc inv">
       <div class="texte">
@@ -371,8 +375,8 @@ dialog button:hover{background:var(--encre);color:var(--fond)}
         <p>Le graphe montre qui est lié à qui : sociétés, contrats et litiges. La Vue 360° rassemble pour une société ses contrats, ses litiges (ceux de ses contrats et ceux où elle est adversaire), ses consultations et le risque total.</p>
       </div>
       <div class="duo">
-        <div><button class="cadre" type="button" data-legende="Graphe des relations"><img loading="lazy" src="assets/img/diligences/graphe.jpg" alt="Graphe des relations" width="1440" height="900"></button><p class="legende">Graphe des relations</p></div>
-        <div><button class="cadre" type="button" data-legende="Vue 360° d'une société"><img loading="lazy" src="assets/img/diligences/vue360.jpg" alt="Vue 360 d'une société" width="1440" height="900"></button><p class="legende">Vue 360° d'une société</p></div>
+        <div><button class="cadre" type="button" data-legende="Graphe des relations"><img loading="lazy" src="assets/img/diligences/graphe.jpg" srcset="assets/img/diligences/graphe.jpg 1440w, assets/img/diligences/graphe@2x.jpg 2880w" sizes="(max-width: 860px) 92vw, 700px" alt="Graphe des relations" width="1440" height="900"></button><p class="legende">Graphe des relations</p></div>
+        <div><button class="cadre" type="button" data-legende="Vue 360° d'une société"><img loading="lazy" src="assets/img/diligences/vue360.jpg" srcset="assets/img/diligences/vue360.jpg 1440w, assets/img/diligences/vue360@2x.jpg 2880w" sizes="(max-width: 860px) 92vw, 700px" alt="Vue 360 d'une société" width="1440" height="900"></button><p class="legende">Vue 360° d'une société</p></div>
       </div>
     </div>
     <div class="fonc">
@@ -381,14 +385,14 @@ dialog button:hover{background:var(--encre);color:var(--fond)}
         <p>La recherche fouille les quatre registres à la fois, avec des filtres par module. La palette (<span class="ref">Ctrl+K</span> ou <span class="ref">⌘K</span>) ouvre une fiche ou une page sans quitter le clavier.</p>
       </div>
       <div class="duo">
-        <div><button class="cadre" type="button" data-legende="Recherche globale"><img loading="lazy" src="assets/img/diligences/recherche.jpg" alt="Recherche globale" width="1440" height="900"></button><p class="legende">Recherche</p></div>
-        <div><button class="cadre" type="button" data-legende="Palette de commandes"><img loading="lazy" src="assets/img/diligences/palette.jpg" alt="Palette de commandes" width="1440" height="900"></button><p class="legende">Palette Ctrl+K</p></div>
+        <div><button class="cadre" type="button" data-legende="Recherche globale"><img loading="lazy" src="assets/img/diligences/recherche.jpg" srcset="assets/img/diligences/recherche.jpg 1440w, assets/img/diligences/recherche@2x.jpg 2880w" sizes="(max-width: 860px) 92vw, 700px" alt="Recherche globale" width="1440" height="900"></button><p class="legende">Recherche</p></div>
+        <div><button class="cadre" type="button" data-legende="Palette de commandes"><img loading="lazy" src="assets/img/diligences/palette.jpg" srcset="assets/img/diligences/palette.jpg 1440w, assets/img/diligences/palette@2x.jpg 2880w" sizes="(max-width: 860px) 92vw, 700px" alt="Palette de commandes" width="1440" height="900"></button><p class="legende">Palette Ctrl+K</p></div>
       </div>
     </div>
   </section>
 
   <section class="chapitre" id="outils">
-    <header><span class="etiquette">Chapitre 6</span><h2>Vos données, vos outils</h2>
+    <header><h2>Vos données, vos outils</h2>
       <p>Tout s'exporte, tout se réimporte, et l'interface s'adapte à vos habitudes.</p></header>
     <div class="fonc">
       <div class="texte">
@@ -400,7 +404,7 @@ dialog button:hover{background:var(--encre);color:var(--fond)}
           <li>Export HTML autonome, lisible sur n'importe quel ordinateur.</li>
         </ul>
       </div>
-      <button class="cadre" type="button" data-legende="Données et export"><img loading="lazy" src="assets/img/diligences/donnees.jpg" alt="Écran Données et export" width="1440" height="900"></button>
+      <button class="cadre" type="button" data-legende="Données et export"><img loading="lazy" src="assets/img/diligences/donnees.jpg" srcset="assets/img/diligences/donnees.jpg 1440w, assets/img/diligences/donnees@2x.jpg 2880w" sizes="(max-width: 860px) 92vw, 700px" alt="Écran Données et export" width="1440" height="900"></button>
     </div>
     <div class="fonc inv">
       <div class="texte">
@@ -408,7 +412,7 @@ dialog button:hover{background:var(--encre);color:var(--fond)}
         <p>Posez une question juridique au service de votre choix (Claude, ChatGPT, Gemini, Mistral, DeepSeek ou Perplexity), avec votre propre clé API, gardée sur votre appareil. La fiche d'un litige fait aussi le point sur le dossier : échéances (audience, prescription), activité récente et informations à compléter.</p>
         <p class="note alerte">Les questions posées à l'assistant sont envoyées au fournisseur choisi. Le point sur le dossier, lui, est établi sur votre machine.</p>
       </div>
-      <button class="cadre" type="button" data-legende="Assistant IA"><img loading="lazy" src="assets/img/diligences/assistant.jpg" alt="Assistant IA" width="1440" height="900"></button>
+      <button class="cadre" type="button" data-legende="Assistant IA"><img loading="lazy" src="assets/img/diligences/assistant.jpg" srcset="assets/img/diligences/assistant.jpg 1440w, assets/img/diligences/assistant@2x.jpg 2880w" sizes="(max-width: 860px) 92vw, 700px" alt="Assistant IA" width="1440" height="900"></button>
     </div>
     <div class="fonc">
       <div class="texte">
@@ -416,14 +420,14 @@ dialog button:hover{background:var(--encre);color:var(--fond)}
         <p>Le journal retrace les créations, modifications et suppressions. Une note rapide se prend depuis n'importe quelle page et peut être rattachée à un dossier. Thème sombre ou clair (partagé avec les autres outils de Paraphe), palette, couleur d'accent et indicateurs du tableau de bord se règlent dans Apparence.</p>
       </div>
       <div class="duo">
-        <div><button class="cadre" type="button" data-legende="Apparence"><img loading="lazy" src="assets/img/diligences/apparence.jpg" alt="Écran Apparence" width="1440" height="900"></button><p class="legende">Apparence</p></div>
-        <div><button class="cadre" type="button" data-legende="Tableau de bord en thème sombre"><img loading="lazy" src="assets/img/diligences/dashboard-sombre.jpg" alt="Tableau de bord en thème sombre" width="1440" height="900"></button><p class="legende">Thème sombre</p></div>
+        <div><button class="cadre" type="button" data-legende="Apparence"><img loading="lazy" src="assets/img/diligences/apparence.jpg" srcset="assets/img/diligences/apparence.jpg 1440w, assets/img/diligences/apparence@2x.jpg 2880w" sizes="(max-width: 860px) 92vw, 700px" alt="Écran Apparence" width="1440" height="900"></button><p class="legende">Apparence</p></div>
+        <div><button class="cadre" type="button" data-legende="Tableau de bord en thème sombre"><img loading="lazy" src="assets/img/diligences/dashboard-sombre.jpg" srcset="assets/img/diligences/dashboard-sombre.jpg 1440w, assets/img/diligences/dashboard-sombre@2x.jpg 2880w" sizes="(max-width: 860px) 92vw, 700px" alt="Tableau de bord en thème sombre" width="1440" height="900"></button><p class="legende">Thème sombre</p></div>
       </div>
     </div>
   </section>
 
   <section class="chapitre" id="securite">
-    <header><span class="etiquette">Chapitre 7</span><h2>Confidentialité et sécurité</h2>
+    <header><h2>Confidentialité et sécurité</h2>
       <p>Diligences n'a ni serveur ni compte. Les données vivent dans le navigateur ou l'application de bureau, sur votre appareil.</p></header>
     <div class="fonc">
       <div class="texte">
@@ -432,8 +436,8 @@ dialog button:hover{background:var(--encre);color:var(--fond)}
         <p class="note">Un code de 4 chiffres suffit contre un regard indiscret. Contre une personne qui copierait les fichiers, préférez 6 chiffres ou plus. Sans le code, les données sont irrécupérables : gardez une sauvegarde exportée.</p>
       </div>
       <div class="duo">
-        <div><button class="cadre" type="button" data-legende="Choix du profil"><img loading="lazy" src="assets/img/diligences/profils.jpg" alt="Écran de choix du profil" width="1440" height="900"></button><p class="legende">Choix du profil</p></div>
-        <div><button class="cadre" type="button" data-legende="Saisie du code PIN"><img loading="lazy" src="assets/img/diligences/pin.jpg" alt="Saisie du code PIN" width="1440" height="900"></button><p class="legende">Code PIN</p></div>
+        <div><button class="cadre" type="button" data-legende="Choix du profil"><img loading="lazy" src="assets/img/diligences/profils.jpg" srcset="assets/img/diligences/profils.jpg 1440w, assets/img/diligences/profils@2x.jpg 2880w" sizes="(max-width: 860px) 92vw, 700px" alt="Écran de choix du profil" width="1440" height="900"></button><p class="legende">Choix du profil</p></div>
+        <div><button class="cadre" type="button" data-legende="Saisie du code PIN"><img loading="lazy" src="assets/img/diligences/pin.jpg" srcset="assets/img/diligences/pin.jpg 1440w, assets/img/diligences/pin@2x.jpg 2880w" sizes="(max-width: 860px) 92vw, 700px" alt="Saisie du code PIN" width="1440" height="900"></button><p class="legende">Code PIN</p></div>
       </div>
     </div>
   </section>
@@ -458,7 +462,7 @@ dialog button:hover{background:var(--encre);color:var(--fond)}
   const loupe = document.getElementById("loupe"), img = document.getElementById("loupe-img"), leg = document.getElementById("loupe-legende");
   document.querySelectorAll(".cadre").forEach(b => b.addEventListener("click", () => {
     const source = b.querySelector("img");
-    img.src = source.src; img.alt = source.alt; leg.textContent = b.dataset.legende || source.alt;
+    img.src = source.currentSrc || source.src; img.alt = source.alt; leg.textContent = b.dataset.legende || source.alt;
     if (loupe.showModal) loupe.showModal();
   }));
   document.getElementById("loupe-fermer").addEventListener("click", () => loupe.close());

@@ -2,20 +2,38 @@ PARAPHE — SITE DE PRÉSENTATION
 ==============================
 (devise : Du cours au cabinet.)
 
-Contenu du dossier
-- index.html ............ la page (HTML + CSS + JS dans un seul fichier)
-- diligences.html ....... la visite guidée de Diligences (ex-Suivi Juridique), captures dans assets/img/diligences/
-- assets/fonts/ ......... polices Zilla Slab, Archivo, IBM Plex Mono (hébergées avec le site)
-- assets/img/ ........... favicon et image de partage (og-image.jpg)
-- assets/media/ ......... vidéo de présentation (paraphe-film.mp4) et son affiche (paraphe-film.jpg)
+Contenu du dossier (refonte du 23 octobre 2026)
+- index.html ............ l'accueil : promesse, le vrai logiciel en direct, deux portes, Quantième en direct,
+                          film, vos données, téléchargement
+- etudier.html .......... « J'étudie » : Fiches mémo, Fiches d'arrêt, Codes & articles, chacun en direct
+- exercer.html .......... « J'exerce » : Diligences, Considérant, Quantième, chacun en direct
+- app/ .................. COPIE DE DÉMONSTRATION du logiciel (vraies pages de 1-Logiciel/src), avec des données
+                          fictives gardées en mémoire : rien n'est lu ni écrit dans le navigateur du visiteur.
+                          Ne pas modifier à la main : la régénérer depuis 1-Logiciel avec
+                            node scripts/site-demo/preparer.mjs
+                          après tout changement visible du logiciel, avant de publier le site.
+- diligences.html ....... la visite guidée de Diligences (style du site, Funnel et Iris) ; captures dans assets/img/diligences/,
+                          refaites par 1-Logiciel/scripts/captures/captures-site.mjs (journal.jpg n’est plus utilisée)
+- assets/site.css, pages.css ...... styles communs ; assets/site.js : thème, menu, fenêtres du logiciel, téléchargement
+- assets/3d/accueil-3d.js ......... le monde 3D de l'accueil (Three.js allégé, minifié). NE PAS MODIFIER À LA MAIN :
+    sa source est dans 4-Identite-visuelle/pistes-DA/maquette-3d (site/accueil-3d.js et src/) ;
+    le refaire avec  sh site/construire.sh  depuis ce dossier.
+- assets/img/app/ ....... captures complètes des écrans (jour et nuit) affichées avant le chargement de la démo
+                          et sur téléphone
+- assets/fonts/ ......... polices Funnel Sans et Funnel Display (variables, celles du site depuis le 23 oct. 2026),
+                          Archivo, Zilla Slab, IBM Plex Mono (plus utilisées par les pages du site, gardées pour les licences)
+- assets/media/ ......... film de présentation (paraphe-film.mp4, chargé seulement au clic), ses sous-titres
+                          (paraphe-film.fr.vtt, tirés de 5-Videos/Film-isometrique : voix.json et src/timing.js)
+                          et ses affiches jour et nuit (paraphe-film.jpg, paraphe-film-nuit.jpg)
 
-1) Ajouter les liens de téléchargement
-   Ouvre index.html, cherche « LIENS DE TÉLÉCHARGEMENT » (en bas du fichier) et remplis :
-     mac:     "…/Paraphe_1.1.1_universal.dmg"
-     windows: "…/Paraphe_1.1.1_x64-setup.exe"
-   Tant qu’un lien est vide, le bouton affiche « Bientôt disponible ».
-   Tu peux soit déposer les fichiers dans un dossier du site (ex. telechargements/),
-   soit mettre une adresse complète (GitHub Releases, Google Drive partagé en « Tous les utilisateurs disposant du lien »…).
+1) À chaque nouvelle version
+   - logiciels/version.json : le site y lit le numéro de version et en déduit les noms des fichiers
+     (Paraphe_<version>_universal.dmg, Paraphe_<version>_x64-setup.exe).
+   - assets/site.js, en haut : mettre à jour « version » et les deux « tailles ».
+   - Liens par défaut (utilisés si JavaScript est coupé) : chercher « Paraphe_1. » dans index.html,
+     etudier.html et exercer.html et remplacer le numéro.
+   - Les poids et systèmes requis affichés au bloc « Télécharger » d'index.html sont écrits en clair :
+     les vérifier aussi.
 
 2) Image de partage (réseaux sociaux)
    Une fois le site en ligne, remplace dans index.html
@@ -27,11 +45,12 @@ Contenu du dossier
    Aucune dépendance externe : tout fonctionne hors ligne.
 
 4) Bon à savoir
-   - Les démos de la page (cartes, fiche d’arrêt, pipeline, arbre, frise…) sont des
-     reproductions simplifiées : rien n’est enregistré, un rechargement remet tout à zéro.
-   - Le rideau d’ouverture ne s’affiche qu’une fois par session de navigation.
-   - Si le visiteur a activé « réduire les animations » dans son système, les effets
-     sont coupés automatiquement.
+   - Les fenêtres des pages affichent le vrai logiciel (dossier app/) : tout fonctionne, mais rien n'est
+     enregistré ; un rechargement remet la démo à zéro. Sur téléphone, la capture de l'écran s'affiche
+     avec un lien « Ouvrir la démo ».
+   - Le thème suit le réglage de l'ordinateur ; le bouton lune le force (mémorisé dans le navigateur).
+   - Si le visiteur a activé « réduire les animations », les ouvertures de fenêtres deviennent de simples fondus.
+   - Les notes de conception (dossier .impeccable/) ne doivent pas être publiées : elles sont dans .gitignore.
 
 5) Pages légales (mentions-legales.html)
    Adresse e-mail de contact : paraphe.droit@gmail.com (renseignée aux 2 endroits prévus, et dans le pied de page

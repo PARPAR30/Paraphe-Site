@@ -1,5 +1,10 @@
 LICENCES DES POLICES — SIL Open Font License 1.1
-Zilla Slab, Archivo et IBM Plex Mono (fichiers .woff2 de ce dossier)
+Funnel Sans, Funnel Display, Zilla Slab, Archivo et IBM Plex Mono (fichiers .woff2 de ce dossier)
+
+==================== funnel-sans, funnel-display ====================
+Funnel Sans et Funnel Display (NORD ID, 2024), fichiers FunnelSans-variable-latin.woff2 et
+FunnelDisplay-variable-latin.woff2 : sous licence SIL Open Font License, Version 1.1
+(même texte que ci-dessous ; copyright de leurs auteurs, The Funnel Project Authors).
 
 ==================== zilla-slab ====================
 Copyright 2017, The Mozilla Foundation ZillaSlab-LightItalic.ttf: Copyright 2017, The Mozilla Foundation ZillaSlab-Regular.ttf: Copyright 2017, The Mozilla Foundation ZillaSlab-Italic.ttf: Copyright 2017, The Mozilla Foundation ZillaSlab-Medium.ttf: Copyright 2017, The Mozilla Foundation ZillaSlab-MediumItalic.ttf: Copyright 2017, The Mozilla Foundation ZillaSlab-SemiBold.ttf: Copyright 2017, The Mozilla Foundation ZillaSlab-SemiBoldItalic.ttf: Copyright 2017, The Mozilla Foundation ZillaSlab-Bold.ttf: Copyright 2017, The Mozilla Foundation ZillaSlab-BoldItalic.ttf: Copyright 2017, The Mozilla Foundation

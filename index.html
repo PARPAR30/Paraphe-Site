@@ -3,979 +3,442 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Paraphe — du cours au cabinet</title>
-<meta name="description" content="Paraphe réunit six outils pour les études et la pratique du droit : Fiches mémo, Fiches d’arrêt, Codes & articles, Diligences, Considérant, Quantième. Une application pour macOS et Windows.">
-<meta name="theme-color" content="#F6F5F1">
+<title>Paraphe — réviser le droit, puis le pratiquer</title>
+<meta name="description" content="Six outils pour les étudiants en droit et les jeunes praticiens : fiches mémo, fiches d’arrêt, codes, suivi des dossiers, raisonnement et délais de procédure. Sur votre ordinateur, sans compte, hors ligne. macOS et Windows.">
+<meta name="theme-color" content="#F6F6FA" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0F0F16" media="(prefers-color-scheme: dark)">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Paraphe — du cours au cabinet">
-<meta property="og:description" content="Six outils pour étudier et pratiquer le droit, réunis dans une seule application. macOS et Windows.">
-<!-- Une fois le site en ligne : remplacer par l’adresse complète, ex. https://mon-site.fr/assets/img/og-image.jpg -->
+<meta property="og:title" content="Paraphe — réviser le droit, puis le pratiquer">
+<meta property="og:description" content="Six outils pour les études et la pratique du droit, réunis dans une application pour macOS et Windows. Sans compte, hors ligne.">
 <meta property="og:image" content="https://paraphe-app.fr/assets/img/og-image.jpg">
 <meta property="og:url" content="https://paraphe-app.fr/">
 <link rel="icon" href="/favicon.ico" sizes="any">
 <link rel="icon" type="image/png" sizes="32x32" href="assets/img/paraphe-icone-32.png">
 <link rel="icon" type="image/svg+xml" href="assets/img/paraphe-icone.svg">
 <link rel="apple-touch-icon" sizes="180x180" href="assets/img/paraphe-icone-180.png">
+<link rel="preload" href="assets/fonts/FunnelSans-variable-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/FunnelDisplay-variable-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/site.css">
+<script>
+/* orientation du monde 3D de l'accueil : 16:9 sur ordinateur, 9:16 sur téléphone (cadrages du film et des Reels) */
+(function(){var v=innerHeight>innerWidth*1.05,d=document.createElement("div");d.setAttribute("data-composition-id","site");d.dataset.width=v?1080:1920;d.dataset.height=v?1920:1080;d.hidden=true;document.documentElement.appendChild(d);document.documentElement.classList.add(v?"vertical":"horizontal","js");})();
+</script>
+<script>try{var t=localStorage.getItem('ml-theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
 <style>
-@font-face{font-family:'Zilla Slab';font-weight:400;font-display:swap;src:url(assets/fonts/zilla-slab-latin-400-normal.woff2) format('woff2')}
-@font-face{font-family:'Zilla Slab';font-weight:400;font-style:italic;font-display:swap;src:url(assets/fonts/zilla-slab-latin-400-italic.woff2) format('woff2')}
-@font-face{font-family:'Zilla Slab';font-weight:600;font-display:swap;src:url(assets/fonts/zilla-slab-latin-600-normal.woff2) format('woff2')}
-@font-face{font-family:'Zilla Slab';font-weight:700;font-display:swap;src:url(assets/fonts/zilla-slab-latin-700-normal.woff2) format('woff2')}
-@font-face{font-family:'Archivo';font-weight:400;font-display:swap;src:url(assets/fonts/archivo-latin-400-normal.woff2) format('woff2')}
-@font-face{font-family:'Archivo';font-weight:500;font-display:swap;src:url(assets/fonts/archivo-latin-500-normal.woff2) format('woff2')}
-@font-face{font-family:'Archivo';font-weight:600;font-display:swap;src:url(assets/fonts/archivo-latin-600-normal.woff2) format('woff2')}
-@font-face{font-family:'Archivo';font-weight:700;font-display:swap;src:url(assets/fonts/archivo-latin-700-normal.woff2) format('woff2')}
-@font-face{font-family:'Plex Mono';font-weight:500;font-display:swap;src:url(assets/fonts/ibm-plex-mono-latin-500-normal.woff2) format('woff2')}
+/* ---------- accueil : le monde 3D du film, piloté par le défilement (assets/3d/accueil-3d.js) ----------
+   La section est haute de plusieurs écrans ; son contenu reste fixé et le défilement fait avancer
+   le temps du film. L'habillage (#calque) vit dans les coordonnées du film (1920×1080, ou 1080×1920
+   sur téléphone), mis à la même échelle que l'image. */
+.monde3d{position:relative;height:900vh;margin-top:-74px}
+.fixe3d{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden}
+#gl{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;opacity:0;transition:opacity .6s var(--ease)}
+.pret-3d #gl{opacity:1}
+.accroche{position:absolute;left:0;right:0;top:calc(74px + 13vh);z-index:3;will-change:opacity,transform}
+.accroche > *{max-width:min(660px,52vw)}
+.une{font-size:clamp(46px,6.2vw,104px);line-height:.96;font-weight:720;letter-spacing:-.045em;max-width:11ch}
+.une em{font-style:normal;color:var(--accent-text)}
+.accroche .lead{margin-top:22px;max-width:34ch}
+.hero__cta{display:grid;gap:12px;justify-items:start;margin-top:30px}
+.hero__cta .row{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.hero__meta{font-size:14px;color:var(--ink-3)}
+.hero__mobile{display:none}
+.si-petit{display:none}
+@media (max-width:899px){.si-grand{display:none}.si-petit{display:inline}}
+.is-mobile .hero__mobile{display:grid;gap:10px;justify-items:start}
+.is-mobile .hero__cta [data-dl],.is-mobile .hero__cta [data-dl-meta]{display:none}
+.indice{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;margin-top:26px;font-size:15px;font-weight:560;color:var(--ink-2)}
+.indice span{display:inline-flex;align-items:center;gap:8px}
+.passer{color:var(--accent-text);font-weight:600}
+.indice svg{width:16px;height:16px}
+@media (prefers-reduced-motion:no-preference){.indice svg{animation:indice 1.8s var(--ease) infinite}}
+@keyframes indice{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
 
-/* ================================================================
-   DA de l’application : crème / encre / violet, bordures franches,
-   ombres décalées ; thème nuit comme dans l’app
-   ================================================================ */
-:root{
-  --paper:#F6F5F1; --card:#FFFFFF; --ink:#141416; --muted:#65656D; --soft:#9A9AA2; --line:#E4E1DA; --shadow:#D8D5CD;
-  --vio:#3B2FE8; --vio-2:#8F87FF; --wash:rgba(59,47,232,.09);
-  --red:#E4553A; --green:#3E9A5E; --yel:#E9B730; --gold:#C9A84C; --navy:#0B1426; --navy-2:#16264A;
-  --slab:'Zilla Slab',Rockwell,Georgia,serif; --sans:'Archivo',system-ui,-apple-system,'Segoe UI',sans-serif; --mono:'Plex Mono',ui-monospace,Menlo,monospace;
-  --gut:clamp(16px,4vw,48px);
+/* le cadre place le calque ; le calque est mis à l'échelle par zoom (textes nets), sinon par transform */
+.calque-cadre{position:absolute;left:0;top:0;width:0;height:0;pointer-events:none;z-index:2}
+.calque{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;pointer-events:none}
+.vertical .calque{width:1080px;height:1920px}
+.calque > *{position:absolute;opacity:0;visibility:hidden;will-change:opacity,transform}
+.calque a{pointer-events:auto}
+.calque h2{font-family:var(--titre);font-weight:720;letter-spacing:-.045em;color:var(--ink)}
+.calque h2 b{font-weight:inherit;color:var(--accent-text)}
+#m-mots{left:var(--g);top:var(--ay);font-family:var(--titre);font-weight:700;font-size:var(--mots,60px);line-height:1.08;letter-spacing:-.035em;color:var(--ink);opacity:1;visibility:visible}
+#m-mots span{display:block;opacity:0}
+#m-titre{left:var(--g);top:var(--h);width:560px}
+#m-titre h2{font-size:72px;line-height:.98}
+#m-titre p{font-size:22px;color:var(--ink-2);margin-top:14px;line-height:1.4;max-width:24ch}
+.station{left:var(--g);bottom:var(--b);width:660px;display:grid;grid-template-columns:auto 1fr;gap:4px 18px;align-items:start;padding:22px 26px;border-radius:22px}
+.station .n{grid-row:span 3;width:50px;height:50px;border-radius:14px;background:var(--ink);color:var(--bg);display:grid;place-items:center;font-family:var(--titre);font-weight:700;font-size:25px}
+.station small{font-size:16px;font-weight:600;color:var(--ink-3)}
+.station h3{font-size:38px;font-weight:700;letter-spacing:-.035em;line-height:1}
+.station p{font-size:21px;line-height:1.4;color:var(--ink);margin-top:6px}
+.station p i{font-style:normal;opacity:.18;transition:opacity .25s ease}
+.station p i.on{opacity:1}
+.fenetre3d{right:var(--g);top:var(--h);width:760px;border-radius:18px;overflow:hidden;background:var(--surface);box-shadow:0 0 0 1px rgba(17,17,24,.08),0 40px 80px -30px rgba(17,17,24,.45)}
+.fenetre3d .chrome{height:34px;display:flex;align-items:center;gap:9px;padding:0 16px;background:var(--surface-2);border-bottom:1px solid var(--line)}
+.fenetre3d .chrome i{width:11px;height:11px;border-radius:50%;background:#FF6159}.fenetre3d .chrome i:nth-child(2){background:#FFBD2E}.fenetre3d .chrome i:nth-child(3){background:#28C941}
+.fenetre3d .chrome span{margin-left:8px;font-size:14px;font-weight:600;color:var(--ink-3)}
+.fenetre3d img{width:100%;height:426px;object-fit:cover;object-position:top}
+.fenetre3d img.jour{display:block}
+:root[data-theme="dark"] .fenetre3d img.jour{display:none}
+:root[data-theme="dark"] .fenetre3d img.nuit{display:block}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .fenetre3d img.jour{display:none}:root:not([data-theme="light"]) .fenetre3d img.nuit{display:block}}
+#m-local,#m-donnees{left:var(--g);top:calc(var(--h) + 120px);width:640px}
+#m-local h2,#m-donnees h2{font-size:88px;line-height:.95}
+#m-local ul{list-style:none;margin:28px 0 0;padding:0;display:grid;gap:14px}
+#m-local li{font-size:24px;font-weight:600;color:var(--ink);display:flex;align-items:center;gap:14px;opacity:0}
+#m-local li::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--ink)}
+#m-donnees p{font-size:23px;line-height:1.4;color:var(--ink-2);margin-top:22px}
+#m-fin{left:0;right:0;top:0;bottom:0}
+#m-logo{position:absolute;font-family:var(--titre);font-weight:720;font-size:140px;letter-spacing:-.05em;line-height:1;white-space:nowrap;color:var(--ink)}
+#m-logo .point{display:inline-block;width:.15em;height:.15em;margin-left:.04em}
+#m-devise{position:absolute;left:0;right:0;text-align:center;font-size:25px;color:var(--ink-2)}
+#m-cta{position:absolute;left:0;right:0;display:flex;justify-content:center;gap:14px}
+#m-cta .btn{min-height:58px;font-size:19px;padding:0 26px}
+
+/* téléphone : le monde en haut, les textes dessous ; le calque est réduit à ~0,4, on grossit d'autant */
+@media (max-width:759px){
+  .accroche{top:auto;bottom:calc(20px + env(safe-area-inset-bottom))}
+  .accroche > *{max-width:none}
+  .une{font-size:clamp(40px,11.5vw,56px)}
+  .accroche .lead{font-size:17px;margin-top:14px}
+  .hero__cta{margin-top:20px}
+  .indice{margin-top:16px}
 }
-:root[data-theme="dark"]{--paper:#141418;--card:#1C1C21;--ink:#F0F0F0;--muted:#A8A8B0;--soft:#74747C;--line:#2B2B33;--shadow:#050507;--vio:#6C63FF;--wash:rgba(108,99,255,.14)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#141418;--card:#1C1C21;--ink:#F0F0F0;--muted:#A8A8B0;--soft:#74747C;--line:#2B2B33;--shadow:#050507;--vio:#6C63FF;--wash:rgba(108,99,255,.14)}}
+/* le film baisse le monde pendant ces plans (cadrages des Reels) : le texte va au-dessus */
+.vertical #m-titre,.vertical #m-local,.vertical #m-donnees{left:var(--g);right:var(--g);width:auto;top:var(--h)}
+.vertical #m-mots{left:var(--g);top:var(--ay)}
+.vertical .station{left:var(--g);right:var(--g);width:auto;bottom:var(--b);padding:40px 44px;border-radius:40px;gap:10px 30px}
+.vertical .fenetre3d{left:var(--g);right:var(--g);width:auto;top:var(--h)}
+.vertical .fenetre3d img{height:620px;object-position:top left}
+.vertical .fenetre3d .chrome{height:64px}.vertical .fenetre3d .chrome span{font-size:30px}.vertical .fenetre3d .chrome i{width:20px;height:20px}
+.vertical .station .n{width:84px;height:84px;font-size:42px;border-radius:22px}
+.vertical .station small{font-size:27px}.vertical .station h3{font-size:64px}.vertical .station p{font-size:35px}
+.vertical #m-titre h2,.vertical #m-local h2,.vertical #m-donnees h2{font-size:108px}
+.vertical #m-titre p,.vertical #m-donnees p{font-size:42px;max-width:none}
+.vertical #m-local li{font-size:44px}
+.vertical #m-devise{font-size:44px}
+.vertical #m-cta{flex-direction:column;align-items:center;gap:20px}.vertical #m-cta .btn{min-height:104px;font-size:38px;padding:0 48px}
+@media (prefers-reduced-motion:reduce){.station p i{transition:none}}
 
-*,*::before,*::after{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
-body{margin:0;background:var(--paper);color:var(--ink);font:400 18px/1.6 var(--sans);overflow-x:hidden}
-img,video,canvas,svg{display:block;max-width:100%}
-a{color:inherit}
-button{font:inherit;color:inherit}
-:focus-visible{outline:3px solid var(--vio);outline-offset:3px}
-.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-kbd{font:500 .8em/1 var(--mono);padding:4px 8px 3px;border:2px solid var(--ink);border-bottom-width:4px;background:var(--card);white-space:nowrap}
-.wrap{max-width:1280px;margin:0 auto;padding:0 var(--gut)}
-.lbl{font:700 12px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase}
+/* sans JavaScript, sans WebGL ou navigateur trop ancien : l'accroche et une image fixe du monde */
+.repli{display:none!important}   /* le thème du site ne doit pas les afficher : ce sont des images de secours */
+html:not(.js) .monde3d,.sans-3d .monde3d{height:auto;margin-top:-74px}
+html:not(.js) .fixe3d,.sans-3d .fixe3d{position:relative;height:auto;min-height:0;padding:calc(74px + 9vh) 0 64px;display:grid}
+html:not(.js) .accroche,.sans-3d .accroche{position:relative;top:auto;bottom:auto;width:100%;opacity:1!important;transform:none!important;visibility:visible!important}
+html:not(.js) #gl,html:not(.js) .calque-cadre,html:not(.js) .indice span,.sans-3d #gl,.sans-3d .calque-cadre,.sans-3d .indice span{display:none}
+html:not(.js) .repli,.sans-3d .repli{width:min(1000px,calc(100% - 2 * var(--gut)));height:auto;margin:40px auto 0;pointer-events:none}
+html:not(.js) .repli.jour,.sans-3d .repli.jour,:root[data-theme="dark"].sans-3d .repli.nuit{display:block!important}
+:root[data-theme="dark"].sans-3d .repli.jour{display:none!important}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]).sans-3d .repli.nuit,:root:not(.js) .repli.nuit{display:block!important}
+  :root:not([data-theme="light"]).sans-3d .repli.jour,:root:not(.js) .repli.jour{display:none!important}
+}
+@media (max-width:759px){html:not(.js) .repli,.sans-3d .repli{margin:0 auto 8px;order:-1}}
+.vitrine{padding-bottom:clamp(72px,9vw,128px)}
 
-/* grain papier */
-.grain{position:fixed;inset:0;z-index:90;pointer-events:none;opacity:.05;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
-@keyframes grain{0%{transform:translate(0,0)}20%{transform:translate(-3%,2%)}40%{transform:translate(2%,-3%)}60%{transform:translate(-2%,-1%)}80%{transform:translate(3%,3%)}100%{transform:translate(0,0)}}
-
-/* curseur du système ; la main sur tout ce qui se clique */
-button:not(:disabled),summary,.fc,.tile{cursor:pointer}
-
-/* ================= barre du haut ================= */
-.top{position:fixed;top:0;left:0;right:0;z-index:50;transition:transform .35s cubic-bezier(.2,.9,.2,1)}
-.top.hide{transform:translateY(-100%)}
-.top__in{display:flex;align-items:center;gap:10px;height:66px;padding:0 var(--gut);background:var(--paper);border-bottom:3px solid var(--ink)}
-.brand{display:flex;align-items:center;gap:10px;font:700 21px/1 var(--slab);text-decoration:none;margin-right:auto;white-space:nowrap}
-.brand svg{width:28px;height:28px}
-.links{display:flex;gap:4px}
-.links a{font:600 12px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;text-decoration:none;color:var(--muted);padding:12px 12px;border:2.5px solid transparent}
-.links a:hover{color:var(--ink);border-color:var(--ink)}
-.tb{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:0 14px;border:2.5px solid var(--ink);background:var(--card);font:700 12px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;text-decoration:none;cursor:pointer;color:var(--ink)}
-.tb--vio{background:var(--vio);border-color:var(--vio);color:#fff}
-.prog{display:grid;grid-template-columns:repeat(6,1fr);gap:4px;height:6px;background:transparent}
-.prog i{background:var(--line);position:relative;overflow:hidden}
-.prog i::after{content:"";position:absolute;inset:0;background:var(--vio);transform-origin:left;transform:scaleX(var(--p,0))}
-@media (max-width:900px){.links{display:none}}
-@media (max-width:420px){.brand{font-size:18px}.tb{padding:0 10px}}
-
-/* ================= boutons ================= */
-.btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:12px;min-height:58px;padding:0 26px;border:3px solid var(--ink);background:var(--card);color:var(--ink);font:700 14px/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;text-decoration:none;cursor:pointer;box-shadow:6px 6px 0 var(--ink);transition:box-shadow .15s,background .15s}
-.btn:hover{box-shadow:9px 9px 0 var(--vio)}
-.btn:active{box-shadow:0 0 0 var(--ink)}
-.btn--ink{background:var(--ink);color:var(--paper)}
-.btn--vio{background:var(--vio);border-color:var(--ink);color:#fff}
-
-/* ================= accueil ================= */
-.hero{position:relative;min-height:100svh;display:grid;place-items:center;overflow:hidden;padding:120px var(--gut) 90px}
-#grid{position:absolute;inset:0;width:100%;height:100%}
-.hero__in{position:relative;text-align:center;max-width:1100px}
-.scale{width:clamp(84px,9vw,128px);height:auto;margin:0 auto 18px;overflow:visible;cursor:pointer}
-/* le point final carré du nom, à l’accent */
-.hero h1::after{content:"";display:inline-block;width:.14em;height:.14em;margin-left:.03em;background:var(--vio);animation:pointFinal .5s 1.25s cubic-bezier(.3,1.6,.5,1) both}
-.js-curtain .hero h1::after{animation-delay:2.45s}
-@keyframes pointFinal{from{transform:scale(0)}}
-.hero h1{font:700 clamp(60px,12.5vw,196px)/.9 var(--slab);letter-spacing:-.04em;margin:0;white-space:nowrap}
-.hero h1 .ch{display:inline-block;will-change:transform}
-.hero h1 .ch.in{animation:drop .9s cubic-bezier(.3,1.5,.5,1) both}
-@keyframes drop{from{transform:translateY(-120%) rotate(-12deg);opacity:0}to{transform:none;opacity:1}}
-.hero__bar{height:12px;width:min(560px,60%);background:var(--vio);margin:18px auto 30px;transform-origin:center;animation:grow .8s .9s cubic-bezier(.7,0,.2,1) both}
-.js-curtain .hero__bar{animation-delay:2.1s}
-.hero h1 .ch{opacity:0}.hero h1 .ch.in,.hero h1 .ch.ok{opacity:1}
-@keyframes grow{from{transform:scaleX(0)}}
-.roll{display:flex;justify-content:center;align-items:baseline;gap:.35em;flex-wrap:wrap;font:600 clamp(24px,3.2vw,42px)/1.15 var(--slab)}
-.roll__win{display:inline-block;height:1.2em;overflow:hidden;vertical-align:bottom;text-align:left;transition:width .6s cubic-bezier(.7,-.3,.2,1.3)}
-.roll__list{display:block;transition:transform .6s cubic-bezier(.7,-.3,.2,1.3)}
-.roll__list span{display:block;width:max-content;height:1.2em;color:var(--vio)}
-@media (max-width:620px){.roll__list span{text-align:center}}
-.hero p.sub{font-size:clamp(17px,1.6vw,20px);color:var(--muted);margin:18px auto 34px;max-width:46ch}
-.hero .ctas{display:flex;flex-wrap:wrap;justify-content:center;gap:18px}
-.scroll-hint{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);font:600 11px/1 var(--sans);letter-spacing:.2em;text-transform:uppercase;color:var(--soft);display:flex;flex-direction:column;align-items:center;gap:10px}
-.scroll-hint i{width:2px;height:38px;position:relative;overflow:hidden}
-.scroll-hint i::before{content:"";position:absolute;left:0;right:0;top:-12px;bottom:0;background:linear-gradient(var(--ink) 50%,transparent 50%);background-size:2px 12px;animation:dash 1s linear infinite}
-@keyframes dash{to{transform:translateY(12px)}}
-
-/* bandeau de mots */
-.ticker{border-block:3px solid var(--ink);background:var(--ink);color:var(--paper);overflow:hidden;white-space:nowrap}
-.ticker__t{display:inline-flex;animation:tick 26s linear infinite;padding:16px 0}
-.ticker span{font:700 clamp(22px,3vw,34px)/1 var(--slab);padding:0 28px;display:inline-flex;align-items:center;gap:28px}
-.ticker span::after{content:"";width:14px;height:14px;background:var(--vio);transform:rotate(45deg)}
-@keyframes tick{to{transform:translateX(-50%)}}
-
-/* ================= sections ================= */
-section{position:relative}
-.sec{padding:clamp(80px,11vw,150px) 0}
-.h2{font:700 clamp(40px,6vw,84px)/1 var(--slab);letter-spacing:-.025em;margin:0}
-.h2 em{font-style:normal;color:var(--vio)}
-.lead{color:var(--muted);font-size:clamp(17px,1.5vw,20px);max-width:48ch}
-[data-split] .w{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.08em}
-[data-split] .w>span{display:inline-block;transform:translateY(105%);transition:transform .8s cubic-bezier(.2,.9,.2,1)}
-[data-split].in .w>span{transform:none}
-.rv{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.9,.2,1)}
-.rv.in{opacity:1;transform:none}
-
-/* les 6 cartes (reprennent l’accueil de l’app) */
-#six{overflow:hidden}
-.six__head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:20px 60px;margin-bottom:56px}
-.fam{font:700 clamp(20px,2vw,26px)/1.2 var(--slab);margin:0 0 20px}
-.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px;perspective:1100px;margin-bottom:54px}
-@media (max-width:980px){.cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:620px){.cards{grid-template-columns:1fr;gap:22px}}
-.tile{--rx:0deg;--ry:0deg;--sx:12px;--sy:12px;display:block;text-decoration:none;background:var(--card);border:3px solid var(--ink);padding:26px 26px 28px;box-shadow:var(--sx) var(--sy) 0 var(--shadow);transform:var(--scatter,translate(0,0)) rotateX(var(--rx)) rotateY(var(--ry));transform-style:preserve-3d;transition:box-shadow .2s;will-change:transform}
-.tile:hover{box-shadow:var(--sx) var(--sy) 0 var(--vio)}
-.tile:hover h3,.tile:hover .num{color:var(--vio)}
-.tile__t{display:flex;align-items:center;gap:12px;margin-bottom:12px;transform:translateZ(30px)}
-.num{display:grid;place-items:center;width:36px;height:36px;border:2.5px solid currentColor;font:700 15px/1 var(--sans);flex:none;transition:color .2s}
-.tile h3{font:700 26px/1.1 var(--slab);margin:0;transition:color .2s}
-.tile p{margin:0;color:var(--muted);font-size:16px;transform:translateZ(16px)}
-.tile .go{display:inline-flex;margin-top:16px;font:700 12px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:var(--vio);transform:translateZ(22px)}
+/* portes */
+.portes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+.porte{display:grid;gap:14px;align-content:start;padding:clamp(24px,3vw,36px);color:inherit;text-decoration:none;transition:box-shadow .25s var(--ease-out),border-color .25s var(--ease-out),transform .25s var(--ease-out)}
+@media (hover:hover) and (pointer:fine){.porte:hover{text-decoration:none;box-shadow:var(--sh-2);border-color:var(--line-2);transform:translateY(-2px)}}
+.porte:active{transform:scale(.99)}
+.porte h3{font-size:clamp(28px,2.6vw,36px);font-weight:740;letter-spacing:-.03em}
+.porte__qui{font-size:16px;color:var(--ink-2);margin-top:-6px}
+.porte ul{list-style:none;margin:4px 0 0;padding:0;display:grid}
+.porte li{display:grid;grid-template-columns:minmax(0,9.5em) minmax(0,1fr);gap:16px;padding:12px 0;border-top:1px solid var(--line);font-size:15px;color:var(--ink-2)}
+.porte li b{font-weight:640;color:var(--ink)}
+.porte .link{margin-top:6px}
+@media (max-width:860px){.portes{grid-template-columns:1fr}.porte li{grid-template-columns:1fr;gap:2px}}
 
 /* film */
-.film{background:var(--ink);color:var(--paper);overflow:hidden}
-.film .lead{color:#A8A8B0}
-.film .h2 em{color:var(--vio-2)}
-.player{position:relative;margin-top:50px;border:3px solid #F2F2F2;box-shadow:16px 16px 0 var(--vio);background:#000;transform:perspective(1400px) rotateX(var(--fx,14deg)) scale(var(--fs,.92));transform-origin:50% 100%}
-.player video{width:100%;aspect-ratio:16/9;height:auto}
-.play{position:absolute;inset:0;display:grid;place-items:center;background:transparent;border:0;cursor:pointer}
-.play b{width:clamp(90px,11vw,140px);aspect-ratio:1;border-radius:50%;background:var(--vio);display:grid;place-items:center;position:relative;isolation:isolate}
-.play b::after{content:"";position:absolute;inset:0;border-radius:50%;background:var(--vio);z-index:-1;animation:pulse 2s cubic-bezier(.2,.6,.3,1) infinite;transition:transform .2s}
-.play:hover b{transform:scale(1.08)}
-.play b::before{content:"";margin-left:8px;border-left:30px solid #fff;border-top:19px solid transparent;border-bottom:19px solid transparent}
-@keyframes pulse{0%{transform:scale(1);opacity:.55}70%{transform:scale(1.5);opacity:0}100%{transform:scale(1.5);opacity:0}}
-.player.playing .play{display:none}
+.film{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px;align-items:center}
+.film__txt{grid-column:1 / span 4;display:grid;gap:16px}
+.film__v{grid-column:6 / span 7;position:relative;border-radius:var(--r-l);overflow:hidden;box-shadow:var(--sh-win);background:#000;aspect-ratio:16 / 9}
+.film__v video{width:100%;height:100%;object-fit:cover}
+.film__play{position:absolute;inset:0;display:grid;place-items:center;border:0;background:transparent;cursor:pointer}
+.film__play span{display:inline-flex;align-items:center;gap:10px;padding:14px 22px;border-radius:999px;background:rgba(255,255,255,.94);color:#16161A;font-weight:650;font-size:16px;box-shadow:0 8px 30px rgba(0,0,0,.25);transition:transform .2s var(--ease-out)}
+.film__play:hover span{transform:scale(1.04)}
+.film__play:active span{transform:scale(.97)}
+.film__play svg{width:18px;height:18px}
+@media (max-width:980px){.film__txt,.film__v{grid-column:1 / -1}}
 
-/* ================= sections « à vous » ================= */
-.app{padding:clamp(80px,10vw,140px) 0;overflow:hidden;isolation:isolate}
-.app__g{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:clamp(30px,5vw,80px);align-items:start}
-@media (max-width:960px){.app__g{grid-template-columns:minmax(0,1fr)}}
-.app__info{position:sticky;top:110px}
-@media (max-width:960px){.app__info{position:static}}
-.big{position:absolute;right:-.06em;top:.05em;font:700 clamp(200px,30vw,440px)/.8 var(--slab);color:transparent;-webkit-text-stroke:2px var(--line);pointer-events:none;user-select:none;transform:translateY(var(--py,0));z-index:-1}
-.app__k{display:flex;align-items:center;gap:14px;margin-bottom:18px}
-.app__k .num{width:48px;height:48px;font-size:19px}
-.app__k .lbl{color:var(--vio)}
-.app h2{font:700 clamp(40px,5vw,68px)/1 var(--slab);letter-spacing:-.02em;margin:0}
-.app h2::after{content:"";display:block;width:110px;height:10px;background:var(--vio);margin-top:18px;transform-origin:left;transform:scaleX(0);transition:transform .8s .3s cubic-bezier(.7,0,.2,1)}
-.app h2.in::after{transform:scaleX(1)}
-.app__d{color:var(--muted);font-size:clamp(17px,1.5vw,19px);margin:22px 0}
-.ul{list-style:none;padding:0;margin:0 0 26px;display:grid;gap:10px;font-size:16px}
-.ul li{position:relative;padding-left:32px;line-height:1.7}
-.ul li::before{content:"";position:absolute;left:0;top:.62em;width:10px;height:10px;background:var(--vio);transform:rotate(45deg)}
-.try{display:inline-block;border:2.5px dashed var(--vio);padding:12px 16px;font-size:15px;line-height:2;color:var(--ink);background:var(--wash);margin:0}
-.try .lbl{color:var(--vio);margin-right:10px}
-.decouvrir{margin:22px 0 0;font-weight:600}.decouvrir a{color:var(--vio);text-decoration:none;border-bottom:2px solid currentColor}.decouvrir a:hover{color:var(--ink)}
-.demo{position:relative;background:var(--card);border:3px solid var(--ink);box-shadow:14px 14px 0 var(--shadow)}
-.demo__bar{display:flex;align-items:center;gap:8px;height:40px;padding:0 14px;border-bottom:3px solid var(--ink);font:700 12px/1 var(--sans);color:var(--muted);background:var(--card)}
-.demo__bar i{width:12px;height:12px;border-radius:50%;border:2px solid var(--ink)}
-.demo__bar i:nth-child(1){background:var(--red)}.demo__bar i:nth-child(2){background:var(--yel)}.demo__bar i:nth-child(3){background:var(--green)}
-.demo__bar span{margin-left:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.demo__bar .rp{margin-left:auto;border:2px solid var(--ink);background:none;font:700 10px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;padding:6px 8px;cursor:pointer;color:var(--ink)}
-.demo__in{padding:clamp(16px,3vw,30px);background:#F6F5F1;color:#141416}
-.note{margin-top:16px;font:500 12.5px/1.5 var(--mono);color:var(--soft)}
-
-/* --- 1. fiches mémo --- */
-.deckhead{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;background:#fff;border:3px solid #141416;padding:14px 18px;margin-bottom:22px;box-shadow:8px 8px 0 #D8D5CD}
-.deckhead b{font:700 30px/1 var(--sans)}
-.deckhead span{color:#6B6B72;font-size:15px}
-.deck{position:relative;height:370px;perspective:1600px;margin-right:22px}
-.fc{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .7s cubic-bezier(.3,1.3,.4,1),opacity .5s;cursor:pointer}
-.fc:nth-last-of-type(2){transform:translate(10px,10px) rotate(2deg)}
-.fc:nth-last-of-type(3){transform:translate(20px,20px) rotate(4deg)}
-.fc.flip{transform:rotateY(180deg)}
-.fc.out-r{transform:translateX(130%) rotate(24deg);opacity:0}
-.fc.out-l{transform:translate(-30%,120%) rotate(-18deg);opacity:0}
-.face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;background:#fff;border:3px solid #141416;box-shadow:10px 10px 0 #D8D5CD;padding:22px 24px;display:flex;flex-direction:column}
-.face--b{transform:rotateY(180deg)}
-.tag{align-self:flex-start;border:2px solid #E4E1DA;font:400 15px/1 var(--slab);color:#6B6B72;padding:7px 10px}
-.face .q{font:500 clamp(21px,2vw,27px)/1.3 var(--sans);margin:auto 0}
-.face--b .q{font-size:17px;color:#6B6B72;margin:16px 0 10px}
-.face .a{font-size:16.5px;line-height:1.5;border-top:2px dashed #E4E1DA;padding-top:12px;margin:0}
-.face .hint{margin-top:auto;align-self:flex-end;font:700 12px/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;background:#141416;color:#fff;padding:12px 14px}
-.rates{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:auto;padding-top:12px}
-.rates button{border:2.5px solid #141416;background:#fff;font:700 12px/1 var(--sans);letter-spacing:.06em;text-transform:uppercase;padding:12px 4px;cursor:pointer;color:#141416}
-.rates button:nth-child(1){border-color:var(--red);color:var(--red)}
-.rates button:nth-child(4){border-color:var(--green);color:var(--green)}
-.rates button:hover{background:#3B2FE8;border-color:#3B2FE8;color:#fff}
-.done{position:absolute;inset:0;display:grid;place-items:center;text-align:center;border:3px dashed #141416;animation:pop .5s cubic-bezier(.3,1.6,.5,1) both}
-.done h4{font:700 30px/1.1 var(--slab);margin:0 0 18px}
-@media (max-width:620px){.deck{height:460px;margin-right:18px}.rates{grid-template-columns:repeat(2,1fr)}}
-
-/* --- 2. fiches d’arrêt --- */
-.frm{background:#fff;border:3px solid #141416;padding:20px 22px;box-shadow:8px 8px 0 #D8D5CD}
-.frm h4{font:700 24px/1 var(--slab);margin:0 0 16px}
-.row{display:grid;grid-template-columns:1.4fr 1fr;gap:12px}
-@media (max-width:520px){.row{grid-template-columns:1fr;gap:0}}
-.fl{display:block;margin-bottom:12px}
-.fl>span{display:flex;align-items:center;gap:8px;font:600 11px/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:#6B6B72;margin-bottom:6px;transition:color .2s}
-.fl>span i{display:grid;place-items:center;width:20px;height:20px;border-radius:50%;background:#3B2FE8;color:#fff;font:700 11px/1 var(--sans);font-style:normal;transform:scale(0);transition:transform .35s cubic-bezier(.3,1.6,.5,1)}
-.fl>div{min-height:44px;border:2.5px solid #141416;padding:10px 12px;font-size:15px;line-height:1.35;background:#fff;transition:border-color .2s,box-shadow .2s}
-.fl>div.ph{color:#9A9AA2}
-.fl.on>span{color:#3B2FE8}.fl.on>span i{transform:scale(1)}
-.fl.on>div{border-color:#3B2FE8;box-shadow:4px 4px 0 #3B2FE8}
-.caret::after{content:"";display:inline-block;width:2px;height:1.1em;background:#3B2FE8;vertical-align:-3px;margin-left:1px;animation:blink .8s steps(1) infinite}
-@keyframes blink{50%{opacity:0}}
-.save{display:flex;justify-content:flex-end}
-.save button{background:#141416;color:#fff;border:0;font:700 12px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;padding:14px 18px;cursor:pointer}
-.save button.pulse{animation:pb 1s infinite}
-@keyframes pb{50%{background:#3B2FE8;transform:scale(1.05)}}
-.list{display:grid;gap:12px;margin-top:18px}
-.item{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;background:#fff;border:3px solid #141416;padding:14px 16px;box-shadow:6px 6px 0 #D8D5CD;animation:pop .5s cubic-bezier(.3,1.6,.5,1) both}
-.item b{font:700 18px/1.2 var(--sans)}
-.item .t{border:2px solid #E4E1DA;font:400 14px/1 var(--slab);color:#6B6B72;padding:6px 8px}
-.item .d{margin-left:auto;font:500 14px/1 var(--mono);color:#6B6B72}
-@keyframes pop{from{transform:scale(.6) translateY(20px);opacity:0}}
-.frm.shrink{animation:shrink .55s cubic-bezier(.7,0,.2,1) forwards;transform-origin:50% 100%}
-@keyframes shrink{to{transform:scaleY(.1) scaleX(.96);opacity:0}}
-
-/* --- 3. codes & articles --- */
-.srch{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;background:#fff;border:3px solid #141416;padding:14px;box-shadow:8px 8px 0 #D8D5CD;margin-bottom:20px}
-@media (max-width:520px){.srch{grid-template-columns:1fr}}
-.srch input[type=search]{height:48px;border:2.5px solid #141416;padding:0 14px;font:500 17px var(--sans);background:#fff;color:#141416;min-width:0}
-.srch input[type=search]:focus{outline:none;border-color:#3B2FE8;box-shadow:4px 4px 0 #3B2FE8}
-.srch label{display:flex;align-items:center;gap:8px;font:600 12px/1.2 var(--sans);letter-spacing:.1em;text-transform:uppercase;color:#6B6B72;cursor:pointer}
-.srch label input{width:20px;height:20px;accent-color:#3B2FE8}
-.art{background:#fff;border:3px solid #141416;padding:18px 20px;box-shadow:8px 8px 0 #D8D5CD;margin-bottom:18px;animation:pop .4s cubic-bezier(.3,1.6,.5,1) both}
-.art.gone{display:none}
-.art__h{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin-bottom:12px}
-.art__h .code{color:#6B6B72;font-size:15px}
-.art__h b{font:700 24px/1 var(--sans)}
-.star{margin-left:auto;position:relative;border:2.5px solid #141416;background:#fff;font:700 12px/1 var(--sans);letter-spacing:.12em;text-transform:uppercase;padding:11px 12px;cursor:pointer;color:#141416;transition:background .2s,color .2s,transform .2s}
-.star.on{background:#3B2FE8;border-color:#3B2FE8;color:#fff}
-.star:active{transform:scale(.9)}
-.art p{margin:0;font-size:16.5px;line-height:1.55}
-.art .nt{margin-top:12px;padding-top:10px;border-top:2px dashed #E4E1DA;font-size:14px;color:#6B6B72}
-.art .nt mark{background:linear-gradient(transparent 55%,rgba(59,47,232,.22) 55%);color:inherit}
-.empty{border:3px dashed #9A9AA2;padding:22px;text-align:center;color:#6B6B72;display:none}
-
-/* --- 4. Diligences : même charte que les autres démos (papier, encre, violet) --- */
-.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
-.kpi{background:#fff;border:2.5px solid #141416;border-top:6px solid var(--c);padding:12px 14px}
-.kpi span{display:block;font:600 10px/1.2 var(--sans);letter-spacing:.14em;text-transform:uppercase;color:#65656D}
-.kpi b{display:block;font:600 34px/1.1 var(--slab);margin-top:8px;color:#141416}
-@media (max-width:620px){.kpis{grid-template-columns:repeat(2,1fr)}}
-.pipe{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;min-height:300px}
-.col{background:#EEECE5;padding:8px;display:flex;flex-direction:column;gap:8px;transition:background .2s,outline-color .2s;outline:2px dashed transparent;outline-offset:-2px}
-.col.over{background:rgba(59,47,232,.09);outline-color:#3B2FE8}
-.col h5{margin:0;display:flex;flex-wrap:wrap;justify-content:space-between;gap:4px;background:#fff;padding:9px 7px;border:2px solid #141416;border-top:4px solid var(--c);font:700 9.5px/1.1 var(--sans);letter-spacing:.04em;text-transform:uppercase;color:var(--c)}
-.col h5 em{font-style:normal;color:#65656D}
-.lit{background:#fff;color:#141416;border:2.5px solid #141416;border-left:6px solid var(--c,#C62828);box-shadow:4px 4px 0 #141416;padding:10px;cursor:grab;touch-action:none;user-select:none;transition:transform .2s,box-shadow .2s}
-.lit:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 #3B2FE8}
-.lit b{display:block;font:700 13px/1.25 var(--sans)}
-.lit span{display:block;font:500 11px/1.3 var(--mono);color:#65656D;margin-top:4px}
-.lit i{display:inline-block;margin-top:8px;font:700 9px/1 var(--sans);font-style:normal;letter-spacing:.1em;color:#3B2FE8;background:rgba(59,47,232,.1);padding:5px 6px}
-.lit.ghost{opacity:.25}
-.drag{position:fixed;left:0;top:0;z-index:95;pointer-events:none;box-shadow:12px 16px 0 rgba(0,0,0,.35);color:#F2F2F2}
-@media (max-width:700px){.pipe{grid-template-columns:repeat(5,150px);overflow-x:auto;padding-bottom:8px}}
-
-/* --- 5. considérant --- */
-.treebox{position:relative;overflow:auto;height:440px;background:#F4F2EC;background-image:radial-gradient(#DAD6CC 1.3px,transparent 1.4px);background-size:26px 26px;border:3px solid #141416;outline:none}
-.treebox:focus-visible{box-shadow:0 0 0 4px #3B2FE8}
-@media (max-width:620px){.treebox{height:380px}}
-.treebox.grabbing{user-select:none}
-.keys .hint2{align-self:center;font:500 12.5px/1.4 var(--mono);color:#9A9AA2}
-.tree{position:relative}
-.tree svg{position:absolute;left:0;top:0;overflow:visible;pointer-events:none}
-.tree path{fill:none;stroke-width:3;stroke-dasharray:var(--len);stroke-dashoffset:0;animation:draw .7s ease both}
-@keyframes draw{from{stroke-dashoffset:var(--len)}}
-.node{position:absolute;width:236px;background:#fff;border-left:4px solid var(--c);box-shadow:0 6px 16px rgba(0,0,0,.08);padding:8px 12px 10px;font:400 15px/1.3 var(--slab);color:#141416;left:0;top:0;transition:translate .45s cubic-bezier(.2,.9,.2,1),box-shadow .2s;animation:unfold .45s cubic-bezier(.3,1.5,.5,1) both;cursor:pointer}
-.node small{display:block;font:500 11px/1 var(--mono);color:var(--c);margin-bottom:4px}
-.node.root{background:#141416;color:#fff;font:700 18px/1.2 var(--slab);border-left:0;padding:14px 16px;width:200px}
-.tree.compact .node{width:168px;font-size:13.5px;padding:6px 9px 8px}
-.tree.compact .node.root{width:104px;font-size:15px;padding:10px 11px}
-.node.sel{box-shadow:0 0 0 3px #3B2FE8,0 10px 24px rgba(59,47,232,.25)}
-.node [contenteditable]{outline:none}
-@keyframes unfold{from{transform:scaleY(0) scaleX(.6);opacity:0}}
-.keys{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
-.keys button{display:inline-flex;align-items:center;gap:8px;border:2.5px solid #141416;background:#fff;color:#141416;font:600 14px/1 var(--sans);padding:9px 12px;cursor:pointer}
-.keys button:hover{background:#3B2FE8;color:#fff;border-color:#3B2FE8}
-.keys kbd{border-color:#141416;background:#E7E4DC;color:#141416}
-.flash{animation:fl .4s}
-@keyframes fl{50%{background:#3B2FE8;color:#fff;transform:translateY(3px)}}
-
-/* --- 6. quantième --- */
-.dsyn{font:400 14px/1.45 var(--sans);color:#5C5C63;border-left:4px solid #3B2FE8;background:#fff;padding:10px 14px;margin:0 0 16px}.dsyn b{color:#141416}
-.qtitre{font:700 clamp(22px,2.4vw,30px)/1.1 var(--slab);margin:0 0 6px}
-.qsous{font:400 14px/1.4 var(--sans);color:#5C5C63;margin:0 0 18px}
-.qhero{border:3px solid #141416;background:#fff;box-shadow:8px 8px 0 #D9D8D2;padding:18px 20px;margin-bottom:22px}
-.qk{font:400 13px/1 var(--sans);color:#5C5C63}
-.qd{font:700 clamp(28px,3.2vw,42px)/1.05 var(--slab);color:#3B2FE8;margin:6px 0 4px}
-.qt{font:600 18px/1.25 var(--sans);margin-bottom:6px}
-.qr{font:400 14px/1.45 var(--sans);color:#5C5C63;margin:0 0 12px}.qr b{color:#141416}
-.qbar{height:10px;border:2px solid #141416;background:#F7F6F2}.qbar i{display:block;height:100%;width:0;background:#3B2FE8;transition:width 1.6s cubic-bezier(.2,.9,.2,1)}
-.qbl{display:flex;justify-content:space-between;font:400 12px/1 var(--sans);color:#5C5C63;margin-top:6px}
-.qpk{font:700 12px/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:#5C5C63;margin:0 0 10px}
-.qpar{list-style:none;margin:0;padding:0}
-.qj{display:flex;gap:14px;padding:10px 0;border-bottom:1px solid #DEDCD5;cursor:pointer;opacity:0;transform:translateY(14px);transition:opacity .5s,transform .5s}
-.qj.vu{opacity:1;transform:none}
-.qn{flex:none;width:36px;height:36px;background:var(--c);color:#fff;font:700 16px/36px var(--sans);text-align:center}
-.qc{flex:1;min-width:0}
-.qm{font:400 13px/1.3 var(--sans);color:#5C5C63;display:flex;flex-wrap:wrap;align-items:center;gap:8px}
-.qm em{font:700 10px/1 var(--sans);font-style:normal;letter-spacing:.12em;text-transform:uppercase;border:2px solid #141416;color:#141416;padding:3px 6px}
-.qm em.est{border-style:dashed;border-color:#8F8F89;color:#5C5C63}
-.qj h6{font:600 16px/1.3 var(--sans);margin:4px 0 0}
-.qx{max-height:0;overflow:hidden;transition:max-height .45s ease}
-.qj.open .qx{max-height:260px}
-.qx p{font:400 13px/1.45 var(--sans);color:#5C5C63;margin:8px 0 4px}.qx b{color:#141416}
-.qx .ar{color:#3B2FE8;text-decoration:underline;text-underline-offset:3px}
-.qx label{display:flex;align-items:center;gap:8px;font:400 13px/1.3 var(--sans);padding:3px 0;cursor:pointer}
-.qx input{width:16px;height:16px;accent-color:#3B2FE8}
-.qfoot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;margin-top:22px;border-top:3px solid #141416;padding-top:18px}
-.cal{position:relative;display:inline-flex;align-items:center;gap:10px;background:#141416;color:#fff;border:0;font:700 12px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;padding:14px 16px;cursor:pointer}
-.cal svg{width:22px;height:22px}
-.cal em{position:absolute;top:-10px;right:-10px;min-width:24px;height:24px;border-radius:12px;background:#3B2FE8;color:#fff;font:700 12px/24px var(--sans);font-style:normal;text-align:center;transform:scale(0);transition:transform .35s cubic-bezier(.3,1.8,.5,1)}
-.cal.ok em{transform:scale(1)}
-.fly{position:fixed;z-index:96;width:18px;height:18px;margin:-9px 0 0 -9px;pointer-events:none;transition:transform .8s cubic-bezier(.5,-.4,.3,1),opacity .8s}
-
-/* ================= données locales ================= */
-.local{background:var(--ink);color:var(--paper)}
-.local .h2 em{color:var(--vio-2)}
-.local .lead{color:var(--soft)}
-.local__g{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:clamp(30px,5vw,80px);align-items:center}
-@media (max-width:960px){.local__g{grid-template-columns:minmax(0,1fr)}}
-.mon canvas{width:100%;aspect-ratio:16/10;height:auto;border:5px solid var(--paper);background:#1C1C21}
-.mon::after{content:"";display:block;width:30%;height:40px;margin:0 auto;border-inline:5px solid var(--paper);border-bottom:5px solid var(--paper)}
-.pts{display:grid;gap:18px;margin-top:34px}
-.pt{display:grid;grid-template-columns:48px 1fr;gap:16px;align-items:start}
-.pt .num{width:44px;height:44px}
-.pt h3{font:700 26px/1.1 var(--slab);margin:4px 0 4px}
-.pt p{margin:0;color:var(--soft);font-size:16px}
-
-/* ================= téléchargement ================= */
-.dl__g{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:34px;margin-top:56px}
-@media (max-width:800px){.dl__g{grid-template-columns:1fr}}
-.os{position:relative;background:var(--card);border:3px solid var(--ink);padding:clamp(24px,3vw,38px);box-shadow:12px 12px 0 var(--shadow)}
-.os.you{box-shadow:12px 12px 0 var(--vio)}
-.os .you-tag{position:absolute;top:-17px;right:20px;transform:rotate(3deg);background:var(--vio);color:#fff;font:700 11px/1 var(--sans);letter-spacing:.14em;text-transform:uppercase;padding:9px 11px;display:none}
-.os.you .you-tag{display:block}
-.os svg{width:54px;height:54px}
-.os h3{font:700 clamp(34px,3.6vw,48px)/1 var(--slab);margin:18px 0 8px}
-.os .spec{font:500 14px/1.5 var(--mono);color:var(--muted);margin:0 0 18px}
-.os ol{padding-left:1.2em;margin:0 0 26px;color:var(--muted);font-size:16px}
-.os .btn{width:100%}
-.btn[aria-disabled="true"]{background:var(--card);color:var(--soft);border-style:dashed;box-shadow:none}
-.shake{animation:shake .45s}
-@keyframes shake{20%,60%{transform:translateX(-8px)}40%,80%{transform:translateX(8px)}}
-.disc{margin-top:40px;max-width:70ch;padding:16px 20px;border-left:6px solid var(--vio);background:var(--wash);font-size:15px}
-
-.foot{border-top:3px solid var(--ink);padding:40px 0 60px}
-.foot .wrap{display:flex;flex-wrap:wrap;gap:16px 40px;align-items:center;justify-content:space-between}
-.foot p{margin:0;color:var(--muted);font-size:14px}
-.foot .legal{display:flex;flex-wrap:wrap;gap:6px 18px;width:100%}
-.foot .legal a{font-size:14px;color:var(--muted);text-underline-offset:3px}
-.foot .legal a:hover{color:var(--vio)}
-.disc a{color:var(--vio)}
-
-/* rideau d’ouverture */
-.curtain{position:fixed;inset:0;z-index:120;background:var(--vio);color:#fff;display:none;place-items:center;align-content:center;gap:10px;text-align:center;transition:transform .95s cubic-bezier(.8,0,.15,1),border-radius .95s cubic-bezier(.8,0,.15,1)}
-.js-curtain .curtain{display:grid}
-.curtain.up{transform:translateY(-102%);border-radius:0 0 50% 50%/0 0 26% 26%}
-.curtain__n{font:700 clamp(90px,16vw,220px)/.85 var(--slab);letter-spacing:-.04em;display:flex;align-items:baseline;justify-content:center}
-.curtain__n span{font-size:.3em;opacity:.55;margin-left:.1em}
-.curtain__t{font:600 clamp(16px,2vw,22px)/1 var(--sans);letter-spacing:.2em;text-transform:uppercase}
-#fx{position:fixed;inset:0;z-index:97;pointer-events:none;width:100%;height:100%}
-::view-transition-old(root),::view-transition-new(root){animation:none;mix-blend-mode:normal}
-
-@media (prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation:none!important;transition:none!important}
-  .rv{opacity:1;transform:none}[data-split] .w>span{transform:none}
-  .grain{display:none}
-}
+/* données */
+.don{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px;align-items:center}
+.don__txt{grid-column:1 / span 5;display:grid;gap:22px}
+.don__pts{display:grid;gap:18px;margin:0;padding:0;list-style:none}
+.don__pts li{display:grid;grid-template-columns:24px minmax(0,1fr);gap:14px}
+.don__pts svg{width:22px;height:22px;color:var(--ink-2);margin-top:2px}
+.don__pts b{display:block;font-weight:660;color:var(--ink);margin-bottom:2px}
+.don__pts p{font-size:16px;color:var(--ink-2)}
+.schema{grid-column:7 / span 6;display:grid;gap:14px}
+.poste{padding:22px;display:grid;gap:12px}
+.poste__h{display:flex;align-items:center;gap:10px;font-weight:660}
+.poste__h svg{width:22px;height:22px}
+.fichier{display:grid;grid-template-columns:22px minmax(0,1fr) auto;align-items:center;gap:12px;padding:12px 14px;border-radius:var(--r-s);background:var(--surface-2);font-size:15px}
+.fichier svg{width:20px;height:20px;color:var(--ink-3)}
+.fichier small{font-size:13px;color:var(--ink-3);white-space:nowrap}
+.dehors{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px}
+.dehors > div{padding:16px 18px;border:1px dashed var(--line-2);border-radius:var(--r-m);font-size:14px;color:var(--ink-2);display:grid;gap:4px}
+.dehors b{font-size:15px;color:var(--ink)}
+@media (max-width:980px){.don__txt,.schema{grid-column:1 / -1}}
+@media (max-width:520px){.dehors{grid-template-columns:1fr}.fichier small{display:none}}
 </style>
-<noscript><style>.rv{opacity:1;transform:none}[data-split] .w>span{transform:none}</style></noscript>
-<script>
-try{var th=localStorage.getItem('ml-theme');if(th)document.documentElement.setAttribute('data-theme',th);}catch(e){}
-try{if(!matchMedia('(prefers-reduced-motion: reduce)').matches&&!sessionStorage.getItem('ml-vu'))document.documentElement.classList.add('js-curtain');}catch(e){}
-</script>
 </head>
 <body>
-<div class="curtain" id="curtain" aria-hidden="true"><div class="curtain__n"><b id="cN">01</b><span>/06</span></div><div class="curtain__t" id="cT">Fiches mémo</div></div>
-<div class="grain" aria-hidden="true"></div>
-<canvas id="fx" aria-hidden="true"></canvas>
+<a class="skip" href="#contenu">Aller au contenu</a>
 
-<svg class="sr" aria-hidden="true"><symbol id="logo" viewBox="0 0 32 32"><rect x="5.25" y="4.25" width="18.5" height="21.5" fill="none" stroke="currentColor" stroke-width="2.5"/><path d="M24 9h4v20H9v-4h15z" fill="currentColor"/><rect x="9" y="9" width="11" height="2.2" fill="currentColor"/><rect x="9" y="13.4" width="7" height="2.2" fill="currentColor"/><rect x="15" y="18" width="5" height="4.5" fill="#3B2FE8"/></symbol></svg>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="logo" viewBox="0 0 32 32"><rect x="5.25" y="4.25" width="18.5" height="21.5" fill="none" stroke="currentColor" stroke-width="2.5"/><path d="M24 9h4v20H9v-4h15z" fill="currentColor"/><rect x="9" y="9" width="11" height="2.2" fill="currentColor"/><rect x="9" y="13.4" width="7" height="2.2" fill="currentColor"/><rect x="15" y="18" width="5" height="4.5" style="fill:var(--accent-text)"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.2 12.3l2.6 2.6 5-5.3"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12M6.5 10.5L12 16l5.5-5.5M5 20h14"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+  <symbol id="i-laptop" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="5" width="15" height="10.5" rx="1.5"/><path d="M2.5 18.5h19"/></symbol>
+  <symbol id="i-desktop" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12.5" rx="1.5"/><path d="M9 20.5h6M12 16.5v4"/></symbol>
+  <symbol id="i-disk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="14" rx="2"/><path d="M3.5 14h17M7.5 16.5h.01"/></symbol>
+  <symbol id="i-copies" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5l1.9 5.1 5.1 1.9-5.1 1.9L12 17.5l-1.9-5.1L5 10.5l5.1-1.9z"/><path d="M18.5 16v4M16.5 18h4"/></symbol>
+  <symbol id="i-folder" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 7.5a2 2 0 0 1 2-2h4l2 2.5h7a2 2 0 0 1 2 2v7.5a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2z"/></symbol>
+  <symbol id="i-app" viewBox="0 0 32 32"><rect x="5.25" y="4.25" width="18.5" height="21.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M24 9h4v20H9v-4h15z" fill="currentColor"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l10.5-6.5z"/></symbol>
+  <symbol id="i-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-9 9M18 14v4.5A1.5 1.5 0 0 1 16.5 20h-11A1.5 1.5 0 0 1 4 18.5v-11A1.5 1.5 0 0 1 5.5 6H10"/></symbol>
+  <symbol id="i-bas" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></symbol>
+  <symbol id="i-share" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5V19a1.5 1.5 0 0 0 1.5 1.5h13A1.5 1.5 0 0 0 20 19v-6.5M12 3.5v11M7.5 8L12 3.5 16.5 8"/></symbol>
+</svg>
 
-<header class="top" id="top">
-  <div class="top__in">
-    <a class="brand" href="#accueil"><svg aria-hidden="true"><use href="#logo"/></svg>Paraphe</a>
-    <nav class="links" aria-label="Navigation"><a href="#six">Les 6</a><a href="#film">Le film</a><a href="#memo">Essayer</a><a href="diligences.html">Diligences</a><a href="#telecharger">Télécharger</a></nav>
-    <button class="tb" id="theme" data-cursor="Thème">Nuit</button>
-    <a class="tb tb--vio" href="#telecharger">Télécharger</a>
+<header class="top">
+  <div class="top__in verre">
+    <a class="brand" href="index.html" aria-label="Paraphe, accueil"><svg aria-hidden="true"><use href="#logo"/></svg>Paraphe</a>
+    <nav class="nav" aria-label="Navigation principale">
+      <a href="etudier.html">J’étudie</a>
+      <a href="exercer.html">J’exerce</a>
+      <a href="#donnees">Vos données</a>
+    </nav>
+    <button class="iconbtn" id="theme" type="button" aria-pressed="false" aria-label="Passer en thème nuit"><svg aria-hidden="true"><use href="#i-moon"/></svg></button>
+    <a class="btn btn--primary btn--nav" href="#telecharger">Télécharger</a>
+    <button class="iconbtn menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="panel" aria-label="Menu"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
   </div>
-  <div class="prog" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  <nav class="panel verre" id="panel" hidden aria-label="Menu">
+    <a href="etudier.html">J’étudie</a><a href="exercer.html">J’exerce</a><a href="#donnees">Vos données</a><a href="#telecharger">Télécharger</a>
+  </nav>
 </header>
 
-<main>
-<!-- ============================ ACCUEIL ============================ -->
-<section class="hero" id="accueil">
-  <canvas id="grid" aria-hidden="true"></canvas>
-  <div class="hero__in">
-    <svg class="scale" id="scale" viewBox="0 0 32 32" aria-hidden="true" data-cursor="Parapher"><rect id="pOmbre" x="9" y="8" width="19" height="21" fill="currentColor"/><rect x="5.25" y="4.25" width="18.5" height="21.5" style="fill:var(--paper)" stroke="currentColor" stroke-width="2.5"/><rect x="9" y="9" width="11" height="2.2" fill="currentColor"/><rect x="9" y="13.4" width="7" height="2.2" fill="currentColor"/><rect id="pMarque" x="15" y="18" width="5" height="4.5" style="fill:var(--vio)"/></svg>
-    <h1 id="title" aria-label="Paraphe">Paraphe</h1>
-    <div class="hero__bar"></div>
-    <div class="roll"><span>Du cours au cabinet :</span>
-      <span class="roll__win" aria-hidden="true"><span class="roll__list" id="roll"><span>les définitions.</span><span>les arrêts.</span><span>les articles.</span><span>les dossiers.</span><span>les raisonnements.</span><span>les délais.</span><span>les définitions.</span></span></span>
+<main id="contenu">
+
+<!-- ============================ PROMESSE ============================ -->
+<section class="monde3d" aria-labelledby="titre">
+  <div class="fixe3d">
+    <canvas id="gl" width="1920" height="1080" aria-hidden="true"></canvas>
+    <div class="accroche wrap">
+      <h1 class="une" id="titre">Réviser le droit, puis <em>le pratiquer.</em></h1>
+      <p class="lead">Six outils dans une seule application pour Mac et Windows&#8239;: pour les étudiants en droit, de la L1 au M2, et pour les avocats et juristes qui débutent.</p>
+      <div class="hero__cta">
+        <div class="row">
+          <a class="btn btn--primary btn--lg" href="#telecharger">Télécharger Paraphe</a>
+          <a class="btn btn--quiet btn--lg" href="#essayer"><span class="si-grand">Essayer dans le navigateur</span><span class="si-petit">Voir le logiciel</span></a>
+        </div>
+        <p class="hero__meta">Version&nbsp;1.1.6 · Mac et Windows · sans compte</p>
+        <div class="hero__mobile">
+          <p class="hero__meta">Paraphe s’installe sur un ordinateur Mac ou Windows.</p>
+          <button class="btn btn--quiet btn--lg" type="button" data-share><svg aria-hidden="true"><use href="#i-share"/></svg>M’envoyer le lien</button>
+        </div>
+      </div>
+      <p class="indice"><span aria-hidden="true"><svg><use href="#i-bas"/></svg>Faites défiler&#8239;: Paraphe met de l’ordre</span><a class="passer" href="#essayer">ou passez directement à la démo</a></p>
     </div>
-    <p class="sub">Six outils pour étudier et pratiquer le droit, réunis dans une seule application pour macOS et Windows.</p>
-    <div class="ctas">
-      <a class="btn btn--vio" href="#telecharger" data-magnet data-cursor="Go">Télécharger</a>
-      <a class="btn" href="#memo" data-magnet data-cursor="Jouer">Essayer ici ↓</a>
-    </div>
+    <img class="repli jour" src="assets/img/accueil-3d.jpg" width="1340" height="840" alt="" loading="lazy">
+    <img class="repli nuit" src="assets/img/accueil-3d-nuit.jpg" width="1340" height="840" alt="" loading="lazy">
+    <div class="calque-cadre" id="calque-cadre"><div class="calque" id="calque">
+      <div id="m-mots" aria-hidden="true"><span>Des cours.</span><span>Des arrêts.</span><span>Des articles.</span><span>Des dossiers…</span><span>Et des délais.</span></div>
+      <div id="m-titre"><h2>Paraphe met tout <b>en ordre.</b></h2><p>Six outils pour étudier et pratiquer le droit, dans une seule application.</p></div>
+      <div id="m-stations"></div>
+      <div id="m-local"><h2>100&nbsp;% <b>local.</b></h2><ul><li>Aucun compte.</li><li>Aucun serveur.</li><li>Aucune connexion nécessaire.</li></ul></div>
+      <div id="m-donnees"><h2>Vos données restent <b>ici.</b></h2><p>Enregistrées sur votre ordinateur, pas sur un serveur. Copies de sécurité chiffrables.</p></div>
+      <div id="m-fin">
+        <div id="m-logo" aria-hidden="true"><span class="lettres">Paraphe<i class="point"></i></span></div>
+        <p id="m-devise">Du cours au cabinet.</p>
+        <div id="m-cta"><a class="btn btn--primary" href="#telecharger">Télécharger Paraphe</a><a class="btn btn--quiet" href="#essayer">Essayer dans le navigateur</a></div>
+      </div>
+    </div></div>
   </div>
-  <div class="scroll-hint" aria-hidden="true">Défiler<i></i></div>
 </section>
 
-<div class="ticker" aria-hidden="true"><div class="ticker__t">
-  <span>Fiches mémo</span><span>Fiches d’arrêt</span><span>Codes &amp; articles</span><span>Diligences</span><span>Considérant</span><span>Quantième</span>
-  <span>Fiches mémo</span><span>Fiches d’arrêt</span><span>Codes &amp; articles</span><span>Diligences</span><span>Considérant</span><span>Quantième</span>
-</div></div>
+<!-- le vrai logiciel, en entier -->
+<section class="vitrine" id="essayer" aria-label="Essayer Paraphe">
+  <div class="ecran">
+    <figure class="live live--d-emblee" data-src="app/Hub.html" data-titre="Paraphe, l’accueil du logiciel (démonstration)">
+      <div class="win">
+        <div class="win__bar"><span class="live__titre"><svg aria-hidden="true"><use href="#i-app"/></svg><span>Paraphe — l’accueil, avec des données d’exemple</span></span>
+          <span class="live__etat" aria-hidden="true"><i></i>Démo en direct · cliquez dedans pour l’essayer</span>
+          <a class="live__plein" href="app/Hub.html" target="_blank" rel="noopener">Plein écran<svg aria-hidden="true"><use href="#i-ext"/></svg></a></div>
+        <div class="live__cadre">
+          <img loading="lazy" class="jour" src="assets/img/app/ecran-accueil.jpg" srcset="assets/img/app/ecran-accueil.jpg 1440w, assets/img/app/ecran-accueil@2x.jpg 2880w" sizes="(max-width: 900px) 92vw, min(1200px, 86vw)" width="1440" height="1020" alt="L’accueil de Paraphe : la recherche dans tout ce que vous avez saisi, puis les six outils, Étudier (Fiches mémo, Fiches d’arrêt, Codes et articles) et Pratiquer (Diligences, Considérant, Quantième)." fetchpriority="high">
+          <img class="nuit" src="assets/img/app/ecran-accueil-nuit.jpg" srcset="assets/img/app/ecran-accueil-nuit.jpg 1440w, assets/img/app/ecran-accueil-nuit@2x.jpg 2880w" sizes="(max-width: 900px) 92vw, min(1200px, 86vw)" width="1440" height="1020" alt="L’accueil de Paraphe en thème nuit : la recherche, puis les six outils." loading="lazy">
+        </div>
+      </div>
+      <figcaption><span><b>C’est le vrai logiciel.</b> Ouvrez un outil, cherchez, cliquez : tout fonctionne. Rien n’est enregistré, et un rechargement remet la démo à zéro.</span><a class="link live__mobile" href="app/Hub.html" target="_blank" rel="noopener">Ouvrir la démo<svg aria-hidden="true"><use href="#i-ext"/></svg></a></figcaption>
+    </figure>
+  </div>
+</section>
 
-<!-- ============================ LES 6 ============================ -->
-<section class="sec" id="six">
+<!-- ============================ DEUX PORTES ============================ -->
+<section class="sec" style="padding-top:0" aria-labelledby="portes-t">
   <div class="wrap">
-    <div class="six__head">
-      <h2 class="h2" data-split><em>6</em> outils, deux familles.</h2>
-      <p class="lead rv">Comme sur l’écran d’accueil de l’application. Sauf qu’ici, un clic sur une carte vous emmène l’essayer.</p>
+    <div class="sec__head">
+      <h2 class="h2" id="portes-t">Par où commencez&#8209;vous&nbsp;?</h2>
+      <p class="lead">Les deux familles d’outils vivent dans la même application et la même sauvegarde. Ce que vous apprenez en cours vous suit au cabinet.</p>
     </div>
-    <p class="fam rv">Études de droit</p>
-    <div class="cards">
-      <a class="tile" href="#memo" data-cursor="Essayer"><div class="tile__t"><span class="num">1</span><h3>Fiches mémo</h3></div><p>Révision par répétition espacée pour mémoriser définitions, articles et notions.</p><span class="go">Essayer →</span></a>
-      <a class="tile" href="#arret" data-cursor="Essayer"><div class="tile__t"><span class="num">2</span><h3>Fiches d’arrêt</h3></div><p>Fiches structurées (faits, procédure, problème, solution, portée) avec recherche par matière.</p><span class="go">Essayer →</span></a>
-      <a class="tile" href="#codes" data-cursor="Essayer"><div class="tile__t"><span class="num">3</span><h3>Codes &amp; articles</h3></div><p>Articles de loi classés par matière et par code, avec annotations personnelles.</p><span class="go">Essayer →</span></a>
-    </div>
-    <p class="fam rv">Pratique &amp; rédaction</p>
-    <div class="cards">
-      <a class="tile" href="#suivi" data-cursor="Essayer"><div class="tile__t"><span class="num">4</span><h3>Diligences</h3></div><p>Le suivi de vos dossiers : contrats, litiges, échéances, pièces et honoraires, avec un accueil qui dit ce qui arrive.</p><span class="go">Essayer →</span></a>
-      <a class="tile" href="#cons" data-cursor="Essayer"><div class="tile__t"><span class="num">5</span><h3>Considérant</h3></div><p>Fiches de raisonnement juridique — structurer un considérant, une argumentation.</p><span class="go">Essayer →</span></a>
-      <a class="tile" href="#quant" data-cursor="Essayer"><div class="tile__t"><span class="num">6</span><h3>Quantième</h3></div><p>Les délais de procédure, date limite par date limite, de la plus proche à la plus lointaine.</p><span class="go">Essayer →</span></a>
+    <div class="portes">
+      <a class="card porte" href="etudier.html">
+        <h3>J’étudie</h3>
+        <p class="porte__qui">Pour les étudiants, de la L1 au M2.</p>
+        <ul>
+          <li><b>Fiches mémo</b><span>Répétition espacée : ce qui coince revient vite.</span></li>
+          <li><b>Fiches d’arrêt</b><span>352 fiches d’arrêt préchargées, filtrables par niveau.</span></li>
+          <li><b>Codes &amp; articles</b><span>Vos articles de référence, annotés.</span></li>
+        </ul>
+        <span class="link">Essayer les outils d’étude<svg aria-hidden="true"><use href="#i-arrow"/></svg></span>
+      </a>
+      <a class="card porte" href="exercer.html">
+        <h3>J’exerce</h3>
+        <p class="porte__qui">Pour les avocats, juristes et collaborateurs.</p>
+        <ul>
+          <li><b>Diligences</b><span>Dossiers, litiges, échéances, pièces et honoraires.</span></li>
+          <li><b>Considérant</b><span>Construire un raisonnement, branche par branche.</span></li>
+          <li><b>Quantième</b><span>Les délais de procédure, article à l’appui.</span></li>
+        </ul>
+        <span class="link">Essayer les outils de pratique<svg aria-hidden="true"><use href="#i-arrow"/></svg></span>
+      </a>
     </div>
   </div>
 </section>
 
 <!-- ============================ FILM ============================ -->
-<section class="sec film" id="film">
-  <div class="wrap">
-    <h2 class="h2" data-split>Le film, <em>en une minute.</em></h2>
-    <p class="lead rv">Les six outils de Paraphe en une minute, dans un monde en 3D isométrique : de la révision aux délais de procédure, avec des données qui restent sur votre ordinateur. Montez le son.</p>
-    <div class="player" id="player">
-      <video id="vid" preload="metadata" playsinline poster="assets/media/paraphe-film.jpg">
+<section class="sec" aria-labelledby="film-t">
+  <div class="wrap film">
+    <div class="film__txt">
+      <h2 class="h2" id="film-t">Paraphe en une minute.</h2>
+      <p class="lead">Les six outils, de la révision aux délais de procédure, dans un court film. Il est sous-titré&nbsp;; pensez à monter le son.</p>
+    </div>
+    <div class="film__v">
+      <video id="film" preload="none" playsinline data-poster-jour="assets/media/paraphe-film.jpg" data-poster-nuit="assets/media/paraphe-film-nuit.jpg" aria-label="Film de présentation de Paraphe (1 minute)">
         <source src="assets/media/paraphe-film.mp4" type="video/mp4">
+        <track kind="captions" src="assets/media/paraphe-film.fr.vtt" srclang="fr" label="Français">
       </video>
-      <button class="play" id="play" aria-label="Lire la vidéo" data-cursor="Lecture"><b></b></button>
+      <button class="film__play" id="film-play" type="button" aria-label="Lire le film de présentation"><span><svg aria-hidden="true"><use href="#i-play"/></svg>Lire le film · 1 min</span></button>
     </div>
   </div>
 </section>
 
-<!-- ============================ 1. FICHES MÉMO ============================ -->
-<section class="app" id="memo" data-app="0">
-  <span class="big" aria-hidden="true">01</span>
-  <div class="wrap app__g">
-    <div class="app__info rv">
-      <div class="app__k"><span class="num">1</span><span class="lbl">Révision</span></div>
-      <h2>Fiches mémo</h2>
-      <p class="app__d">Révision par répétition espacée : les cartes que vous maîtrisez reviennent moins souvent, celles qui coincent reviennent vite.</p>
-      <ul class="ul"><li>Le nombre de cartes à revoir chaque jour.</li><li>Recto : la question ou le terme ; verso : la réponse.</li><li>Quatre réponses : Encore, Difficile, Correct, Facile.</li><li>Vos cartes par matière ; export JSON ou PDF.</li></ul>
-      <p class="try"><span class="lbl">À vous</span> Cliquez sur la carte ou appuyez sur <kbd>Espace</kbd>, puis évaluez-vous.</p>
+<!-- ============================ DONNÉES ============================ -->
+<section class="sec" id="donnees" style="padding-top:0" aria-labelledby="don-t">
+  <div class="wrap don">
+    <div class="don__txt">
+      <h2 class="h2" id="don-t">Vos données restent sous votre contrôle.</h2>
+      <ul class="don__pts">
+        <li><svg aria-hidden="true"><use href="#i-disk"/></svg><div><b>Sans compte, sans serveur Paraphe</b><p>Chaque outil enregistre ses données dans le dossier de l’application, sur votre disque. Aucune inscription, aucun traceur.</p></div></li>
+        <li><svg aria-hidden="true"><use href="#i-copies"/></svg><div><b>Des copies de sécurité automatiques</b><p>Toutes les six heures au plus, gardées sept jours, dans le dossier de votre choix si vous le souhaitez.</p></div></li>
+        <li><svg aria-hidden="true"><use href="#i-lock"/></svg><div><b>Protégées par un mot de passe, si vous voulez</b><p>Copies et sauvegardes peuvent être chiffrées ; le mot de passe est gardé dans le trousseau de votre système.</p></div></li>
+        <li><svg aria-hidden="true"><use href="#i-spark"/></svg><div><b>Un assistant IA facultatif</b><p>Dans Diligences, il utilise votre propre clé et vous demande votre accord avant tout envoi au service choisi.</p></div></li>
+      </ul>
     </div>
-    <div class="demo rv">
-      <div class="demo__bar"><i></i><i></i><i></i><span>Fiches mémo</span><button class="rp" id="memoReset">Rejouer</button></div>
-      <div class="demo__in">
-        <div class="deckhead"><div><b id="cnt">3</b> <span>carte(s) à réviser aujourd’hui</span></div><span class="lbl" style="color:#3B2FE8">Démo</span></div>
-        <div class="deck" id="deck" data-cursor="Retourner"></div>
+    <div class="schema" role="img" aria-label="Schéma : l’application et les données des six outils sont sur votre ordinateur, les copies de sécurité vont dans le dossier que vous choisissez ; il n’y a ni compte ni serveur Paraphe ; l’assistant IA, facultatif, n’envoie rien sans votre accord.">
+      <div class="card poste">
+        <div class="poste__h"><svg aria-hidden="true"><use href="#i-laptop"/></svg>Votre ordinateur</div>
+        <div class="fichier"><svg aria-hidden="true"><use href="#i-app"/></svg><span>Paraphe</span><small>application</small></div>
+        <div class="fichier"><svg aria-hidden="true"><use href="#i-folder"/></svg><span>Données des six outils</span><small>sur votre disque</small></div>
+        <div class="fichier"><svg aria-hidden="true"><use href="#i-copies"/></svg><span>Copies de sécurité</span><small>chiffrables</small></div>
+      </div>
+      <div class="dehors">
+        <div><b>Serveur Paraphe</b>Il n’y en a pas : rien à créer, rien à synchroniser.</div>
+        <div><b>Assistant IA</b>Facultatif, avec votre clé, après votre accord.</div>
       </div>
     </div>
-  </div>
-</section>
-
-<!-- ============================ 2. FICHES D’ARRÊT ============================ -->
-<section class="app" id="arret" data-app="1">
-  <span class="big" aria-hidden="true">02</span>
-  <div class="wrap app__g">
-    <div class="app__info rv">
-      <div class="app__k"><span class="num">2</span><span class="lbl">Analyse de jurisprudence</span></div>
-      <h2>Fiches d’arrêt</h2>
-      <p class="app__d">Chaque arrêt suit la même structure : faits, procédure, problème de droit, solution / motifs, portée.</p>
-      <ul class="ul"><li>Titre, juridiction, date et matière.</li><li>Recherche et filtres par matière et par juridiction.</li><li>Export JSON ou PDF, import.</li><li>Quelques arrêts de référence préchargés par matière pour démarrer.</li></ul>
-      <p class="try"><span class="lbl">À vous</span> Regardez la fiche se remplir, puis cliquez sur <b>Enregistrer</b>.</p>
-    </div>
-    <div class="demo rv" id="arretDemo">
-      <div class="demo__bar"><i></i><i></i><i></i><span>Fiches d’arrêt</span><button class="rp" id="arretReset">Rejouer</button></div>
-      <div class="demo__in">
-        <div class="frm" id="frm">
-          <h4>Nouvelle fiche</h4>
-          <div class="row"><div class="fl" data-k="titre"><span>Titre (nom de l’arrêt)</span><div class="ph">ex. Cass. civ. 1re, 28 janvier 1998</div></div><div class="fl" data-k="jur"><span>Juridiction</span><div>Cour de cassation</div></div></div>
-          <div class="row"><div class="fl" data-k="mat"><span>Matière</span><div class="ph">ex. Droit des obligations</div></div><div class="fl" data-k="date"><span>Date</span><div class="ph">jj/mm/aaaa</div></div></div>
-          <div class="fl" data-r="1"><span><i>1</i>Faits</span><div class="ph">Résumé des faits pertinents</div></div>
-          <div class="fl" data-r="2"><span><i>2</i>Procédure</span><div class="ph">Historique procédural, moyens des parties</div></div>
-          <div class="fl" data-r="3"><span><i>3</i>Problème de droit</span><div class="ph">Question de droit posée à la juridiction</div></div>
-          <div class="fl" data-r="4"><span><i>4</i>Solution / motifs</span><div class="ph">Décision rendue et raisonnement</div></div>
-          <div class="fl" data-r="5"><span><i>5</i>Portée</span><div class="ph">Apport de l’arrêt, revirement, portée future</div></div>
-          <div class="save"><button id="saveBtn" data-cursor="Enregistrer">Enregistrer la fiche</button></div>
-        </div>
-        <div class="list" id="list"></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============================ 3. CODES & ARTICLES ============================ -->
-<section class="app" id="codes" data-app="2">
-  <span class="big" aria-hidden="true">03</span>
-  <div class="wrap app__g">
-    <div class="app__info rv">
-      <div class="app__k"><span class="num">3</span><span class="lbl">Références</span></div>
-      <h2>Codes &amp; articles</h2>
-      <p class="app__d">Les articles que vous utilisez souvent, classés par matière et par code, avec votre note personnelle et un marqueur « à retenir ».</p>
-      <ul class="ul"><li>Recherche par numéro, matière ou code.</li><li>Filtre « à retenir uniquement ».</li><li>Une base d’articles de référence par matière, préchargée — à vérifier sur Légifrance.</li></ul>
-      <p class="try"><span class="lbl">À vous</span> Tapez <kbd>1833</kbd> dans la recherche, ou marquez un article ☆.</p>
-    </div>
-    <div class="demo rv">
-      <div class="demo__bar"><i></i><i></i><i></i><span>Codes &amp; articles</span></div>
-      <div class="demo__in">
-        <div class="srch"><input id="art-q" type="search" placeholder="Rechercher un article" aria-label="Rechercher un article"><label><input type="checkbox" id="art-only"> À retenir uniquement</label></div>
-        <div class="art" data-s="1832 code civil droit des sociétés société contrat entreprise commune">
-          <div class="art__h"><span class="tag">Droit des sociétés</span><span class="code">Code civil</span><b>Art. 1832</b><button class="star on" data-cursor="Retenir">★ À retenir</button></div>
-          <p>La société est instituée par deux ou plusieurs personnes qui conviennent par un contrat d’affecter à une entreprise commune des biens ou leur industrie en vue de partager le bénéfice ou de profiter de l’économie qui pourra en résulter.</p>
-          <p class="nt">Note — <mark>Définition matricielle de la société, valable pour toutes les formes sociales.</mark></p>
-        </div>
-        <div class="art" data-s="1833 code civil droit des sociétés objet licite intérêt commun intérêt social">
-          <div class="art__h"><span class="tag">Droit des sociétés</span><span class="code">Code civil</span><b>Art. 1833</b><button class="star" data-cursor="Retenir">☆ À retenir</button></div>
-          <p>Toute société doit avoir un objet licite et être constituée dans l’intérêt commun des associés.</p>
-          <p style="margin-top:8px">La société est gérée dans son intérêt social, en prenant en considération les enjeux sociaux et environnementaux de son activité.</p>
-        </div>
-        <div class="empty" id="art-empty">Aucun article ne correspond.</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============================ 4. DILIGENCES ============================ -->
-<section class="app" id="suivi" data-app="3">
-  <span class="big" aria-hidden="true">04</span>
-  <div class="wrap app__g">
-    <div class="app__info rv">
-      <div class="app__k"><span class="num">4</span><span class="lbl">Pratique</span></div>
-      <h2>Diligences</h2>
-      <p class="app__d">Le suivi de vos dossiers : sociétés, contrats, litiges, échéances, pièces et honoraires.</p>
-      <ul class="ul"><li>Un accueil qui dit ce qui arrive : échéances à 30 jours, audiences, montant en jeu.</li><li>Les litiges rangés par étape.</li><li>Sociétés, contrats, consultations, calendrier, prévisionnel, prescription, statistiques, graphe des relations, vue 360°, rapport exécutif.</li></ul>
-      <p class="try"><span class="lbl">À vous</span> Attrapez un litige et glissez-le dans une autre colonne.</p>
-      <p class="decouvrir"><a href="diligences.html" data-cursor="Voir">Toutes les fonctions de Diligences, en images →</a></p>
-    </div>
-    <div class="demo rv">
-      <div class="demo__bar"><i></i><i></i><i></i><span>Diligences — Litiges par étape</span></div>
-      <div class="demo__in">
-        <p class="dsyn">Dans les 30 prochains jours : <b>4 contrats</b> arrivent à échéance, <b>2 audiences</b> sont prévues.</p>
-        <div class="kpis" id="kpis">
-          <div class="kpi" style="--c:#3B2FE8"><span>Contrats en cours</span><b data-count="12">0</b></div>
-          <div class="kpi" style="--c:#C62828"><span>Litiges en cours</span><b data-count="3">0</b></div>
-          <div class="kpi" style="--c:#B7791F"><span>Fin sous 30 jours</span><b data-count="4">0</b></div>
-          <div class="kpi" style="--c:#2E7D52"><span>Montant en jeu</span><b data-count="48" data-suf=" k€">0</b></div>
-        </div>
-        <div class="pipe" id="pipe">
-          <div class="col" style="--c:#C62828"><h5>Actif <em>0</em></h5>
-            <div class="lit" style="--c:#C62828" data-cursor="Glisser"><b>Litige commercial</b><span>Réf. L-001 · démo</span><i>ÉLEVÉ</i></div>
-            <div class="lit" style="--c:#C62828" data-cursor="Glisser"><b>Bail commercial</b><span>Réf. L-002 · démo</span><i>MOYEN</i></div></div>
-          <div class="col" style="--c:#B7791F"><h5>En appel <em>0</em></h5>
-            <div class="lit" style="--c:#B7791F" data-cursor="Glisser"><b>Rupture de contrat</b><span>Réf. L-003 · démo</span><i>ÉLEVÉ</i></div></div>
-          <div class="col" style="--c:#3B2FE8"><h5>Transaction <em>0</em></h5></div>
-          <div class="col" style="--c:#2E7D52" data-win><h5>Gagné <em>0</em></h5></div>
-          <div class="col" style="--c:#8F8F89"><h5>Perdu <em>0</em></h5></div>
-        </div>
-        <p class="note">Données fictives de démonstration.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============================ 5. CONSIDÉRANT ============================ -->
-<section class="app" id="cons" data-app="4">
-  <span class="big" aria-hidden="true">05</span>
-  <div class="wrap app__g">
-    <div class="app__info rv">
-      <div class="app__k"><span class="num">5</span><span class="lbl">Fiches de raisonnement</span></div>
-      <h2>Considérant</h2>
-      <p class="app__d">Structurer un considérant, une argumentation : le raisonnement prend la forme d’un arbre, branche par branche.</p>
-      <ul class="ul"><li>Double-clic pour écrire.</li><li><kbd>Tab</kbd> crée une branche enfant, <kbd>Entrée</kbd> une branche voisine.</li><li>Export image ou Markdown, impression, sauvegarde, import.</li></ul>
-      <p class="try"><span class="lbl">À vous</span> Choisissez une branche, puis <kbd>Tab</kbd> ou <kbd>Entrée</kbd>. Double-clic pour écrire.</p>
-    </div>
-    <div class="demo rv">
-      <div class="demo__bar"><i></i><i></i><i></i><span>Considérant — Droit du travail</span><button class="rp" id="treeReset">Rejouer</button></div>
-      <div class="demo__in">
-        <div class="treebox" id="treebox" tabindex="0" aria-label="Arbre de raisonnement : Tab pour une branche enfant, Entrée pour une branche voisine, Échap pour sortir"><div class="tree" id="tree"></div></div>
-        <div class="keys"><button id="kTab"><kbd>Tab</kbd> enfant</button><button id="kEnt"><kbd>Entrée</kbd> voisin</button><button id="kDel"><kbd>Suppr</kbd> retirer</button><span class="hint2">Glissez le fond pour vous déplacer.</span></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============================ 6. QUANTIÈME ============================ -->
-<section class="app" id="quant" data-app="5">
-  <span class="big" aria-hidden="true">06</span>
-  <div class="wrap app__g">
-    <div class="app__info rv">
-      <div class="app__k"><span class="num">6</span><span class="lbl">Délais de procédure</span></div>
-      <h2>Quantième</h2>
-      <p class="app__d">Choisissez une procédure et la date de l’acte qui fait courir les délais : Quantième affiche votre prochaine date limite, puis tout le parcours, de la date la plus proche à la plus lointaine.</p>
-      <ul class="ul"><li>Une recherche par mot (« appel », « 908 », « forclusion ») ou par juridiction.</li><li>Pour chaque date : pourquoi elle tombe ce jour-là, l’article, et ce qu’il faut préparer.</li><li>Un dossier se garde dans un fichier ou dans un lien ; les dates partent dans votre agenda. Aucune donnée n’est envoyée sur un serveur.</li></ul>
-      <p class="try"><span class="lbl">À vous</span> Ouvrez une étape, cochez ce que vous avez déjà, puis <b>Ajouter à mon agenda</b>.</p>
-    </div>
-    <div class="demo rv" id="qDemo">
-      <div class="demo__bar"><i></i><i></i><i></i><span>Quantième</span></div>
-      <div class="demo__in">
-        <div class="qtitre">Appel civil — à compter de la signification du jugement</div>
-        <p class="qsous">Cour d’appel · signification du jugement le <b>dim. 27 sept. 2026</b></p>
-        <div class="qhero" id="qhero">
-          <span class="qk">Votre prochaine date limite</span>
-          <div class="qd">Mardi 27 octobre 2026</div>
-          <div class="qt">Expiration du délai d’appel</div>
-          <p class="qr"><b>1 mois</b> à compter de la signification. Passé ce jour, il est trop tard pour agir.</p>
-          <div class="qbar"><i></i></div><div class="qbl"><span>27 sept. · départ</span><span>27 oct.</span></div>
-        </div>
-        <p class="qpk">Votre parcours, étape par étape</p>
-        <ol class="qpar" id="qpar">
-          <li class="qj open" style="--c:#3B2FE8" data-cursor="Ouvrir"><span class="qn">1</span><div class="qc"><div class="qm"><em>Date limite</em>27 oct. 2026 · mardi</div><h6>Expiration du délai d’appel</h6>
-            <div class="qx"><p><b>Pourquoi cette date ?</b> 1 mois à compter de la signification du jugement. <span class="ar">art. 538 CPC</span></p><p><b>À préparer</b> — cochez ce que vous avez déjà :</p><label><input type="checkbox"> Déclaration d’appel</label><label><input type="checkbox"> Copie du jugement signifié</label></div></div></li>
-          <li class="qj" style="--c:#C99A1C" data-cursor="Ouvrir"><span class="qn">2</span><div class="qc"><div class="qm"><em class="est">Date estimée</em>27 janv. 2027 · mercredi</div><h6>Conclusions de l’appelant</h6>
-            <div class="qx"><p><b>Pourquoi cette date ?</b> 3 mois après la déclaration d’appel, si elle est faite le dernier jour. <span class="ar">art. 908 CPC</span></p><p><b>À préparer</b> :</p><label><input type="checkbox"> Conclusions d’appelant</label><label><input type="checkbox"> Bordereau de pièces</label></div></div></li>
-          <li class="qj" style="--c:#3E9A5E" data-cursor="Ouvrir"><span class="qn">3</span><div class="qc"><div class="qm"><em class="est">Date estimée</em>27 avr. 2027 · mardi</div><h6>Conclusions de l’intimé</h6>
-            <div class="qx"><p><b>Pourquoi cette date ?</b> 3 mois après la notification des conclusions de l’appelant. <span class="ar">art. 909 CPC</span></p><p><b>À préparer</b> :</p><label><input type="checkbox"> Conclusions d’intimé</label><label><input type="checkbox"> Appel incident, le cas échéant</label></div></div></li>
-        </ol>
-        <div class="qfoot"><span class="note" style="margin:0">Exemple tiré de l’application · délais indicatifs, à vérifier.</span>
-          <button class="cal" id="cal" data-cursor="Ajouter"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><rect x="3" y="5" width="18" height="16"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Ajouter à mon agenda<em>3</em></button></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============================ DONNÉES LOCALES ============================ -->
-<section class="sec local" id="donnees">
-  <div class="wrap local__g">
-    <div>
-      <h2 class="h2" data-split>Vos données restent <em>chez vous.</em></h2>
-      <p class="lead rv" style="margin-top:20px">Rien ne quitte votre ordinateur : chaque outil enregistre ses données sur votre appareil. Une sauvegarde en un clic, depuis l’accueil de l’application, met tout à l’abri dans un seul fichier.</p>
-      <div class="pts">
-        <div class="pt rv"><span class="num">1</span><div><h3>Local</h3><p>Tout reste sur votre ordinateur.</p></div></div>
-        <div class="pt rv"><span class="num">2</span><div><h3>Exports</h3><p>JSON, PDF, Markdown, image ou calendrier, selon l’outil.</p></div></div>
-        <div class="pt rv"><span class="num">3</span><div><h3>Jour / Nuit</h3><p>Un thème clair et un thème sombre — essayez le bouton en haut.</p></div></div>
-      </div>
-    </div>
-    <div class="mon rv" data-cursor="Attirer"><canvas id="mon" role="img" aria-label="Des carrés de couleur rebondissent à l’intérieur d’un écran sans jamais en sortir"></canvas></div>
   </div>
 </section>
 
 <!-- ============================ TÉLÉCHARGER ============================ -->
-<section class="sec" id="telecharger">
-  <div class="wrap">
-    <h2 class="h2" data-split>Télécharger <em>Paraphe.</em></h2>
-    <p class="lead rv" style="margin-top:18px">Version 1.1.5 — une seule installation pour les six outils.</p>
-    <div class="dl__g">
-      <div class="os rv" id="os-mac"><span class="you-tag">Pour cet ordinateur</span>
-        <svg viewBox="0 0 54 54" fill="none" stroke="currentColor" stroke-width="3.6"><rect x="9" y="10" width="36" height="24"/><path d="M3 43h48l-4-7H7z" fill="currentColor"/></svg>
-        <h3>macOS</h3><p class="spec">Universel (Apple Silicon et Intel) · .dmg · ≈ 12 Mo</p>
-        <ol><li>Ouvrez le fichier .dmg.</li><li>Glissez Paraphe dans Applications.</li></ol>
-        <a class="btn btn--ink" data-dl="mac" href="#telecharger" data-magnet data-cursor="Télécharger">Télécharger pour macOS</a></div>
-      <div class="os rv" id="os-win"><span class="you-tag">Pour cet ordinateur</span>
-        <svg viewBox="0 0 54 54" fill="none" stroke="currentColor" stroke-width="3.6"><rect x="10" y="5" width="34" height="44"/><path d="M17 15h20M17 23h20"/><circle cx="27" cy="39" r="3" fill="currentColor"/></svg>
-        <h3>Windows</h3><p class="spec">64 bits · installateur .exe · ≈ 4,5 Mo</p>
-        <ol><li>Lancez l’installateur.</li><li>Suivez les étapes, puis ouvrez Paraphe.</li></ol>
-        <a class="btn btn--ink" data-dl="windows" href="#telecharger" data-magnet data-cursor="Télécharger">Télécharger pour Windows</a></div>
+<section class="sec" id="telecharger" style="background:var(--surface);border-top:1px solid var(--line)" aria-labelledby="dl-t">
+  <div class="wrap dl">
+    <div class="dl__intro">
+      <h2 class="h2" id="dl-t">Télécharger Paraphe.</h2>
+      <p class="lead">Une seule installation pour les six outils. Version <span data-version>1.1.6</span>.</p>
+      <ul class="promesses" aria-label="Garanties">
+        <li><svg aria-hidden="true"><use href="#i-check"/></svg>Aucun compte à créer</li>
+        <li><svg aria-hidden="true"><use href="#i-check"/></svg>Rien n’est envoyé sans votre accord</li>
+      </ul>
+      <p class="cond">En téléchargeant Paraphe, vous acceptez ses <a href="mentions-legales.html#conditions">conditions d’utilisation</a>. Les délais calculés sont indicatifs et ne constituent pas un avis juridique : vérifiez toujours les textes en vigueur.</p>
+      <div class="dl__mobile">
+        <p>Vous êtes sur un téléphone : Paraphe s’installe sur un ordinateur Mac ou Windows.</p>
+        <div class="row">
+          <button class="btn btn--primary" type="button" data-share><svg aria-hidden="true"><use href="#i-share"/></svg>M’envoyer le lien</button>
+          <button class="btn btn--quiet" type="button" data-copy><span data-copy-label>Copier le lien</span></button>
+        </div>
+      </div>
     </div>
-    <p class="disc rv" style="margin-top:32px">Première ouverture sur Mac : si macOS signale un développeur non identifié, faites un clic droit sur Paraphe, puis « Ouvrir ».</p>
-    <p class="disc rv">Les calculs de délais et de prescription sont fournis à titre indicatif et ne constituent pas un avis juridique : vérifiez toujours les textes en vigueur. Le téléchargement vaut acceptation des <a href="mentions-legales.html#conditions">conditions d’utilisation</a>.</p>
+    <div class="dl__opts">
+      <article class="card os" data-os="mac">
+        <div class="os__h"><svg aria-hidden="true"><use href="#i-laptop"/></svg><h3>macOS</h3><span class="os__tag" hidden>Pour cet ordinateur</span></div>
+        <dl class="os__spec">
+          <div><dt>Taille</dt><dd>14,5 Mo</dd></div><div><dt>Système</dt><dd>macOS 12 ou plus</dd></div><div><dt>Processeur</dt><dd>Apple Silicon et Intel</dd></div>
+        </dl>
+        <a class="btn btn--primary btn--dl" data-dl="mac" href="logiciels/Paraphe_1.1.6_universal.dmg"><svg aria-hidden="true"><use href="#i-down"/></svg>Télécharger pour Mac</a>
+        <details>
+          <summary><svg aria-hidden="true"><use href="#i-chev"/></svg>Première ouverture sur Mac</summary>
+          <ol>
+            <li>Ouvrez le fichier .dmg, puis glissez Paraphe dans le dossier Applications.</li>
+            <li>Ouvrez Paraphe. Si macOS indique qu’il ne peut pas vérifier le développeur, cliquez sur « Terminé ».</li>
+            <li>Ouvrez Réglages Système, puis Confidentialité et sécurité. En bas de la page, cliquez sur « Ouvrir quand même » à côté de Paraphe et confirmez.</li>
+            <li>Sur macOS 12 à 14, un clic droit sur Paraphe puis « Ouvrir » suffit aussi.</li>
+          </ol>
+        </details>
+      </article>
+      <article class="card os" data-os="windows">
+        <div class="os__h"><svg aria-hidden="true"><use href="#i-desktop"/></svg><h3>Windows</h3><span class="os__tag" hidden>Pour cet ordinateur</span></div>
+        <dl class="os__spec">
+          <div><dt>Taille</dt><dd>5,5 Mo</dd></div><div><dt>Système</dt><dd>Windows 10 ou 11</dd></div><div><dt>Version</dt><dd>64 bits</dd></div>
+        </dl>
+        <a class="btn btn--primary btn--dl" data-dl="windows" href="logiciels/Paraphe_1.1.6_x64-setup.exe"><svg aria-hidden="true"><use href="#i-down"/></svg>Télécharger pour Windows</a>
+        <details>
+          <summary><svg aria-hidden="true"><use href="#i-chev"/></svg>Première ouverture sur Windows</summary>
+          <ol>
+            <li>Lancez l’installateur que vous venez de télécharger.</li>
+            <li>Si Windows affiche « Windows a protégé votre ordinateur », cliquez sur « Informations complémentaires », puis sur « Exécuter quand même ».</li>
+            <li>Suivez l’installation. Sur Windows 10, elle peut ajouter le composant Microsoft Edge WebView2 s’il manque.</li>
+            <li>Ouvrez Paraphe depuis le menu Démarrer.</li>
+          </ol>
+        </details>
+      </article>
+    </div>
   </div>
 </section>
 </main>
 
-<footer class="foot"><div class="wrap"><a class="brand" href="#accueil"><svg aria-hidden="true"><use href="#logo"/></svg>Paraphe</a><p>Du cours au cabinet · v1.1.5 · © 2026 Pierre-Antoine Ruat · <a href="mailto:paraphe.droit@gmail.com">paraphe.droit@gmail.com</a></p><nav class="legal" aria-label="Informations légales"><a href="mentions-legales.html#mentions">Mentions légales</a><a href="mentions-legales.html#confidentialite">Confidentialité</a><a href="mentions-legales.html#conditions">Conditions d’utilisation</a><a href="mentions-legales.html#credits">Crédits</a></nav></div></footer>
+<footer class="foot">
+  <div class="wrap foot__in">
+    <a class="brand" href="index.html"><svg aria-hidden="true"><use href="#logo"/></svg>Paraphe</a>
+    <span>Du cours au cabinet · © <span data-annee>2026</span> Pierre-Antoine Ruat · <a href="mailto:paraphe.droit@gmail.com">paraphe.droit@gmail.com</a></span>
+    <nav aria-label="Informations légales">
+      <a href="mentions-legales.html#mentions">Mentions légales</a>
+      <a href="mentions-legales.html#confidentialite">Confidentialité</a>
+      <a href="mentions-legales.html#conditions">Conditions d’utilisation</a>
+      <a href="mentions-legales.html#credits">Crédits</a>
+    </nav>
+  </div>
+</footer>
 
+<script src="assets/site.js"></script>
+<script type="module" src="assets/3d/accueil-3d.js"></script>
+<script nomodule>document.documentElement.classList.add("sans-3d")</script>
 <script>
-/* ============================================================
-   LIENS DE TÉLÉCHARGEMENT — à remplir une fois les fichiers en ligne
-   (vide = bouton « Bientôt disponible »)
-   ============================================================ */
-const LIENS = {
-  mac:     "logiciels/Paraphe_1.1.5_universal.dmg",
-  windows: "logiciels/Paraphe_1.1.5_x64-setup.exe"
-};
-
-(()=>{
-const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
-const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
-const FINE=matchMedia('(pointer: fine)').matches;
-const clamp=(x,a,b)=>Math.max(a,Math.min(b,x)),lerp=(a,b,k)=>a+(b-a)*k;
-let mx=innerWidth/2,my=-999;addEventListener('pointermove',e=>{mx=e.clientX;my=e.clientY;},{passive:true});
-const COLS=['#3B2FE8','#C9A84C','#E4553A','#3E9A5E','#E9B730'];
-const center=el=>{const r=el.getBoundingClientRect();return[r.left+r.width/2,r.top+r.height/2];};
-/* boucle d’animation qui s’arrête d’elle-même au repos : pas() renvoie true tant qu’il reste du mouvement ;
-   l’appel renvoyé la relance (mouvement de souris, défilement, apparition à l’écran) */
-const boucle=pas=>{let on=false;const f=()=>{if(pas())requestAnimationFrame(f);else on=false;};return()=>{if(!on){on=true;requestAnimationFrame(f);}};};
-/* géométrie lue une seule fois par image, dans onScroll, avant toute écriture de style */
-const G={hero:null,pg:null,mon:null};
-
-/* ---------- particules (confettis carrés, étoiles) ---------- */
-const fx=$('#fx'),fc=fx.getContext('2d');let P=[],fxOn=false;
-const fxSize=()=>{fx.width=innerWidth*devicePixelRatio;fx.height=innerHeight*devicePixelRatio;fc.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);};fxSize();addEventListener('resize',fxSize);
-function burst(x,y,n=40,cols=COLS,pow=1,glyph){if(RM)return;for(let i=0;i<n;i++){const a=Math.random()*Math.PI*2,v=(4+Math.random()*8)*pow;P.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v-4*pow,r:Math.random()*6,vr:(Math.random()-.5)*.4,s:6+Math.random()*8,c:cols[i%cols.length],l:1,g:glyph});}
-  if(!fxOn){fxOn=true;requestAnimationFrame(fxLoop);}}
-function fxLoop(){fc.clearRect(0,0,innerWidth,innerHeight);P=P.filter(p=>p.l>0);
-  for(const p of P){p.vy+=.35;p.vx*=.985;p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;p.l-=.013;fc.save();fc.globalAlpha=clamp(p.l*1.5,0,1);fc.translate(p.x,p.y);fc.rotate(p.r);fc.fillStyle=p.c;
-    if(p.g){fc.font='700 22px Archivo';fc.textAlign='center';fc.fillText(p.g,0,8);}else fc.fillRect(-p.s/2,-p.s/2,p.s,p.s);fc.restore();}
-  if(P.length)requestAnimationFrame(fxLoop);else fxOn=false;}
-
-/* ---------- rideau d’ouverture : les 6 outils défilent, puis le rideau se lève ---------- */
-const withCurtain=document.documentElement.classList.contains('js-curtain');let T0=0;
-if(withCurtain){T0=1250;const names=['Fiches mémo','Fiches d’arrêt','Codes & articles','Diligences','Considérant','Quantième'];let k=0;
-  const iv=setInterval(()=>{k++;if(k<6){$('#cN').textContent='0'+(k+1);$('#cT').textContent=names[k];}else{clearInterval(iv);$('#curtain').classList.add('up');try{sessionStorage.setItem('ml-vu','1');}catch(e){}setTimeout(()=>$('#curtain').remove(),1000);}},150);}
-
-
-/* ---------- boutons magnétiques ---------- */
-if(FINE&&!RM)$$('[data-magnet]').forEach(b=>{b.addEventListener('pointermove',e=>{const r=b.getBoundingClientRect();b.style.transform=`translate(${(e.clientX-r.left-r.width/2)*.25}px,${(e.clientY-r.top-r.height/2)*.35}px)`;});
-  b.addEventListener('pointerleave',()=>{b.style.transition='transform .5s cubic-bezier(.3,1.6,.5,1),box-shadow .15s';b.style.transform='';setTimeout(()=>b.style.transition='',500);});});
-
-/* ---------- thème jour / nuit (révélation circulaire) ---------- */
-const root=document.documentElement,tb=$('#theme'),mq=matchMedia('(prefers-color-scheme: dark)');
-const isDark=()=>root.dataset.theme?root.dataset.theme==='dark':mq.matches;
-const lab=()=>{tb.textContent=isDark()?'Jour':'Nuit';$('meta[name=theme-color]').content=isDark()?'#141418':'#F6F5F1';};lab();
-tb.addEventListener('click',e=>{const go=()=>{root.dataset.theme=isDark()?'light':'dark';try{localStorage.setItem('ml-theme',root.dataset.theme);}catch(_){}lab();};
-  if(!document.startViewTransition||RM){go();return;}const x=e.clientX||innerWidth-60,y=e.clientY||30,R=Math.hypot(Math.max(x,innerWidth-x),Math.max(y,innerHeight-y));
-  document.startViewTransition(go).ready.then(()=>root.animate({clipPath:[`circle(0 at ${x}px ${y}px)`,`circle(${R}px at ${x}px ${y}px)`]},{duration:700,easing:'cubic-bezier(.7,0,.2,1)',pseudoElement:'::view-transition-new(root)'})).catch(()=>{});});
-
-/* ---------- apparitions ---------- */
-$$('[data-split]').forEach(h=>{const walk=n=>{[...n.childNodes].forEach(c=>{if(c.nodeType===3){const f=document.createDocumentFragment();c.textContent.split(/(\s+)/).forEach(w=>{if(!w)return;if(/^\s+$/.test(w)){f.append(w);return;}const s=document.createElement('span');s.className='w';const i=document.createElement('span');i.textContent=w;s.append(i);f.append(s);});c.replaceWith(f);}else walk(c);});};walk(h);
-  $$('.w>span',h).forEach((s,i)=>s.style.transitionDelay=(i*.06)+'s');});
-const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');if(e.target.onIn)e.target.onIn();io.unobserve(e.target);}}),{rootMargin:'0px 0px -12% 0px'});
-$$('.rv,[data-split],.app h2').forEach(el=>io.observe(el));
-
-/* ---------- ACCUEIL : grille magnétique ---------- */
-const gc=$('#grid'),gx=gc.getContext('2d');let GD=[],gw,gh,heroVis=true;
-function gridInit(){gw=gc.clientWidth;gh=gc.clientHeight;gc.width=gw*devicePixelRatio;gc.height=gh*devicePixelRatio;gx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);GD=[];const s=34;for(let y=s/2;y<gh;y+=s)for(let x=s/2;x<gw;x+=s)GD.push({bx:x,by:y,x,y});}
-gridInit();addEventListener('resize',()=>{gridInit();grille();});
-new IntersectionObserver(([e])=>{heroVis=e.intersectionRatio>0;if(heroVis){onScroll();grille();pageAnim();lettres();}},{threshold:[0,.01]}).observe($('.hero'));
-let lineCol='#E4E1DA';const readCol=()=>{lineCol=getComputedStyle(root).getPropertyValue('--line').trim()||'#E4E1DA';try{grille();}catch(e){}};readCol();new MutationObserver(readCol).observe(root,{attributes:true});mq.addEventListener&&mq.addEventListener('change',readCol);
-const grille=boucle(()=>{if(!heroVis||!G.hero)return false;const cx=mx-G.hero.left,cy=my-G.hero.top;gx.clearRect(0,0,gw,gh);let bouge=false;
-  for(const d of GD){const dx=d.bx-cx,dy=d.by-cy,dist=Math.hypot(dx,dy),R=170;let tx=d.bx,ty=d.by,k=0;
-    if(dist<R&&!RM){k=1-dist/R;const f=k*k*34;tx+=dx/(dist||1)*f;ty+=dy/(dist||1)*f;}
-    const nx=lerp(d.x,tx,.16),ny=lerp(d.y,ty,.16);if(Math.abs(nx-d.x)+Math.abs(ny-d.y)>.04)bouge=true;d.x=nx;d.y=ny;
-    const s=2.6+k*4;gx.fillStyle=k>.05?`rgba(59,47,232,${.25+k*.75})`:lineCol;gx.fillRect(d.x-s/2,d.y-s/2,s,s);}
-  return bouge;});
-
-/* ---------- ACCUEIL : l’ombre plate suit la lumière, un clic appose le paraphe ---------- */
-const pg=$('#scale'),ombre=$('#pOmbre'),marque=$('#pMarque');let ox=0,oy=0,sm=1,vs=0;
-const pageAnim=boucle(()=>{if(!G.pg)return false;const cx=G.pg.left+G.pg.width/2,cy=G.pg.top+G.pg.height/2;
-  const tx=RM||my<0?0:clamp((cx-mx)/innerWidth*7,-2.6,2.6),ty=RM||my<0?0:clamp((cy-my)/innerHeight*7,-2.6,2.6);
-  ox=lerp(ox,tx,.09);oy=lerp(oy,ty,.09);ombre.setAttribute('transform',`translate(${ox.toFixed(3)} ${oy.toFixed(3)})`);
-  vs=(vs+(1-sm)*.22)*.74;sm+=vs;marque.setAttribute('transform',`translate(17.5 20.25) scale(${sm.toFixed(3)}) translate(-17.5 -20.25)`);
-  return heroVis&&(Math.abs(ox-tx)+Math.abs(oy-ty)>.005||Math.abs(sm-1)+Math.abs(vs)>.002);});
-const apposer=()=>{if(RM)return;sm=2.5;vs=0;pageAnim();const r=marque.getBoundingClientRect();burst(r.left+r.width/2,r.top+r.height/2,22,['#3B2FE8','#8F87FF','#141416'],.7);};
-pg.addEventListener('click',apposer);setTimeout(apposer,T0+1250);
-
-/* ---------- ACCUEIL : lettres qui tombent puis fuient le curseur ---------- */
-const title=$('#title'),txt=title.textContent;title.textContent='';const CH=[];
-[...txt].forEach((c,i)=>{if(c===' '){title.append(' ');return;}const s=document.createElement('span');s.className='ch';s.textContent=c;s.setAttribute('aria-hidden','true');title.append(s);CH.push({el:s,x:0,y:0,r:0,vx:0,vy:0,busy:true});
-  setTimeout(()=>{s.classList.add('in');setTimeout(()=>{s.classList.remove('in');s.classList.add('ok');CH.find(o=>o.el===s).busy=false;},950);},T0+120+i*55);});
-let chC=[];const measure=()=>chC=CH.map(c=>{const r=c.el.getBoundingClientRect();return[r.left+r.width/2-c.x,r.top+r.height/2-c.y];});
-setTimeout(()=>{measure();lettres();},T0+1500);addEventListener('resize',measure);
-const lettres=boucle(()=>{if(!heroVis||!chC.length||RM||!FINE)return false;let bouge=false;CH.forEach((c,i)=>{if(c.busy)return;const [cx,cy]=chC[i],dx=cx-mx,dy=cy-my,d=Math.hypot(dx,dy)||1,R=180;let tx=0,ty=0,tr=0;
-    if(d<R){const k=1-d/R;tx=dx/d*k*38;ty=dy/d*k*46;tr=(dx>0?1:-1)*k*14;}
-    c.vx=(c.vx+(tx-c.x)*.12)*.78;c.vy=(c.vy+(ty-c.y)*.12)*.78;c.x+=c.vx;c.y+=c.vy;c.r=lerp(c.r,tr,.15);
-    if(Math.abs(c.vx)+Math.abs(c.vy)+Math.abs(tx-c.x)+Math.abs(ty-c.y)+Math.abs(tr-c.r)>.02){bouge=true;c.el.style.transform=`translate3d(${c.x}px,${c.y}px,0) rotate(${c.r}deg)`;}});
-  return bouge;});
-addEventListener('pointermove',()=>{if(heroVis){grille();pageAnim();lettres();}},{passive:true});
-
-/* ---------- ACCUEIL : mots qui défilent ---------- */
-const roll=$('#roll'),rw=roll.parentElement,RS=[...roll.children];let ri=0;const fitW=()=>rw.style.width=RS[ri].offsetWidth+'px';document.fonts.ready.then(fitW);addEventListener('resize',fitW);
-if(!RM)setInterval(()=>{ri++;roll.style.transform=`translateY(${-ri*1.2}em)`;fitW();if(ri===6)setTimeout(()=>{roll.style.transition='none';ri=0;roll.style.transform='translateY(0)';void roll.offsetWidth;roll.style.transition='';},700);},1900);
-
-/* ---------- LES 6 : cartes éparpillées qui se rangent + inclinaison 3D ---------- */
-const tiles=$$('.tile');const SA=Math.min(1,innerWidth/1100);const SC=tiles.map(()=>({x:(Math.random()-.5)*260*SA,y:120+Math.random()*160,r:(Math.random()-.5)*26}));
-function scatter(rt){if(RM)return;tiles.forEach((t,i)=>{const r=rt[i],p=clamp((innerHeight-r.top)/(innerHeight*.55),0,1),e=1-Math.pow(1-p,3),s=SC[i];
-  t.style.setProperty('--scatter',`translate(${s.x*(1-e)}px,${s.y*(1-e)}px) rotate(${s.r*(1-e)}deg)`);});}
-if(FINE&&!RM)tiles.forEach(t=>{t.addEventListener('pointermove',e=>{const r=t.getBoundingClientRect(),px=(e.clientX-r.left)/r.width-.5,py=(e.clientY-r.top)/r.height-.5;
-  t.style.setProperty('--ry',(px*16)+'deg');t.style.setProperty('--rx',(-py*16)+'deg');t.style.setProperty('--sx',(12-px*18)+'px');t.style.setProperty('--sy',(12-py*18)+'px');});
-  t.addEventListener('pointerleave',()=>{t.style.transition='transform .6s cubic-bezier(.3,1.5,.5,1),box-shadow .2s';['--rx','--ry'].forEach(v=>t.style.setProperty(v,'0deg'));t.style.setProperty('--sx','12px');t.style.setProperty('--sy','12px');setTimeout(()=>t.style.transition='',600);});});
-
-/* ---------- défilement : barre du haut, progression, parallaxes ---------- */
-const top=$('#top'),segs=$$('.prog i'),apps=$$('[data-app]'),bigs=$$('.big'),pl=$('#player');let lastY=scrollY,tick=false;
-function onScroll(){tick=false;const y=scrollY;
-  // 1) lectures
-  const ra=apps.map(s=>s.getBoundingClientRect()),rb=bigs.map(b=>b.parentElement.getBoundingClientRect()),p=pl.getBoundingClientRect(),rt=RM?null:tiles.map(t=>t.getBoundingClientRect());
-  G.hero=gc.getBoundingClientRect();G.pg=pg.getBoundingClientRect();if(monVis)G.mon=mc.getBoundingClientRect();if(heroVis)measure();
-  // 2) écritures
-  top.classList.toggle('hide',y>lastY&&y>300);lastY=y;
-  ra.forEach((r,i)=>segs[i].style.setProperty('--p',clamp((innerHeight*.6-r.top)/r.height,0,1)));
-  rb.forEach((r,i)=>bigs[i].style.setProperty('--py',(r.top*-.22)+'px'));
-  const pp=clamp(1-(p.top-innerHeight*.12)/(innerHeight*.6),0,1);pl.style.setProperty('--fx',(14*(1-pp))+'deg');pl.style.setProperty('--fs',lerp(.9,1,pp));
-  scatter(rt);if(heroVis){grille();pageAnim();}}
-addEventListener('scroll',()=>{if(!tick){tick=true;requestAnimationFrame(onScroll);}},{passive:true});addEventListener('resize',onScroll);document.fonts.ready.then(onScroll);
-
-/* ---------- bandeau : vitesse et sens suivent le défilement ---------- */
-const tkr=$('.ticker__t');if(!RM){tkr.style.animation='none';let tx=0,v=0,ly=scrollY,dir=1;
-  let half=0,tkVis=false;const mesTk=()=>half=tkr.scrollWidth/2;mesTk();document.fonts.ready.then(mesTk);addEventListener('resize',mesTk);
-  const defile=boucle(()=>{const d=scrollY-ly;ly=scrollY;v=lerp(v,d,.12);if(Math.abs(v)>.6)dir=v>0?1:-1;tx-=dir*(1.1+Math.min(Math.abs(v)*.9,40));
-    if(tx<=-half)tx+=half;if(tx>0)tx-=half;tkr.style.transform=`translate3d(${tx}px,0,0) skewX(${clamp(-v*.5,-14,14)}deg)`;return tkVis;});
-  new IntersectionObserver(([e])=>{tkVis=e.intersectionRatio>0;if(tkVis){ly=scrollY;defile();}},{threshold:[0,.01]}).observe(tkr.parentElement);}
-
-/* ---------- FILM ---------- */
-const vid=$('#vid');$('#play').addEventListener('click',()=>{vid.controls=true;vid.play();pl.classList.add('playing');burst(...center($('#play')),30,['#3B2FE8','#F6F5F1'],.8);});
-
-/* ============ 1. FICHES MÉMO : paquet de cartes qui se retournent ============ */
-const CARDS=[
- {m:'Droit public des affaires',q:'Qu’est-ce que le droit public des affaires ?',a:'Branche du droit public qui régit l’intervention des personnes publiques dans la vie économique : réglementation économique, contrats publics, entreprises publiques, aides d’État.'},
- {m:'Droit des sociétés',q:'Comment l’article 1832 du Code civil définit-il la société ?',a:'La société est instituée par deux ou plusieurs personnes qui conviennent par un contrat d’affecter à une entreprise commune des biens ou leur industrie en vue de partager le bénéfice ou de profiter de l’économie qui pourra en résulter.'},
- {m:'Droit des obligations',q:'Quelle est la définition du contrat (art. 1101 C. civ.) ?',a:'Le contrat est un accord de volontés entre deux ou plusieurs personnes destiné à créer, modifier, transmettre ou éteindre des obligations.'}];
-const deck=$('#deck'),cnt=$('#cnt');let left=0;
-function cardEl(c){const d=document.createElement('div');d.className='fc';d.innerHTML=`<div class="face"><span class="tag">${c.m}</span><p class="q">${c.q}</p><span class="hint">Afficher la réponse (Espace)</span></div>
-  <div class="face face--b"><span class="tag">${c.m}</span><p class="q">${c.q}</p><p class="a">${c.a}</p><div class="rates"><button data-r="0">1 · Encore</button><button data-r="1">2 · Difficile</button><button data-r="2">3 · Correct</button><button data-r="3">4 · Facile</button></div></div>`;return d;}
-function memoReset(){deck.innerHTML='';[...CARDS].reverse().forEach(c=>deck.append(cardEl(c)));left=CARDS.length;cnt.textContent=left;}
-const topCard=()=>{const all=$$('.fc',deck).filter(c=>!c.classList.contains('out-r')&&!c.classList.contains('out-l'));return all[all.length-1];};
-function flip(){const c=topCard();if(c&&!c.classList.contains('flip'))c.classList.add('flip');}
-deck.addEventListener('click',e=>{const b=e.target.closest('[data-r]'),c=topCard();if(!c)return;
-  if(!b){flip();return;}e.stopPropagation();const r=+b.dataset.r,[x,y]=center(b);
-  if(r===0){c.classList.remove('flip');c.classList.add('out-l');setTimeout(()=>{c.classList.remove('out-l');deck.prepend(c);},480);}
-  else{c.classList.add('out-r');burst(x,y,r===3?46:26,r===3?['#3E9A5E','#3B2FE8','#E9B730']:COLS);left--;cnt.textContent=left;setTimeout(()=>{c.remove();if(!left)done();},600);}});
-function done(){const d=document.createElement('div');d.className='done';d.innerHTML='<div><h4>Révision du jour terminée ✓</h4><button class="btn btn--vio" id="again">Recommencer</button></div>';deck.append(d);burst(...center(deck),80);$('#again').onclick=e=>{e.stopPropagation();memoReset();};}
-$('#memoReset').onclick=memoReset;memoReset();
-let memoVis=false;new IntersectionObserver(([e])=>memoVis=e.isIntersecting,{threshold:.5}).observe(deck);
-addEventListener('keydown',e=>{const a=document.activeElement;if(e.code==='Space'&&memoVis&&!/INPUT|TEXTAREA|BUTTON|SELECT/.test(a.tagName)&&!a.isContentEditable&&a!==$('#treebox')){e.preventDefault();flip();}});
-
-/* ============ 2. FICHES D’ARRÊT : la fiche se remplit toute seule ============ */
-const frm=$('#frm'),list=$('#list'),saveBtn=$('#saveBtn');let run=0;
-const wait=ms=>new Promise(r=>setTimeout(r,ms));
-async function type(el,text,id){el.classList.remove('ph');el.textContent='';el.classList.add('caret');for(const ch of text){if(id!==run)return;el.textContent+=ch;await wait(40);}el.classList.remove('caret');}
-const INIT={};$$('.fl',frm).forEach(f=>{const k=f.dataset.k||f.dataset.r,d=f.querySelector(':scope>div');INIT[k]=[d.textContent,d.className];});
-function addItem(t,j,m,d,old){const it=document.createElement('div');it.className='item';it.innerHTML=`<b>${t}</b><span class="t">${j}</span><span class="t">${m}</span><span class="d">${d} ▾</span>`;old?list.append(it):list.prepend(it);return it;}
-async function arretPlay(){const id=++run;frm.classList.remove('shrink');frm.style.display='';list.innerHTML='';saveBtn.classList.remove('pulse');
-  $$('.fl',frm).forEach(f=>{const k=f.dataset.k||f.dataset.r,d=f.querySelector(':scope>div');f.classList.remove('on');d.textContent=INIT[k][0];d.className=INIT[k][1];});
-  addItem('APREI','Conseil d’État','Droit public des affaires','2007-02-22',true);
-  await wait(500);const F=k=>$(`[data-k="${k}"]>div`,frm);
-  await type(F('titre'),'QPC garde à vue',id);if(id!==run)return;
-  const j=F('jur');j.parentElement.classList.add('on');j.textContent='Conseil constitutionnel';await wait(450);j.parentElement.classList.remove('on');
-  await type(F('mat'),'Procédure pénale',id);await type(F('date'),'30/07/2010',id);if(id!==run)return;
-  for(let i=1;i<=5;i++){if(id!==run)return;$(`[data-r="${i}"]`,frm).classList.add('on');await wait(420);}
-  saveBtn.classList.add('pulse');}
-saveBtn.addEventListener('click',()=>{if(frm.classList.contains('shrink'))return;run++;saveBtn.classList.remove('pulse');burst(...center(saveBtn),30);frm.classList.add('shrink');
-  setTimeout(()=>{frm.style.display='none';const it=addItem('QPC garde à vue','Conseil constitutionnel','Procédure pénale','2010-07-30');burst(...center(it),24,['#3B2FE8','#141416','#E9B730']);},540);});
-$('#arretReset').onclick=arretPlay;$('#arretDemo').onIn=arretPlay;
-
-/* ============ 3. CODES & ARTICLES : recherche + étoile ============ */
-const arts=$$('#codes .art'),aq=$('#art-q'),only=$('#art-only');
-const norm=s=>s.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
-function filt(){const v=norm(aq.value.trim());let n=0;arts.forEach(a=>{const ok=(!v||norm(a.dataset.s+' '+a.textContent).includes(v))&&(!only.checked||a.querySelector('.star').classList.contains('on'));
-  const was=a.classList.contains('gone');a.classList.toggle('gone',!ok);if(ok&&was){a.style.animation='none';void a.offsetWidth;a.style.animation='';}if(ok)n++;});$('#art-empty').style.display=n?'none':'block';}
-aq.addEventListener('input',filt);only.addEventListener('change',filt);
-$$('#codes .star').forEach(s=>s.addEventListener('click',()=>{const on=s.classList.toggle('on');s.textContent=(on?'★':'☆')+' À retenir';if(on)burst(...center(s),18,['#3B2FE8','#E9B730'],.9,'★');filt();}));
-
-/* ============ 4. DILIGENCES : glisser-déposer entre statuts ============ */
-const pipe=$('#pipe');const upd=()=>$$('.col',pipe).forEach(c=>c.querySelector('h5 em').textContent=c.querySelectorAll('.lit').length);upd();
-let drag=null;
-const colAt=(x,y)=>{if(drag)drag.cl.style.visibility='hidden';const el=document.elementFromPoint(x,y);if(drag)drag.cl.style.visibility='';return el&&el.closest('#pipe .col');};
-pipe.addEventListener('pointerdown',e=>{const l=e.target.closest('.lit');if(!l)return;e.preventDefault();const r=l.getBoundingClientRect(),cl=l.cloneNode(true);cl.classList.add('drag');cl.style.width=r.width+'px';document.body.append(cl);l.classList.add('ghost');
-  drag={l,cl,ox:e.clientX-r.left,oy:e.clientY-r.top,lx:e.clientX,rot:0};moveDrag(e);});
-function moveDrag(e){if(!drag)return;const vx=e.clientX-drag.lx;drag.lx=e.clientX;drag.rot=lerp(drag.rot,clamp(vx*.8,-14,14),.3);
-  drag.cl.style.transform=`translate(${e.clientX-drag.ox}px,${e.clientY-drag.oy}px) rotate(${drag.rot}deg) scale(1.05)`;
-  $$('.col',pipe).forEach(c=>c.classList.remove('over'));const over=colAt(e.clientX,e.clientY);if(over)over.classList.add('over');}
-addEventListener('pointermove',moveDrag);
-addEventListener('pointerup',e=>{if(!drag)return;const c=colAt(e.clientX,e.clientY);$$('.col',pipe).forEach(k=>k.classList.remove('over'));
-  if(c&&c!==drag.l.parentElement){const f=drag.l.getBoundingClientRect();c.append(drag.l);drag.l.style.setProperty('--c',getComputedStyle(c).getPropertyValue('--c'));const t=drag.l.getBoundingClientRect();
-    drag.l.animate([{transform:`translate(${f.left-t.left}px,${f.top-t.top}px)`},{transform:'none'}],{duration:380,easing:'cubic-bezier(.3,1.4,.5,1)'});
-    if(c.hasAttribute('data-win'))burst(...center(drag.l),50,['#2E7D52','#3B2FE8','#E9B730']);}
-  drag.l.classList.remove('ghost');drag.cl.remove();drag=null;upd();});
-const kp=$('#kpis');io.observe(kp);kp.onIn=()=>$$('[data-count]',kp).forEach(b=>{const v=+b.dataset.count,suf=b.dataset.suf||'',t0=performance.now();(function f(t){const k=clamp((t-t0)/1200,0,1),e=1-Math.pow(1-k,3);b.textContent=Math.round(v*e)+suf;if(k<1)requestAnimationFrame(f);})(t0);});
-
-/* ============ 5. CONSIDÉRANT : arbre avec Tab / Entrée ============ */
-const tree=$('#tree'),tbox=$('#treebox');let N=[],sel=null,uid=0;
-const BASE=[{t:'Droit du travail',p:null,root:1},{t:'Introduction — informations administratives',p:0,c:'#6B7A99',n:'0'},{t:'I. De quoi le droit du travail est-il le nom ?',p:0,c:'#A5303C',n:'1'}];
-const GROW=[{t:'A. Une branche du droit — critère : la subordination',n:'1.1'},{t:'B. Une représentation de l’Homme au travail',n:'1.2'},{t:'C. L’expression d’une conflictualité',n:'1.3'},{t:'D. Qu’est-ce que le travail ? — trois sens',n:'1.4'}];
-let growT=[];
-const TCOL=['#A5303C','#3E7A5A','#24406E','#C9A84C','#6B7A99'];
-function treeReset(){growT.forEach(clearTimeout);growT=[];tree.innerHTML='';tbox.scrollTo(0,0);N=BASE.map((b,i)=>({id:i,t:b.t,p:b.p,c:b.c||'#141416',n:b.n||'',root:b.root}));uid=N.length;sel=2;layout(true);}
-const kids=id=>N.filter(n=>n.p===id);
-const dims=()=>tbox.clientWidth<560?{RW:104,NW:168,G:22,X0:12,Y0:14,c:1}:{RW:200,NW:236,G:34,X0:16,Y0:18,c:0};
-function layout(first){const D=dims(),colX=d=>D.X0+(d?D.RW+D.G+(d-1)*(D.NW+D.G):0);tree.classList.toggle('compact',!!D.c);
-  const have=new Set(),EL={};N.forEach(n=>{let el=tree.querySelector(`[data-id="${n.id}"]`);if(!el){el=document.createElement('div');el.className='node'+(n.root?' root':'');el.dataset.id=n.id;el.style.setProperty('--c',n.c);
-      el.innerHTML=(n.root?'':`<small>${n.n}</small>`)+`<span>${n.t}</span>`;tree.append(el);el.dataset.fresh='1';}
-    have.add(String(n.id));EL[n.id]=el;el.classList.toggle('sel',n.id===sel);});
-  $$('.node',tree).forEach(el=>{if(!have.has(el.dataset.id))el.remove();});
-  const HT={};N.forEach(n=>HT[n.id]=EL[n.id].offsetHeight);
-  let y=D.Y0;const pos={};
-  const place=(id,d)=>{const k=kids(id);if(!k.length){pos[id]={x:colX(d),y};y+=HT[id]+14;}
-    else{k.forEach(c=>place(c.id,d+1));const f=pos[k[0].id],l=pos[k[k.length-1].id],mid=(f.y+HT[k[0].id]/2+l.y+HT[k[k.length-1].id]/2)/2;pos[id]={x:colX(d),y:Math.max(D.Y0,mid-HT[id]/2)};y=Math.max(y,pos[id].y+HT[id]+14);}};
-  place(0,0);
-  const W=Math.max(...N.map(n=>pos[n.id].x+(n.root?D.RW:D.NW)))+D.X0,H=Math.max(...N.map(n=>pos[n.id].y+HT[n.id]))+D.Y0;tree.style.width=W+'px';tree.style.height=H+'px';
-  N.forEach(n=>{const el=EL[n.id];if(el.dataset.fresh){delete el.dataset.fresh;const from=first?pos[n.id]:(pos[n.p]||pos[n.id]);el.style.translate=`${from.x}px ${from.y}px`;}
-    requestAnimationFrame(()=>{el.style.translate=`${pos[n.id].x}px ${pos[n.id].y}px`;});});
-  let svg=tree.querySelector('svg');if(!svg){svg=document.createElementNS('http://www.w3.org/2000/svg','svg');tree.prepend(svg);}svg.setAttribute('width',W);svg.setAttribute('height',H);
-  const old=new Set([...svg.querySelectorAll('path')].map(p=>p.dataset.k));svg.innerHTML='';
-  N.forEach(n=>{if(n.p===null)return;const a=pos[n.p],b=pos[n.id],pw=N.find(m=>m.id===n.p).root?D.RW:D.NW,x1=a.x+pw,y1=a.y+HT[n.p]/2,x2=b.x,y2=b.y+HT[n.id]/2,m2=(x1+x2)/2;
-    const p=document.createElementNS('http://www.w3.org/2000/svg','path');p.setAttribute('d',`M${x1},${y1} C${m2},${y1} ${m2},${y2} ${x2},${y2}`);p.setAttribute('stroke',n.c);p.dataset.k=n.p+'-'+n.id;
-    svg.append(p);p.style.setProperty('--len',p.getTotalLength());if(old.has(p.dataset.k))p.style.animation='none';});}
-let lt;addEventListener('resize',()=>{clearTimeout(lt);lt=setTimeout(()=>{if(N.length)layout();},200);});
-function addNode(asChild){const s=N.find(n=>n.id===sel);if(!s)return;let parent=asChild||s.root?s.id:s.p;const par=N.find(n=>n.id===parent);
-  const sib=kids(parent).length+1,num=par.root?String(sib-1):(par.n?par.n+'.'+sib:String(sib));const c=par.root?TCOL[(sib)%TCOL.length]:par.c;
-  const nn={id:uid++,t:'Nouvelle idée',p:parent,c,n:num};N.push(nn);sel=nn.id;layout();follow(nn.id,c);}
-function follow(id,c){setTimeout(()=>{const el=tree.querySelector(`[data-id="${id}"]`);if(el){const b=tbox.getBoundingClientRect(),r=el.getBoundingClientRect();tbox.scrollBy({left:r.right>b.right?r.right-b.right+20:0,top:r.bottom>b.bottom?r.bottom-b.bottom+20:(r.top<b.top?r.top-b.top-20:0),behavior:'smooth'});burst(r.left+20,r.top+20,12,[c,'#3B2FE8']);}},480);}
-function treeGrow(){treeReset();GROW.forEach((g,i)=>growT.push(setTimeout(()=>{const n={id:uid++,t:g.t,p:2,c:'#A5303C',n:g.n};N.push(n);layout();follow(n.id,n.c);},900+i*700)));}
-/* glisser le fond pour se déplacer dans l’arbre (souris) */
-let pan=null;tbox.addEventListener('pointerdown',e=>{if(e.pointerType!=='mouse'||e.target.closest('.node'))return;pan={x:e.clientX,y:e.clientY,l:tbox.scrollLeft,t:tbox.scrollTop};tbox.classList.add('grabbing');});
-addEventListener('pointermove',e=>{if(!pan)return;tbox.scrollLeft=pan.l-(e.clientX-pan.x);tbox.scrollTop=pan.t-(e.clientY-pan.y);});
-addEventListener('pointerup',()=>{if(pan){pan=null;tbox.classList.remove('grabbing');}});
-function delNode(){const s=N.find(n=>n.id===sel);if(!s||s.root)return;const rm=new Set([s.id]);let ch=true;while(ch){ch=false;N.forEach(n=>{if(n.p!==null&&rm.has(n.p)&&!rm.has(n.id)){rm.add(n.id);ch=true;}});}N=N.filter(n=>!rm.has(n.id));sel=s.p;layout();}
-tree.addEventListener('click',e=>{const el=e.target.closest('.node');if(!el)return;sel=+el.dataset.id;$$('.node',tree).forEach(n=>n.classList.toggle('sel',+n.dataset.id===sel));tbox.focus({preventScroll:true});});
-tree.addEventListener('dblclick',e=>{const el=e.target.closest('.node');if(!el)return;const sp=el.querySelector('span');sp.contentEditable='true';sp.focus();document.getSelection().selectAllChildren(sp);
-  const end=()=>{sp.contentEditable='false';const n=N.find(n=>n.id===+el.dataset.id);if(n){n.t=sp.textContent.trim()||n.t;sp.textContent=n.t;}layout();};sp.addEventListener('blur',end,{once:true});
-  sp.addEventListener('keydown',k=>{if(k.key==='Enter'){k.preventDefault();sp.blur();}k.stopPropagation();});});
-const flashKey=s=>{const b=$(s);b.classList.remove('flash');void b.offsetWidth;b.classList.add('flash');};
-tbox.addEventListener('keydown',e=>{if(e.target!==tbox)return;if(e.key==='Tab'&&!e.shiftKey){e.preventDefault();addNode(true);flashKey('#kTab');}else if(e.key==='Enter'){e.preventDefault();addNode(false);flashKey('#kEnt');}
-  else if(e.key==='Delete'||e.key==='Backspace'){e.preventDefault();delNode();flashKey('#kDel');}else if(e.key==='Escape'){tbox.blur();}});
-$('#kTab').onclick=()=>addNode(true);$('#kEnt').onclick=()=>addNode(false);$('#kDel').onclick=delNode;$('#treeReset').onclick=treeGrow;
-treeReset();io.observe(tbox);tbox.onIn=treeGrow;
-
-/* ============ 6. QUANTIÈME : prochaine date limite + parcours + agenda ============ */
-const qpar=$('#qpar');
-$('#qDemo').onIn=()=>{$('#qhero .qbar i').style.width='12%';$$('.qj',qpar).forEach((li,i)=>setTimeout(()=>li.classList.add('vu'),300+i*260));};
-$$('.qj',qpar).forEach(li=>li.addEventListener('click',e=>{if(e.target.closest('label'))return;li.classList.toggle('open');}));
-const cal=$('#cal');cal.addEventListener('click',()=>{if(cal.classList.contains('ok')){cal.classList.remove('ok');return;}const [tx,ty]=center(cal);
-  $$('.qj',qpar).forEach((li,i)=>{const [sx,sy]=center(li.querySelector('.qn'));const d=document.createElement('div');d.className='fly';d.style.background=getComputedStyle(li).getPropertyValue('--c');d.style.left=sx+'px';d.style.top=sy+'px';document.body.append(d);
-    setTimeout(()=>{d.style.transform=`translate(${tx-sx}px,${ty-sy}px) rotate(270deg) scale(.5)`;d.style.opacity='.3';},30+i*150);setTimeout(()=>d.remove(),1000+i*150);});
-  setTimeout(()=>{cal.classList.add('ok');burst(tx,ty,26);},950);});
-
-/* ============ DONNÉES : les carrés ne sortent jamais de l’écran ============ */
-const mc=$('#mon'),m2=mc.getContext('2d');let MS=[],mw=0,mh=0,monVis=false;
-function monInit(){mw=mc.clientWidth;mh=mc.clientHeight;if(!mw||!mh)return;mc.width=mw*devicePixelRatio;mc.height=mh*devicePixelRatio;m2.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
-  MS=[...Array(22)].map((_,i)=>({x:30+Math.random()*(mw-60),y:30+Math.random()*(mh-60),vx:(Math.random()-.5)*4,vy:(Math.random()-.5)*4,s:12+Math.random()*20,r:Math.random()*6,vr:(Math.random()-.5)*.06,c:i%6===5?'#F2F2F2':COLS[i%5]}));}
-monInit();addEventListener('resize',monInit);new IntersectionObserver(([e])=>{monVis=e.intersectionRatio>0;if(monVis){if(!MS.length)monInit();G.mon=mc.getBoundingClientRect();ecran();}},{threshold:[0,.01]}).observe(mc);
-const ecran=boucle(()=>{if(monVis&&mw&&G.mon){const r=G.mon,inside=mx>r.left&&mx<r.right&&my>r.top&&my<r.bottom,cx=(mx-r.left)*mw/r.width,cy=(my-r.top)*mh/r.height;m2.clearRect(0,0,mw,mh);
-  for(const q of MS){if(inside&&!RM){const dx=cx-q.x,dy=cy-q.y,d=Math.hypot(dx,dy)+20;q.vx+=dx/d*.35;q.vy+=dy/d*.35;}
-    q.vx*=.99;q.vy*=.99;const sp=Math.hypot(q.vx,q.vy);if(sp<1.2){q.vx*=1.03;q.vy*=1.03;}if(sp>11){q.vx*=.9;q.vy*=.9;}
-    if(!RM){q.x+=q.vx;q.y+=q.vy;q.r+=q.vr;}const h=q.s/2;
-    if(q.x<h){q.x=h;q.vx=Math.abs(q.vx);}if(q.x>mw-h){q.x=mw-h;q.vx=-Math.abs(q.vx);}if(q.y<h){q.y=h;q.vy=Math.abs(q.vy);}if(q.y>mh-h){q.y=mh-h;q.vy=-Math.abs(q.vy);}
-    m2.save();m2.translate(q.x,q.y);m2.rotate(q.r);m2.fillStyle=q.c;m2.fillRect(-h,-h,q.s,q.s);m2.restore();}}
-  return monVis;});
-
-onScroll();
-
-/* ============ TÉLÉCHARGER ============ */
-const ua=navigator.userAgent||'',mob=/iPhone|iPad|iPod|Android/i.test(ua)||(/Macintosh/.test(ua)&&navigator.maxTouchPoints>1),os=mob?null:/Macintosh|Mac OS X/.test(ua)?'mac':/Windows/.test(ua)?'win':null;
-if(os)$('#os-'+os).classList.add('you');
-$$('[data-dl]').forEach(a=>{const u=LIENS[a.dataset.dl];if(u){a.href=u;a.setAttribute('download','');a.addEventListener('click',()=>burst(...center(a),70));}
-  else{a.setAttribute('aria-disabled','true');a.textContent='Bientôt disponible';a.addEventListener('click',e=>{e.preventDefault();a.classList.remove('shake');void a.offsetWidth;a.classList.add('shake');});}});
+/* film : rien n'est chargé avant le clic */
+(() => {
+  const v = document.getElementById("film"), b = document.getElementById("film-play");
+  if (!v || !b) return;
+  b.addEventListener("click", () => { v.controls = true; b.hidden = true; v.play().catch(() => {}); v.focus(); });
+  v.addEventListener("ended", () => { v.controls = false; b.hidden = false; });
 })();
 </script>
 </body>

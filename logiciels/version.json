@@ -1,11 +1,11 @@
 {
-  "version": "1.1.5",
-  "date": "2026-10-17",
+  "version": "1.1.6",
+  "date": "2026-10-23",
   "lien": "https://parpar30.github.io/Paraphe-Site/#telecharger",
   "nouveautes": [
-    "Barre du haut et barre latérale plus légères en mode jour : fond clair, filet discret",
-    "Sur les grands écrans, les outils occupent toute la largeur : filtres dans une colonne à gauche",
-    "Une couleur par matière dans les fiches mémo, les fiches d'arrêt et les codes",
-    "Violet plus doux en mode nuit, ombres plus discrètes"
+    "Nouvelle allure dans tous les outils : polices Funnel, teinte Iris, menus en verre",
+    "Quantième et Diligences : les délais proches ressortent en couleur (en retard, sous 7 jours, sous 30 jours)",
+    "Diligences : changer le statut d’un dossier directement depuis le tableau Kanban",
+    "Boutons et champs plus faciles à viser, mouvements réduits respectés dans Quantième"
   ]
 }

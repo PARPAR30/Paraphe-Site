@@ -1,0 +1,4 @@
+Funnel Sans et Funnel Display (NORD ID, 2024 ; The Funnel Project Authors),
+Archivo (Omnibus-Type), Zilla Slab (Typotheque pour Mozilla) et IBM Plex Mono (IBM)
+sont distribuées sous licence SIL Open Font License 1.1 : https://openfontlicense.org
+Fichiers woff2 issus de Google Fonts (sous-ensembles latin et latin étendu).

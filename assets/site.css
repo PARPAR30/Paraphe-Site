@@ -1,0 +1,300 @@
+/* Paraphe — feuille commune du site (accueil, J'étudie, J'exerce)
+   Direction (23 oct. 2026) : simple et efficace, avec une patte : Funnel (Display pour les titres,
+   Sans pour le texte), un seul accent Iris pour l'action, le verre réservé à ce qui flotte
+   au-dessus du contenu (barre de navigation, étiquettes), le vrai logiciel en grand. */
+
+@font-face{font-family:"Funnel Sans";font-weight:300 800;font-display:swap;src:url(fonts/FunnelSans-variable-latin.woff2) format("woff2")}
+@font-face{font-family:"Funnel Display";font-weight:300 800;font-display:swap;src:url(fonts/FunnelDisplay-variable-latin.woff2) format("woff2")}
+
+:root{
+  --bg:#F6F6FA; --surface:#FFFFFF; --surface-2:#EEEEF5; --surface-3:#E5E5EF;
+  --ink:#14141C; --ink-2:#474756; --ink-3:#5F5F6E;
+  --line:#E2E2EB; --line-2:#CFCFDC;
+  --accent:#5034DC; --accent-hover:#4127C4; --on-accent:#FFFFFF; --accent-text:#4A2FD0; --accent-soft:#ECE8FD;
+  --late:#B42318; --late-soft:#FCEDEB; --ok:#0A7B48;
+  --sh-1:0 1px 2px rgba(17,17,24,.06),0 1px 1px rgba(17,17,24,.04);
+  --sh-2:0 2px 4px rgba(17,17,24,.05),0 10px 24px -8px rgba(17,17,24,.14);
+  --sh-win:0 0 0 1px rgba(17,17,24,.07),0 12px 24px -12px rgba(17,17,24,.18),0 40px 80px -30px rgba(17,17,24,.32);
+  --verre:rgba(255,255,255,.7); --verre-bord:rgba(255,255,255,.75); --verre-reflet:rgba(255,255,255,.95);
+  --r-s:10px; --r-m:14px; --r-l:24px;
+  --sans:"Funnel Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --titre:"Funnel Display","Funnel Sans",system-ui,sans-serif;
+  --wrap:clamp(1240px,84vw,1680px); --gut:clamp(20px,5vw,56px);
+  --ease:cubic-bezier(.16,1,.3,1); --ease-out:cubic-bezier(.23,1,.32,1);
+  color-scheme:light;
+}
+:root[data-theme="dark"]{
+  --bg:#0F0F16; --surface:#181822; --surface-2:#20202C; --surface-3:#2A2A38;
+  --ink:#EEEEF4; --ink-2:#BDBDCC; --ink-3:#9898AA;
+  --line:#262634; --line-2:#363648;
+  --accent:#5034DC; --accent-hover:#6248EA; --on-accent:#FFFFFF; --accent-text:#B3A3FF; --accent-soft:rgba(80,52,220,.26);
+  --late:#F0786A; --late-soft:rgba(240,120,106,.14); --ok:#4CC38A;
+  --sh-1:0 1px 2px rgba(0,0,0,.4);
+  --sh-2:0 2px 4px rgba(0,0,0,.3),0 10px 24px -8px rgba(0,0,0,.55);
+  --sh-win:0 0 0 1px rgba(255,255,255,.08),0 12px 24px -12px rgba(0,0,0,.6),0 40px 80px -30px rgba(0,0,0,.8);
+  --verre:rgba(26,26,38,.66); --verre-bord:rgba(255,255,255,.12); --verre-reflet:rgba(255,255,255,.14);
+  color-scheme:dark;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0F0F16; --surface:#181822; --surface-2:#20202C; --surface-3:#2A2A38;
+  --ink:#EEEEF4; --ink-2:#BDBDCC; --ink-3:#9898AA;
+  --line:#262634; --line-2:#363648;
+  --accent:#5034DC; --accent-hover:#6248EA; --on-accent:#FFFFFF; --accent-text:#B3A3FF; --accent-soft:rgba(80,52,220,.26);
+  --late:#F0786A; --late-soft:rgba(240,120,106,.14); --ok:#4CC38A;
+  --sh-1:0 1px 2px rgba(0,0,0,.4);
+  --sh-2:0 2px 4px rgba(0,0,0,.3),0 10px 24px -8px rgba(0,0,0,.55);
+  --sh-win:0 0 0 1px rgba(255,255,255,.08),0 12px 24px -12px rgba(0,0,0,.6),0 40px 80px -30px rgba(0,0,0,.8);
+  --verre:rgba(26,26,38,.66); --verre-bord:rgba(255,255,255,.12); --verre-reflet:rgba(255,255,255,.14);
+  color-scheme:dark;
+}}
+
+/* ---------- base ---------- */
+*,*::before,*::after{box-sizing:border-box}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%;scroll-padding-top:84px}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+body{margin:0;overflow-x:clip;background:var(--bg);color:var(--ink);font:400 17px/1.6 var(--sans);font-optical-sizing:auto;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+img,video,svg{display:block;max-width:100%}
+a{color:var(--accent-text);text-decoration-thickness:1px;text-underline-offset:.2em}
+a:hover{text-decoration-thickness:2px}
+button,input,select{font:inherit;color:inherit}
+::selection{background:var(--accent);color:var(--on-accent)}
+:focus-visible{outline:2px solid var(--accent-text);outline-offset:3px;border-radius:4px}
+h1,h2,h3,h4{margin:0;color:var(--ink);text-wrap:balance;font-family:var(--titre)}
+p{margin:0;text-wrap:pretty}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap}
+.skip{position:absolute;left:16px;top:-60px;z-index:100;background:var(--ink);color:var(--bg);padding:10px 14px;border-radius:var(--r-s);text-decoration:none;font-weight:600}
+.skip:focus{top:12px}
+.wrap{max-width:var(--wrap);margin:0 auto;padding-inline:var(--gut)}
+.num{font-variant-numeric:tabular-nums}
+html{scrollbar-color:var(--line-2) transparent}
+
+/* ---------- typographie ---------- */
+.h1{font-size:clamp(40px,4.9vw,70px);line-height:1;font-weight:720;letter-spacing:-.04em}
+.h2{font-size:clamp(32px,3.6vw,52px);line-height:1.04;font-weight:700;letter-spacing:-.04em}
+.h3{font-size:clamp(20px,1.7vw,24px);line-height:1.25;font-weight:650;letter-spacing:-.02em}
+.lead{font-size:clamp(18px,1.45vw,20px);line-height:1.55;color:var(--ink-2);max-width:56ch}
+.muted{color:var(--ink-2)}
+.small{font-size:14px;line-height:1.5;color:var(--ink-3)}
+
+/* ---------- boutons ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:48px;padding:0 22px;border-radius:999px;border:1px solid transparent;font-weight:620;font-size:16px;letter-spacing:-.005em;text-decoration:none;cursor:pointer;transition:background-color .18s var(--ease),border-color .18s var(--ease),box-shadow .18s var(--ease),transform .18s var(--ease);white-space:nowrap}
+.btn svg{width:18px;height:18px;flex:none}
+.btn--primary{background:var(--accent);color:var(--on-accent);box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 6px 16px -8px rgba(17,17,24,.35)}
+.btn--primary:hover{background:var(--accent-hover);text-decoration:none}
+.btn:active{transform:scale(.97)}
+.btn{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.btn--quiet{background:var(--surface);color:var(--ink);border-color:var(--line-2);box-shadow:var(--sh-1)}
+.btn--quiet:hover{border-color:var(--ink-3);text-decoration:none}
+.btn--lg{min-height:56px;padding:0 26px;font-size:17px}
+.link{display:inline-flex;align-items:center;gap:6px;font-weight:600;text-decoration:none;color:var(--accent-text)}
+.link svg{width:16px;height:16px;transition:transform .2s var(--ease)}
+.link:hover svg{transform:translateX(3px)}
+.link:hover{text-decoration:underline}
+
+/* ---------- verre : seulement ce qui flotte au-dessus du contenu ---------- */
+.verre{background:var(--verre);-webkit-backdrop-filter:blur(18px) saturate(180%);backdrop-filter:blur(18px) saturate(180%);
+  box-shadow:inset 0 1px 0 var(--verre-reflet),0 0 0 1px var(--verre-bord),0 12px 32px -14px rgba(17,17,24,.32)}
+@media (prefers-reduced-transparency:reduce){.verre{background:var(--surface);-webkit-backdrop-filter:none;backdrop-filter:none}}
+
+/* ---------- en-tête : une barre en verre qui flotte au-dessus de la page ---------- */
+.top{position:sticky;top:0;z-index:50;padding:14px var(--gut) 0;pointer-events:none}
+.top__in{pointer-events:auto;display:flex;align-items:center;gap:6px;height:60px;max-width:1000px;margin:0 auto;padding:0 8px 0 20px;border-radius:999px}
+.brand{display:inline-flex;align-items:center;gap:10px;margin-right:auto;color:var(--ink);text-decoration:none;font-family:var(--titre);font-weight:700;font-size:21px;letter-spacing:-.03em}
+.brand svg{width:24px;height:24px}
+.nav{display:flex;align-items:center;gap:2px}
+.nav a{padding:9px 14px;border-radius:999px;color:var(--ink-2);text-decoration:none;font-size:15.5px;font-weight:560;transition:background-color .2s var(--ease-out),color .2s var(--ease-out)}
+.nav a:hover{color:var(--ink);background:var(--surface-2)}
+.nav a[aria-current="page"]{color:var(--ink);font-weight:660;background:var(--accent-soft)}
+.iconbtn{display:inline-grid;place-items:center;width:40px;height:40px;border-radius:999px;border:1px solid transparent;background:transparent;color:var(--ink-2);cursor:pointer}
+.iconbtn:hover{background:var(--surface-2);color:var(--ink)}
+.iconbtn svg{width:20px;height:20px}
+.top .btn{min-height:44px;padding:0 18px;font-size:15.5px;margin-left:6px}
+.menu-btn{display:none}
+.panel{display:none}
+@media (max-width:880px){
+  .top{padding-top:10px}
+  .top__in{height:56px;padding-left:16px}
+  .nav,.top .btn--nav{display:none}
+  .menu-btn{display:inline-grid}
+  .panel{pointer-events:auto;display:block;position:absolute;left:var(--gut);right:var(--gut);top:74px;border-radius:24px;padding:6px 20px}
+  .panel[hidden]{display:none}
+  .panel a{display:block;padding:14px 4px;border-bottom:1px solid var(--line);color:var(--ink);text-decoration:none;font-size:18px;font-weight:600}
+  .panel a:last-child{border-bottom:0}
+}
+
+/* ---------- fenêtre d'application (captures) ---------- */
+.win{position:relative;background:var(--surface);border-radius:var(--r-l);box-shadow:var(--sh-win);overflow:hidden}
+.win__bar{display:flex;align-items:center;gap:10px;height:38px;padding:0 16px;border-bottom:1px solid var(--line);background:var(--surface-2);font-size:13px;font-weight:600;color:var(--ink-3)}
+.win__bar svg{width:15px;height:15px}
+.win img{width:100%;height:auto}
+
+/* captures du logiciel : version jour ou nuit selon le thème affiché (bouton compris) */
+img.nuit{display:none}
+:root[data-theme="dark"] img.jour{display:none}
+:root[data-theme="dark"] img.nuit{display:block}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) img.jour{display:none}:root:not([data-theme="light"]) img.nuit{display:block}}
+
+/* ---------- sections ---------- */
+.sec{padding-block:clamp(72px,9vw,128px)}
+.sec__head{display:grid;gap:16px;max-width:760px;margin-bottom:clamp(36px,4vw,56px)}
+
+/* ---------- garanties ---------- */
+.promesses{display:flex;flex-wrap:wrap;gap:10px 22px;margin:0;padding:0;list-style:none}
+.promesses li{display:inline-flex;align-items:center;gap:8px;font-size:15px;font-weight:580;color:var(--ink-2)}
+.promesses svg{width:18px;height:18px;color:var(--ok);flex:none}
+
+/* ---------- carte ---------- */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r-l);box-shadow:var(--sh-1)}
+
+/* ---------- bloc de téléchargement ---------- */
+.dl{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px;align-items:start}
+.dl__intro{grid-column:1 / span 5;display:grid;gap:18px;align-content:start}
+.dl__opts{grid-column:7 / span 6;display:grid;gap:16px}
+.os{padding:24px 24px 22px;display:grid;gap:14px}
+.os__h{display:flex;align-items:center;gap:12px}
+.os__h svg{width:28px;height:28px;color:var(--ink)}
+.os__h h3{font-size:21px;font-weight:680;letter-spacing:-.015em}
+.os__tag{margin-left:auto;font-size:13px;font-weight:620;color:var(--accent-text);background:var(--accent-soft);padding:4px 10px;border-radius:999px}
+.os__spec{display:flex;flex-wrap:wrap;gap:4px 16px;margin:0;font-size:14px;color:var(--ink-3)}
+.os__spec div{display:flex;gap:6px}.os__spec dt{font-weight:600;color:var(--ink-2)}.os__spec dd{margin:0}
+.os details{border-top:1px solid var(--line);padding-top:12px}
+.os summary{cursor:pointer;font-weight:600;font-size:15px;color:var(--ink-2);list-style:none;display:flex;align-items:center;gap:8px}
+.os summary::-webkit-details-marker{display:none}
+.os summary svg{width:16px;height:16px;transition:transform .2s var(--ease)}
+.os details[open] summary svg{transform:rotate(90deg)}
+.os ol{margin:12px 0 0;padding-left:22px;display:grid;gap:6px;font-size:15px;color:var(--ink-2)}
+.os.is-you{border-color:var(--accent-text);box-shadow:var(--sh-2),0 0 0 1px var(--accent-text)}
+.os .btn{justify-self:start}
+.dl__mobile{display:none}
+.is-mobile .dl__mobile{display:grid}
+.is-mobile .dl__opts .btn--dl{display:none}
+.dl__mobile{gap:12px;padding:20px;border-radius:var(--r-l);background:var(--accent-soft);color:var(--ink)}
+.dl__mobile p{font-weight:600}
+.dl__mobile .row{display:flex;flex-wrap:wrap;gap:10px}
+.cond{font-size:14px;line-height:1.55;color:var(--ink-3);max-width:60ch}
+@media (max-width:900px){.dl__intro,.dl__opts{grid-column:1 / -1}}
+
+/* ---------- pied ---------- */
+.foot{border-top:1px solid var(--line);padding-block:40px 48px;font-size:14px;color:var(--ink-3)}
+.foot__in{display:flex;flex-wrap:wrap;align-items:center;gap:12px 28px}
+.foot .brand{font-size:17px;margin-right:0}
+.foot .brand svg{width:22px;height:22px}
+.foot nav{display:flex;flex-wrap:wrap;gap:6px 18px;margin-left:auto}
+.foot a{color:var(--ink-2);text-decoration:none}
+.foot a:hover{color:var(--ink);text-decoration:underline}
+.foot__in > span a{text-decoration:underline;text-underline-offset:3px}   /* lien dans une phrase : souligné, pas seulement coloré */
+
+/* ══════════════════════════════════════════════════════════════════════
+   LE VRAI LOGICIEL DANS LA PAGE
+   Une fenêtre affiche une page du logiciel (dossier app/) rendue comme sur un
+   écran de 1440 × 900, réduite pour tenir dans la largeur. Avant son chargement,
+   et sur téléphone, la capture complète du même écran tient la place.
+   ══════════════════════════════════════════════════════════════════════ */
+.ecran{max-width:clamp(1400px,92vw,1880px);margin:0 auto;padding-inline:clamp(20px,3vw,40px)}
+.live{--h:900;margin:0 auto;max-width:max(560px,calc((100svh - 150px) * 1440 / var(--h)))}
+.live .win__bar{justify-content:space-between}
+.live__titre{display:inline-flex;align-items:center;gap:10px;min-width:0}
+.live__titre span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.live__etat{display:inline-flex;align-items:center;gap:7px;font-weight:600;color:var(--ink-3);white-space:nowrap}
+.live__etat i{width:7px;height:7px;border-radius:50%;background:var(--line-2);transition:background-color .3s}
+.live.is-live .live__etat i{background:var(--ok)}
+.live__plein{display:inline-flex;align-items:center;gap:6px;font-weight:620;color:var(--accent-text);text-decoration:none;white-space:nowrap}
+.live__plein:hover{text-decoration:underline}
+.live__plein svg{width:14px;height:14px}
+.live .win{position:relative}
+.live__cadre{position:relative;aspect-ratio:1440 / var(--h);overflow:hidden;background:var(--surface-2)}
+.live__cadre > img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top left;transition:opacity .45s var(--ease-out),filter .45s var(--ease-out)}
+.live__cadre iframe{position:absolute;top:0;left:0;width:1440px;height:calc(var(--h) * 1px);border:0;transform-origin:0 0;transform:scale(var(--s,.78));opacity:0;transition:opacity .45s var(--ease-out);background:transparent}
+/* zoom plutôt qu'agrandissement : la page est recalculée à la taille de la fenêtre au lieu d'être étirée,
+   le texte reste net (site.js vérifie que le navigateur l'applique au contenu, sinon il revient au scale) */
+.live__cadre iframe.zoom{transform:none;zoom:var(--s,.78)}
+/* la capture « devient » le logiciel : elle s'efface en se floutant pendant que la page vivante apparaît */
+.live.is-live .live__cadre iframe{opacity:1}
+.live.is-live .live__cadre > img{opacity:0;filter:blur(6px);pointer-events:none}
+/* « Cliquez pour essayer » : un calque au-dessus de la page vivante, qui laisse défiler la page du site */
+.live__essayer{position:absolute;left:0;right:0;bottom:0;top:38px;display:grid;place-items:end center;padding-bottom:22px;border:0;background:transparent;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.live__essayer span{display:inline-flex;align-items:center;gap:8px;padding:11px 18px;border-radius:999px;background:var(--ink);color:var(--bg);font-weight:640;font-size:15px;box-shadow:var(--sh-2);opacity:0;transform:translateY(6px);transition:opacity .2s var(--ease-out),transform .2s var(--ease-out)}
+@media (hover:hover) and (pointer:fine){.live__essayer:hover span{opacity:1;transform:none}}
+.live__essayer:focus-visible span{opacity:1;transform:none}
+.live__essayer:active span{transform:scale(.97)}
+.live__essayer:focus-visible{outline:none}.live__essayer:focus-visible span{outline:2px solid var(--accent-text);outline-offset:3px}
+.live:not(.is-live) .live__essayer{display:none}
+.live.is-actif .live__essayer{display:none}
+.live__quitter{display:none;border:1px solid var(--line-2);background:var(--surface);color:var(--ink);border-radius:999px;padding:3px 12px;font-size:13px;font-weight:620;cursor:pointer}
+.live.is-actif .live__quitter{display:inline-flex}
+.live.is-actif .live__plein{display:none}
+.live.is-actif .win{box-shadow:var(--sh-win),0 0 0 2px var(--accent-text)}
+@media (max-width:899px){.live__essayer,.live__quitter{display:none!important}}
+.live figcaption{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 20px;margin-top:14px;font-size:14px;color:var(--ink-3)}
+.live figcaption b{color:var(--ink-2);font-weight:620}
+.live__mobile{display:none}
+@media (max-width:899px){
+  .live__cadre iframe{display:none}
+  .live__mobile{display:inline-flex}
+  .live__etat{display:none}
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   MOUVEMENT — deux gestes. Sur l'accueil, l'encre du mot-logo (site.js) est le seul
+   moment du haut de page, et la première fenêtre est visible d'emblée. Sur « J'étudie »
+   et « J'exerce », le titre, l'accroche et les boutons arrivent en cascade courte (.intro).
+   Partout, chaque autre fenêtre du logiciel « s'ouvre » une fois en entrant dans l'écran.
+   Le contenu reste visible sans script.
+   ══════════════════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion:no-preference){
+  .js .intro{animation:intro .6s var(--ease-out) both;animation-delay:calc(var(--i,0) * 70ms)}
+  .js .live.attend .win{clip-path:inset(6% 3% 0 3% round 18px);transform:translateY(28px) scale(.985);opacity:.001}
+  .js .live.ouvre .win{clip-path:inset(0 0 0 0 round 18px);transform:none;opacity:1;
+    transition:clip-path .9s var(--ease-out),transform .9s var(--ease-out),opacity .5s var(--ease-out)}
+}
+@media (prefers-reduced-motion:reduce){
+  .js .intro{animation:apparait .4s ease both}
+  .js .live.attend .win{opacity:.001}
+  .js .live.ouvre .win{opacity:1;transition:opacity .4s ease}
+}
+@keyframes intro{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes apparait{from{opacity:0}to{opacity:1}}
+/* la carte du système détecté se signale une fois */
+@media (prefers-reduced-motion:no-preference){
+  .os.is-you .os__tag{animation:pastille .5s var(--ease-out) .2s both}
+}
+@keyframes pastille{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:none}}
+
+/* ══════════════════════════════════════════════════════════════════════
+   TRÈS GRANDS ÉCRANS (1 800 px et plus, 21:9 compris) : la page s'élargit
+   (jusqu'à 1 680 px de texte, 1 880 px pour les fenêtres) et le texte grandit avec elle.
+   ══════════════════════════════════════════════════════════════════════ */
+@media (min-width:1800px){
+  body{font-size:18px}
+  .h2{font-size:clamp(46px,2.6vw,62px)}
+  .h3{font-size:clamp(23px,1.25vw,28px)}
+  .lead{font-size:clamp(20px,1.1vw,24px);max-width:62ch}
+  .small,.hero__meta,.promesses li,.nav a{font-size:16px}
+  .btn{font-size:17px}.btn--lg{min-height:60px;font-size:18px}
+  .top__in{height:76px}
+  .sec,.outil{padding-block:clamp(112px,7vw,168px)}
+}
+
+/* ══════════════════════════════════════════════════════════════════════
+   ÉCRANS TRÈS LARGES ET PEU HAUTS (21:9, 32:9…) : une fenêtre qui doit tenir en
+   hauteur ne peut pas remplir la largeur. Le texte passe donc à côté de la fenêtre :
+   chaque section devient « texte à gauche, logiciel à droite », et les bords de la
+   page s'alignent sur ceux de ce duo au lieu de laisser deux vides.
+   ══════════════════════════════════════════════════════════════════════ */
+@media (min-width:1800px) and (min-aspect-ratio:19/10){
+  :root{--duo:min(94vw,calc((100svh - 150px) * 1440 / 900 + 640px))}
+  .wrap{max-width:var(--duo)}
+  .outil,.q-section{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:clamp(40px,3vw,72px);align-items:center;padding-inline:max(var(--gut),calc((100% - var(--duo)) / 2))}
+  .outil > .wrap,.q-section > .wrap{display:grid;gap:22px;max-width:none;margin:0;padding:0;grid-template-columns:1fr}
+  .outil > .wrap > *,.q-section > .wrap > *{grid-column:1 / -1}
+  .outil > .ecran,.q-section > .ecran{max-width:none;margin:0;padding:0}
+  .outil .live,.q-section .live{width:calc((100svh - 150px) * 1440 / var(--h));max-width:none}
+  .outil .live figcaption,.q-section .live figcaption{display:none}
+  /* l'accueil : la légende de la fenêtre passe à gauche, la fenêtre à droite */
+  .vitrine .ecran{max-width:var(--duo)}
+  .vitrine .live{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:clamp(40px,3vw,72px);align-items:end;max-width:none}
+  .vitrine .live .win{grid-column:2;grid-row:1;width:calc((100svh - 150px) * 1440 / var(--h))}
+  .vitrine .live figcaption{grid-column:1;grid-row:1;display:grid;gap:12px;font-size:18px;margin:0;align-self:center}
+  .vitrine .live figcaption b{display:block;font-size:clamp(30px,1.9vw,44px);line-height:1.1;font-weight:730;letter-spacing:-.03em;color:var(--ink)}
+}

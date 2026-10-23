@@ -1,3 +1,5 @@
 .DS_Store
 # ancien film, remplacé par paraphe-film.mp4 ; trop lourd pour Cloudflare Pages (25 Mio par fichier)
 assets/media/presentation.mp4
+# notes de conception Impeccable : ne jamais publier
+.impeccable/
