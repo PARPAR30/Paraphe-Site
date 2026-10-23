@@ -1,0 +1,7 @@
+# Fichiers que Cloudflare ne doit pas publier (limite de 25 Mio par fichier ; .git dépasse cette taille)
+.git
+.gitignore
+.assetsignore
+.impeccable
+.DS_Store
+LISEZMOI.txt
