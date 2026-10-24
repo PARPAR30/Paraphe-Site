@@ -4,7 +4,7 @@
    mettre à jour TAILLES ci-dessous et les liens par défaut des pages
    (cherchez « Paraphe_ » dans index.html, etudier.html, exercer.html). */
 const PARAPHE = {
-  version: "1.2.0",
+  version: "1.2.1",
   tailles: { mac: "15,9 Mo", windows: "6,1 Mo" },
   fichiers: v => ({ mac: `logiciels/Paraphe_${v}_universal.dmg`, windows: `logiciels/Paraphe_${v}_x64-setup.exe` })
 };

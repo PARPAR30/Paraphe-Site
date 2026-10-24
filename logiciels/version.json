@@ -1,10 +1,10 @@
 {
-  "version": "1.2.0",
+  "version": "1.2.1",
   "date": "2026-10-25",
   "lien": "https://parpar30.github.io/Paraphe-Site/#telecharger",
   "nouveautes": [
     "Une page « Aujourd’hui » à l’accueil : ce qui vous attend dans chaque outil, et vos premiers pas selon que vous étudiez ou exercez",
-    "Fiches mémo : cartes à trous, planning jusqu’au jour de l’examen, et vos cours Word ou PDF transformés en cartes",
+    "Fiches mémo : cartes à trous, planning jusqu’au jour de l’examen, vos cours Word ou PDF transformés en cartes, et une page de révision mieux rangée",
     "Codes & articles : les articles cités par les fiches d’arrêt et par Quantième, préchargés avec leur texte officiel daté",
     "Considérant : modèles de raisonnement et export Word ; la recherche (⌘ K ou Ctrl K) dans tous les outils"
   ]

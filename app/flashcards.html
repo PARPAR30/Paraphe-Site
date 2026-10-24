@@ -28,8 +28,11 @@
   /* une page, deux tâches : réviser / gérer ses cartes */
   /* Réviser : sur grand écran, le compteur et les statistiques côte à côte */
   @media (min-width:1200px){
-    #vueReviser:not([hidden]){display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:0 var(--gouttiere);align-items:stretch}
+    #vueReviser:not([hidden]){display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:0 var(--gouttiere);align-items:start}
     #vueReviser > .card{margin:0}
+    /* la ligne « Cartes d'exemple » sur toute la largeur : seule dans la première colonne, elle repoussait
+       le compteur à droite et les statistiques en dessous, à gauche (25 oct. 2026) */
+    #vueReviser > .annee-ligne{grid-column:1 / -1}
     #vueReviser .stats-grille{grid-template-columns:repeat(2,minmax(0,1fr))}
   }
   .onglets{display:inline-flex;gap:2px;margin:var(--e6) 0 var(--e5);padding:3px;background:var(--carte-2);border:1px solid var(--filet);border-radius:10px}
@@ -43,13 +46,15 @@
   .a-reviser-chiffre{display:flex;align-items:baseline;gap:var(--e3);flex-wrap:wrap}
   .a-reviser-chiffre b{font:700 calc(56px * var(--ech))/1 var(--slab);letter-spacing:-.03em}
   .a-reviser-chiffre span{font-size:calc(17px * var(--ech));color:var(--encre-2)}
-  .a-reviser #statMatieres{grid-column:1}
+  .a-reviser #statMatieres{grid-column:1 / -1}   /* les matières sur toute la largeur de la carte, sous le chiffre et les boutons */
   .puces-mat{display:flex;flex-wrap:wrap;gap:var(--e2);margin-top:var(--e2)}
   .puce-mat{display:inline-flex;gap:6px;align-items:center;padding:3px var(--e3);border:1px solid var(--filet);border-radius:999px;
     background:var(--carte);color:var(--encre);font-weight:600;font-size:calc(13px * var(--ech))}
   .puce-mat::before{content:"";flex:none;width:8px;height:8px;border-radius:2px;background:var(--c,transparent)}
   .puce-mat b{font-weight:800}
-  .a-reviser .a-reviser-actions{grid-column:2;grid-row:1 / span 2;display:flex;flex-direction:column;gap:var(--e2);align-items:stretch}
+  .a-reviser .a-reviser-actions{grid-column:2;grid-row:1;display:flex;flex-direction:column;gap:var(--e2);align-items:stretch}
+  button.puce-toutes{border-style:dashed;color:var(--encre-2)}
+  button.puce-toutes::before{display:none}
   .rev-fin-actions{display:flex;gap:var(--e3);justify-content:center;flex-wrap:wrap}
   button.puce-mat{cursor:pointer;min-height:32px}
   button.puce-mat:hover{border-color:var(--gris)}
@@ -654,6 +659,8 @@ document.getElementById("pEnregistrer").addEventListener("click", () => {
   updateCounts(); renderList();
 });
 
+const MATIERES_VISIBLES = 8;   // pastilles de matières montrées d'emblée sous le nombre de cartes
+let matieresOuvertes = false;
 // --- Statistiques : nombre de révisions par jour, conservé à part des cartes ---
 const STATS_KEY = "droit_flashcards_stats";
 function loadStats() {
@@ -690,7 +697,10 @@ function renderStats() {
   const parMatiere = {};
   cards.filter(isDue).forEach(c => { const m = c.matiere || "Sans matière"; parMatiere[m] = (parMatiere[m] || 0) + 1; });
   const liste = Object.entries(parMatiere).sort((a, b) => b[1] - a[1])
-    .map(([m, n]) => `<button type="button" class="puce-mat ${Commun.classeMatiere(m)}" data-reviser-matiere="${escapeHtml(m)}" title="Réviser seulement « ${escapeHtml(m)} »">${escapeHtml(m)} <b>${n}</b></button>`);
+    .map(([m, n], i) => `<button type="button" class="puce-mat ${Commun.classeMatiere(m)}" data-reviser-matiere="${escapeHtml(m)}" title="Réviser seulement « ${escapeHtml(m)} »"${i >= MATIERES_VISIBLES && !matieresOuvertes ? " hidden" : ""}>${escapeHtml(m)} <b>${n}</b></button>`);
+  // au-delà de huit matières, les autres se déplient à la demande : la carte reste à la hauteur des statistiques
+  const enPlus = liste.length - MATIERES_VISIBLES;
+  if (enPlus > 0) liste.push(`<button type="button" class="puce-mat puce-toutes" data-toutes-matieres aria-expanded="${matieresOuvertes}">${matieresOuvertes ? "Moins de matières" : "+ " + enPlus + " autre" + (enPlus > 1 ? "s" : "") + " matière" + (enPlus > 1 ? "s" : "")}</button>`);
   document.getElementById("statMatieres").innerHTML = liste.length ? 'À réviser, par matière (touchez une matière pour ne réviser qu\'elle) :<span class="puces-mat">' + liste.join("") + "</span>" : "Rien à réviser aujourd'hui.";
 }
 
@@ -1113,6 +1123,15 @@ document.getElementById("seanceCourte").addEventListener("click", () => startRev
 document.getElementById("encoreCinq").addEventListener("click", () => startReview(5, seance.filtre));
 // une matière seule : touchez sa pastille sous le nombre de cartes
 document.getElementById("statMatieres").addEventListener("click", e => {
+  const t = e.target.closest("[data-toutes-matieres]");
+  if (t) {
+    matieresOuvertes = !matieresOuvertes;
+    document.querySelectorAll("#statMatieres [data-reviser-matiere]").forEach((x, i) => { x.hidden = i >= MATIERES_VISIBLES && !matieresOuvertes; });
+    const n = document.querySelectorAll("#statMatieres [data-reviser-matiere]").length - MATIERES_VISIBLES;
+    t.setAttribute("aria-expanded", String(matieresOuvertes));
+    t.textContent = matieresOuvertes ? "Moins de matières" : "+ " + n + " autre" + (n > 1 ? "s" : "") + " matière" + (n > 1 ? "s" : "");
+    return;
+  }
   const b = e.target.closest("[data-reviser-matiere]");
   if (b) startReview(0, c => (c.matiere || "Sans matière") === b.dataset.reviserMatiere);
 });
