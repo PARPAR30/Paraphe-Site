@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#131316">
-<script src="taille.js"></script><script src="clavier.js" defer></script><script src="navigation.js" defer></script>
+<script src="taille.js"></script><script src="icones.js" defer></script><script src="vides.js" defer></script><script src="clavier.js" defer></script><script src="navigation.js" defer></script><script src="sigles.js" defer></script><script src="aujourdhui.js" defer></script><script src="fouille.js" defer></script><script src="palette.js" defer></script><script src="rappels.js" defer></script><script src="aide.js" defer></script>
 <link rel="stylesheet" href="fonts/fonts.css">
 <script src="pwa.js" defer></script>
 <link rel="icon" type="image/svg+xml" href="icons/favicon.svg">
@@ -44,6 +44,10 @@
   .art-corps{padding:0 var(--e4) var(--e4) calc(150px + var(--e4) * 2)}
   .art-corps[hidden]{display:none}
   .art-texte{margin:0 0 var(--e3);font-size:calc(15px * var(--ech));line-height:1.65;white-space:pre-line}
+  .art-origine{margin:0 0 var(--e3);color:var(--gris);font-size:calc(13px * var(--ech))}
+  .intro-plus{margin:calc(-1 * var(--e2)) 0 var(--e5);font-size:calc(14px * var(--ech));color:var(--encre-2)}
+  .intro-plus summary{cursor:pointer;font-weight:600;color:var(--encre-2)}
+  .intro-plus p{margin:var(--e2) 0 0;max-width:72ch}
   .art-note{margin:0 0 var(--e3);padding-top:var(--e2);border-top:1px solid var(--filet);color:var(--encre-2);font-size:calc(14px * var(--ech))}
   .art-note b{text-transform:none;font-size:calc(12.5px * var(--ech));letter-spacing:0;color:var(--gris);margin-right:6px}
   .art-actions{display:flex;flex-wrap:wrap;gap:var(--e4);margin-top:var(--e3);padding-top:var(--e2);border-top:1px solid var(--filet)}
@@ -52,6 +56,21 @@
   .lien-action.actif{color:rgb(var(--acc))}
   .lien-action.danger{color:var(--gris)}
   .lien-action.danger:hover{background:none;color:var(--alerte)}
+  .date-vigueur{align-items:flex-end;gap:var(--e3) var(--e5);margin-top:var(--e2)}
+  .date-vigueur input[type=date]{width:auto;min-width:180px}
+  .case-verifie{display:flex;align-items:center;gap:var(--e2);margin:0 0 10px;font-weight:550;color:var(--encre)}
+  .case-verifie input{width:auto}
+  .aide-vigueur{margin:var(--e2) 0 0;font-size:calc(13px * var(--ech))}
+  .art-version{margin:0 0 var(--e3);font-size:calc(13px * var(--ech));color:var(--gris);line-height:1.5}
+  .art-version b{color:var(--encre-2);font-weight:620}
+  .art-version .a-verifier{color:var(--u-bientot);font-weight:620}
+  .versions{margin:0 0 var(--e3);font-size:calc(13.5px * var(--ech))}
+  .versions summary{cursor:pointer;font-weight:620;color:var(--encre-2)}
+  .versions blockquote{margin:var(--e2) 0;padding:var(--e2) var(--e3);border:1px solid var(--filet);border-radius:var(--r-s);background:var(--carte-2);white-space:pre-line;color:var(--encre-2)}
+  .versions blockquote cite{display:block;font-style:normal;font-size:calc(12.5px * var(--ech));color:var(--gris);margin-bottom:var(--e1)}
+  .arrets-cites{margin:var(--e1) 0 0;font-size:calc(13px * var(--ech));color:var(--gris)}
+  .arrets-cites a{color:rgb(var(--acc));font-weight:600;text-decoration:none}
+  .arrets-cites a:hover{text-decoration:underline}
   dialog.fenetre-article{border:1px solid var(--filet);border-radius:var(--r-l);background:var(--carte);color:var(--encre);padding:var(--e6);width:min(720px,calc(100vw - 32px));box-shadow:var(--ombre-fenetre);border-radius:var(--r-l)}
   dialog.fenetre-article::backdrop{background:rgba(17,17,20,.45)}
   dialog.fenetre-article h2,dialog.fenetre-article h3{margin-top:0}
@@ -79,7 +98,10 @@
 <main class="codes large">
   <p class="eyebrow">Références</p>
   <h1>Codes &amp; articles</h1>
-  <p class="muted">Vos articles de référence, avec une note personnelle et un marqueur « à retenir ». Une base d'articles par matière est préchargée pour démarrer : vérifiez toujours le texte en vigueur sur Légifrance.</p>
+  <!-- une ligne, le reste replié : l'introduction remplissait l'écran du téléphone (troisième passe du test) -->
+  <p class="muted">Vos articles de référence, avec leur texte officiel daté, votre note et un marqueur « à retenir ».</p>
+  <details class="intro-plus"><summary>Quels articles sont déjà là ?</summary>
+    <p>400 articles sont préchargés, classés par matière : ceux que citent les fiches d'arrêt et les calculs de délais de Quantième. Chacun porte la date de sa version en vigueur et le jour de sa vérification sur Légifrance. Il vous manque un article ? Tapez son numéro dans la recherche : Paraphe propose de l'ajouter et de le chercher sur Légifrance.</p></details>
 
   <div class="mise-cote">
   <div class="card barre">
@@ -94,8 +116,9 @@
       <div class="barre-groupe" role="group" aria-label="Importer">
         <span class="barre-titre">Importer</span>
         <button type="button" id="importBtn" title="Reprendre un fichier .json enregistré depuis cet outil">Depuis un fichier</button>
-        <button type="button" id="promptIA" title="Copier un prompt qui fait convertir votre document (PDF, Word, texte…) par une IA au format d’import">Avec une IA</button>
+        <button type="button" id="promptIA" title="Copie une consigne à coller dans l'IA de votre choix, avec votre document : elle le convertit au format d'import. Paraphe n'envoie rien.">Avec une IA</button>
       </div>
+      <p class="barre-note">« Avec une IA » copie une consigne à coller dans l'IA de votre choix : Paraphe n'envoie rien.</p>
       <div class="barre-groupe" role="group" aria-label="Exporter">
         <span class="barre-titre">Exporter</span>
         <button type="button" id="exportBtn" title="Enregistrer une copie de vos articles (fichier .json)">Sauvegarde</button>
@@ -128,8 +151,16 @@
       <input type="text" id="fNumero" placeholder="ex. 1240">
     </div>
   </div>
-  <label for="fTexte">Texte de l'article</label>
+  <label for="fTexte">Texte de l'article <button type="button" class="lien" id="deverrouillerTexte" hidden>Modifier le texte officiel</button></label>
   <textarea id="fTexte" placeholder="Collez le texte de l'article ici"></textarea>
+  <div class="row date-vigueur">
+    <div>
+      <label for="fVigueur">En vigueur depuis <span class="muted">(facultatif)</span></label>
+      <input type="date" id="fVigueur">
+    </div>
+    <label class="case-verifie"><input type="checkbox" id="fVerifie"> Texte vérifié aujourd'hui sur Légifrance</label>
+  </div>
+  <p class="muted aide-vigueur">Sur Légifrance, la date figure en tête de l'article : « Version en vigueur depuis le… ». Si vous modifiez le texte, l'ancienne version reste consultable sous l'article.</p>
   <label for="fNote">Note personnelle</label>
   <textarea id="fNote" placeholder="Votre note, exemple d'application, arrêt lié…"></textarea>
   <div class="row" style="margin-top:0.4rem;">
@@ -147,6 +178,7 @@
 <div id="printArea"></div>
 
 <script src="commun.js"></script>
+<script src="textes-codes.js"></script><script src="liens-juridiques.js"></script><script src="articles-cites.js"></script>
 <script>
 const STORAGE_KEY = "droit_codes";
 // Articles d'exemple supprimés par l'utilisateur : sans cette liste, ils revenaient à chaque chargement
@@ -271,14 +303,59 @@ mkSeedArticle("Régime général des obligations", "Code civil", "1216",
   "Consacre la cession de contrat (transmission de la qualité de partie), également issue de la réforme de 2016.", false),
 ].map((a, i) => Object.assign({ id: "seed-art-" + i }, a));
 
+// Textes vérifiés et datés (src/textes-codes.js, généré par scripts/codes/textes.py depuis les codes consolidés).
+// SEED_ANCIEN garde les textes d'avant : un article enregistré n'est corrigé que s'il les porte encore.
+const SEED_ANCIEN = SEED.map(a => Object.assign({}, a));
+const NOTES_REVUES = {
+  "seed-art-1": "Article d'ouverture du code : les contrats de la commande publique sont les marchés publics et les concessions.",
+  "seed-art-2": "Renvoie aujourd'hui à la délégation de service public définie par l'art. L. 1121-3 du Code de la commande publique (concession de services).",
+};
+SEED.forEach(a => {
+  const v = (window.TEXTES_CODES || {})[a.id];
+  if (!v) return;
+  Object.assign(a, { numero: v.numero, texte: v.texte, vigueur: v.vigueur, modif: v.modif || "", source: v.source, verifie: v.verifie, extrait: !!v.extrait });
+  if (NOTES_REVUES[a.id]) a.note = NOTES_REVUES[a.id];
+});
+function migrerTextesVerifies(liste) {
+  let change = false;
+  liste.forEach(a => {
+    const neuf = SEED.find(x => x.id === a.id), ancien = SEED_ANCIEN.find(x => x.id === a.id);
+    if (!neuf || !neuf.verifie) return;
+    if (a.texte !== ancien.texte && a.texte !== neuf.texte) return;   // modifié par l'utilisateur : on n'y touche pas
+    if (a.texte === neuf.texte && a.verifie === neuf.verifie && a.source === neuf.source && a.modif === neuf.modif) return;
+    const note = a.note === ancien.note ? neuf.note : a.note;
+    Object.assign(a, { numero: neuf.numero, texte: neuf.texte, note, vigueur: neuf.vigueur, modif: neuf.modif, source: neuf.source, verifie: neuf.verifie, extrait: neuf.extrait });
+    change = true;
+  });
+  return change;
+}
+
 const OBSOLETE_SEED_IDS = new Set(["seed-1", "seed-2"]); // ancien jeu d'exemple (Code civil 1240/1103)
 
+// Articles cités par les fiches d'arrêt et par Quantième (src/articles-cites.js, texte officiel daté) :
+// préchargés comme les exemples, sauf ceux que l'utilisateur a déjà (même code, même numéro) ou a supprimés.
+const cleArticle = a => (window.ParapheRefs ? window.ParapheRefs.code(a.code) : a.code) + "|" + (window.ParapheRefs ? window.ParapheRefs.numero(a.numero) : a.numero);
+function articlesCites() {
+  const deja = new Set(Commun.lire(STORAGE_KEY, []).concat(SEED).filter(a => !String(a.id).startsWith("seed-ref-")).map(cleArticle));
+  return (window.ARTICLES_CITES || []).filter(a => !deja.has(cleArticle(a)));
+}
 const loadArticles = () =>
-  Commun.avecExemples(STORAGE_KEY, SEED, DELETED_SEEDS_KEY).filter(a => !OBSOLETE_SEED_IDS.has(a.id));
+  Commun.avecExemples(STORAGE_KEY, SEED.concat(articlesCites()), DELETED_SEEDS_KEY).filter(a => !OBSOLETE_SEED_IDS.has(a.id));
 const saveArticles = list => Commun.ecrire(STORAGE_KEY, list);
 const escapeHtml = Commun.echapper;
 
 let articles = loadArticles();
+migrerTextesVerifies(articles);
+// la mention « Fondement d'une étape de Quantième… » quitte la note personnelle (troisième passe du test :
+// on n'osait pas l'effacer) ; une note que l'utilisateur a écrite n'est jamais touchée
+(function deplacerOrigine() {
+  const ref = new Map((window.ARTICLES_CITES || []).map(a => [a.id, a]));
+  articles.forEach(a => {
+    if (!String(a.id).startsWith("seed-ref-")) return;
+    if (a.note && /^(Fondement d'une étape de Quantième|Appliqué par :)/.test(a.note)) { a.origine = a.note; a.note = ""; }
+    if (!a.origine && ref.get(a.id) && ref.get(a.id).origine) a.origine = ref.get(a.id).origine;
+  });
+})();
 saveArticles(articles);
 
 
@@ -287,6 +364,33 @@ function highlight(text, term) {
   const re = new RegExp("(" + term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + ")", "ig");
   // découpage sur le texte brut, puis échappement de chaque morceau
   return String(text || "").split(re).map((part, i) => i % 2 ? "<mark>" + escapeHtml(part) + "</mark>" : escapeHtml(part)).join("");
+}
+
+// Date de la version, dernière modification, vérification ; versions remplacées par l'utilisateur
+const dateFr = iso => iso ? Commun.dateLongue(iso) : "";
+function versionHTML(a) {
+  const morceaux = [];
+  if (a.vigueur) morceaux.push(`${a.extrait ? "Extrait · v" : "V"}ersion en vigueur depuis le <b>${escapeHtml(dateFr(a.vigueur))}</b>`);
+  if (a.modif) morceaux.push("dernière modification : " + escapeHtml(a.modif));
+  if (a.verifie) morceaux.push(`texte vérifié le ${escapeHtml(dateFr(a.verifie))}${a.source && a.source !== "Vérifié sur Légifrance" ? " (" + escapeHtml(a.source) + ")" : ""}`);
+  else morceaux.push('<span class="a-verifier">texte à vérifier sur Légifrance</span>');
+  const versions = (a.versions || []).slice().reverse();
+  return `<p class="art-version">${morceaux.join(" · ")}</p>` + (versions.length ? `<details class="versions"><summary>Version${versions.length > 1 ? "s" : ""} précédente${versions.length > 1 ? "s" : ""} (${versions.length})</summary>` +
+    versions.map(v => `<blockquote><cite>${v.vigueur ? "En vigueur depuis le " + escapeHtml(dateFr(v.vigueur)) + ", " : ""}remplacée dans vos notes le ${escapeHtml(dateFr(v.jusquau))}</cite>${escapeHtml(v.texte)}</blockquote>`).join("") + "</details>" : "");
+}
+
+// Arrêts de Fiches d'arrêt dont le texte cite cet article (liens-juridiques.js), en plus des liens posés à la main
+function arretsQuiCitent(a) {
+  if (!window.ParapheRefs) return "";
+  const deja = new Set(a.arrets || []);
+  const cites = lireFichesArret().filter(f => !deja.has(f.id) &&
+    window.ParapheRefs.cite([f.probleme, f.solution, f.attendu, f.portee, f.procedure].join(" "), a));
+  if (!cites.length) return "";
+  cites.sort((x, y) => (y.date || "").localeCompare(x.date || ""));
+  const montres = cites.slice(0, 8);
+  return `<p class="arrets-cites">Arrêts qui l'appliquent ou l'interprètent : ` + montres.map(f =>
+    `<a href="fiches-arret.html#${encodeURIComponent(f.id)}">${escapeHtml(f.titre)}${f.date ? " (" + escapeHtml(f.date.slice(0, 4)) + ")" : ""}</a>`).join(" · ") +
+    (cites.length > montres.length ? ` · et ${cites.length - montres.length} autre${cites.length - montres.length > 1 ? "s" : ""}` : "") + "</p>";
 }
 
 function refreshCodeOptions() {
@@ -315,12 +419,21 @@ document.getElementById("addBtn").addEventListener("click", () => {
     matiere, code, numero, texte,
     note: document.getElementById("fNote").value.trim(),
     star: document.getElementById("fStar").checked,
-    arrets: [...document.querySelectorAll("#fArrets input:checked")].map(i => i.value)
+    arrets: [...document.querySelectorAll("#fArrets input:checked")].map(i => i.value),
+    vigueur: document.getElementById("fVigueur").value || ""
   };
+  if (document.getElementById("fVerifie").checked) Object.assign(champs, { verifie: Commun.dateLocale(), source: "Vérifié sur Légifrance" });
   let id = editingId;
   if (editingId) {
     const a = articles.find(x => x.id === editingId);
-    if (a) Object.assign(a, champs);
+    if (a) {
+      // versions successives : le texte remplacé reste consultable sous l'article
+      if (a.texte && a.texte !== texte) {
+        a.versions = (a.versions || []).concat([{ texte: a.texte, vigueur: a.vigueur || "", jusquau: Commun.dateLocale() }]);
+        if (!champs.verifie) Object.assign(champs, { verifie: "", modif: "", extrait: false });
+      }
+      Object.assign(a, champs);
+    }
   } else {
     id = crypto.randomUUID();
     articles.push(Object.assign({ id }, champs));
@@ -331,6 +444,7 @@ document.getElementById("addBtn").addEventListener("click", () => {
   ouverts.add(id);
   renderList();
   Commun.montrer(document.getElementById("art-" + id));   // l'article enregistré, déplié sous vos yeux
+  Commun.annoncer("Article enregistré sur cet appareil.");
 });
 
 // --- Arrêts disponibles (lus dans Fiches d'arrêt) ---
@@ -345,7 +459,7 @@ function renderArretsChoix(selection) {
 
 // --- Modification : le formulaire d'ajout passe en mode édition ---
 let editingId = null;
-function startEdit(id) {
+function startEdit(id, surNote) {
   const a = articles.find(x => x.id === id);
   if (!a) return;
   editingId = id;
@@ -355,23 +469,41 @@ function startEdit(id) {
   document.getElementById("fTexte").value = a.texte || "";
   document.getElementById("fNote").value = a.note || "";
   document.getElementById("fStar").checked = !!a.star;
+  document.getElementById("fVigueur").value = a.vigueur || "";
+  document.getElementById("fVerifie").checked = false;
   renderArretsChoix(a.arrets);
-  document.getElementById("formTitle").textContent = "Modifier l'article";
+  document.getElementById("formTitle").textContent = surNote ? "Note sur l'art. " + (a.numero || "") : "Modifier l'article";
   document.getElementById("addBtn").textContent = "Enregistrer";
+  // le texte officiel vérifié ne se modifie pas par mégarde (seconde passe du test : le focus arrivait dedans)
+  const officiel = !!a.vigueur;
+  document.getElementById("fTexte").readOnly = officiel;
+  document.getElementById("deverrouillerTexte").hidden = !officiel;
   ouvrirFormulaire();
 }
+document.getElementById("deverrouillerTexte").addEventListener("click", () => {
+  const t = document.getElementById("fTexte"); t.readOnly = false; t.focus();
+  document.getElementById("deverrouillerTexte").hidden = true;
+});
 const fenetre = document.getElementById("formArticle");
-function ouvrirFormulaire() { fenetre.showModal ? fenetre.showModal() : fenetre.setAttribute("open", ""); document.getElementById(editingId ? "fTexte" : "fCode").focus(); }
-function nouvelArticle() {
+function ouvrirFormulaire() { fenetre.showModal ? fenetre.showModal() : fenetre.setAttribute("open", ""); document.getElementById(editingId ? "fNote" : "fCode").focus(); }
+function nouvelArticle(preRempli) {
   editingId = null;
-  ["fNumero", "fTexte", "fNote"].forEach(id => document.getElementById(id).value = "");
+  document.getElementById("fTexte").readOnly = false;
+  document.getElementById("deverrouillerTexte").hidden = true;
+  ["fNumero", "fTexte", "fNote", "fVigueur"].forEach(id => document.getElementById(id).value = "");
+  document.getElementById("fVerifie").checked = false;
   document.getElementById("fStar").checked = false;
   renderArretsChoix([]);
   document.getElementById("formTitle").textContent = "Nouvel article";
   document.getElementById("addBtn").textContent = "Ajouter l'article";
   ouvrirFormulaire();
+  if (preRempli && preRempli.numero) {
+    document.getElementById("fNumero").value = preRempli.numero;
+    if (preRempli.code) document.getElementById("fCode").value = preRempli.code;
+    document.getElementById(preRempli.code ? "fTexte" : "fCode").focus();
+  }
 }
-document.getElementById("nouvelArticle").addEventListener("click", nouvelArticle);
+document.getElementById("nouvelArticle").addEventListener("click", () => nouvelArticle());
 function endEdit() {
   editingId = null;
   ["fNumero", "fTexte", "fNote"].forEach(id => document.getElementById(id).value = "");
@@ -424,9 +556,17 @@ function renderList() {
     : "";
 
   if (filtered.length === 0) {
-    list.innerHTML = articles.length
-      ? '<div class="empty-state">Aucun article ne correspond à cette recherche.</div>'
-      : '<div class="empty-state">Aucun article. Ajoutez-en un avec « + Nouvel article ».</div>';
+    const q = (document.getElementById("searchBox").value || "").trim();
+    const num = (q.match(/^(?:art(?:icle)?\.?\s*)?([LRDA]\.?\s?\d[\d-]*|\d[\d-]*)\b/i) || [])[1];
+    const code = document.getElementById("filterCode").value || "";
+    const numero = num ? num.replace(/\s|\./g, "").replace(/^([lrda])/, c => c.toUpperCase()) : "";
+    list.innerHTML = !articles.length
+      ? '<div class="empty-state">Aucun article. Ajoutez-en un avec « + Nouvel article ».</div>'
+      : '<div class="empty-state">Aucun article ne correspond à cette recherche.'
+        + (numero ? '<p class="row" style="justify-content:center;gap:var(--e3);margin-top:var(--e3)"><button type="button" class="primary" data-ajouter-num="' + escapeHtml(numero) + '" data-ajouter-code="' + escapeHtml(code) + '">Ajouter l\'article ' + escapeHtml(numero) + (code ? " (" + escapeHtml(code) + ")" : "") + '</button>'
+          + '<a href="' + lienLegifrance({ numero, code }) + '" target="_blank" rel="noopener">Le chercher sur Légifrance ↗</a></p>'
+          + '<p class="muted">« Ajouter » ouvre un formulaire où vous collez le texte trouvé sur Légifrance.</p>' : "")
+        + '</div>';
     return;
   }
 
@@ -436,21 +576,27 @@ function renderList() {
     const mat = Commun.classeMatiere(a.matiere);
     return `
     <article class="art${mat ? " repere " + mat : ""}${ouvert ? " ouvert" : ""}" id="art-${escapeHtml(a.id)}">
-      <button type="button" class="art-tete" data-ouvrir="${escapeHtml(a.id)}" aria-expanded="${ouvert}">
-        <span class="art-ref"><b>Art. ${escapeHtml(a.numero)}</b><span>${escapeHtml(a.code)}</span></span>
+      <button type="button" class="art-tete" data-ouvrir="${escapeHtml(a.id)}" aria-expanded="${ouvert}"
+        aria-label="${escapeHtml("Art. " + a.numero + ", " + (a.code || "") + (a.matiere ? ", " + a.matiere : ""))}">
+        <span class="art-ref"><b>Art. ${escapeHtml(a.numero)}</b><span>${escapeHtml(a.code)}</span>${a.vigueur ? `<span class="art-date">version du ${new Date(a.vigueur + "T12:00:00").toLocaleDateString("fr-FR", { day: "numeric", month: "short", year: "numeric" })}</span>` : ""}</span>
         <span class="art-milieu">${a.matiere ? `<span class="badge${mat ? " matiere" : ""}">${escapeHtml(a.matiere)}</span><br>` : ""}<span class="art-extrait">${highlight(a.texte, search)}</span></span>
         <span class="art-etat">${a.star ? '<span class="etoile" title="À retenir" aria-label="À retenir">★</span>' : ""}<span class="chevron" aria-hidden="true">▾</span></span>
       </button>
       <div class="art-corps"${ouvert ? "" : " hidden"}>
         <p class="art-texte">${highlight(a.texte, search)}</p>
-        ${a.note ? `<p class="art-note"><b>Note</b>${highlight(a.note, search)}</p>` : ""}
+        ${versionHTML(a)}
+        ${a.note ? `<p class="art-note"><b>Votre note</b>${highlight(a.note, search)}</p>` : ""}
+        ${a.origine ? `<p class="art-origine">Pourquoi cet article est ici : ${escapeHtml(a.origine)}</p>` : ""}
         <p class="liens-article">
           <a href="${lienLegifrance(a)}" target="_blank" rel="noopener">Vérifier sur Légifrance ↗</a>
           ${(a.arrets || []).filter(id => titresArrets[id]).map(id =>
             ` · <a href="fiches-arret.html#${encodeURIComponent(id)}">${escapeHtml(titresArrets[id])}</a>`).join("")}
         </p>
+        ${ouvert ? arretsQuiCitent(a) : ""}
         <div class="art-actions">
           <button type="button" class="lien-action${a.star ? " actif" : ""}" data-star="${escapeHtml(a.id)}">${a.star ? "★ À retenir" : "☆ Marquer à retenir"}</button>
+          <button type="button" class="lien-action" data-trous="${escapeHtml(a.id)}" title="Créer une fiche mémo où vous masquez un délai, une condition ou un mot de cet article">Faire une carte à trous</button>
+          <button type="button" class="lien-action" data-note="${escapeHtml(a.id)}">${a.note ? "Modifier ma note" : "Ajouter une note"}</button>
           <button type="button" class="lien-action" data-edit="${escapeHtml(a.id)}">Modifier</button>
           <button type="button" class="lien-action danger" data-delete="${escapeHtml(a.id)}">Supprimer</button>
         </div>
@@ -460,8 +606,17 @@ function renderList() {
 }
 
 document.getElementById("articleList").addEventListener("click", (e) => {
-  const el = e.target.closest("[data-ouvrir], [data-star], [data-delete], [data-edit]");
+  const el = e.target.closest("[data-ouvrir], [data-star], [data-delete], [data-edit], [data-trous], [data-note], [data-ajouter-num]");
   if (!el) return;
+  if (el.dataset.trous) {
+    // l'article part dans Fiches mémo, où l'on choisit le passage à masquer
+    const a = articles.find(x => x.id === el.dataset.trous);
+    if (!a) return;
+    try { sessionStorage.setItem("paraphe_carte_a_creer", JSON.stringify({ type: "trous", matiere: a.matiere || "",
+      recto: "Art. " + a.numero + (a.code ? " " + a.code : "") + " : " + (a.texte || ""), verso: "" })); } catch {}
+    location.href = "flashcards.html?nouvelle=trous";
+    return;
+  }
   if (el.dataset.ouvrir) {
     const id = el.dataset.ouvrir, art = el.closest(".art"), ouvrir = !ouverts.has(id);
     ouvrir ? ouverts.add(id) : ouverts.delete(id);
@@ -469,6 +624,8 @@ document.getElementById("articleList").addEventListener("click", (e) => {
     art.querySelector(".art-corps").hidden = !ouvrir;
     return;
   }
+  if (el.dataset.ajouterNum !== undefined) { nouvelArticle({ numero: el.dataset.ajouterNum, code: el.dataset.ajouterCode || "" }); return; }
+  if (el.dataset.note) { startEdit(el.dataset.note, true); return; }
   if (el.dataset.star) toggleStar(el.dataset.star);
   else if (el.dataset.edit) startEdit(el.dataset.edit);
   else deleteArticle(el.dataset.delete);
@@ -506,6 +663,7 @@ document.getElementById("exportPdfBtn").addEventListener("click", () => {
           ${a.star ? `<span class="print-tag accent">À retenir</span>` : ""}
         </h3>
         <p>${escapeHtml(a.texte).replace(/\n/g, "<br>")}</p>
+        ${a.vigueur || a.verifie ? `<p class="print-version">${a.vigueur ? "Version en vigueur depuis le " + escapeHtml(dateFr(a.vigueur)) : ""}${a.vigueur && a.verifie ? " · " : ""}${a.verifie ? "vérifiée le " + escapeHtml(dateFr(a.verifie)) : ""}</p>` : ""}
         ${a.note ? `<div class="print-note"><b>Note —</b> ${escapeHtml(a.note).replace(/\n/g, "<br>")}</div>` : ""}
       </div>`;
     });

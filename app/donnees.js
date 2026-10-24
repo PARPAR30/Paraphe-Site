@@ -289,6 +289,8 @@
     oublierDossier: function () { return invoke('dossier_externe_oublier'); },
     montrer: function () { return invoke('copies_montrer'); },
     derniere: function () { try { return ls.getItem('paraphe_auto_derniere'); } catch (e) { return null; } },
+    // « Tout effacer » (accueil) : l'ancien stockage du moteur web, gardé depuis la version 1.1, part aussi
+    viderAncienStockage: function () { try { vrai.clear(); } catch (e) {} },
     protection: protection
   };
 

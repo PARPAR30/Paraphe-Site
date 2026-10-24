@@ -15,9 +15,11 @@ Contenu du dossier (refonte du 23 octobre 2026)
 - diligences.html ....... la visite guidée de Diligences (style du site, Funnel et Iris) ; captures dans assets/img/diligences/,
                           refaites par 1-Logiciel/scripts/captures/captures-site.mjs (journal.jpg n’est plus utilisée)
 - assets/site.css, pages.css ...... styles communs ; assets/site.js : thème, menu, fenêtres du logiciel, téléchargement
-- assets/3d/accueil-3d.js ......... le monde 3D de l'accueil (Three.js allégé, minifié). NE PAS MODIFIER À LA MAIN :
-    sa source est dans 4-Identite-visuelle/pistes-DA/maquette-3d (site/accueil-3d.js et src/) ;
-    le refaire avec  sh site/construire.sh  depuis ce dossier.
+- assets/3d/accueil-3d.js ......... l'accueil 3D « la maison des outils » (Three.js, minifié), avec l'easter egg
+    de la course de vélo (clic sur le vélo garé devant la maison). NE PAS MODIFIER À LA MAIN :
+    sa source est dans 4-Identite-visuelle/pistes-DA/2026-10-24-mondes-3d (site/accueil-maison.js, scenes/maison-finale.js,
+    moteur/) ; le refaire avec  sh site/construire.sh  depuis ce dossier. Essai local : node site/serveur.mjs (port 8811).
+    L'ancien accueil (le monde du film) : maquette-3d/site/ ; fichiers d'avant dans 2026-10-24-mondes-3d/sauvegardes/.
 - assets/img/app/ ....... captures complètes des écrans (jour et nuit) affichées avant le chargement de la démo
                           et sur téléphone
 - assets/fonts/ ......... polices Funnel Sans et Funnel Display (variables, celles du site depuis le 23 oct. 2026),
@@ -87,3 +89,25 @@ Contenu du dossier (refonte du 23 octobre 2026)
    Sources et marche à suivre : dossier 5-Videos/Film-isometrique/ du dossier Paraphe (voir son LISEZMOI.md).
    L'ancien film (presentation.mp4, poster.jpg ; sources dans 1-Logiciel/docs/video/) n'est plus utilisé
    par index.html.
+
+----------------------------------------------------------------------
+25 oct. 2026 — SITE « FAÇON TRENDTRACK » (local, non publié, non committé)
+- index.html, etudier.html, exercer.html, mentions-legales.html : haut et bas de page à l'encre,
+  grande feuille réglée au milieu (filets verticaux), boutons dont le texte se retourne au survol
+  (site.js ajoute .btn__txt et .btn__ico), verre liquide (.liquide ; réfraction SVG sous Chrome),
+  onglets du logiciel sur l'accueil ([data-onglets]), questions fréquentes, pied en colonnes.
+- L'ancien accueil en 3D est gardé : maison.html (feuille et script figés : assets/maison-site.css,
+  assets/maison-site.js, module 3D inchangé assets/3d/accueil-3d.js). On y arrive par le petit vélo
+  en bas à droite du pied de page (classe .velo).
+- Sauvegarde des fichiers d'avant : 4-Identite-visuelle/pistes-DA/2026-10-24-mondes-3d/sauvegardes/avant-trendtrack/
+- Captures de vérification : node 4-Identite-visuelle/pistes-DA/2026-10-24-mondes-3d/site/pages-captures.mjs page.html 1440x900 light
+- diligences.html (visite guidée) n'a pas été touchée : elle garde son propre style.
+- 25 oct. (suite) : second easter egg, le vélo de contre-la-montre (.velo--chrono) à côté du vélo de route,
+  mène à isometrique.html : le tout premier accueil, monde isométrique (fichiers figés dans assets/iso/).
+  Audit impeccable fait le même jour : formulations absolues retirées, verre sans flou sur fond uni, boutons de barre en verre.
+- 25 oct. (audit) : démo app/ régénérée depuis la version web du 24 oct. (plus récente que les installateurs 1.1.6 !) ;
+  affiches refaites par  node 1-Logiciel/scripts/site-demo/affiches.mjs <puppeteer-core.js>  (+ variantes -720.jpg pour téléphone,
+  faites avec sips) ; visite de Diligences refaite (CHROME=… node scripts/captures/captures-site.mjs) ; og-image.jpg refaite
+  depuis assets/img/og-image.html. Rapport : 7-Entreprise/Presentations/Paraphe-audit-site-et-logiciel.pdf
+- 25 oct. 2026 : version 1.2.0 compilée (Mac 15,9 Mo, Windows 6,1 Mo) et posée dans logiciels/ avec version.json ;
+  la 1.1.6 est dans 8-Archives/Installateurs-1.1.6. Rien n'est poussé : la mise en ligne attend l'accord de l'utilisateur.

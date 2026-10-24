@@ -5,8 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Paraphe — réviser le droit, puis le pratiquer</title>
 <meta name="description" content="Six outils pour les étudiants en droit et les jeunes praticiens : fiches mémo, fiches d’arrêt, codes, suivi des dossiers, raisonnement et délais de procédure. Sur votre ordinateur, sans compte, hors ligne. macOS et Windows.">
-<meta name="theme-color" content="#F6F6FA" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0F0F16" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#0E0E14">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Paraphe — réviser le droit, puis le pratiquer">
 <meta property="og:description" content="Six outils pour les études et la pratique du droit, réunis dans une application pour macOS et Windows. Sans compte, hors ligne.">
@@ -19,178 +18,35 @@
 <link rel="preload" href="assets/fonts/FunnelSans-variable-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fonts/FunnelDisplay-variable-latin.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="stylesheet" href="assets/site.css">
-<script>
-/* orientation du monde 3D de l'accueil : 16:9 sur ordinateur, 9:16 sur téléphone (cadrages du film et des Reels) */
-(function(){var v=innerHeight>innerWidth*1.05,d=document.createElement("div");d.setAttribute("data-composition-id","site");d.dataset.width=v?1080:1920;d.dataset.height=v?1920:1080;d.hidden=true;document.documentElement.appendChild(d);document.documentElement.classList.add(v?"vertical":"horizontal","js");})();
-</script>
-<script>try{var t=localStorage.getItem('ml-theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<script>try{var t=localStorage.getItem('ml-theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}document.documentElement.classList.add('js');</script>
 <style>
-/* ---------- accueil : le monde 3D du film, piloté par le défilement (assets/3d/accueil-3d.js) ----------
-   La section est haute de plusieurs écrans ; son contenu reste fixé et le défilement fait avancer
-   le temps du film. L'habillage (#calque) vit dans les coordonnées du film (1920×1080, ou 1080×1920
-   sur téléphone), mis à la même échelle que l'image. */
-.monde3d{position:relative;height:900vh;margin-top:-74px}
-.fixe3d{position:sticky;top:0;height:100vh;height:100dvh;overflow:hidden}   /* dvh : suit la barre du navigateur sur téléphone */
-#gl{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;opacity:0;transition:opacity .6s var(--ease)}
-.pret-3d #gl{opacity:1}
-.accroche{position:absolute;left:0;right:0;top:calc(74px + 13vh);z-index:3;will-change:opacity,transform}
-.accroche > *{max-width:min(660px,52vw)}
-.une{font-size:clamp(46px,6.2vw,104px);line-height:.96;font-weight:720;letter-spacing:-.045em;max-width:11ch}
-.une em{font-style:normal;color:var(--accent-text)}
-.accroche .lead{margin-top:22px;max-width:34ch}
-.hero__cta{display:grid;gap:12px;justify-items:start;margin-top:30px}
-.hero__cta .row{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
-.hero__meta{font-size:14px;color:var(--ink-3)}
-.hero__mobile{display:none}
-.si-petit{display:none}
-@media (max-width:899px){.si-grand{display:none}.si-petit{display:inline}}
-.is-mobile .hero__mobile{display:grid;gap:10px;justify-items:start}
-.is-mobile .hero__cta [data-dl],.is-mobile .hero__cta [data-dl-meta]{display:none}
-.indice{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;margin-top:26px;font-size:15px;font-weight:560;color:var(--ink-2)}
-.indice span{display:inline-flex;align-items:center;gap:8px}
-.passer{color:var(--accent-text);font-weight:600}
-.indice svg{width:16px;height:16px}
-@media (prefers-reduced-motion:no-preference){.indice svg{animation:indice 1.8s var(--ease) infinite}}
-@keyframes indice{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
-
-/* le cadre place le calque ; le calque est mis à l'échelle par zoom (textes nets), sinon par transform */
-.calque-cadre{position:absolute;left:0;top:0;width:0;height:0;pointer-events:none;z-index:2}
-.calque{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;pointer-events:none}
-.vertical .calque{width:1080px;height:1920px}
-.calque > *{position:absolute;opacity:0;visibility:hidden;will-change:opacity,transform}
-.calque a{pointer-events:auto}
-.calque h2{font-family:var(--titre);font-weight:720;letter-spacing:-.045em;color:var(--ink)}
-.calque h2 b{font-weight:inherit;color:var(--accent-text)}
-#m-mots{left:var(--g);top:var(--ay);font-family:var(--titre);font-weight:700;font-size:var(--mots,60px);line-height:1.08;letter-spacing:-.035em;color:var(--ink);opacity:1;visibility:visible}
-#m-mots span{display:block;opacity:0}
-#m-titre{left:var(--g);top:var(--h);width:560px}
-#m-titre h2{font-size:72px;line-height:.98}
-#m-titre p{font-size:22px;color:var(--ink-2);margin-top:14px;line-height:1.4;max-width:24ch}
-.station{left:var(--g);bottom:var(--b);width:660px;display:grid;grid-template-columns:auto 1fr;gap:4px 18px;align-items:start;padding:22px 26px;border-radius:22px}
-.station .n{grid-row:span 3;width:50px;height:50px;border-radius:14px;background:var(--ink);color:var(--bg);display:grid;place-items:center;font-family:var(--titre);font-weight:700;font-size:25px}
-.station small{font-size:16px;font-weight:600;color:var(--ink-3)}
-.station h3{font-size:38px;font-weight:700;letter-spacing:-.035em;line-height:1}
-.station p{font-size:21px;line-height:1.4;color:var(--ink);margin-top:6px}
-.station p i{font-style:normal;opacity:.18;transition:opacity .25s ease}
-.station p i.on{opacity:1}
-.fenetre3d{right:var(--g);top:var(--h);width:760px;border-radius:18px;overflow:hidden;background:var(--surface);box-shadow:0 0 0 1px rgba(17,17,24,.08),0 40px 80px -30px rgba(17,17,24,.45)}
-.fenetre3d .chrome{height:34px;display:flex;align-items:center;gap:9px;padding:0 16px;background:var(--surface-2);border-bottom:1px solid var(--line)}
-.fenetre3d .chrome i{width:11px;height:11px;border-radius:50%;background:#FF6159}.fenetre3d .chrome i:nth-child(2){background:#FFBD2E}.fenetre3d .chrome i:nth-child(3){background:#28C941}
-.fenetre3d .chrome span{margin-left:8px;font-size:14px;font-weight:600;color:var(--ink-3)}
-.fenetre3d img{width:100%;height:426px;object-fit:cover;object-position:top}
-.fenetre3d img.jour{display:block}
-:root[data-theme="dark"] .fenetre3d img.jour{display:none}
-:root[data-theme="dark"] .fenetre3d img.nuit{display:block}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .fenetre3d img.jour{display:none}:root:not([data-theme="light"]) .fenetre3d img.nuit{display:block}}
-#m-local,#m-donnees{left:var(--g);top:calc(var(--h) + 120px);width:640px}
-#m-local h2,#m-donnees h2{font-size:88px;line-height:.95}
-#m-local ul{list-style:none;margin:28px 0 0;padding:0;display:grid;gap:14px}
-#m-local li{font-size:24px;font-weight:600;color:var(--ink);display:flex;align-items:center;gap:14px;opacity:0}
-#m-local li::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--ink)}
-#m-donnees p{font-size:23px;line-height:1.4;color:var(--ink-2);margin-top:22px}
-#m-fin{left:0;right:0;top:0;bottom:0}
-#m-logo{position:absolute;font-family:var(--titre);font-weight:720;font-size:140px;letter-spacing:-.05em;line-height:1;white-space:nowrap;color:var(--ink)}
-#m-logo .point{display:inline-block;width:.15em;height:.15em;margin-left:.04em}
-#m-devise{position:absolute;left:0;right:0;text-align:center;font-size:25px;color:var(--ink-2)}
-#m-cta{position:absolute;left:0;right:0;display:flex;justify-content:center;gap:14px}
-#m-cta .btn{min-height:58px;font-size:19px;padding:0 26px}
-
-/* téléphone : le monde en haut, les textes dessous ; le calque est réduit à ~0,4, on grossit d'autant */
-@media (max-width:759px){
-  .accroche{top:auto;bottom:calc(20px + env(safe-area-inset-bottom))}
-  .accroche > *{max-width:none}
-  .une{font-size:clamp(40px,11.5vw,56px)}
-  .accroche .lead{font-size:17px;margin-top:14px}
-  .hero__cta{margin-top:20px}
-  .indice{margin-top:16px}
-}
-/* téléphone à l'écran court (barre du navigateur visible) : l'accroche se resserre pour laisser la place au monde */
-@media (max-width:759px) and (max-height:780px){
-  .une{font-size:clamp(34px,10vw,46px)}
-  .accroche .lead,.hero__meta{display:none}
-  .hero__cta{margin-top:16px;gap:8px}
-  .hero__cta .btn--lg{min-height:48px;padding:0 18px;font-size:16px}
-  .is-mobile .hero__mobile{gap:8px}
-  .indice{margin-top:12px;font-size:14px}
-}
-@media (max-width:759px) and (max-height:620px){.indice span{display:none}}
-/* le film baisse le monde pendant ces plans (cadrages des Reels) : le texte va au-dessus */
-.vertical #m-titre,.vertical #m-local,.vertical #m-donnees{left:var(--g);right:var(--g);width:auto;top:var(--h)}
-.vertical #m-mots{left:var(--g);top:var(--ay)}
-.vertical .station{left:var(--g);right:var(--g);width:auto;bottom:var(--b);padding:40px 44px;border-radius:40px;gap:10px 30px}
-.vertical .fenetre3d{left:var(--g);right:var(--g);width:auto;top:var(--h)}
-.vertical .fenetre3d img{height:620px;object-position:top left}
-.vertical .fenetre3d .chrome{height:64px}.vertical .fenetre3d .chrome span{font-size:30px}.vertical .fenetre3d .chrome i{width:20px;height:20px}
-.vertical .station .n{width:84px;height:84px;font-size:42px;border-radius:22px}
-.vertical .station small{font-size:27px}.vertical .station h3{font-size:64px}.vertical .station p{font-size:35px}
-.vertical #m-titre h2,.vertical #m-local h2,.vertical #m-donnees h2{font-size:108px}
-.vertical #m-titre p,.vertical #m-donnees p{font-size:42px;max-width:none}
-.vertical #m-local li{font-size:44px}
-.vertical #m-devise{font-size:44px}
-.vertical #m-cta{flex-direction:column;align-items:center;gap:20px}.vertical #m-cta .btn{min-height:104px;font-size:38px;padding:0 48px}
-@media (prefers-reduced-motion:reduce){.station p i{transition:none}}
-
-/* sans JavaScript, sans WebGL ou navigateur trop ancien : l'accroche et une image fixe du monde */
-.repli{display:none!important}   /* le thème du site ne doit pas les afficher : ce sont des images de secours */
-html:not(.js) .monde3d,.sans-3d .monde3d{height:auto;margin-top:-74px}
-html:not(.js) .fixe3d,.sans-3d .fixe3d{position:relative;height:auto;min-height:0;padding:calc(74px + 9vh) 0 64px;display:grid}
-html:not(.js) .accroche,.sans-3d .accroche{position:relative;top:auto;bottom:auto;width:100%;opacity:1!important;transform:none!important;visibility:visible!important}
-html:not(.js) #gl,html:not(.js) .calque-cadre,html:not(.js) .indice span,.sans-3d #gl,.sans-3d .calque-cadre,.sans-3d .indice span{display:none}
-html:not(.js) .repli,.sans-3d .repli{width:min(1000px,calc(100% - 2 * var(--gut)));height:auto;margin:40px auto 0;pointer-events:none}
-html:not(.js) .repli.jour,.sans-3d .repli.jour,:root[data-theme="dark"].sans-3d .repli.nuit{display:block!important}
-:root[data-theme="dark"].sans-3d .repli.jour{display:none!important}
-@media (prefers-color-scheme:dark){
-  :root:not([data-theme="light"]).sans-3d .repli.nuit,:root:not(.js) .repli.nuit{display:block!important}
-  :root:not([data-theme="light"]).sans-3d .repli.jour,:root:not(.js) .repli.jour{display:none!important}
-}
-@media (max-width:759px){html:not(.js) .repli,.sans-3d .repli{margin:0 auto 8px;order:-1}}
-.vitrine{padding-bottom:clamp(72px,9vw,128px)}
-
-/* portes */
-.portes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
-.porte{display:grid;gap:14px;align-content:start;padding:clamp(24px,3vw,36px);color:inherit;text-decoration:none;transition:box-shadow .25s var(--ease-out),border-color .25s var(--ease-out),transform .25s var(--ease-out)}
-@media (hover:hover) and (pointer:fine){.porte:hover{text-decoration:none;box-shadow:var(--sh-2);border-color:var(--line-2);transform:translateY(-2px)}}
-.porte:active{transform:scale(.99)}
-.porte h3{font-size:clamp(28px,2.6vw,36px);font-weight:740;letter-spacing:-.03em}
-.porte__qui{font-size:16px;color:var(--ink-2);margin-top:-6px}
-.porte ul{list-style:none;margin:4px 0 0;padding:0;display:grid}
-.porte li{display:grid;grid-template-columns:minmax(0,9.5em) minmax(0,1fr);gap:16px;padding:12px 0;border-top:1px solid var(--line);font-size:15px;color:var(--ink-2)}
-.porte li b{font-weight:640;color:var(--ink)}
-.porte .link{margin-top:6px}
-@media (max-width:860px){.portes{grid-template-columns:1fr}.porte li{grid-template-columns:1fr;gap:2px}}
-
-/* film */
-.film{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px;align-items:center}
-.film__txt{grid-column:1 / span 4;display:grid;gap:16px}
-.film__v{grid-column:6 / span 7;position:relative;border-radius:var(--r-l);overflow:hidden;box-shadow:var(--sh-win);background:#000;aspect-ratio:16 / 9}
-.film__v video{width:100%;height:100%;object-fit:cover}
-.film__play{position:absolute;inset:0;display:grid;place-items:center;border:0;background:transparent;cursor:pointer}
-.film__play span{display:inline-flex;align-items:center;gap:10px;padding:14px 22px;border-radius:999px;background:rgba(255,255,255,.94);color:#16161A;font-weight:650;font-size:16px;box-shadow:0 8px 30px rgba(0,0,0,.25);transition:transform .2s var(--ease-out)}
-.film__play:hover span{transform:scale(1.04)}
-.film__play:active span{transform:scale(.97)}
-.film__play svg{width:18px;height:18px}
-@media (max-width:980px){.film__txt,.film__v{grid-column:1 / -1}}
-
-/* données */
-.don{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px;align-items:center}
-.don__txt{grid-column:1 / span 5;display:grid;gap:22px}
-.don__pts{display:grid;gap:18px;margin:0;padding:0;list-style:none}
-.don__pts li{display:grid;grid-template-columns:24px minmax(0,1fr);gap:14px}
-.don__pts svg{width:22px;height:22px;color:var(--ink-2);margin-top:2px}
-.don__pts b{display:block;font-weight:660;color:var(--ink);margin-bottom:2px}
-.don__pts p{font-size:16px;color:var(--ink-2)}
-.schema{grid-column:7 / span 6;display:grid;gap:14px}
-.poste{padding:22px;display:grid;gap:12px}
-.poste__h{display:flex;align-items:center;gap:10px;font-weight:660}
+/* accueil : seulement ce qui lui est propre (le schéma « votre ordinateur », la liste des copies, le film) */
+.poste{width:min(380px,100%);padding:20px;display:grid;gap:10px;border-radius:22px}
+.poste__h{display:flex;align-items:center;gap:10px;font-weight:660;margin-bottom:2px}
 .poste__h svg{width:22px;height:22px}
-.fichier{display:grid;grid-template-columns:22px minmax(0,1fr) auto;align-items:center;gap:12px;padding:12px 14px;border-radius:var(--r-s);background:var(--surface-2);font-size:15px}
+.fichier{display:grid;grid-template-columns:22px minmax(0,1fr) auto;align-items:center;gap:12px;padding:11px 14px;border-radius:12px;background:var(--surface-2);font-size:15px}
 .fichier svg{width:20px;height:20px;color:var(--ink-3)}
 .fichier small{font-size:13px;color:var(--ink-3);white-space:nowrap}
-.dehors{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px}
-.dehors > div{padding:16px 18px;border:1px dashed var(--line-2);border-radius:var(--r-m);font-size:14px;color:var(--ink-2);display:grid;gap:4px}
-.dehors b{font-size:15px;color:var(--ink)}
-@media (max-width:980px){.don__txt,.schema{grid-column:1 / -1}}
-@media (max-width:520px){.dehors{grid-template-columns:1fr}.fichier small{display:none}}
+.sans-serveur{display:flex;align-items:center;gap:10px;margin-top:6px;padding:10px 14px;border-radius:12px;border:1px dashed var(--line-2);font-size:14px;color:var(--ink-3)}
+.sans-serveur b{color:var(--ink-2);font-weight:620}
+.copies{width:min(380px,100%);margin:0;padding:8px;list-style:none;border-radius:22px}
+.copies li{display:grid;grid-template-columns:30px minmax(0,1fr) auto;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;font-size:15px}
+.copies li + li{border-top:1px solid var(--line)}
+.copies li:first-child{background:var(--surface-2)}
+.copies svg{width:18px;height:18px;color:var(--ink-3)}
+.copies .ico{display:grid;place-items:center;width:30px;height:30px;border-radius:9px;background:var(--surface-2)}
+.copies li:first-child .ico{background:var(--surface)}
+.copies small{font-size:13px;color:var(--ink-3);white-space:nowrap}
+.copies b{display:block;font-weight:620}
+.copies span span{display:block;font-size:13px;color:var(--ink-3)}
+.film{width:var(--lignes);margin:clamp(48px,5vw,72px) auto 0;padding-inline:clamp(0px,3vw,40px)}
+.film__v{position:relative;border-radius:27px;overflow:hidden;background:#000;aspect-ratio:16 / 9;box-shadow:var(--sh-win)}
+.film__v video{width:100%;height:100%;object-fit:cover}
+.film__play{position:absolute;inset:0;display:grid;place-items:center;border:0;background:transparent;cursor:pointer}
+.film__play span{display:inline-flex;align-items:center;gap:10px;padding:14px 22px;border-radius:18px;background:rgba(20,20,28,.62);color:#fff;font-weight:650;font-size:16px;box-shadow:var(--sh-glass),0 0 0 1px rgba(255,255,255,.2);-webkit-backdrop-filter:blur(14px) saturate(160%);backdrop-filter:blur(14px) saturate(160%);transition:transform .45s var(--ease-tt),background-color .45s var(--ease-tt)}
+.film__play:hover span{transform:scale(1.04);background:rgba(20,20,28,.74)}
+.film__play:active span{transform:scale(.97)}
+.film__play svg{width:18px;height:18px}
 </style>
 </head>
 <body>
@@ -219,229 +75,310 @@ html:not(.js) .repli.jour,.sans-3d .repli.jour,:root[data-theme="dark"].sans-3d 
   <symbol id="i-share" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5V19a1.5 1.5 0 0 0 1.5 1.5h13A1.5 1.5 0 0 0 20 19v-6.5M12 3.5v11M7.5 8L12 3.5 16.5 8"/></symbol>
 </svg>
 
-<header class="top">
-  <div class="top__in verre">
+<header class="top sombre">
+  <div class="top__flou" aria-hidden="true"></div>
+  <div class="top__in">
     <a class="brand" href="index.html" aria-label="Paraphe, accueil"><svg aria-hidden="true"><use href="#logo"/></svg>Paraphe</a>
     <nav class="nav" aria-label="Navigation principale">
       <a href="etudier.html">J’étudie</a>
       <a href="exercer.html">J’exerce</a>
       <a href="#donnees">Vos données</a>
+      <a href="#questions">Questions</a>
     </nav>
-    <button class="iconbtn" id="theme" type="button" aria-pressed="false" aria-label="Passer en thème nuit"><svg aria-hidden="true"><use href="#i-moon"/></svg></button>
-    <a class="btn btn--primary btn--nav" href="#telecharger">Télécharger</a>
-    <button class="iconbtn menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="panel" aria-label="Menu"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
+    <div class="top__actions">
+      <button class="iconbtn" id="theme" type="button" aria-pressed="false" aria-label="Passer en thème nuit"><svg aria-hidden="true"><use href="#i-moon"/></svg></button>
+      <a class="btn btn--verre btn--petit btn--essai" href="#essayer">Essayer</a>
+      <a class="btn btn--verre btn--petit btn--clair" href="#telecharger">Télécharger</a>
+      <button class="iconbtn menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="panel" aria-label="Menu"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
+    </div>
   </div>
-  <nav class="panel verre" id="panel" hidden aria-label="Menu">
-    <a href="etudier.html">J’étudie</a><a href="exercer.html">J’exerce</a><a href="#donnees">Vos données</a><a href="#telecharger">Télécharger</a>
+  <nav class="panel" id="panel" hidden aria-label="Menu">
+    <a href="etudier.html">J’étudie</a><a href="exercer.html">J’exerce</a><a href="#essayer">Essayer la démo</a><a href="#donnees">Vos données</a><a href="#questions">Questions</a><a href="#telecharger">Télécharger</a>
   </nav>
 </header>
 
 <main id="contenu">
 
-<!-- ============================ PROMESSE ============================ -->
-<section class="monde3d" aria-labelledby="titre">
-  <div class="fixe3d">
-    <canvas id="gl" width="1920" height="1080" aria-hidden="true"></canvas>
-    <div class="accroche wrap">
-      <h1 class="une" id="titre">Réviser le droit, puis <em>le pratiquer.</em></h1>
-      <p class="lead">Six outils dans une seule application pour Mac et Windows&#8239;: pour les étudiants en droit, de la L1 au M2, et pour les avocats et juristes qui débutent.</p>
-      <div class="hero__cta">
-        <div class="row">
-          <a class="btn btn--primary btn--lg" href="#telecharger">Télécharger Paraphe</a>
-          <a class="btn btn--quiet btn--lg" href="#essayer"><span class="si-grand">Essayer dans le navigateur</span><span class="si-petit">Voir le logiciel</span></a>
-        </div>
-        <p class="hero__meta">Version&nbsp;1.1.6 · Mac et Windows · sans compte</p>
-        <div class="hero__mobile">
-          <p class="hero__meta">Paraphe s’installe sur un ordinateur Mac ou Windows.</p>
-          <button class="btn btn--quiet btn--lg" type="button" data-share><svg aria-hidden="true"><use href="#i-share"/></svg>M’envoyer le lien</button>
-        </div>
-      </div>
-      <p class="indice"><span aria-hidden="true"><svg><use href="#i-bas"/></svg>Faites défiler&#8239;: Paraphe met de l’ordre</span><a class="passer" href="#essayer">ou passez directement à la démo</a></p>
+<!-- ============================ HAUT DE PAGE, À L'ENCRE ============================ -->
+<div class="haut sombre">
+  <section class="accroche" aria-labelledby="titre">
+    <p class="pilule liquide refraction intro"><svg aria-hidden="true"><use href="#i-app"/></svg><span>Version <span data-version>1.2.0</span> · pour Mac et Windows</span></p>
+    <h1 class="une intro" style="--i:1" id="titre">Réviser le droit, puis <em>le pratiquer.</em></h1>
+    <p class="lead intro" style="--i:2">Six outils dans une seule application&#8239;: pour les étudiants en droit, de la L1 au M2, et pour les avocats et juristes qui débutent.</p>
+    <ul class="puces intro" style="--i:3" aria-label="En bref">
+      <li class="puce liquide refraction"><svg aria-hidden="true"><use href="#i-lock"/></svg>Sans compte</li>
+      <li class="puce liquide refraction"><svg aria-hidden="true"><use href="#i-disk"/></svg>Vos données sur votre ordinateur</li>
+      <li class="puce liquide refraction"><svg aria-hidden="true"><use href="#i-laptop"/></svg>Fonctionne hors ligne</li>
+    </ul>
+    <div class="accroche__cta intro" style="--i:4">
+      <a class="btn btn--primary btn--lg" href="#telecharger">Télécharger Paraphe</a>
+      <a class="btn btn--verre btn--lg" href="#essayer"><span class="si-grand">Essayer dans le navigateur</span><span class="si-petit">Voir le logiciel</span></a>
     </div>
-    <img class="repli jour" src="assets/img/accueil-3d.jpg" width="1340" height="840" alt="" loading="lazy">
-    <img class="repli nuit" src="assets/img/accueil-3d-nuit.jpg" width="1340" height="840" alt="" loading="lazy">
-    <div class="calque-cadre" id="calque-cadre"><div class="calque" id="calque">
-      <div id="m-mots" aria-hidden="true"><span>Des cours.</span><span>Des arrêts.</span><span>Des articles.</span><span>Des dossiers…</span><span>Et des délais.</span></div>
-      <div id="m-titre"><h2>Paraphe met tout <b>en ordre.</b></h2><p>Six outils pour étudier et pratiquer le droit, dans une seule application.</p></div>
-      <div id="m-stations"></div>
-      <div id="m-local"><h2>100&nbsp;% <b>local.</b></h2><ul><li>Aucun compte.</li><li>Aucun serveur.</li><li>Aucune connexion nécessaire.</li></ul></div>
-      <div id="m-donnees"><h2>Vos données restent <b>ici.</b></h2><p>Enregistrées sur votre ordinateur, pas sur un serveur. Copies de sécurité chiffrables.</p></div>
-      <div id="m-fin">
-        <div id="m-logo" aria-hidden="true"><span class="lettres">Paraphe<i class="point"></i></span></div>
-        <p id="m-devise">Du cours au cabinet.</p>
-        <div id="m-cta"><a class="btn btn--primary" href="#telecharger">Télécharger Paraphe</a><a class="btn btn--quiet" href="#essayer">Essayer dans le navigateur</a></div>
-      </div>
-    </div></div>
-  </div>
-</section>
+  </section>
 
-<!-- le vrai logiciel, en entier -->
-<section class="vitrine" id="essayer" aria-label="Essayer Paraphe">
-  <div class="ecran">
+  <!-- le vrai logiciel, en entier, dans un cadre de verre -->
+  <section class="vitrine" id="essayer" aria-label="Essayer Paraphe">
     <figure class="live live--d-emblee" data-src="app/Hub.html" data-titre="Paraphe, l’accueil du logiciel (démonstration)">
-      <div class="win">
-        <div class="win__bar"><span class="live__titre"><svg aria-hidden="true"><use href="#i-app"/></svg><span>Paraphe — l’accueil, avec des données d’exemple</span></span>
-          <span class="live__etat" aria-hidden="true"><i></i>Démo en direct · cliquez dedans pour l’essayer</span>
-          <a class="live__plein" href="app/Hub.html" target="_blank" rel="noopener">Plein écran<svg aria-hidden="true"><use href="#i-ext"/></svg></a></div>
-        <div class="live__cadre">
-          <img loading="lazy" class="jour" src="assets/img/app/ecran-accueil.jpg" srcset="assets/img/app/ecran-accueil.jpg 1440w, assets/img/app/ecran-accueil@2x.jpg 2880w" sizes="(max-width: 900px) 92vw, min(1200px, 86vw)" width="1440" height="1020" alt="L’accueil de Paraphe : la recherche dans tout ce que vous avez saisi, puis les six outils, Étudier (Fiches mémo, Fiches d’arrêt, Codes et articles) et Pratiquer (Diligences, Considérant, Quantième)." fetchpriority="high">
-          <img class="nuit" src="assets/img/app/ecran-accueil-nuit.jpg" srcset="assets/img/app/ecran-accueil-nuit.jpg 1440w, assets/img/app/ecran-accueil-nuit@2x.jpg 2880w" sizes="(max-width: 900px) 92vw, min(1200px, 86vw)" width="1440" height="1020" alt="L’accueil de Paraphe en thème nuit : la recherche, puis les six outils." loading="lazy">
+      <div class="cadre-verre liquide">
+        <div class="win">
+          <div class="win__bar"><span class="live__titre"><svg aria-hidden="true"><use href="#i-app"/></svg><span>Paraphe — l’accueil, avec des données d’exemple</span></span>
+            <span class="live__etat" aria-hidden="true"><i></i>Démo en direct · cliquez dedans pour l’essayer</span>
+            <a class="live__plein" href="app/Hub.html" target="_blank" rel="noopener">Plein écran<svg aria-hidden="true"><use href="#i-ext"/></svg></a></div>
+          <div class="live__cadre">
+            <img class="jour" src="assets/img/app/ecran-accueil.jpg" srcset="assets/img/app/ecran-accueil-720.jpg 720w, assets/img/app/ecran-accueil.jpg 1440w, assets/img/app/ecran-accueil@2x.jpg 2880w" sizes="(max-width: 900px) 92vw, min(1240px, 90vw)" width="1440" height="1020" alt="L’accueil de Paraphe : la recherche dans tout ce que vous avez saisi, puis les six outils, Étudier (Fiches mémo, Fiches d’arrêt, Codes et articles) et Pratiquer (Diligences, Considérant, Quantième)." fetchpriority="high">
+            <img class="nuit" src="assets/img/app/ecran-accueil-nuit.jpg" srcset="assets/img/app/ecran-accueil-nuit-720.jpg 720w, assets/img/app/ecran-accueil-nuit.jpg 1440w, assets/img/app/ecran-accueil-nuit@2x.jpg 2880w" sizes="(max-width: 900px) 92vw, min(1240px, 90vw)" width="1440" height="1020" alt="L’accueil de Paraphe en thème nuit : la recherche, puis les six outils." loading="lazy">
+          </div>
         </div>
       </div>
-      <figcaption><span><b>C’est le vrai logiciel.</b> Ouvrez un outil, cherchez, cliquez : tout fonctionne. Rien n’est enregistré, et un rechargement remet la démo à zéro.</span><a class="link live__mobile" href="app/Hub.html" target="_blank" rel="noopener">Ouvrir la démo<svg aria-hidden="true"><use href="#i-ext"/></svg></a></figcaption>
+      <figcaption><span><b>C’est le vrai logiciel, dans sa dernière version.</b> La page Aujourd’hui, la recherche, les six outils : tout fonctionne. Rien n’est enregistré, et un rechargement remet la démo à zéro.</span><a class="link live__mobile" href="app/Hub.html" target="_blank" rel="noopener">Ouvrir la démo<svg aria-hidden="true"><use href="#i-ext"/></svg></a></figcaption>
     </figure>
-  </div>
-</section>
+  </section>
 
-<!-- ============================ DEUX PORTES ============================ -->
-<section class="sec" style="padding-top:0" aria-labelledby="portes-t">
-  <div class="wrap">
-    <div class="sec__head">
-      <h2 class="h2" id="portes-t">Par où commencez&#8209;vous&nbsp;?</h2>
-      <p class="lead">Les deux familles d’outils vivent dans la même application et la même sauvegarde. Ce que vous apprenez en cours vous suit au cabinet.</p>
-    </div>
-    <div class="portes">
-      <a class="card porte" href="etudier.html">
-        <h3>J’étudie</h3>
-        <p class="porte__qui">Pour les étudiants, de la L1 au M2.</p>
-        <ul>
-          <li><b>Fiches mémo</b><span>Répétition espacée : ce qui coince revient vite.</span></li>
-          <li><b>Fiches d’arrêt</b><span>352 fiches d’arrêt préchargées, filtrables par niveau.</span></li>
-          <li><b>Codes &amp; articles</b><span>Vos articles de référence, annotés.</span></li>
-        </ul>
-        <span class="link">Essayer les outils d’étude<svg aria-hidden="true"><use href="#i-arrow"/></svg></span>
-      </a>
-      <a class="card porte" href="exercer.html">
-        <h3>J’exerce</h3>
-        <p class="porte__qui">Pour les avocats, juristes et collaborateurs.</p>
-        <ul>
-          <li><b>Diligences</b><span>Dossiers, litiges, échéances, pièces et honoraires.</span></li>
-          <li><b>Considérant</b><span>Construire un raisonnement, branche par branche.</span></li>
-          <li><b>Quantième</b><span>Les délais de procédure, article à l’appui.</span></li>
-        </ul>
-        <span class="link">Essayer les outils de pratique<svg aria-hidden="true"><use href="#i-arrow"/></svg></span>
-      </a>
-    </div>
+  <div class="six">
+    <p>Six outils, une seule application, une seule sauvegarde</p>
+    <ul>
+      <li><i aria-hidden="true">1</i>Fiches mémo</li><li><i aria-hidden="true">2</i>Fiches d’arrêt</li><li><i aria-hidden="true">3</i>Codes &amp; articles</li>
+      <li><i aria-hidden="true">4</i>Diligences</li><li><i aria-hidden="true">5</i>Considérant</li><li><i aria-hidden="true">6</i>Quantième</li>
+    </ul>
   </div>
-</section>
+</div>
 
-<!-- ============================ FILM ============================ -->
-<section class="sec" aria-labelledby="film-t">
-  <div class="wrap film">
-    <div class="film__txt">
-      <h2 class="h2" id="film-t">Paraphe en une minute.</h2>
-      <p class="lead">Les six outils, de la révision aux délais de procédure, dans un court film. Il est sous-titré&nbsp;; pensez à monter le son.</p>
-    </div>
-    <div class="film__v">
-      <video id="film" preload="none" playsinline data-poster-jour="assets/media/paraphe-film.jpg" data-poster-nuit="assets/media/paraphe-film-nuit.jpg" aria-label="Film de présentation de Paraphe (1 minute)">
-        <source src="assets/media/paraphe-film.mp4" type="video/mp4">
-        <track kind="captions" src="assets/media/paraphe-film.fr.vtt" srclang="fr" label="Français">
-      </video>
-      <button class="film__play" id="film-play" type="button" aria-label="Lire le film de présentation"><span><svg aria-hidden="true"><use href="#i-play"/></svg>Lire le film · 1 min</span></button>
-    </div>
-  </div>
-</section>
+<!-- ============================ LA FEUILLE ============================ -->
+<div class="feuille">
 
-<!-- ============================ DONNÉES ============================ -->
-<section class="sec" id="donnees" style="padding-top:0" aria-labelledby="don-t">
-  <div class="wrap don">
-    <div class="don__txt">
-      <h2 class="h2" id="don-t">Vos données restent sous votre contrôle.</h2>
-      <ul class="don__pts">
-        <li><svg aria-hidden="true"><use href="#i-disk"/></svg><div><b>Sans compte, sans serveur Paraphe</b><p>Chaque outil enregistre ses données dans le dossier de l’application, sur votre disque. Aucune inscription, aucun traceur.</p></div></li>
-        <li><svg aria-hidden="true"><use href="#i-copies"/></svg><div><b>Des copies de sécurité automatiques</b><p>Toutes les six heures au plus, gardées sept jours, dans le dossier de votre choix si vous le souhaitez.</p></div></li>
-        <li><svg aria-hidden="true"><use href="#i-lock"/></svg><div><b>Protégées par un mot de passe, si vous voulez</b><p>Copies et sauvegardes peuvent être chiffrées ; le mot de passe est gardé dans le trousseau de votre système.</p></div></li>
-        <li><svg aria-hidden="true"><use href="#i-spark"/></svg><div><b>Un assistant IA facultatif</b><p>Dans Diligences, il utilise votre propre clé et vous demande votre accord avant tout envoi au service choisi.</p></div></li>
-      </ul>
+  <!-- J'étudie -->
+  <section class="bloc" id="etudier" aria-labelledby="etudier-t">
+    <div class="bloc__tete">
+      <p class="etiquette">J’étudie, de la L1 au M2</p>
+      <h2 class="grand" id="etudier-t">Révisez sans repartir de zéro à chaque partiel.</h2>
+      <p class="lead">Vos définitions, vos arrêts et vos articles au même endroit. Paraphe vous fait revoir ce qui coince, au bon moment.</p>
+      <a class="btn btn--primary btn--lg" href="etudier.html">Découvrir les outils d’étude</a>
     </div>
-    <div class="schema" role="img" aria-label="Schéma : l’application et les données des six outils sont sur votre ordinateur, les copies de sécurité vont dans le dossier que vous choisissez ; il n’y a ni compte ni serveur Paraphe ; l’assistant IA, facultatif, n’envoie rien sans votre accord.">
-      <div class="card poste">
-        <div class="poste__h"><svg aria-hidden="true"><use href="#i-laptop"/></svg>Votre ordinateur</div>
-        <div class="fichier"><svg aria-hidden="true"><use href="#i-app"/></svg><span>Paraphe</span><small>application</small></div>
-        <div class="fichier"><svg aria-hidden="true"><use href="#i-folder"/></svg><span>Données des six outils</span><small>sur votre disque</small></div>
-        <div class="fichier"><svg aria-hidden="true"><use href="#i-copies"/></svg><span>Copies de sécurité</span><small>chiffrables</small></div>
+    <div class="onglets" data-onglets>
+      <div class="onglets__vue">
+        <div class="win">
+          <div class="win__bar"><svg aria-hidden="true"><use href="#i-app"/></svg>Paraphe — étudier</div>
+          <div class="onglets__piles">
+            <div class="onglets__img" id="o-memo" role="tabpanel" aria-labelledby="t-memo"><img class="jour" src="assets/img/app/ecran-fiches-memo.jpg" srcset="assets/img/app/ecran-fiches-memo-720.jpg 720w, assets/img/app/ecran-fiches-memo.jpg 1440w, assets/img/app/ecran-fiches-memo@2x.jpg 2880w" sizes="(max-width: 1240px) 92vw, 1100px" width="1440" height="900" alt="Les Fiches mémo : vos cartes par matière, avec la recherche et les filtres à gauche." loading="lazy"><img class="nuit" src="assets/img/app/ecran-fiches-memo-nuit.jpg" srcset="assets/img/app/ecran-fiches-memo-nuit-720.jpg 720w, assets/img/app/ecran-fiches-memo-nuit.jpg 1440w, assets/img/app/ecran-fiches-memo-nuit@2x.jpg 2880w" sizes="(max-width: 1240px) 92vw, 1100px" width="1440" height="900" alt="Les Fiches mémo en thème nuit." loading="lazy"></div>
+            <div class="onglets__img" id="o-arret" role="tabpanel" aria-labelledby="t-arret"><img class="jour" src="assets/img/app/ecran-fiches-arret.jpg" srcset="assets/img/app/ecran-fiches-arret-720.jpg 720w, assets/img/app/ecran-fiches-arret.jpg 1440w, assets/img/app/ecran-fiches-arret@2x.jpg 2880w" sizes="(max-width: 1240px) 92vw, 1100px" width="1440" height="900" alt="Les Fiches d’arrêt : une fiche ouverte avec ses faits, sa procédure, son problème de droit, sa solution et sa portée." loading="lazy"><img class="nuit" src="assets/img/app/ecran-fiches-arret-nuit.jpg" srcset="assets/img/app/ecran-fiches-arret-nuit-720.jpg 720w, assets/img/app/ecran-fiches-arret-nuit.jpg 1440w, assets/img/app/ecran-fiches-arret-nuit@2x.jpg 2880w" sizes="(max-width: 1240px) 92vw, 1100px" width="1440" height="900" alt="Les Fiches d’arrêt en thème nuit." loading="lazy"></div>
+            <div class="onglets__img" id="o-codes" role="tabpanel" aria-labelledby="t-codes"><img class="jour" src="assets/img/app/ecran-codes.jpg" srcset="assets/img/app/ecran-codes-720.jpg 720w, assets/img/app/ecran-codes.jpg 1440w, assets/img/app/ecran-codes@2x.jpg 2880w" sizes="(max-width: 1240px) 92vw, 1100px" width="1440" height="900" alt="Codes et articles : la liste des articles par matière, avec leur note et le repère « à retenir »." loading="lazy"><img class="nuit" src="assets/img/app/ecran-codes-nuit.jpg" srcset="assets/img/app/ecran-codes-nuit-720.jpg 720w, assets/img/app/ecran-codes-nuit.jpg 1440w, assets/img/app/ecran-codes-nuit@2x.jpg 2880w" sizes="(max-width: 1240px) 92vw, 1100px" width="1440" height="900" alt="Codes et articles en thème nuit." loading="lazy"></div>
+          </div>
+        </div>
       </div>
-      <div class="dehors">
-        <div><b>Serveur Paraphe</b>Il n’y en a pas : rien à créer, rien à synchroniser.</div>
-        <div><b>Assistant IA</b>Facultatif, avec votre clé, après votre accord.</div>
+      <div class="onglets__liste" role="tablist" aria-label="Les outils d’étude">
+        <button class="onglet" id="t-memo" type="button" role="tab" aria-controls="o-memo"><b><i aria-hidden="true">1</i>Fiches mémo</b><span>Répétition espacée, cartes à trous et planning d’examen&#8239;: ce qui coince revient vite, ce que vous savez s’espace.</span></button>
+        <button class="onglet" id="t-arret" type="button" role="tab" aria-controls="o-arret"><b><i aria-hidden="true">2</i>Fiches d’arrêt</b><span>352 fiches préchargées, de la L1 au M2&#8239;: faits, procédure, problème de droit, solution, portée.</span></button>
+        <button class="onglet" id="t-codes" type="button" role="tab" aria-controls="o-codes"><b><i aria-hidden="true">3</i>Codes &amp; articles</b><span>Les 367 articles cités par les fiches et par Quantième, avec leur texte officiel daté, votre note et un repère «&#8239;à retenir&#8239;».</span></button>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ============================ TÉLÉCHARGER ============================ -->
-<section class="sec" id="telecharger" style="background:var(--surface);border-top:1px solid var(--line)" aria-labelledby="dl-t">
-  <div class="wrap dl">
-    <div class="dl__intro">
-      <h2 class="h2" id="dl-t">Télécharger Paraphe.</h2>
-      <p class="lead">Une seule installation pour les six outils. Version <span data-version>1.1.6</span>.</p>
-      <ul class="promesses" aria-label="Garanties">
-        <li><svg aria-hidden="true"><use href="#i-check"/></svg>Aucun compte à créer</li>
-        <li><svg aria-hidden="true"><use href="#i-check"/></svg>Rien n’est envoyé sans votre accord</li>
-      </ul>
-      <p class="cond">En téléchargeant Paraphe, vous acceptez ses <a href="mentions-legales.html#conditions">conditions d’utilisation</a>. Les délais calculés sont indicatifs et ne constituent pas un avis juridique : vérifiez toujours les textes en vigueur.</p>
-      <div class="dl__mobile">
-        <p>Vous êtes sur un téléphone : Paraphe s’installe sur un ordinateur Mac ou Windows.</p>
-        <div class="row">
-          <button class="btn btn--primary" type="button" data-share><svg aria-hidden="true"><use href="#i-share"/></svg>M’envoyer le lien</button>
-          <button class="btn btn--quiet" type="button" data-copy><span data-copy-label>Copier le lien</span></button>
+  <!-- J'exerce -->
+  <section class="bloc" id="exercer" aria-labelledby="exercer-t">
+    <div class="bloc__tete bloc__tete--cote">
+      <p class="etiquette">J’exerce, pour les avocats et juristes</p>
+      <h2 class="grand" id="exercer-t">Vos dossiers, vos raisonnements, vos délais.</h2>
+      <p class="lead">Un suivi qui dit ce qui arrive, un outil pour construire une argumentation, des délais de procédure calculés article à l’appui.</p>
+      <a class="btn btn--primary btn--lg" href="exercer.html">Découvrir les outils de pratique</a>
+    </div>
+    <div class="onglets" data-onglets>
+      <div class="onglets__vue">
+        <div class="win">
+          <div class="win__bar"><svg aria-hidden="true"><use href="#i-app"/></svg>Paraphe — pratiquer</div>
+          <div class="onglets__piles">
+            <div class="onglets__img" id="o-dil" role="tabpanel" aria-labelledby="t-dil"><img class="jour" src="assets/img/app/ecran-diligences.jpg" srcset="assets/img/app/ecran-diligences-720.jpg 720w, assets/img/app/ecran-diligences.jpg 1440w, assets/img/app/ecran-diligences@2x.jpg 2880w" sizes="(max-width: 1240px) 92vw, 1100px" width="1440" height="900" alt="Diligences : l’accueil du suivi des dossiers, avec ce qui arrive et les échéances." loading="lazy"><img class="nuit" src="assets/img/app/ecran-diligences-nuit.jpg" srcset="assets/img/app/ecran-diligences-nuit-720.jpg 720w, assets/img/app/ecran-diligences-nuit.jpg 1440w, assets/img/app/ecran-diligences-nuit@2x.jpg 2880w" sizes="(max-width: 1240px) 92vw, 1100px" width="1440" height="900" alt="Diligences en thème nuit." loading="lazy"></div>
+            <div class="onglets__img" id="o-cons" role="tabpanel" aria-labelledby="t-cons"><img class="jour" src="assets/img/app/ecran-considerant.jpg" srcset="assets/img/app/ecran-considerant-720.jpg 720w, assets/img/app/ecran-considerant.jpg 1440w, assets/img/app/ecran-considerant@2x.jpg 2880w" sizes="(max-width: 1240px) 92vw, 1100px" width="1440" height="900" alt="Considérant : un raisonnement en arbre, du problème à la conclusion." loading="lazy"><img class="nuit" src="assets/img/app/ecran-considerant-nuit.jpg" srcset="assets/img/app/ecran-considerant-nuit-720.jpg 720w, assets/img/app/ecran-considerant-nuit.jpg 1440w, assets/img/app/ecran-considerant-nuit@2x.jpg 2880w" sizes="(max-width: 1240px) 92vw, 1100px" width="1440" height="900" alt="Considérant en thème nuit." loading="lazy"></div>
+            <div class="onglets__img" id="o-quant" role="tabpanel" aria-labelledby="t-quant"><img class="jour" src="assets/img/app/ecran-quantieme.jpg" srcset="assets/img/app/ecran-quantieme-720.jpg 720w, assets/img/app/ecran-quantieme.jpg 1440w, assets/img/app/ecran-quantieme@2x.jpg 2880w" sizes="(max-width: 1240px) 92vw, 1100px" width="1440" height="900" alt="Quantième : la prochaine date limite d’une procédure, puis tout le parcours." loading="lazy"><img class="nuit" src="assets/img/app/ecran-quantieme-nuit.jpg" srcset="assets/img/app/ecran-quantieme-nuit-720.jpg 720w, assets/img/app/ecran-quantieme-nuit.jpg 1440w, assets/img/app/ecran-quantieme-nuit@2x.jpg 2880w" sizes="(max-width: 1240px) 92vw, 1100px" width="1440" height="900" alt="Quantième en thème nuit." loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+      <div class="onglets__liste" role="tablist" aria-label="Les outils de pratique">
+        <button class="onglet" id="t-dil" type="button" role="tab" aria-controls="o-dil"><b><i aria-hidden="true">4</i>Diligences</b><span>Sociétés, contrats, litiges et consultations, avec leurs échéances, leurs pièces, le temps passé et les honoraires.</span></button>
+        <button class="onglet" id="t-cons" type="button" role="tab" aria-controls="o-cons"><b><i aria-hidden="true">5</i>Considérant</b><span>Un raisonnement en arbre, des modèles pour le cas pratique ou la consultation, et l’export Word.</span></button>
+        <button class="onglet" id="t-quant" type="button" role="tab" aria-controls="o-quant"><b><i aria-hidden="true">6</i>Quantième</b><span>168 procédures et 603 étapes&#8239;: votre prochaine date limite, puis tout le parcours, article à l’appui.</span></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Vos données -->
+  <section class="bloc" id="donnees" aria-labelledby="donnees-t">
+    <div class="bloc__tete">
+      <p class="etiquette">Vos données</p>
+      <h2 class="grand" id="donnees-t">Vos données restent sous votre contrôle.</h2>
+      <p class="lead">Paraphe n’a ni compte ni serveur. Chaque outil enregistre ses données dans le dossier de l’application, sur votre disque.</p>
+    </div>
+    <div class="duo">
+      <div>
+        <div class="scene" role="img" aria-label="Schéma : l’application, les données des six outils et les copies de sécurité sont sur votre ordinateur ; il n’y a pas de serveur Paraphe.">
+          <div class="poste liquide">
+            <div class="poste__h"><svg aria-hidden="true"><use href="#i-laptop"/></svg>Votre ordinateur</div>
+            <div class="fichier"><svg aria-hidden="true"><use href="#i-app"/></svg><span>Paraphe</span><small>application</small></div>
+            <div class="fichier"><svg aria-hidden="true"><use href="#i-folder"/></svg><span>Données des six outils</span><small>sur votre disque</small></div>
+            <div class="fichier"><svg aria-hidden="true"><use href="#i-copies"/></svg><span>Copies de sécurité</span><small>chiffrables</small></div>
+            <p class="sans-serveur"><b>Serveur Paraphe</b>il n’y en a pas</p>
+          </div>
+        </div>
+        <div><h3>Sans compte, sans serveur Paraphe</h3><p>Aucune inscription, aucun traceur&#8239;: rien à créer, rien à synchroniser. Vos fiches et vos dossiers restent sur votre poste.</p></div>
+      </div>
+      <div>
+        <div class="scene" role="img" aria-label="Illustration : des copies de sécurité faites automatiquement, à quelques heures d’intervalle, protégées par un mot de passe.">
+          <ul class="copies liquide">
+            <li><span class="ico"><svg aria-hidden="true"><use href="#i-copies"/></svg></span><span><b>Copie de sécurité</b><span>faite automatiquement</span></span><small>il y a 2 h</small></li>
+            <li><span class="ico"><svg aria-hidden="true"><use href="#i-lock"/></svg></span><span><b>Copie de sécurité</b><span>chiffrée</span></span><small>il y a 8 h</small></li>
+            <li><span class="ico"><svg aria-hidden="true"><use href="#i-lock"/></svg></span><span><b>Copie de sécurité</b><span>chiffrée</span></span><small>hier</small></li>
+            <li><span class="ico"><svg aria-hidden="true"><use href="#i-cal"/></svg></span><span><b>Gardées sept jours</b><span>dans le dossier de votre choix</span></span><small></small></li>
+          </ul>
+        </div>
+        <div><h3>Des copies de sécurité automatiques</h3><p>Toutes les six heures au plus, gardées sept jours. Protégées par un mot de passe si vous le souhaitez, gardé dans le trousseau de votre système.</p></div>
+      </div>
+    </div>
+    <ul class="pastilles" aria-label="Garanties">
+      <li class="liquide"><svg aria-hidden="true"><use href="#i-check"/></svg>Aucun traceur</li>
+      <li class="liquide"><svg aria-hidden="true"><use href="#i-lock"/></svg>Copies chiffrables</li>
+      <li class="liquide"><svg aria-hidden="true"><use href="#i-lock"/></svg>Mot de passe dans le trousseau du système</li>
+      <li class="liquide"><svg aria-hidden="true"><use href="#i-spark"/></svg>Assistant IA facultatif, avec votre accord</li>
+    </ul>
+  </section>
+
+  <!-- Film -->
+  <section class="bloc" aria-labelledby="film-t">
+    <div class="bloc__tete">
+      <p class="etiquette">En une minute</p>
+      <h2 class="grand" id="film-t">Paraphe, de la révision aux délais.</h2>
+      <p class="lead">Les six outils dans un court film sous-titré. Pensez à monter le son.</p>
+    </div>
+    <div class="film">
+      <div class="cadre-verre liquide">
+        <div class="film__v">
+          <video id="film" preload="none" playsinline data-poster-jour="assets/media/paraphe-film.jpg" data-poster-nuit="assets/media/paraphe-film-nuit.jpg" aria-label="Film de présentation de Paraphe (1 minute)">
+            <source src="assets/media/paraphe-film.mp4" type="video/mp4">
+            <track kind="captions" src="assets/media/paraphe-film.fr.vtt" srclang="fr" label="Français">
+          </video>
+          <button class="film__play" id="film-play" type="button" aria-label="Lire le film de présentation"><span><svg aria-hidden="true"><use href="#i-play"/></svg>Lire le film · 1 min</span></button>
         </div>
       </div>
     </div>
-    <div class="dl__opts">
-      <article class="card os" data-os="mac">
-        <div class="os__h"><svg aria-hidden="true"><use href="#i-laptop"/></svg><h3>macOS</h3><span class="os__tag" hidden>Pour cet ordinateur</span></div>
-        <dl class="os__spec">
-          <div><dt>Taille</dt><dd>14,5 Mo</dd></div><div><dt>Système</dt><dd>macOS 12 ou plus</dd></div><div><dt>Processeur</dt><dd>Apple Silicon et Intel</dd></div>
-        </dl>
-        <a class="btn btn--primary btn--dl" data-dl="mac" href="logiciels/Paraphe_1.1.6_universal.dmg"><svg aria-hidden="true"><use href="#i-down"/></svg>Télécharger pour Mac</a>
-        <details>
-          <summary><svg aria-hidden="true"><use href="#i-chev"/></svg>Première ouverture sur Mac</summary>
-          <ol>
-            <li>Ouvrez le fichier .dmg, puis glissez Paraphe dans le dossier Applications.</li>
-            <li>Ouvrez Paraphe. Si macOS indique qu’il ne peut pas vérifier le développeur, cliquez sur « Terminé ».</li>
-            <li>Ouvrez Réglages Système, puis Confidentialité et sécurité. En bas de la page, cliquez sur « Ouvrir quand même » à côté de Paraphe et confirmez.</li>
-            <li>Sur macOS 12 à 14, un clic droit sur Paraphe puis « Ouvrir » suffit aussi.</li>
-          </ol>
-        </details>
-      </article>
-      <article class="card os" data-os="windows">
-        <div class="os__h"><svg aria-hidden="true"><use href="#i-desktop"/></svg><h3>Windows</h3><span class="os__tag" hidden>Pour cet ordinateur</span></div>
-        <dl class="os__spec">
-          <div><dt>Taille</dt><dd>5,5 Mo</dd></div><div><dt>Système</dt><dd>Windows 10 ou 11</dd></div><div><dt>Version</dt><dd>64 bits</dd></div>
-        </dl>
-        <a class="btn btn--primary btn--dl" data-dl="windows" href="logiciels/Paraphe_1.1.6_x64-setup.exe"><svg aria-hidden="true"><use href="#i-down"/></svg>Télécharger pour Windows</a>
-        <details>
-          <summary><svg aria-hidden="true"><use href="#i-chev"/></svg>Première ouverture sur Windows</summary>
-          <ol>
-            <li>Lancez l’installateur que vous venez de télécharger.</li>
-            <li>Si Windows affiche « Windows a protégé votre ordinateur », cliquez sur « Informations complémentaires », puis sur « Exécuter quand même ».</li>
-            <li>Suivez l’installation. Sur Windows 10, elle peut ajouter le composant Microsoft Edge WebView2 s’il manque.</li>
-            <li>Ouvrez Paraphe depuis le menu Démarrer.</li>
-          </ol>
-        </details>
-      </article>
+  </section>
+
+  <!-- Télécharger -->
+  <section class="bloc" id="telecharger" aria-labelledby="dl-t">
+    <div class="bloc__tete bloc__tete--cote">
+      <p class="etiquette">Télécharger</p>
+      <h2 class="grand" id="dl-t">Une installation, six outils.</h2>
+      <p class="lead">Version <span data-version>1.2.0</span>, pour Mac et Windows.</p>
     </div>
-  </div>
-</section>
+    <div class="dl">
+      <div class="dl__intro">
+        <ul class="promesses" aria-label="Garanties">
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>Aucun compte à créer</li>
+          <li><svg aria-hidden="true"><use href="#i-check"/></svg>Rien n’est envoyé sans votre accord</li>
+        </ul>
+        <p class="cond">En téléchargeant Paraphe, vous acceptez ses <a href="mentions-legales.html#conditions">conditions d’utilisation</a>. Les délais calculés sont indicatifs et ne constituent pas un avis juridique : vérifiez toujours les textes en vigueur.</p>
+        <div class="dl__mobile">
+          <p>Vous êtes sur un téléphone : Paraphe s’installe sur un ordinateur Mac ou Windows.</p>
+          <div class="row">
+            <button class="btn btn--primary" type="button" data-share><svg aria-hidden="true"><use href="#i-share"/></svg>M’envoyer le lien</button>
+            <button class="btn btn--quiet" type="button" data-copy><span data-copy-label>Copier le lien</span></button>
+          </div>
+        </div>
+      </div>
+      <div class="dl__opts">
+        <article class="card os" data-os="mac" data-hover>
+          <div class="os__h"><svg aria-hidden="true"><use href="#i-laptop"/></svg><h3>macOS</h3><span class="os__tag" hidden>Pour cet ordinateur</span></div>
+          <dl class="os__spec">
+            <div><dt>Taille</dt><dd>15,9 Mo</dd></div><div><dt>Système</dt><dd>macOS 12 ou plus</dd></div><div><dt>Processeur</dt><dd>Apple Silicon et Intel</dd></div>
+          </dl>
+          <a class="btn btn--primary btn--dl" data-dl="mac" href="logiciels/Paraphe_1.2.0_universal.dmg"><svg aria-hidden="true"><use href="#i-down"/></svg>Télécharger pour Mac</a>
+          <details>
+            <summary><svg aria-hidden="true"><use href="#i-chev"/></svg>Première ouverture sur Mac</summary>
+            <ol>
+              <li>Ouvrez le fichier .dmg, puis glissez Paraphe dans le dossier Applications.</li>
+              <li>Ouvrez Paraphe. Si macOS indique qu’il ne peut pas vérifier le développeur, cliquez sur « Terminé ».</li>
+              <li>Ouvrez Réglages Système, puis Confidentialité et sécurité. En bas de la page, cliquez sur « Ouvrir quand même » à côté de Paraphe et confirmez.</li>
+              <li>Sur macOS 12 à 14, un clic droit sur Paraphe puis « Ouvrir » suffit aussi.</li>
+            </ol>
+          </details>
+        </article>
+        <article class="card os" data-os="windows" data-hover>
+          <div class="os__h"><svg aria-hidden="true"><use href="#i-desktop"/></svg><h3>Windows</h3><span class="os__tag" hidden>Pour cet ordinateur</span></div>
+          <dl class="os__spec">
+            <div><dt>Taille</dt><dd>6,1 Mo</dd></div><div><dt>Système</dt><dd>Windows 10 ou 11</dd></div><div><dt>Version</dt><dd>64 bits</dd></div>
+          </dl>
+          <a class="btn btn--primary btn--dl" data-dl="windows" href="logiciels/Paraphe_1.2.0_x64-setup.exe"><svg aria-hidden="true"><use href="#i-down"/></svg>Télécharger pour Windows</a>
+          <details>
+            <summary><svg aria-hidden="true"><use href="#i-chev"/></svg>Première ouverture sur Windows</summary>
+            <ol>
+              <li>Lancez l’installateur que vous venez de télécharger.</li>
+              <li>Si Windows affiche « Windows a protégé votre ordinateur », cliquez sur « Informations complémentaires », puis sur « Exécuter quand même ».</li>
+              <li>Suivez l’installation. Sur Windows 10, elle peut ajouter le composant Microsoft Edge WebView2 s’il manque.</li>
+              <li>Ouvrez Paraphe depuis le menu Démarrer.</li>
+            </ol>
+          </details>
+        </article>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- ============================ BAS DE PAGE, À L'ENCRE ============================ -->
+<div class="bas sombre">
+  <section class="questions" id="questions" aria-labelledby="q-t">
+    <div class="questions__tete">
+      <p class="etiquette">Questions</p>
+      <h2 class="h2" id="q-t">Questions fréquentes</h2>
+      <p class="lead">Une autre question&#8239;? Écrivez-nous.</p>
+      <a class="btn btn--verre" data-fleche href="mailto:paraphe.droit@gmail.com">paraphe.droit@gmail.com</a>
+    </div>
+    <div>
+      <details class="qr"><summary>Faut-il créer un compte&#8239;?<svg aria-hidden="true"><use href="#i-chev"/></svg></summary><p>Non. Paraphe s’installe et s’ouvre, sans inscription ni adresse e-mail.</p></details>
+      <details class="qr"><summary>Où sont enregistrées mes données&#8239;?<svg aria-hidden="true"><use href="#i-chev"/></svg></summary><p>Dans le dossier de l’application, sur votre ordinateur. Des copies de sécurité sont faites automatiquement, toutes les six heures au plus, et gardées sept jours&#8239;; vous pouvez choisir leur dossier et les protéger par un mot de passe.</p></details>
+      <details class="qr"><summary>Paraphe fonctionne-t-il sans connexion&#8239;?<svg aria-hidden="true"><use href="#i-chev"/></svg></summary><p>Oui, les six outils fonctionnent hors ligne. Seul l’assistant IA de Diligences, facultatif, a besoin d’une connexion&#8239;; il utilise votre propre clé et vous demande votre accord avant tout envoi.</p></details>
+      <details class="qr"><summary>Sur quels ordinateurs&#8239;?<svg aria-hidden="true"><use href="#i-chev"/></svg></summary><p>macOS 12 ou plus, sur Apple Silicon comme sur Intel, et Windows 10 ou 11 en 64 bits. Paraphe s’installe sur un ordinateur&#8239;: depuis un téléphone, envoyez-vous le lien.</p></details>
+      <details class="qr"><summary>Puis-je essayer avant d’installer&#8239;?<svg aria-hidden="true"><use href="#i-chev"/></svg></summary><p>Oui&#8239;: la démonstration en haut de cette page est le vrai logiciel, avec des données d’exemple. Rien n’y est enregistré, et un rechargement la remet à zéro.</p></details>
+      <details class="qr"><summary>Les délais calculés par Quantième font-ils foi&#8239;?<svg aria-hidden="true"><use href="#i-chev"/></svg></summary><p>Non. Ils sont indicatifs et ne constituent pas un avis juridique&#8239;: vérifiez toujours les textes en vigueur. Chaque délai indique l’article sur lequel il repose.</p></details>
+      <details class="qr"><summary>Mes fiches me suivront-elles au cabinet&#8239;?<svg aria-hidden="true"><use href="#i-chev"/></svg></summary><p>Oui. Les six outils vivent dans la même application et la même sauvegarde&#8239;: ce que vous apprenez en cours reste là le jour où vous exercez.</p></details>
+    </div>
+  </section>
+
+  <section class="appel" aria-labelledby="appel-t">
+    <h2 class="grand" id="appel-t">Du cours au cabinet.</h2>
+    <p class="lead">Une seule installation pour les six outils, sur Mac ou Windows.</p>
+    <div class="appel__cta">
+      <a class="btn btn--primary btn--lg" href="#telecharger">Télécharger Paraphe</a>
+      <a class="btn btn--verre btn--lg" href="#essayer"><span class="si-grand">Essayer dans le navigateur</span><span class="si-petit">Voir le logiciel</span></a>
+    </div>
+    <div class="appel__ecran" aria-hidden="true">
+      <div class="cadre-verre liquide">
+        <div class="win">
+          <img class="jour" src="assets/img/app/ecran-diligences.jpg" width="1440" height="900" alt="" loading="lazy">
+          <img class="nuit" src="assets/img/app/ecran-diligences-nuit.jpg" width="1440" height="900" alt="" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="pied">
+    <div class="pied__g">
+      <div class="pied__marque">
+        <a class="brand" href="index.html"><svg aria-hidden="true"><use href="#logo"/></svg>Paraphe</a>
+        <p>Du cours au cabinet.</p>
+        <a class="btn btn--verre btn--petit" href="mailto:paraphe.droit@gmail.com">paraphe.droit@gmail.com</a>
+      </div>
+      <nav class="pied__col" aria-labelledby="pied-outils"><h2 id="pied-outils">Les outils</h2><a href="etudier.html">J’étudie</a><a href="exercer.html">J’exerce</a><a href="index.html#essayer">Essayer la démo</a><a href="diligences.html">Visite de Diligences</a></nav>
+      <nav class="pied__col" aria-labelledby="pied-paraphe"><h2 id="pied-paraphe">Paraphe</h2><a href="index.html#telecharger">Télécharger</a><a href="index.html#donnees">Vos données</a><a href="index.html#questions">Questions fréquentes</a></nav>
+      <nav class="pied__col" aria-labelledby="pied-infos"><h2 id="pied-infos">Informations</h2><a href="mentions-legales.html#mentions">Mentions légales</a><a href="mentions-legales.html#confidentialite">Confidentialité</a><a href="mentions-legales.html#conditions">Conditions d’utilisation</a><a href="mentions-legales.html#credits">Crédits</a></nav>
+    </div>
+    <div class="pied__bas">
+      <span>© <span data-annee>2026</span> Pierre-Antoine Ruat</span>
+      <span class="pied__droite"><span>Version <span data-version>1.2.0</span></span>
+        <a class="velo velo--chrono" href="isometrique.html" title="Une échappée en solo ?" aria-label="Le monde isométrique : le tout premier accueil de Paraphe"><svg viewBox="0 0 30 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g class="roue"><circle cx="6" cy="14" r="5" fill="currentColor" fill-opacity=".22"/><circle cx="6" cy="14" r=".9" fill="currentColor" stroke="none"/><path d="M6 10.4v1.4" stroke-width=".9"/></g><g class="roue"><circle cx="24" cy="14" r="5"/><path d="M24 14V9.6M24 14l3.8 2.2M24 14l-3.8 2.2" stroke-width="1"/></g><path d="M6 14h7l7.4-6M13 14l-1.6-6.2M6 14l5.2-6.4M11.4 7.6l9.2.2M20.2 7.4L24 14"/><path d="M9.6 6.6h3.6M20.6 7.4h5.2M22.4 7.4l-.4-1.4h1.6" stroke-width="1.6"/></svg></a>
+        <a class="velo" href="maison.html" title="Une petite balade ?" aria-label="La maison des outils : l’ancien accueil de Paraphe, en 3D"><svg viewBox="0 0 30 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g class="roue"><circle cx="6" cy="14" r="5"/><path d="M6 10v8M2 14h8" stroke-width=".7"/></g><g class="roue"><circle cx="24" cy="14" r="5"/><path d="M24 10v8M20 14h8" stroke-width=".7"/></g><path d="M6 14l7 0 7.5-6.5M13 14L10.8 6.5M6 14l5-6.8M11 7.3h9.5M20.2 6.4L24 14"/><path d="M9.3 5.6h3.6M19.6 6.2l2.6-.5c1.3-.2 1.6 1.6.4 2" stroke-width="1.6"/></svg></a></span>
+    </div>
+  </footer>
+</div>
 </main>
 
-<footer class="foot">
-  <div class="wrap foot__in">
-    <a class="brand" href="index.html"><svg aria-hidden="true"><use href="#logo"/></svg>Paraphe</a>
-    <span>Du cours au cabinet · © <span data-annee>2026</span> Pierre-Antoine Ruat · <a href="mailto:paraphe.droit@gmail.com">paraphe.droit@gmail.com</a></span>
-    <nav aria-label="Informations légales">
-      <a href="mentions-legales.html#mentions">Mentions légales</a>
-      <a href="mentions-legales.html#confidentialite">Confidentialité</a>
-      <a href="mentions-legales.html#conditions">Conditions d’utilisation</a>
-      <a href="mentions-legales.html#credits">Crédits</a>
-    </nav>
-  </div>
-</footer>
-
 <script src="assets/site.js"></script>
-<script type="module" src="assets/3d/accueil-3d.js"></script>
-<script nomodule>document.documentElement.classList.add("sans-3d")</script>
 <script>
 /* film : rien n'est chargé avant le clic */
 (() => {

@@ -1,11 +1,11 @@
 {
-  "version": "1.1.6",
-  "date": "2026-10-23",
+  "version": "1.2.0",
+  "date": "2026-10-25",
   "lien": "https://parpar30.github.io/Paraphe-Site/#telecharger",
   "nouveautes": [
-    "Nouvelle allure dans tous les outils : polices Funnel, teinte Iris, menus en verre",
-    "Quantième et Diligences : les délais proches ressortent en couleur (en retard, sous 7 jours, sous 30 jours)",
-    "Diligences : changer le statut d’un dossier directement depuis le tableau Kanban",
-    "Boutons et champs plus faciles à viser, mouvements réduits respectés dans Quantième"
+    "Une page « Aujourd’hui » à l’accueil : ce qui vous attend dans chaque outil, et vos premiers pas selon que vous étudiez ou exercez",
+    "Fiches mémo : cartes à trous, planning jusqu’au jour de l’examen, et vos cours Word ou PDF transformés en cartes",
+    "Codes & articles : les articles cités par les fiches d’arrêt et par Quantième, préchargés avec leur texte officiel daté",
+    "Considérant : modèles de raisonnement et export Word ; la recherche (⌘ K ou Ctrl K) dans tous les outils"
   ]
 }

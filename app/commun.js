@@ -50,7 +50,7 @@ const Commun = (() => {
   // (sinon ils reviendraient au prochain chargement). `exemples` : la liste des exemples préchargés de l'outil.
   function toutSupprimer({ cleDonnees, cleSupprimes, exemples, nombre, un, des, apres }) {
     if (!nombre) { alert("Il n'y a rien à supprimer : votre liste est déjà vide."); return false; }
-    if (!confirm("Supprimer " + des + " ?\n\nLes " + nombre + " " + un + " seront effacé(e)s de cet appareil. Pensez à faire une sauvegarde avant : bouton « Sauvegarde » ci-dessus, ou « Mes données » à l'accueil.")) return false;
+    if (!confirm("Supprimer " + des + " ?\n\nLes " + nombre + " " + un + " seront effacé(e)s de cet appareil. Pensez à faire une sauvegarde avant : bouton « Sauvegarde » ci-dessus, ou celui de l'accueil.")) return false;
     if (!confirm("Dernière confirmation.\n\nCette suppression est définitive : " + nombre + " " + un + " vont disparaître, sans possibilité de les récupérer. Tout supprimer ?")) return false;
     const oublies = new Set(lire(cleSupprimes, []));
     (exemples || []).forEach(x => { if (String(x.id).startsWith("seed-")) oublies.add(x.id); });
@@ -76,6 +76,25 @@ const Commun = (() => {
     if (!signaler) return;
     el.classList.remove("signale"); void el.offsetWidth; el.classList.add("signale");
     setTimeout(() => el.classList.remove("signale"), 2200);
+  }
+
+  // Un message bref et visible après une action (« Carte ajoutée », « Fiche enregistrée sur cet appareil ») :
+  // la troisième passe du test relevait l'absence de tout retour après l'enregistrement
+  let boiteAnnonce = null, minuteurAnnonce = 0;
+  function annoncer(texte) {
+    if (!boiteAnnonce) {
+      boiteAnnonce = document.createElement("div");
+      boiteAnnonce.className = "annonce"; boiteAnnonce.setAttribute("role", "status"); boiteAnnonce.setAttribute("aria-live", "polite");
+      const st = document.createElement("style");
+      st.textContent = `.annonce{position:fixed;left:50%;bottom:24px;transform:translate(-50%,12px);z-index:100000;max-width:min(520px,calc(100vw - 32px));
+        padding:12px 18px;border-radius:12px;background:#14141C;color:#fff;font:600 calc(14px * var(--ech,1))/1.4 var(--sans,system-ui);
+        box-shadow:0 14px 34px -14px rgba(0,0,0,.45);opacity:0;pointer-events:none;transition:opacity .18s ease,transform .18s ease}
+        .annonce.on{opacity:1;transform:translate(-50%,0)}
+        @media (prefers-reduced-motion:reduce){.annonce{transition:none}}`;
+      document.head.appendChild(st); document.body.appendChild(boiteAnnonce);
+    }
+    boiteAnnonce.textContent = texte; boiteAnnonce.classList.add("on");
+    clearTimeout(minuteurAnnonce); minuteurAnnonce = setTimeout(() => boiteAnnonce.classList.remove("on"), 4200);
   }
 
   // Texte JSON tolérant : accepte la réponse d'une IA telle quelle (bloc ```json, texte autour, BOM)
@@ -231,5 +250,29 @@ Voici le document :`;
     return "mat-" + (h % 8);
   }
 
-  return { echapper, classeMatiere, dateLocale, dateLongue, lire, ecrire, oublierExemple, toutSupprimer, avecExemples, telecharger, montrer, lireJSON, ajouter, importerJSON, copier, promptIA, FIN_PROMPT };
+  // Téléphone : la barre des outils d'étude (filtres, importer, exporter) occupait tout le premier écran.
+  // Sous 760 px, seuls la recherche et le bouton principal restent visibles ; le reste se déplie à la demande.
+  function replierBarres() {
+    document.querySelectorAll(".card.barre").forEach(barre => {
+      if (barre.querySelector(".barre-depli")) return;
+      const filtres = barre.querySelector(".barre-filtres");
+      if (!filtres) return;
+      const bouton = document.createElement("button");
+      bouton.type = "button"; bouton.className = "barre-depli"; bouton.setAttribute("aria-expanded", "false");
+      const selects = [...filtres.querySelectorAll("select, input[type=checkbox]")];
+      const maj = () => {
+        const actifs = selects.filter(x => x.type === "checkbox" ? x.checked : x.value).length;
+        bouton.textContent = "Filtres et actions" + (actifs ? " (" + actifs + " filtre" + (actifs > 1 ? "s" : "") + ")" : "");
+      };
+      selects.forEach(x => x.addEventListener("change", maj));
+      bouton.addEventListener("click", () => {
+        const ouvert = barre.classList.toggle("depliee");
+        bouton.setAttribute("aria-expanded", String(ouvert));
+      });
+      filtres.after(bouton); maj();
+    });
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", replierBarres); else replierBarres();
+
+  return { echapper, classeMatiere, dateLocale, dateLongue, lire, ecrire, oublierExemple, toutSupprimer, avecExemples, telecharger, montrer, annoncer, lireJSON, ajouter, importerJSON, copier, promptIA, FIN_PROMPT };
 })();

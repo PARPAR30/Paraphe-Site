@@ -1,7 +1,11 @@
 (() => {
   const KEY = 'droit_sombre';
-  // stockage indisponible (mode privé, file://…) : le thème marche quand même, sans être retenu
-  try { if (localStorage.getItem(KEY) === '1') document.body.classList.add('sombre'); } catch (e) {}
+  // stockage indisponible (mode privé, file://…) : le thème marche quand même, sans être retenu.
+  // Aucun choix enregistré dans l'un des six outils : on suit le réglage clair / sombre du système, partout pareil.
+  let choix = null;
+  try { choix = localStorage.getItem(KEY); } catch (e) {}
+  if (choix === null) choix = matchMedia('(prefers-color-scheme: dark)').matches ? '1' : '0';
+  if (choix === '1') document.body.classList.add('sombre');
 
   document.addEventListener('DOMContentLoaded', () => {
     const btn = document.getElementById('theme-toggle');

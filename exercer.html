@@ -5,8 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>J’exerce — Paraphe</title>
 <meta name="description" content="Diligences pour suivre dossiers, échéances et honoraires, Considérant pour construire un raisonnement, Quantième pour les délais de procédure. Essayez le vrai logiciel.">
-<meta name="theme-color" content="#F6F6FA" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0F0F16" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#0E0E14">
 <meta property="og:type" content="website">
 <meta property="og:title" content="J’exerce — Paraphe">
 <meta property="og:description" content="Diligences pour suivre dossiers, échéances et honoraires, Considérant pour construire un raisonnement, Quantième pour les délais de procédure. Essayez le vrai logiciel.">
@@ -48,34 +47,40 @@
   <symbol id="i-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M12 3.8l2.5 5.1 5.6.8-4 3.9.9 5.6L12 16.6l-5 2.6.9-5.6-4-3.9 5.6-.8z"/></symbol>
 </svg>
 
-<header class="top">
-  <div class="top__in verre">
+<header class="top sombre">
+  <div class="top__flou" aria-hidden="true"></div>
+  <div class="top__in">
     <a class="brand" href="index.html" aria-label="Paraphe, accueil"><svg aria-hidden="true"><use href="#logo"/></svg>Paraphe</a>
     <nav class="nav" aria-label="Navigation principale">
       <a href="etudier.html">J’étudie</a>
       <a href="exercer.html" aria-current="page">J’exerce</a>
       <a href="index.html#donnees">Vos données</a>
+      <a href="index.html#questions">Questions</a>
     </nav>
-    <button class="iconbtn" id="theme" type="button" aria-pressed="false" aria-label="Passer en thème nuit"><svg aria-hidden="true"><use href="#i-moon"/></svg></button>
-    <a class="btn btn--primary btn--nav" href="index.html#telecharger">Télécharger</a>
-    <button class="iconbtn menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="panel" aria-label="Menu"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
+    <div class="top__actions">
+      <button class="iconbtn" id="theme" type="button" aria-pressed="false" aria-label="Passer en thème nuit"><svg aria-hidden="true"><use href="#i-moon"/></svg></button>
+      <a class="btn btn--verre btn--petit btn--essai" href="index.html#essayer">Essayer</a>
+      <a class="btn btn--verre btn--petit btn--clair" href="#telecharger">Télécharger</a>
+      <button class="iconbtn menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="panel" aria-label="Menu"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
+    </div>
   </div>
-  <nav class="panel verre" id="panel" hidden aria-label="Menu">
-    <a href="index.html">Accueil</a><a href="etudier.html">J’étudie</a><a href="exercer.html" aria-current="page">J’exerce</a><a href="index.html#donnees">Vos données</a><a href="#telecharger">Télécharger</a>
+  <nav class="panel" id="panel" hidden aria-label="Menu">
+    <a href="index.html">Accueil</a><a href="etudier.html">J’étudie</a><a href="exercer.html" aria-current="page">J’exerce</a><a href="index.html#essayer">Essayer la démo</a><a href="index.html#donnees">Vos données</a><a href="#telecharger">Télécharger</a>
   </nav>
 </header>
 
 <main id="contenu">
-<section class="page-hero" aria-labelledby="titre">
-  <div class="wrap page-hero__g">
-    <h1 class="h1 intro" id="titre">Vos dossiers, vos raisonnements, vos délais.</h1>
-    <div class="page-hero__droite">
-      <p class="lead intro" style="--i:1">Pour les avocats, juristes et collaborateurs : un suivi qui dit ce qui arrive, un outil pour construire une argumentation, et des délais de procédure calculés article à l’appui. Chaque outil ci-dessous est le vrai logiciel, avec des dossiers fictifs.</p>
-      <div class="page-hero__cta intro" style="--i:2"><a class="btn btn--primary btn--lg" href="#telecharger"><svg aria-hidden="true"><use href="#i-down"/></svg>Télécharger Paraphe</a></div>
-      <ul class="sommaire intro" style="--i:3" aria-label="Les outils"><li><a href="#diligences">Diligences</a></li><li><a href="#considerant">Considérant</a></li><li><a href="#quantieme">Quantième</a></li></ul>
-    </div>
-  </div>
+<div class="haut sombre">
+<section class="accroche page-accroche" aria-labelledby="titre">
+  <p class="etiquette intro">J’exerce, pour les avocats et juristes</p>
+  <h1 class="une une--page intro" style="--i:1" id="titre">Vos dossiers, vos raisonnements, vos délais.</h1>
+  <p class="lead intro" style="--i:2">Pour les avocats, juristes et collaborateurs : un suivi qui dit ce qui arrive, un outil pour construire une argumentation, et des délais de procédure calculés article à l’appui. Chaque outil ci-dessous est le vrai logiciel, avec des dossiers fictifs.</p>
+  <div class="accroche__cta intro" style="--i:3"><a class="btn btn--primary btn--lg" href="#telecharger"><svg aria-hidden="true"><use href="#i-down"/></svg>Télécharger Paraphe</a><a class="btn btn--verre btn--lg" href="#diligences">Essayer les outils ici</a></div>
+  <ul class="sommaire intro" style="--i:4" aria-label="Les outils"><li><a class="liquide" href="#diligences">Diligences</a></li><li><a class="liquide" href="#considerant">Considérant</a></li><li><a class="liquide" href="#quantieme">Quantième</a></li></ul>
 </section>
+</div>
+
+<div class="feuille">
 
 <section class="outil" id="diligences" aria-labelledby="diligences-t">
   <div class="wrap outil__tete">
@@ -92,8 +97,8 @@
           <span class="live__etat" aria-hidden="true"><i></i>Démo en direct · cliquez dedans pour l’essayer</span>
           <a class="live__plein" href="app/diligences.html" target="_blank" rel="noopener">Plein écran<svg aria-hidden="true"><use href="#i-ext"/></svg></a></div>
         <div class="live__cadre">
-          <img class="jour" src="assets/img/app/ecran-diligences.jpg" srcset="assets/img/app/ecran-diligences.jpg 1440w, assets/img/app/ecran-diligences@2x.jpg 2880w" sizes="(max-width: 900px) 92vw, min(1200px, 86vw)" width="1440" height="900" alt="L’accueil de Diligences : ce qui arrive dans les trente prochains jours, les chiffres clés, les échéances et les litiges actifs." loading="lazy">
-          <img class="nuit" src="assets/img/app/ecran-diligences-nuit.jpg" srcset="assets/img/app/ecran-diligences-nuit.jpg 1440w, assets/img/app/ecran-diligences-nuit@2x.jpg 2880w" sizes="(max-width: 900px) 92vw, min(1200px, 86vw)" width="1440" height="900" alt="L’accueil de Diligences en thème nuit." loading="lazy">
+          <img class="jour" src="assets/img/app/ecran-diligences.jpg" srcset="assets/img/app/ecran-diligences-720.jpg 720w, assets/img/app/ecran-diligences.jpg 1440w, assets/img/app/ecran-diligences@2x.jpg 2880w" sizes="(max-width: 900px) 92vw, min(1200px, 86vw)" width="1440" height="900" alt="L’accueil de Diligences : ce qui arrive dans les trente prochains jours, les chiffres clés, les échéances et les litiges actifs." loading="lazy">
+          <img class="nuit" src="assets/img/app/ecran-diligences-nuit.jpg" srcset="assets/img/app/ecran-diligences-nuit-720.jpg 720w, assets/img/app/ecran-diligences-nuit.jpg 1440w, assets/img/app/ecran-diligences-nuit@2x.jpg 2880w" sizes="(max-width: 900px) 92vw, min(1200px, 86vw)" width="1440" height="900" alt="L’accueil de Diligences en thème nuit." loading="lazy">
         </div>
       </div>
       <figcaption><span><b>Essayez :</b> ouvrez « Litiges », puis un dossier et sa chronologie. <a href="diligences.html">Visite guidée de Diligences</a>.</span><a class="link live__mobile" href="app/diligences.html" target="_blank" rel="noopener">Ouvrir Diligences<svg aria-hidden="true"><use href="#i-ext"/></svg></a></figcaption>
@@ -106,7 +111,7 @@
     <h2 class="h2" id="considerant-t">Considérant</h2>
     <div class="outil__droite">
       <p class="lead">Un raisonnement prend la forme d’un arbre : le problème, la majeure, la mineure, la conclusion, et sous chaque branche les arguments et les références qui la portent.</p>
-      <ul class="outil__pts"><li><svg aria-hidden="true"><use href="#i-check"/></svg>Une idée par branche, que vous organisez librement sur la toile.</li><li><svg aria-hidden="true"><use href="#i-check"/></svg>Raccourcis clavier pour écrire vite, mode récitation pour s’entraîner.</li><li><svg aria-hidden="true"><use href="#i-check"/></svg>Export en image ou en Markdown, impression.</li></ul>
+      <ul class="outil__pts"><li><svg aria-hidden="true"><use href="#i-check"/></svg>Une idée par branche, que vous organisez librement sur la toile.</li><li><svg aria-hidden="true"><use href="#i-check"/></svg>Raccourcis clavier pour écrire vite, mode récitation pour s’entraîner.</li><li><svg aria-hidden="true"><use href="#i-check"/></svg>Des modèles (cas pratique, dissertation, commentaire, consultation) et l’export Word.</li></ul>
     </div>
   </div>
   <div class="ecran">
@@ -116,8 +121,8 @@
           <span class="live__etat" aria-hidden="true"><i></i>Démo en direct · cliquez dedans pour l’essayer</span>
           <a class="live__plein" href="app/considerant.html" target="_blank" rel="noopener">Plein écran<svg aria-hidden="true"><use href="#i-ext"/></svg></a></div>
         <div class="live__cadre">
-          <img class="jour" src="assets/img/app/ecran-considerant.jpg" srcset="assets/img/app/ecran-considerant.jpg 1440w, assets/img/app/ecran-considerant@2x.jpg 2880w" sizes="(max-width: 900px) 92vw, min(1200px, 86vw)" width="1440" height="900" alt="Considérant : la toile où l’on construit un raisonnement en arbre, branche par branche." loading="lazy">
-          <img class="nuit" src="assets/img/app/ecran-considerant-nuit.jpg" srcset="assets/img/app/ecran-considerant-nuit.jpg 1440w, assets/img/app/ecran-considerant-nuit@2x.jpg 2880w" sizes="(max-width: 900px) 92vw, min(1200px, 86vw)" width="1440" height="900" alt="Considérant en thème nuit." loading="lazy">
+          <img class="jour" src="assets/img/app/ecran-considerant.jpg" srcset="assets/img/app/ecran-considerant-720.jpg 720w, assets/img/app/ecran-considerant.jpg 1440w, assets/img/app/ecran-considerant@2x.jpg 2880w" sizes="(max-width: 900px) 92vw, min(1200px, 86vw)" width="1440" height="900" alt="Considérant : la toile où l’on construit un raisonnement en arbre, branche par branche." loading="lazy">
+          <img class="nuit" src="assets/img/app/ecran-considerant-nuit.jpg" srcset="assets/img/app/ecran-considerant-nuit-720.jpg 720w, assets/img/app/ecran-considerant-nuit.jpg 1440w, assets/img/app/ecran-considerant-nuit@2x.jpg 2880w" sizes="(max-width: 900px) 92vw, min(1200px, 86vw)" width="1440" height="900" alt="Considérant en thème nuit." loading="lazy">
         </div>
       </div>
       <figcaption><span><b>Essayez :</b> choisissez une branche, puis Tab pour une branche enfant et Entrée pour une voisine.</span><a class="link live__mobile" href="app/considerant.html" target="_blank" rel="noopener">Ouvrir Considérant<svg aria-hidden="true"><use href="#i-ext"/></svg></a></figcaption>
@@ -130,7 +135,7 @@
     <h2 class="h2" id="quantieme-t">Quantième</h2>
     <div class="outil__droite">
       <p class="lead">Choisissez une procédure et la date de l’acte qui fait courir les délais : Quantième affiche votre prochaine date limite, puis tout le parcours, de la plus proche à la plus lointaine.</p>
-      <ul class="outil__pts"><li><svg aria-hidden="true"><use href="#i-check"/></svg>168 procédures et 602 étapes, droit à jour au 13 octobre 2026.</li><li><svg aria-hidden="true"><use href="#i-check"/></svg>Pour chaque date : pourquoi ce jour-là, l’article, et ce qu’il faut préparer.</li><li><svg aria-hidden="true"><use href="#i-check"/></svg>Distinction entre date limite et date estimée ; dates envoyées à votre agenda.</li></ul>
+      <ul class="outil__pts"><li><svg aria-hidden="true"><use href="#i-check"/></svg>168 procédures et 603 étapes, droit à jour au 24 octobre 2026.</li><li><svg aria-hidden="true"><use href="#i-check"/></svg>Pour chaque date : pourquoi ce jour-là, l’article, et ce qu’il faut préparer.</li><li><svg aria-hidden="true"><use href="#i-check"/></svg>Distinction entre date limite et date estimée ; dates envoyées à votre agenda.</li></ul>
     </div>
   </div>
   <div class="ecran">
@@ -140,8 +145,8 @@
           <span class="live__etat" aria-hidden="true"><i></i>Démo en direct · cliquez dedans pour l’essayer</span>
           <a class="live__plein" href="app/quantieme.html?demo=1" target="_blank" rel="noopener">Plein écran<svg aria-hidden="true"><use href="#i-ext"/></svg></a></div>
         <div class="live__cadre">
-          <img class="jour" src="assets/img/app/ecran-quantieme.jpg" srcset="assets/img/app/ecran-quantieme.jpg 1440w, assets/img/app/ecran-quantieme@2x.jpg 2880w" sizes="(max-width: 900px) 92vw, min(1200px, 86vw)" width="1440" height="900" alt="Quantième : la prochaine date limite et le parcours étape par étape, avec l’article et les pièces à préparer." loading="lazy">
-          <img class="nuit" src="assets/img/app/ecran-quantieme-nuit.jpg" srcset="assets/img/app/ecran-quantieme-nuit.jpg 1440w, assets/img/app/ecran-quantieme-nuit@2x.jpg 2880w" sizes="(max-width: 900px) 92vw, min(1200px, 86vw)" width="1440" height="900" alt="Quantième en thème nuit." loading="lazy">
+          <img class="jour" src="assets/img/app/ecran-quantieme.jpg" srcset="assets/img/app/ecran-quantieme-720.jpg 720w, assets/img/app/ecran-quantieme.jpg 1440w, assets/img/app/ecran-quantieme@2x.jpg 2880w" sizes="(max-width: 900px) 92vw, min(1200px, 86vw)" width="1440" height="900" alt="Quantième : la prochaine date limite et le parcours étape par étape, avec l’article et les pièces à préparer." loading="lazy">
+          <img class="nuit" src="assets/img/app/ecran-quantieme-nuit.jpg" srcset="assets/img/app/ecran-quantieme-nuit-720.jpg 720w, assets/img/app/ecran-quantieme-nuit.jpg 1440w, assets/img/app/ecran-quantieme-nuit@2x.jpg 2880w" sizes="(max-width: 900px) 92vw, min(1200px, 86vw)" width="1440" height="900" alt="Quantième en thème nuit." loading="lazy">
         </div>
       </div>
       <figcaption><span><b>Délais indicatifs</b>, à vérifier dans les textes en vigueur.</span><a class="link live__mobile" href="app/quantieme.html?demo=1" target="_blank" rel="noopener">Ouvrir Quantième<svg aria-hidden="true"><use href="#i-ext"/></svg></a></figcaption>
@@ -160,21 +165,21 @@
 </section>
 
 
-<!-- ============================ TÉLÉCHARGER ============================ -->
-<section class="fin" id="telecharger" aria-labelledby="fin-t">
-  <div class="wrap fin__g">
-    <div class="fin__txt">
-      <h2 class="h2" id="fin-t">Travaillez avec Paraphe.</h2>
-      <p class="lead">Une seule installation pour les six outils, sur Mac ou Windows. Vos dossiers restent sur votre poste.</p>
-      <ul class="promesses" aria-label="Garanties">
+</div>
+
+<!-- ============================ BAS DE PAGE, À L'ENCRE ============================ -->
+<div class="bas sombre">
+  <section class="appel fin" id="telecharger" aria-labelledby="fin-t">
+    <h2 class="grand" id="fin-t">Travaillez avec Paraphe.</h2>
+    <p class="lead">Une seule installation pour les six outils, sur Mac ou Windows. Vos dossiers restent sur votre poste.</p>
+    <ul class="promesses" aria-label="Garanties">
         <li><svg aria-hidden="true"><use href="#i-check"/></svg>Sans compte</li>
         <li><svg aria-hidden="true"><use href="#i-check"/></svg>Fonctionne hors ligne</li>
         <li><svg aria-hidden="true"><use href="#i-check"/></svg>Rien n’est envoyé sans votre accord</li>
       </ul>
-    </div>
     <div class="fin__cta">
-      <a class="btn btn--primary btn--lg btn--dl" data-dl="auto" href="logiciels/Paraphe_1.1.6_universal.dmg"><svg aria-hidden="true"><use href="#i-down"/></svg><span data-dl-label>Télécharger Paraphe</span></a>
-      <p class="hero__meta" data-dl-meta="auto">Version 1.1.6 · macOS 12 ou plus · Windows 10 ou 11</p>
+      <a class="btn btn--primary btn--lg btn--dl" data-dl="auto" href="logiciels/Paraphe_1.2.0_universal.dmg"><svg aria-hidden="true"><use href="#i-down"/></svg><span data-dl-label>Télécharger Paraphe</span></a>
+      <p class="hero__meta" data-dl-meta="auto">Version 1.2.0 · macOS 12 ou plus · Windows 10 ou 11</p>
       <div class="fin__mobile">
         <p class="hero__meta">Paraphe s’installe sur un ordinateur Mac ou Windows.</p>
         <button class="btn btn--primary btn--lg" type="button" data-share><svg aria-hidden="true"><use href="#i-share"/></svg>M’envoyer le lien</button>
@@ -182,22 +187,28 @@
       <a class="link" href="index.html#telecharger">Mac ou Windows, configuration et première ouverture<svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
       <p class="cond">En téléchargeant Paraphe, vous acceptez ses <a href="mentions-legales.html#conditions">conditions d’utilisation</a>.</p>
     </div>
-  </div>
-</section>
-</main>
+  </section>
 
-<footer class="foot">
-  <div class="wrap foot__in">
-    <a class="brand" href="index.html"><svg aria-hidden="true"><use href="#logo"/></svg>Paraphe</a>
-    <span>Du cours au cabinet · © <span data-annee>2026</span> Pierre-Antoine Ruat · <a href="mailto:paraphe.droit@gmail.com">paraphe.droit@gmail.com</a></span>
-    <nav aria-label="Informations légales">
-      <a href="mentions-legales.html#mentions">Mentions légales</a>
-      <a href="mentions-legales.html#confidentialite">Confidentialité</a>
-      <a href="mentions-legales.html#conditions">Conditions d’utilisation</a>
-      <a href="mentions-legales.html#credits">Crédits</a>
-    </nav>
-  </div>
-</footer>
+  <footer class="pied">
+    <div class="pied__g">
+      <div class="pied__marque">
+        <a class="brand" href="index.html"><svg aria-hidden="true"><use href="#logo"/></svg>Paraphe</a>
+        <p>Du cours au cabinet.</p>
+        <a class="btn btn--verre btn--petit" href="mailto:paraphe.droit@gmail.com">paraphe.droit@gmail.com</a>
+      </div>
+      <nav class="pied__col" aria-labelledby="pied-outils"><h2 id="pied-outils">Les outils</h2><a href="etudier.html">J’étudie</a><a href="exercer.html">J’exerce</a><a href="index.html#essayer">Essayer la démo</a><a href="diligences.html">Visite de Diligences</a></nav>
+      <nav class="pied__col" aria-labelledby="pied-paraphe"><h2 id="pied-paraphe">Paraphe</h2><a href="index.html#telecharger">Télécharger</a><a href="index.html#donnees">Vos données</a><a href="index.html#questions">Questions fréquentes</a></nav>
+      <nav class="pied__col" aria-labelledby="pied-infos"><h2 id="pied-infos">Informations</h2><a href="mentions-legales.html#mentions">Mentions légales</a><a href="mentions-legales.html#confidentialite">Confidentialité</a><a href="mentions-legales.html#conditions">Conditions d’utilisation</a><a href="mentions-legales.html#credits">Crédits</a></nav>
+    </div>
+    <div class="pied__bas">
+      <span>© <span data-annee>2026</span> Pierre-Antoine Ruat</span>
+      <span class="pied__droite"><span>Version <span data-version>1.2.0</span></span>
+        <a class="velo velo--chrono" href="isometrique.html" title="Une échappée en solo ?" aria-label="Le monde isométrique : le tout premier accueil de Paraphe"><svg viewBox="0 0 30 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g class="roue"><circle cx="6" cy="14" r="5" fill="currentColor" fill-opacity=".22"/><circle cx="6" cy="14" r=".9" fill="currentColor" stroke="none"/><path d="M6 10.4v1.4" stroke-width=".9"/></g><g class="roue"><circle cx="24" cy="14" r="5"/><path d="M24 14V9.6M24 14l3.8 2.2M24 14l-3.8 2.2" stroke-width="1"/></g><path d="M6 14h7l7.4-6M13 14l-1.6-6.2M6 14l5.2-6.4M11.4 7.6l9.2.2M20.2 7.4L24 14"/><path d="M9.6 6.6h3.6M20.6 7.4h5.2M22.4 7.4l-.4-1.4h1.6" stroke-width="1.6"/></svg></a>
+        <a class="velo" href="maison.html" title="Une petite balade ?" aria-label="La maison des outils : l’ancien accueil de Paraphe, en 3D"><svg viewBox="0 0 30 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g class="roue"><circle cx="6" cy="14" r="5"/><path d="M6 10v8M2 14h8" stroke-width=".7"/></g><g class="roue"><circle cx="24" cy="14" r="5"/><path d="M24 10v8M20 14h8" stroke-width=".7"/></g><path d="M6 14l7 0 7.5-6.5M13 14L10.8 6.5M6 14l5-6.8M11 7.3h9.5M20.2 6.4L24 14"/><path d="M9.3 5.6h3.6M19.6 6.2l2.6-.5c1.3-.2 1.6 1.6.4 2" stroke-width="1.6"/></svg></a></span>
+    </div>
+  </footer>
+</div>
+</main>
 
 <script src="assets/site.js"></script>
 

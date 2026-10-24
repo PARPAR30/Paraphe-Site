@@ -5,8 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>J’étudie — Paraphe</title>
 <meta name="description" content="Fiches mémo à répétition espacée, 352 fiches d’arrêt préchargées, filtrables de la L1 au M2, codes et articles annotés. Essayez le vrai logiciel. Sur votre ordinateur, sans compte.">
-<meta name="theme-color" content="#F6F6FA" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#0F0F16" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#0E0E14">
 <meta property="og:type" content="website">
 <meta property="og:title" content="J’étudie — Paraphe">
 <meta property="og:description" content="Fiches mémo à répétition espacée, 352 fiches d’arrêt préchargées, filtrables de la L1 au M2, codes et articles annotés. Essayez le vrai logiciel. Sur votre ordinateur, sans compte.">
@@ -48,41 +47,47 @@
   <symbol id="i-star" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M12 3.8l2.5 5.1 5.6.8-4 3.9.9 5.6L12 16.6l-5 2.6.9-5.6-4-3.9 5.6-.8z"/></symbol>
 </svg>
 
-<header class="top">
-  <div class="top__in verre">
+<header class="top sombre">
+  <div class="top__flou" aria-hidden="true"></div>
+  <div class="top__in">
     <a class="brand" href="index.html" aria-label="Paraphe, accueil"><svg aria-hidden="true"><use href="#logo"/></svg>Paraphe</a>
     <nav class="nav" aria-label="Navigation principale">
       <a href="etudier.html" aria-current="page">J’étudie</a>
       <a href="exercer.html">J’exerce</a>
       <a href="index.html#donnees">Vos données</a>
+      <a href="index.html#questions">Questions</a>
     </nav>
-    <button class="iconbtn" id="theme" type="button" aria-pressed="false" aria-label="Passer en thème nuit"><svg aria-hidden="true"><use href="#i-moon"/></svg></button>
-    <a class="btn btn--primary btn--nav" href="index.html#telecharger">Télécharger</a>
-    <button class="iconbtn menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="panel" aria-label="Menu"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
+    <div class="top__actions">
+      <button class="iconbtn" id="theme" type="button" aria-pressed="false" aria-label="Passer en thème nuit"><svg aria-hidden="true"><use href="#i-moon"/></svg></button>
+      <a class="btn btn--verre btn--petit btn--essai" href="index.html#essayer">Essayer</a>
+      <a class="btn btn--verre btn--petit btn--clair" href="#telecharger">Télécharger</a>
+      <button class="iconbtn menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="panel" aria-label="Menu"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
+    </div>
   </div>
-  <nav class="panel verre" id="panel" hidden aria-label="Menu">
-    <a href="index.html">Accueil</a><a href="etudier.html" aria-current="page">J’étudie</a><a href="exercer.html">J’exerce</a><a href="index.html#donnees">Vos données</a><a href="#telecharger">Télécharger</a>
+  <nav class="panel" id="panel" hidden aria-label="Menu">
+    <a href="index.html">Accueil</a><a href="etudier.html" aria-current="page">J’étudie</a><a href="exercer.html">J’exerce</a><a href="index.html#essayer">Essayer la démo</a><a href="index.html#donnees">Vos données</a><a href="#telecharger">Télécharger</a>
   </nav>
 </header>
 
 <main id="contenu">
-<section class="page-hero" aria-labelledby="titre">
-  <div class="wrap page-hero__g">
-    <h1 class="h1 intro" id="titre">Réviser le droit sans repartir de zéro à chaque partiel.</h1>
-    <div class="page-hero__droite">
-      <p class="lead intro" style="--i:1">Pour les étudiants de la L1 au M2 : vos définitions, vos arrêts et vos articles au même endroit, sur votre ordinateur. Paraphe vous fait revoir ce qui coince, au bon moment. Chaque outil ci-dessous est le vrai logiciel : essayez-le.</p>
-      <div class="page-hero__cta intro" style="--i:2"><a class="btn btn--primary btn--lg" href="#telecharger"><svg aria-hidden="true"><use href="#i-down"/></svg>Télécharger Paraphe</a></div>
-      <ul class="sommaire intro" style="--i:3" aria-label="Les outils"><li><a href="#fiches-memo">Fiches mémo</a></li><li><a href="#fiches-arret">Fiches d’arrêt</a></li><li><a href="#codes">Codes &amp; articles</a></li></ul>
-    </div>
-  </div>
+<div class="haut sombre">
+<section class="accroche page-accroche" aria-labelledby="titre">
+  <p class="etiquette intro">J’étudie, de la L1 au M2</p>
+  <h1 class="une une--page intro" style="--i:1" id="titre">Réviser le droit sans repartir de zéro à chaque partiel.</h1>
+  <p class="lead intro" style="--i:2">Pour les étudiants de la L1 au M2 : vos définitions, vos arrêts et vos articles au même endroit, sur votre ordinateur. Paraphe vous fait revoir ce qui coince, au bon moment. Chaque outil ci-dessous est le vrai logiciel : essayez-le.</p>
+  <div class="accroche__cta intro" style="--i:3"><a class="btn btn--primary btn--lg" href="#telecharger"><svg aria-hidden="true"><use href="#i-down"/></svg>Télécharger Paraphe</a><a class="btn btn--verre btn--lg" href="#fiches-memo">Essayer les outils ici</a></div>
+  <ul class="sommaire intro" style="--i:4" aria-label="Les outils"><li><a class="liquide" href="#fiches-memo">Fiches mémo</a></li><li><a class="liquide" href="#fiches-arret">Fiches d’arrêt</a></li><li><a class="liquide" href="#codes">Codes &amp; articles</a></li></ul>
 </section>
+</div>
+
+<div class="feuille">
 
 <section class="outil" id="fiches-memo" aria-labelledby="fiches-memo-t">
   <div class="wrap outil__tete">
     <h2 class="h2" id="fiches-memo-t">Fiches mémo</h2>
     <div class="outil__droite">
       <p class="lead">Des cartes question-réponse que Paraphe vous fait revoir à intervalles qui s’allongent : ce que vous savez revient moins souvent, ce qui coince revient vite.</p>
-      <ul class="outil__pts"><li><svg aria-hidden="true"><use href="#i-check"/></svg>Chaque jour, le nombre de cartes à revoir.</li><li><svg aria-hidden="true"><use href="#i-check"/></svg>Quatre réponses : Encore, Difficile, Correct, Facile.</li><li><svg aria-hidden="true"><use href="#i-check"/></svg>Vos cartes par matière, en PDF pour réviser sur papier.</li></ul>
+      <ul class="outil__pts"><li><svg aria-hidden="true"><use href="#i-check"/></svg>Chaque jour, le nombre de cartes à revoir, et un planning quand un examen approche.</li><li><svg aria-hidden="true"><use href="#i-check"/></svg>Des cartes à trous, et vos cours Word ou PDF transformés en cartes.</li><li><svg aria-hidden="true"><use href="#i-check"/></svg>Vos cartes par matière, en PDF pour réviser sur papier.</li></ul>
     </div>
   </div>
   <div class="ecran">
@@ -92,8 +97,8 @@
           <span class="live__etat" aria-hidden="true"><i></i>Démo en direct · cliquez dedans pour l’essayer</span>
           <a class="live__plein" href="app/flashcards.html" target="_blank" rel="noopener">Plein écran<svg aria-hidden="true"><use href="#i-ext"/></svg></a></div>
         <div class="live__cadre">
-          <img class="jour" src="assets/img/app/ecran-fiches-memo.jpg" srcset="assets/img/app/ecran-fiches-memo.jpg 1440w, assets/img/app/ecran-fiches-memo@2x.jpg 2880w" sizes="(max-width: 900px) 92vw, min(1200px, 86vw)" width="1440" height="900" alt="Les Fiches mémo : vos cartes par matière, avec la recherche et les filtres à gauche." loading="lazy">
-          <img class="nuit" src="assets/img/app/ecran-fiches-memo-nuit.jpg" srcset="assets/img/app/ecran-fiches-memo-nuit.jpg 1440w, assets/img/app/ecran-fiches-memo-nuit@2x.jpg 2880w" sizes="(max-width: 900px) 92vw, min(1200px, 86vw)" width="1440" height="900" alt="Les Fiches mémo en thème nuit." loading="lazy">
+          <img class="jour" src="assets/img/app/ecran-fiches-memo.jpg" srcset="assets/img/app/ecran-fiches-memo-720.jpg 720w, assets/img/app/ecran-fiches-memo.jpg 1440w, assets/img/app/ecran-fiches-memo@2x.jpg 2880w" sizes="(max-width: 900px) 92vw, min(1200px, 86vw)" width="1440" height="900" alt="Les Fiches mémo : vos cartes par matière, avec la recherche et les filtres à gauche." loading="lazy">
+          <img class="nuit" src="assets/img/app/ecran-fiches-memo-nuit.jpg" srcset="assets/img/app/ecran-fiches-memo-nuit-720.jpg 720w, assets/img/app/ecran-fiches-memo-nuit.jpg 1440w, assets/img/app/ecran-fiches-memo-nuit@2x.jpg 2880w" sizes="(max-width: 900px) 92vw, min(1200px, 86vw)" width="1440" height="900" alt="Les Fiches mémo en thème nuit." loading="lazy">
         </div>
       </div>
       <figcaption><span><b>Essayez :</b> l’onglet « Réviser », puis évaluez-vous sur chaque carte.</span><a class="link live__mobile" href="app/flashcards.html" target="_blank" rel="noopener">Ouvrir Fiches mémo<svg aria-hidden="true"><use href="#i-ext"/></svg></a></figcaption>
@@ -106,7 +111,7 @@
     <h2 class="h2" id="fiches-arret-t">Fiches d’arrêt</h2>
     <div class="outil__droite">
       <p class="lead">Chaque décision suit la même structure : faits, procédure, problème de droit, solution, portée. Paraphe en contient déjà 352, filtrables par niveau de la L1 au M2 ; vous ajoutez les vôtres.</p>
-      <ul class="outil__pts"><li><svg aria-hidden="true"><use href="#i-check"/></svg>Recherche et filtres par matière, juridiction et niveau.</li><li><svg aria-hidden="true"><use href="#i-check"/></svg>Les grands arrêts de chaque matière, prêts dès l’installation.</li><li><svg aria-hidden="true"><use href="#i-check"/></svg>Export en PDF ou dans un fichier, et import.</li></ul>
+      <ul class="outil__pts"><li><svg aria-hidden="true"><use href="#i-check"/></svg>Recherche et filtres par matière, juridiction et niveau.</li><li><svg aria-hidden="true"><use href="#i-check"/></svg>Les grands arrêts de chaque matière, prêts dès l’installation.</li><li><svg aria-hidden="true"><use href="#i-check"/></svg>La méthode du commentaire guidée, et les articles cités reliés à Codes &amp; articles.</li></ul>
     </div>
   </div>
   <div class="ecran">
@@ -116,8 +121,8 @@
           <span class="live__etat" aria-hidden="true"><i></i>Démo en direct · cliquez dedans pour l’essayer</span>
           <a class="live__plein" href="app/fiches-arret.html" target="_blank" rel="noopener">Plein écran<svg aria-hidden="true"><use href="#i-ext"/></svg></a></div>
         <div class="live__cadre">
-          <img class="jour" src="assets/img/app/ecran-fiches-arret.jpg" srcset="assets/img/app/ecran-fiches-arret.jpg 1440w, assets/img/app/ecran-fiches-arret@2x.jpg 2880w" sizes="(max-width: 900px) 92vw, min(1200px, 86vw)" width="1440" height="900" alt="Les Fiches d’arrêt : une fiche ouverte avec ses faits, sa procédure, son problème de droit, sa solution et sa portée." loading="lazy">
-          <img class="nuit" src="assets/img/app/ecran-fiches-arret-nuit.jpg" srcset="assets/img/app/ecran-fiches-arret-nuit.jpg 1440w, assets/img/app/ecran-fiches-arret-nuit@2x.jpg 2880w" sizes="(max-width: 900px) 92vw, min(1200px, 86vw)" width="1440" height="900" alt="Les Fiches d’arrêt en thème nuit." loading="lazy">
+          <img class="jour" src="assets/img/app/ecran-fiches-arret.jpg" srcset="assets/img/app/ecran-fiches-arret-720.jpg 720w, assets/img/app/ecran-fiches-arret.jpg 1440w, assets/img/app/ecran-fiches-arret@2x.jpg 2880w" sizes="(max-width: 900px) 92vw, min(1200px, 86vw)" width="1440" height="900" alt="Les Fiches d’arrêt : une fiche ouverte avec ses faits, sa procédure, son problème de droit, sa solution et sa portée." loading="lazy">
+          <img class="nuit" src="assets/img/app/ecran-fiches-arret-nuit.jpg" srcset="assets/img/app/ecran-fiches-arret-nuit-720.jpg 720w, assets/img/app/ecran-fiches-arret-nuit.jpg 1440w, assets/img/app/ecran-fiches-arret-nuit@2x.jpg 2880w" sizes="(max-width: 900px) 92vw, min(1200px, 86vw)" width="1440" height="900" alt="Les Fiches d’arrêt en thème nuit." loading="lazy">
         </div>
       </div>
       <figcaption><span><b>Essayez :</b> choisissez votre niveau dans les filtres, puis ouvrez un grand arrêt.</span><a class="link live__mobile" href="app/fiches-arret.html" target="_blank" rel="noopener">Ouvrir Fiches d’arrêt<svg aria-hidden="true"><use href="#i-ext"/></svg></a></figcaption>
@@ -129,8 +134,8 @@
   <div class="wrap outil__tete">
     <h2 class="h2" id="codes-t">Codes &amp; articles</h2>
     <div class="outil__droite">
-      <p class="lead">Les articles dont vous avez besoin, classés par matière et par code, avec votre note et un repère « à retenir ». Une base d’articles de référence est fournie, à vérifier sur Légifrance.</p>
-      <ul class="outil__pts"><li><svg aria-hidden="true"><use href="#i-check"/></svg>Recherche par numéro, mot, matière ou code.</li><li><svg aria-hidden="true"><use href="#i-check"/></svg>Le filtre « à retenir » pour la veille de l’examen.</li><li><svg aria-hidden="true"><use href="#i-check"/></svg>Une recherche commune à tous les outils, depuis l’accueil.</li></ul>
+      <p class="lead">Les articles dont vous avez besoin, classés par matière et par code, avec votre note et un repère « à retenir ». Les 367 articles cités par les fiches d’arrêt et par Quantième sont déjà là, avec leur texte officiel daté.</p>
+      <ul class="outil__pts"><li><svg aria-hidden="true"><use href="#i-check"/></svg>Recherche par numéro, mot, matière ou code.</li><li><svg aria-hidden="true"><use href="#i-check"/></svg>Le filtre « à retenir » pour la veille de l’examen.</li><li><svg aria-hidden="true"><use href="#i-check"/></svg>Une carte à trous en un clic depuis un article, et la recherche commune (⌘&nbsp;K ou Ctrl&nbsp;K).</li></ul>
     </div>
   </div>
   <div class="ecran">
@@ -140,8 +145,8 @@
           <span class="live__etat" aria-hidden="true"><i></i>Démo en direct · cliquez dedans pour l’essayer</span>
           <a class="live__plein" href="app/codes.html" target="_blank" rel="noopener">Plein écran<svg aria-hidden="true"><use href="#i-ext"/></svg></a></div>
         <div class="live__cadre">
-          <img class="jour" src="assets/img/app/ecran-codes.jpg" srcset="assets/img/app/ecran-codes.jpg 1440w, assets/img/app/ecran-codes@2x.jpg 2880w" sizes="(max-width: 900px) 92vw, min(1200px, 86vw)" width="1440" height="900" alt="Codes et articles : la liste des articles par matière, avec leur note et le repère « à retenir »." loading="lazy">
-          <img class="nuit" src="assets/img/app/ecran-codes-nuit.jpg" srcset="assets/img/app/ecran-codes-nuit.jpg 1440w, assets/img/app/ecran-codes-nuit@2x.jpg 2880w" sizes="(max-width: 900px) 92vw, min(1200px, 86vw)" width="1440" height="900" alt="Codes et articles en thème nuit." loading="lazy">
+          <img class="jour" src="assets/img/app/ecran-codes.jpg" srcset="assets/img/app/ecran-codes-720.jpg 720w, assets/img/app/ecran-codes.jpg 1440w, assets/img/app/ecran-codes@2x.jpg 2880w" sizes="(max-width: 900px) 92vw, min(1200px, 86vw)" width="1440" height="900" alt="Codes et articles : la liste des articles par matière, avec leur note et le repère « à retenir »." loading="lazy">
+          <img class="nuit" src="assets/img/app/ecran-codes-nuit.jpg" srcset="assets/img/app/ecran-codes-nuit-720.jpg 720w, assets/img/app/ecran-codes-nuit.jpg 1440w, assets/img/app/ecran-codes-nuit@2x.jpg 2880w" sizes="(max-width: 900px) 92vw, min(1200px, 86vw)" width="1440" height="900" alt="Codes et articles en thème nuit." loading="lazy">
         </div>
       </div>
       <figcaption><span><b>Essayez :</b> cherchez « prescription » ou « 1833 », puis marquez un article à retenir.</span><a class="link live__mobile" href="app/codes.html" target="_blank" rel="noopener">Ouvrir Codes &amp; articles<svg aria-hidden="true"><use href="#i-ext"/></svg></a></figcaption>
@@ -150,21 +155,21 @@
 </section>
 
 
-<!-- ============================ TÉLÉCHARGER ============================ -->
-<section class="fin" id="telecharger" aria-labelledby="fin-t">
-  <div class="wrap fin__g">
-    <div class="fin__txt">
-      <h2 class="h2" id="fin-t">Révisez avec Paraphe.</h2>
-      <p class="lead">Une seule installation pour les six outils : vos fiches vous suivront le jour où vous exercerez.</p>
-      <ul class="promesses" aria-label="Garanties">
+</div>
+
+<!-- ============================ BAS DE PAGE, À L'ENCRE ============================ -->
+<div class="bas sombre">
+  <section class="appel fin" id="telecharger" aria-labelledby="fin-t">
+    <h2 class="grand" id="fin-t">Révisez avec Paraphe.</h2>
+    <p class="lead">Une seule installation pour les six outils : vos fiches vous suivront le jour où vous exercerez.</p>
+    <ul class="promesses" aria-label="Garanties">
         <li><svg aria-hidden="true"><use href="#i-check"/></svg>Sans compte</li>
         <li><svg aria-hidden="true"><use href="#i-check"/></svg>Fonctionne hors ligne</li>
         <li><svg aria-hidden="true"><use href="#i-check"/></svg>Rien n’est envoyé sans votre accord</li>
       </ul>
-    </div>
     <div class="fin__cta">
-      <a class="btn btn--primary btn--lg btn--dl" data-dl="auto" href="logiciels/Paraphe_1.1.6_universal.dmg"><svg aria-hidden="true"><use href="#i-down"/></svg><span data-dl-label>Télécharger Paraphe</span></a>
-      <p class="hero__meta" data-dl-meta="auto">Version 1.1.6 · macOS 12 ou plus · Windows 10 ou 11</p>
+      <a class="btn btn--primary btn--lg btn--dl" data-dl="auto" href="logiciels/Paraphe_1.2.0_universal.dmg"><svg aria-hidden="true"><use href="#i-down"/></svg><span data-dl-label>Télécharger Paraphe</span></a>
+      <p class="hero__meta" data-dl-meta="auto">Version 1.2.0 · macOS 12 ou plus · Windows 10 ou 11</p>
       <div class="fin__mobile">
         <p class="hero__meta">Paraphe s’installe sur un ordinateur Mac ou Windows.</p>
         <button class="btn btn--primary btn--lg" type="button" data-share><svg aria-hidden="true"><use href="#i-share"/></svg>M’envoyer le lien</button>
@@ -172,22 +177,28 @@
       <a class="link" href="index.html#telecharger">Mac ou Windows, configuration et première ouverture<svg aria-hidden="true"><use href="#i-arrow"/></svg></a>
       <p class="cond">En téléchargeant Paraphe, vous acceptez ses <a href="mentions-legales.html#conditions">conditions d’utilisation</a>.</p>
     </div>
-  </div>
-</section>
-</main>
+  </section>
 
-<footer class="foot">
-  <div class="wrap foot__in">
-    <a class="brand" href="index.html"><svg aria-hidden="true"><use href="#logo"/></svg>Paraphe</a>
-    <span>Du cours au cabinet · © <span data-annee>2026</span> Pierre-Antoine Ruat · <a href="mailto:paraphe.droit@gmail.com">paraphe.droit@gmail.com</a></span>
-    <nav aria-label="Informations légales">
-      <a href="mentions-legales.html#mentions">Mentions légales</a>
-      <a href="mentions-legales.html#confidentialite">Confidentialité</a>
-      <a href="mentions-legales.html#conditions">Conditions d’utilisation</a>
-      <a href="mentions-legales.html#credits">Crédits</a>
-    </nav>
-  </div>
-</footer>
+  <footer class="pied">
+    <div class="pied__g">
+      <div class="pied__marque">
+        <a class="brand" href="index.html"><svg aria-hidden="true"><use href="#logo"/></svg>Paraphe</a>
+        <p>Du cours au cabinet.</p>
+        <a class="btn btn--verre btn--petit" href="mailto:paraphe.droit@gmail.com">paraphe.droit@gmail.com</a>
+      </div>
+      <nav class="pied__col" aria-labelledby="pied-outils"><h2 id="pied-outils">Les outils</h2><a href="etudier.html">J’étudie</a><a href="exercer.html">J’exerce</a><a href="index.html#essayer">Essayer la démo</a><a href="diligences.html">Visite de Diligences</a></nav>
+      <nav class="pied__col" aria-labelledby="pied-paraphe"><h2 id="pied-paraphe">Paraphe</h2><a href="index.html#telecharger">Télécharger</a><a href="index.html#donnees">Vos données</a><a href="index.html#questions">Questions fréquentes</a></nav>
+      <nav class="pied__col" aria-labelledby="pied-infos"><h2 id="pied-infos">Informations</h2><a href="mentions-legales.html#mentions">Mentions légales</a><a href="mentions-legales.html#confidentialite">Confidentialité</a><a href="mentions-legales.html#conditions">Conditions d’utilisation</a><a href="mentions-legales.html#credits">Crédits</a></nav>
+    </div>
+    <div class="pied__bas">
+      <span>© <span data-annee>2026</span> Pierre-Antoine Ruat</span>
+      <span class="pied__droite"><span>Version <span data-version>1.2.0</span></span>
+        <a class="velo velo--chrono" href="isometrique.html" title="Une échappée en solo ?" aria-label="Le monde isométrique : le tout premier accueil de Paraphe"><svg viewBox="0 0 30 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g class="roue"><circle cx="6" cy="14" r="5" fill="currentColor" fill-opacity=".22"/><circle cx="6" cy="14" r=".9" fill="currentColor" stroke="none"/><path d="M6 10.4v1.4" stroke-width=".9"/></g><g class="roue"><circle cx="24" cy="14" r="5"/><path d="M24 14V9.6M24 14l3.8 2.2M24 14l-3.8 2.2" stroke-width="1"/></g><path d="M6 14h7l7.4-6M13 14l-1.6-6.2M6 14l5.2-6.4M11.4 7.6l9.2.2M20.2 7.4L24 14"/><path d="M9.6 6.6h3.6M20.6 7.4h5.2M22.4 7.4l-.4-1.4h1.6" stroke-width="1.6"/></svg></a>
+        <a class="velo" href="maison.html" title="Une petite balade ?" aria-label="La maison des outils : l’ancien accueil de Paraphe, en 3D"><svg viewBox="0 0 30 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g class="roue"><circle cx="6" cy="14" r="5"/><path d="M6 10v8M2 14h8" stroke-width=".7"/></g><g class="roue"><circle cx="24" cy="14" r="5"/><path d="M24 10v8M20 14h8" stroke-width=".7"/></g><path d="M6 14l7 0 7.5-6.5M13 14L10.8 6.5M6 14l5-6.8M11 7.3h9.5M20.2 6.4L24 14"/><path d="M9.3 5.6h3.6M19.6 6.2l2.6-.5c1.3-.2 1.6 1.6.4 2" stroke-width="1.6"/></svg></a></span>
+    </div>
+  </footer>
+</div>
+</main>
 
 <script src="assets/site.js"></script>
 

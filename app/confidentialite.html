@@ -4,7 +4,7 @@
 <meta charset="UTF-8"><meta name="robots" content="noindex"><script src="demo-donnees.js"></script><script src="demo-bac.js"></script><script src="donnees.js"></script>
 <title>Confidentialité et informations légales — Paraphe</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<script src="taille.js"></script><script src="navigation.js" defer></script>
+<script src="taille.js"></script><script src="icones.js" defer></script><script src="navigation.js" defer></script>
 <link rel="stylesheet" href="fonts/fonts.css">
 <link rel="icon" type="image/svg+xml" href="icons/favicon.svg">
 <link rel="stylesheet" href="style.css">
@@ -16,6 +16,10 @@
   .legal .encadre{border:1px solid var(--filet);border-radius:var(--r-m);box-shadow:var(--ombre);background:var(--carte);padding:var(--e5);margin:var(--e5) 0}
   .legal .encadre p:last-child{margin-bottom:0}
   .legal a{color:rgb(var(--acc))}
+  .deux-versions{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:var(--e4);margin:0 0 var(--e3)}
+  .deux-versions .encadre{margin:0}
+  .legal h2.version-titre{font-size:calc(17px * var(--ech));margin:0 0 var(--e2);padding:0;border:0}
+  .pour{display:inline-block;margin-right:6px;padding:1px 8px;border-radius:999px;background:var(--carte-2);border:1px solid var(--filet);font-size:calc(12.5px * var(--ech));font-weight:650;color:var(--encre-2);vertical-align:1px}
 </style>
 </head>
 <body>
@@ -30,21 +34,44 @@
   </nav>
 </header>
 <main class="legal">
-  <p class="eyebrow">Paraphe · version 1.1.6</p>
+  <p class="eyebrow">Paraphe · version 1.2.0</p>
   <h1>Confidentialité et informations légales</h1>
-  <p class="muted">Dernière mise à jour : 13 octobre 2026.</p>
+  <p class="muted">Dernière mise à jour : 24 octobre 2026.</p>
 
+  <!-- En bref, en langage courant, avec la différence entre la version web et l'application côte à côte
+       (quatrième passe du test : la page mêlait les deux et inquiétait les lecteurs lents) -->
   <div class="encadre">
-    <p><strong>En bref.</strong> Paraphe fonctionne entièrement sur votre appareil. Il n’y a ni compte, ni publicité, ni mesure d’audience, ni traceur. L’éditeur ne reçoit aucune de vos données. La seule fonction qui envoie du texte sur internet est l’Assistant IA de Diligences : elle est facultative, utilise votre propre clé et ne s’active qu’avec votre autorisation.</p>
+    <p><strong>En bref.</strong> Paraphe fonctionne entièrement sur votre appareil. Il n’y a ni compte, ni publicité, ni mesure d’audience, ni traceur, et l’éditeur ne reçoit aucune de vos données. Une seule fonction peut envoyer un texte sur internet, et elle est éteinte tant que vous ne l’allumez pas : l’Assistant IA de Diligences.</p>
   </div>
+  <div class="deux-versions">
+    <div class="encadre">
+      <h2 class="version-titre">Dans le navigateur (version web)</h2>
+      <ul>
+        <li>Vos données sont gardées par votre navigateur, sur cet appareil.</li>
+        <li>Si vous effacez les données de navigation, elles disparaissent : pensez au bouton « Sauvegarde » de l’accueil.</li>
+        <li>Aucune copie automatique.</li>
+      </ul>
+    </div>
+    <div class="encadre">
+      <h2 class="version-titre">Dans l’application</h2>
+      <ul>
+        <li>Vos données sont dans le dossier de l’application, sur cet appareil.</li>
+        <li>Paraphe fait lui-même des copies de sécurité et garde celles des sept derniers jours.</li>
+        <li>Vous pouvez protéger ces copies par un mot de passe.</li>
+      </ul>
+    </div>
+  </div>
+  <p class="muted">Le détail suit. Les paragraphes marqués « Application » ne concernent pas la version web.</p>
 
   <h2 id="donnees">Vos données</h2>
   <p>Vos fiches, articles, dossiers, pièces jointes, arbres de raisonnement, délais et réglages sont enregistrés <strong>uniquement sur cet appareil</strong>, dans l’espace de stockage de l’application. L’éditeur n’y a pas accès et ne reçoit aucune information sur votre usage.</p>
-  <p>Dans l’application, Paraphe enregistre tout automatiquement et fait lui-même des copies de sécurité (voir plus bas) ; le bouton « Mes données » de l’accueil sert à déménager vos données ou à en garder une copie ailleurs. Désinstaller l’application ou changer d’ordinateur sans sauvegarde fait perdre ces données.</p>
+  <p>Dans l’application, Paraphe enregistre tout automatiquement et fait lui-même des copies de sécurité (voir plus bas) ; le bouton « Mes données » de l’accueil (« Sauvegarde » dans la version web) sert à déménager vos données ou à en garder une copie ailleurs. Désinstaller l’application ou changer d’ordinateur sans sauvegarde fait perdre ces données.</p>
+  <h3 id="effacer">Tout effacer</h3>
+  <p>En bas de l’accueil, le lien « Tout effacer et repartir de zéro » supprime en une fois tout ce que Paraphe garde sur cet appareil : fiches, cartes, articles, dossiers et pièces jointes de Diligences, arbres de Considérant, agenda de Quantième, réglages et, dans l’application, les clés d’IA et le mot de passe des copies. Une fenêtre détaille ce qui part, propose une sauvegarde d’abord et demande de taper EFFACER pour confirmer. Vos fichiers de sauvegarde et, dans l’application, les copies de sécurité automatiques ne sont pas touchés : vous pouvez les supprimer vous-même depuis leur dossier.</p>
   <p>Si vous y consignez des informations concernant des tiers (clients, parties à un dossier), il vous appartient de respecter la réglementation applicable, notamment le RGPD et le secret professionnel.</p>
 
-  <p>Dans l’application de bureau, vos données sont rangées dans des fichiers du dossier de l’application, sur votre appareil, et non dans le stockage du moteur web (limité à quelques mégaoctets). Paraphe en fait aussi une <strong>copie de sécurité</strong> au plus toutes les six heures d’utilisation, dont il conserve les sept derniers jours. Si vous choisissez un dossier de copies (votre cloud, une clé USB), une copie supplémentaire y est déposée ; Paraphe n’écrit que dans ce dossier, et vous pouvez l’oublier à tout moment depuis la fenêtre « Sauvegarde ». Ces copies restent chez vous : elles ne sont envoyées à personne par Paraphe.</p>
-  <p>Comme elles contiennent vos dossiers, vous pouvez les <strong>protéger par un mot de passe</strong> (chiffrement AES-256). Le mot de passe est gardé dans le trousseau sécurisé de votre ordinateur pour que les copies automatiques se chiffrent sans rien vous demander ; <strong>il n’est connu de personne d’autre</strong> : si vous l’oubliez et perdez le trousseau, les copies protégées sont définitivement illisibles.</p>
+  <p><span class="pour">Application</span> Dans l’application de bureau, vos données sont rangées dans des fichiers du dossier de l’application, sur votre appareil, et non dans le stockage du moteur web (limité à quelques mégaoctets). Paraphe en fait aussi une <strong>copie de sécurité</strong> au plus toutes les six heures d’utilisation, dont il conserve les sept derniers jours. Si vous choisissez un dossier de copies (un dossier synchronisé comme iCloud Drive, ou une clé USB), une copie supplémentaire y est déposée ; Paraphe n’écrit que dans ce dossier, et vous pouvez l’oublier à tout moment depuis la fenêtre « Sauvegarde ». Ces copies restent chez vous : elles ne sont envoyées à personne par Paraphe.</p>
+  <p><span class="pour">Application</span> Comme elles contiennent vos dossiers, vous pouvez les <strong>protéger par un mot de passe</strong> (elles sont alors chiffrées, selon la norme AES-256). Le mot de passe est gardé dans le trousseau sécurisé de votre ordinateur pour que les copies automatiques se chiffrent sans rien vous demander ; <strong>il n’est connu de personne d’autre</strong> : si vous l’oubliez et perdez le trousseau, les copies protégées sont définitivement illisibles.</p>
 
   <h2 id="fichiers">Fichiers que vous enregistrez ou importez</h2>
   <p>Paraphe n’écrit un fichier (sauvegarde, export, PDF, agenda) qu’à l’emplacement que vous choisissez dans la fenêtre « Enregistrer sous », et ne lit un fichier que si vous le choisissez dans la fenêtre « Ouvrir ».</p>

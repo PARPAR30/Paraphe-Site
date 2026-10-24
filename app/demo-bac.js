@@ -50,7 +50,9 @@
   }
   m.set('droit_sombre', sombre ? '1' : '0');
   ['paraphe_bienvenue_vue', 'quantieme_vu', 'quantieme_guide_vu'].forEach(function (k) { m.set(k, '1'); });
-  m.set('attendu-aide-vue', 'true');   /* Considérant : l'aide de premier lancement ne masque pas l'arbre */
+  m.set('attendu-aide-vue', 'true');
+  m.set('paraphe_profil', '');            /* accueil : les deux familles d'outils, avec les « premiers pas » (24 oct. 2026) */
+  m.set('droit_flashcards_annee', 'tout'); /* Fiches mémo : pas de question « Votre année » devant les cartes de la démo */   /* Considérant : l'aide de premier lancement ne masque pas l'arbre */
   var plusTard = new Date(); plusTard.setDate(plusTard.getDate() + 60);
   m.set('paraphe_rappel_plus_tard', plusTard.toISOString());
 

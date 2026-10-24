@@ -11,12 +11,16 @@
   try { f = parseFloat(localStorage.getItem("paraphe_taille")) || 1; } catch (e) {}
   if (!TAILLES.includes(f)) f = 1;
   window.PARAPHE_TAILLE = f;
-  const appliquer = v => {
-    const r = document.documentElement;
+  // les très grands écrans s'éloignent des yeux : un léger supplément de taille, qui s'ajoute au choix de l'utilisateur
+  const facteurEcran = () => innerWidth >= 2200 ? 1.12 : innerWidth >= 1700 ? 1.06 : 1;
+  const appliquer = choix => {
+    const r = document.documentElement, v = Math.round(choix * facteurEcran() * 1000) / 1000;
     r.style.setProperty("--ech", v);
     r.style.fontSize = v === 1 ? "" : (16 * v) + "px";
   };
   appliquer(f);
+  let attente;
+  addEventListener("resize", () => { clearTimeout(attente); attente = setTimeout(() => appliquer(window.PARAPHE_TAILLE || 1), 120); });
   window.parapheTaille = v => {
     if (!TAILLES.includes(v)) return;
     window.PARAPHE_TAILLE = v;

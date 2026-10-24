@@ -4,7 +4,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Considérant — Paraphe</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%3E%3Ccircle%20cx%3D%223%22%20cy%3D%2212%22%20r%3D%222.4%22%20fill%3D%22%235034DC%22%2F%3E%3Cg%20stroke%3D%22%235034DC%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20fill%3D%22none%22%3E%3Cpath%20d%3D%22M5.6%2012h3.6%22%2F%3E%3Cpath%20d%3D%22M9.2%205.6v12.8%22%2F%3E%3Cpath%20d%3D%22M9.2%205.6h9.4%22%2F%3E%3Cpath%20d%3D%22M9.2%2012h11%22%2F%3E%3Cpath%20d%3D%22M9.2%2018.4h7.6%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E">
-<script src="taille.js"></script><script src="clavier.js" defer></script><script src="navigation.js" defer></script>
+<script src="taille.js"></script><script src="icones.js" defer></script><script src="vides.js" defer></script><script src="clavier.js" defer></script><script src="navigation.js" defer></script><script src="sigles.js" defer></script><script src="aujourdhui.js" defer></script><script src="fouille.js" defer></script><script src="palette.js" defer></script><script src="rappels.js" defer></script><script src="aide.js" defer></script>
 <link rel="stylesheet" href="fonts/fonts.css">
 <script src="pwa.js" defer></script>
 <style>
@@ -48,11 +48,20 @@ button,select{font-family:inherit;font-size:inherit;color:inherit}
 :is(button,select):focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 ::selection{background:var(--acc-fond);color:#fff}
 
-/* barre du haut : même registre que les autres outils, papier et filet fin */
-header{
-  display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:10px 16px;
-  background:var(--fond);color:var(--encre);border-bottom:1px solid var(--filet);z-index:30
-}
+/* barre du haut sur deux lignes (24 oct. 2026) :
+   1. la même que dans les autres outils — marque, Accueil, loupe, onglets des outils, Nuit ;
+   2. la barre de la fiche affichée — fiche, mise en forme, export, aide, état d'enregistrement */
+header{background:var(--fond);color:var(--encre);position:relative;z-index:60}   /* au-dessus du panneau d'aide (50) : ses menus aussi */
+header .tete{display:flex;align-items:center;gap:8px 16px;padding:12px 20px;border-bottom:1px solid var(--filet)}
+header .tete .outils{--pxo-doux:var(--encre-2);margin-left:auto}
+header .tete .b-theme{position:relative;height:36px;padding:0 14px;font-size:calc(14px * var(--ech));margin-left:12px}
+header .tete .b-theme::before{content:"";position:absolute;left:-15px;top:6px;bottom:6px;width:1px;background:var(--papier-3);pointer-events:none}
+/* « Jour » / « Nuit » est un réglage, pas un bouton enfoncé : pas de violet (même dessin que dans les autres outils) */
+:root:root header .tete button.b-theme[aria-pressed]{background:var(--papier);border-color:var(--papier-3);color:var(--encre)}
+:root:root header .tete button.b-theme[aria-pressed]:hover{border-color:var(--gris)}
+.barre-fiche{display:flex;align-items:center;gap:8px 12px;flex-wrap:wrap;padding:8px 20px;border-bottom:1px solid var(--filet);background:var(--fond)}
+.barre-fiche .etiquette{font-size:calc(13px * var(--ech));font-weight:560;color:var(--encre-2)}
+.barre-fiche .droite{margin-left:auto;display:flex;align-items:center;gap:12px}
 /* bouton enfoncé : fond violet doux, comme l'onglet actif d'un choix segmenté */
 header button.b[aria-pressed="true"],:root[data-nuit="1"] header button.b[aria-pressed="true"]{background:var(--acc-doux);border-color:var(--accent);color:var(--encre)}
 header .menu-liste{box-shadow:var(--ombre-forte)}
@@ -64,14 +73,15 @@ header button.b{padding:0 10px}
 .paire .b:first-child{border-top-right-radius:0;border-bottom-right-radius:0;padding-left:12px}
 .paire .b+.b{margin-left:-1px;border-top-left-radius:0;border-bottom-left-radius:0}
 .paire .b:hover{position:relative}
-@media (max-width:1599px){ header .mots span{display:none} header select.b{max-width:140px} }
-@media (max-width:1439px){ #etatSauve:not(.alerte){display:none} }
+@media (max-width:1099px){ header .mots span{display:none} }
+@media (max-width:1180px){ header select.b{max-width:160px} }
+@media (max-width:1023px){ #etatSauve:not(.alerte){display:none} }
 header button.b.danger:hover{background:var(--marge-doux);border-color:var(--marge);color:var(--marge)}
 /* logo : en mode nuit, les traits de couleur prennent leur teinte lisible sur l'encre */
 :root[data-nuit="1"] header .marque path[stroke="#5034DC"]{stroke:#B3A3FF}
 :root[data-nuit="1"] header .marque path[stroke="#C62828"]{stroke:#F0786A}
 :root[data-nuit="1"] header .marque path[stroke="#0A7B48"]{stroke:#6FBF8E}
-.marque{display:flex;align-items:center;gap:8px;padding-right:12px;border-right:1px solid var(--filet)}
+.marque{display:flex;align-items:center;gap:8px;padding-right:4px}
 .marque svg{flex:none;display:block}
 .mots b{display:block;font-family:var(--marque);font-weight:600;font-size:calc(21px * var(--ech));line-height:1;letter-spacing:.005em}
 .mots span{display:block;font-size:calc(12px * var(--ech));color:var(--gris);margin-top:3px}
@@ -91,8 +101,12 @@ select.b{appearance:none;-webkit-appearance:none;padding-right:28px;font-size:ca
   background-position:right 8px center;background-repeat:no-repeat}
 button.b:hover,select.b:hover,a.b:hover{border-color:var(--gris)}
 button.b[aria-pressed="true"]{background:var(--acc-doux);border-color:var(--accent);color:var(--encre)}
-select.b{max-width:210px}
-#etatSauve{margin-left:auto;font-size:calc(12px * var(--ech));color:var(--gris);font-variant-numeric:tabular-nums}
+select.b{max-width:300px;text-overflow:ellipsis}
+button.b.principal{background:var(--acc-fond);border-color:var(--acc-fond);color:#fff}
+button.b.principal:hover{background:var(--acc-survol);border-color:var(--acc-survol)}
+.menu-reglage{display:flex;flex-direction:column;gap:6px;padding:8px 10px 10px;font-size:calc(13px * var(--ech));font-weight:600;color:var(--encre-2)}
+.menu-reglage input{width:100%}
+#etatSauve{font-size:calc(12px * var(--ech));color:var(--gris);font-variant-numeric:tabular-nums}
 
 #toile{flex:1;position:relative;overflow:hidden;cursor:grab;touch-action:none;background:var(--fond);
   background-image:radial-gradient(circle,var(--papier-3) 1px,transparent 1.2px);background-size:24px 24px}
@@ -106,7 +120,7 @@ select.b{max-width:210px}
   position:absolute;width:max-content;max-width:250px;min-width:52px;padding:8px 13px;
   background:var(--papier);border:1px solid var(--filet);border-radius:var(--r-s);
   border-color:color-mix(in srgb,var(--teinte) 45%,var(--filet));box-shadow:var(--ombre-petite);
-  font-family:var(--serif);font-size:calc(14.5px * var(--ech));line-height:1.42;
+  font-family:var(--serif);font-size:calc(15.5px * var(--ech));line-height:1.42;
   cursor:grab;user-select:none;white-space:pre-wrap;overflow-wrap:break-word;
   transition:box-shadow .15s var(--ease),border-color .15s ease;
 }
@@ -117,8 +131,8 @@ select.b{max-width:210px}
 .cube.porte{opacity:.7;cursor:grabbing}
 .cube.redige{cursor:text;user-select:text;white-space:pre-wrap;box-shadow:0 0 0 2px var(--accent)}
 .ref{
-  display:block;font-size:calc(12px * var(--ech));line-height:14px;
-  color:var(--teinte);margin-bottom:2px;font-weight:600;font-variant-numeric:tabular-nums
+  display:block;font-size:calc(13px * var(--ech));line-height:15px;
+  color:var(--encre);margin-bottom:2px;font-weight:700;font-variant-numeric:tabular-nums
 }
 .cube code{font-family:var(--mono);font-size:.85em;color:var(--teinte);background:var(--papier-2);padding:0 4px;border-radius:4px}
 .cube.tronc code{color:var(--papier);background:#ffffff22}
@@ -163,6 +177,7 @@ select.b{max-width:210px}
   box-shadow:var(--ombre-forte)
 }
 #reglette.on{display:flex}
+#reglette{flex-wrap:wrap;max-width:calc(100% - 12px)}
 #reglette button{
   border:0;background:transparent;border-radius:6px;padding:5px 9px;cursor:pointer;
   font-size:calc(13px * var(--ech));font-family:var(--sans);font-weight:500;color:var(--encre);white-space:nowrap
@@ -178,6 +193,9 @@ button.b.danger:hover{background:var(--marge-doux);border-color:var(--marge);col
 #zoom{right:12px;bottom:12px}
 #zoom button{width:30px;height:30px;border-radius:var(--r-s);border:1px solid var(--papier-3);background:var(--papier);box-shadow:var(--ombre-petite);cursor:pointer}
 #zoom button:hover{border-color:var(--gris)}
+#zoom #zrecentrer{width:auto!important;padding:0 10px;font:600 calc(12px * var(--ech)) var(--sans);color:var(--encre)}
+#astuces[hidden]{display:none}
+#masquerAstuces{order:9;border:0;background:none;cursor:pointer;font-size:16px;line-height:1;color:var(--encre-2);padding:2px 4px;margin-left:2px}
 #astuces{left:12px;bottom:12px;background:var(--papier);border:1px solid var(--filet);border-radius:999px;box-shadow:var(--ombre-petite);padding:6px 14px;gap:12px}
 #astuces kbd{font-family:var(--sans);font-weight:600;font-size:calc(12px * var(--ech));background:var(--papier-2);border:1px solid var(--papier-3);border-bottom-width:2px;padding:0 5px;border-radius:5px;color:var(--encre)}
 #compteur{left:12px;top:12px;background:var(--papier);border:1px solid var(--filet);border-radius:999px;box-shadow:var(--ombre-petite);padding:6px 14px;display:none}
@@ -197,6 +215,16 @@ button.b.danger:hover{background:var(--marge-doux);border-color:var(--marge);col
 /* fenêtre « prompt IA » (construite par commun.js) */
 dialog.fenetre-ia{border:1px solid var(--filet);background:var(--papier);color:var(--encre);border-radius:var(--r-l);padding:24px;width:min(640px,calc(100vw - 32px));max-height:calc(100vh - 32px);overflow:auto;box-shadow:var(--ombre-fenetre);font-family:var(--sans)}
 dialog.fenetre-ia::backdrop{background:rgba(17,17,20,.4)}
+/* tablette : des astuces pour le doigt, pas pour le clavier */
+#astuces .tactile{display:none}
+@media (pointer:coarse){ #astuces .clavier{display:none} #astuces .tactile{display:inline} }
+dialog.modeles h3{margin:0 0 6px;font:650 calc(20px * var(--ech))/1.25 var(--titre)}
+dialog.modeles .muet-texte{margin:0 0 16px;color:var(--encre-2);font-size:calc(14px * var(--ech))}
+.liste-modeles{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;margin-bottom:16px}
+button.b.modele{display:flex;flex-direction:column;align-items:flex-start;gap:4px;height:auto;min-height:72px;padding:12px 14px;text-align:left;border-radius:var(--r-m);white-space:normal}
+button.b.modele b{font-weight:650;font-size:calc(15px * var(--ech))}
+button.b.modele:active{transform:scale(.98)}
+button.b.modele span{font-weight:400;color:var(--encre-2);font-size:calc(13px * var(--ech));line-height:1.4}
 .fenetre-ia h3{margin:0 0 8px;font-family:var(--titre);font-size:calc(20px * var(--ech));font-weight:700;letter-spacing:-.015em}
 .fenetre-ia .ia-etat{margin:0 0 12px;font-size:calc(14px * var(--ech));font-weight:600}
 .fenetre-ia .ia-etat.erreur{color:var(--marge)}
@@ -232,17 +260,19 @@ dialog.fenetre-ia::backdrop{background:rgba(17,17,20,.4)}
 }
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 @media (max-width:600px){
-  header{
-    padding:8px 10px;gap:8px;
-    flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;
-    scrollbar-width:none;
-  }
-  header::-webkit-scrollbar{display:none}
-  .groupe{flex-wrap:nowrap;flex:none}
+  /* les commandes passent à la ligne : une barre qui défile sans le montrer cachait des boutons */
+  header .tete{padding:10px 12px;gap:8px;flex-wrap:wrap}
+  header .tete .outils{order:3;flex:1 1 100%;margin:0 -4px;padding:0 4px;overflow-x:auto;scrollbar-width:none}
+  header .tete .outils::-webkit-scrollbar{display:none}
+  header .tete .b-theme{margin-left:auto}
+  header .tete .b-theme::before{display:none}
+  .barre-fiche{padding:8px 12px;gap:6px 8px}
+  .groupe{flex-wrap:wrap;gap:6px}
   .sep{display:none}
-  .marque{padding-right:8px;flex:none}
-  .mots span{display:none}
-  #largeur{width:64px}
+  .marque{padding-right:0;flex:none}
+  .mots{display:none}
+  #largeur{width:88px}
+  .barre-fiche .etiquette{display:none}
   #etatSauve{display:none}
   #astuces{display:none}
   #toile{min-height:0}
@@ -258,6 +288,7 @@ dialog.fenetre-ia::backdrop{background:rgba(17,17,20,.4)}
 </style>
 
 <header>
+ <div class="tete">
   <div class="marque">
     <svg width="26" height="26" viewBox="0 0 24 24" aria-label="Considérant" role="img">
       <circle cx="3" cy="12" r="2.4" fill="currentColor"/>
@@ -269,16 +300,20 @@ dialog.fenetre-ia::backdrop{background:rgba(17,17,20,.4)}
         <path d="M9.2 18.4h7.6" stroke="#0A7B48"/>
       </g>
     </svg>
-    <div class="mots"><b>Considérant</b><span>fiches de raisonnement</span></div>
+    <div class="mots"><b>Considérant</b><span>un raisonnement en arbre, une idée par cube</span></div>
   </div>
   <span data-paraphe-nav></span>
-  <div class="sep"></div>
+  <span data-paraphe-outils class="outils"></span>
+  <button class="b b-theme" id="nuit" aria-pressed="false">Nuit</button>
+ </div>
+ <div class="barre-fiche" role="toolbar" aria-label="Fiche affichée">
   <div class="groupe">
     <select class="b" id="fiches" title="Vos fiches" aria-label="Fiche affichée"></select>
     <div class="menu-b">
       <button class="b" type="button" aria-haspopup="menu" aria-expanded="false">Fiche ▾</button>
       <div class="menu-liste" role="menu" hidden>
         <button class="b" id="nouvelle" role="menuitem">Nouvelle fiche</button>
+        <button class="b" id="depuisModele" role="menuitem" title="Cas pratique, dissertation, commentaire, consultation : un squelette prêt à remplir">Nouvelle fiche depuis un modèle…</button>
         <button class="b" id="renommer" role="menuitem" title="Renommer la fiche affichée">Renommer</button>
         <button class="b" id="dupliquer" role="menuitem" title="Dupliquer la fiche affichée">Dupliquer</button>
         <button class="b danger" id="supprimerFiche" role="menuitem" title="Supprimer la fiche affichée">Supprimer</button>
@@ -287,14 +322,23 @@ dialog.fenetre-ia::backdrop{background:rgba(17,17,20,.4)}
   </div>
   <div class="sep"></div>
   <div class="groupe">
-    <span class="etiquette">largeur</span>
-    <input type="range" id="largeur" min="120" max="440" step="10" value="250" title="Largeur de tous les cubes non étirés à la main">
-    <button class="b" id="largeurAuto" title="Revenir à la largeur automatique">auto</button>
-    <button class="b" id="ranger" title="Remettre l'arbre d'équerre">Ranger</button>
-    <button class="b" id="recitation" aria-pressed="false" title="Masquer les branches et les réciter">Récitation</button>
+    <!-- une action visible pour écrire, au doigt comme à la souris (test par 100 utilisateurs fictifs, seconde passe :
+         « aucun bouton visible pour ajouter ou écrire ») ; l'affichage est rangé dans un menu -->
+    <button class="b principal" id="ajouterIdee" title="Ajoute une idée rattachée au cube sélectionné, ou au titre si rien n'est sélectionné (Tab au clavier)">+ Ajouter une idée</button>
+    <button class="b" id="recitation" aria-pressed="false" title="Cache les branches : récitez le raisonnement, puis touchez un cube pour révéler la suite">S'entraîner à réciter</button>
+    <div class="menu-b">
+      <button class="b" type="button" aria-haspopup="dialog" aria-expanded="false">Affichage ▾</button>
+      <!-- un curseur ne peut pas vivre dans un role="menu" : ce panneau est un simple groupe -->
+      <div class="menu-liste" role="group" aria-label="Affichage" hidden>
+        <label class="menu-reglage">Largeur des cubes
+          <input type="range" id="largeur" min="120" max="440" step="10" value="250" title="Largeur de tous les cubes non étirés à la main"></label>
+        <button class="b" id="largeurAuto">Largeur automatique</button>
+        <button class="b" id="ranger" title="Remettre les cubes en ordre, branche par branche">Ranger l'arbre</button>
+      </div>
+    </div>
     <span class="paire">
-      <button class="b" id="annuler" title="Annuler — Ctrl+Z">↶</button>
-      <button class="b" id="refaire" title="Rétablir — Ctrl+Maj+Z">↷</button>
+      <button class="b" id="annuler" title="Annuler — Ctrl+Z">↶ Annuler</button>
+      <button class="b" id="refaire" title="Rétablir — Ctrl+Maj+Z">↷ Rétablir</button>
     </span>
   </div>
   <div class="sep"></div>
@@ -304,16 +348,16 @@ dialog.fenetre-ia::backdrop{background:rgba(17,17,20,.4)}
       <div class="menu-liste" role="menu" hidden>
         <button class="b" id="expimg" role="menuitem">Image (PNG)</button>
         <button class="b" id="imprimer" role="menuitem">Imprimer</button>
+        <button class="b" id="expword" role="menuitem" title="Le raisonnement en document Word : titres I, A, 1, a, prêt pour une copie ou des conclusions">Word (.docx)</button>
         <button class="b" id="expmd" role="menuitem">Markdown</button>
         <button class="b" id="sauvegarde" role="menuitem">Sauvegarde (fichier)</button>
         <button class="b" id="importer" role="menuitem">Importer une sauvegarde</button>
         <button class="b" id="promptIA" role="menuitem" title="Copier un prompt qui fait convertir votre document (PDF, Word, texte…) en fiche par une IA">Depuis un document (prompt IA)</button>
       </div>
     </div>
-    <button class="b" id="nuit" aria-pressed="false">Nuit</button>
-    <button class="b" id="btnAide">Aide</button>
   </div>
-  <span id="etatSauve"></span>
+  <span class="droite"><span id="etatSauve"></span><button class="b" id="btnAide">Aide</button></span>
+ </div>
 </header>
 
 <div id="toile">
@@ -333,13 +377,13 @@ dialog.fenetre-ia::backdrop{background:rgba(17,17,20,.4)}
 
   <div class="hud" id="compteur"><span>Récitation</span>&nbsp;<b id="score">0 / 0</b></div>
   <div class="hud" id="astuces">
-    <span><kbd>double-clic</kbd> écrire</span>
-    <span><kbd>Tab</kbd> enfant</span>
-    <span><kbd>Entrée</kbd> voisin</span>
-    <span>glisser sur un cube pour l'y rattacher</span>
+    <button type="button" id="masquerAstuces" title="Masquer cette ligne d'astuces (l'aide reste dans « Aide »)" aria-label="Masquer les astuces">×</button>
+    <span>touchez ou cliquez un cube : « + enfant », « + voisin » et « Écrire » apparaissent</span>
+    <span class="clavier">au clavier : <kbd>Tab</kbd> enfant · <kbd>Entrée</kbd> voisin · <kbd>double-clic</kbd> écrire</span>
+    <span class="tactile">glissez pour vous déplacer, pincez pour zoomer</span>
   </div>
   <div class="hud" id="zoom">
-    <button id="zmoins">−</button><button id="zplus">+</button><button id="zrecentrer" title="Tout voir — 0">◎</button>
+    <button id="zmoins" title="Réduire" aria-label="Réduire">−</button><button id="zplus" title="Agrandir" aria-label="Agrandir">+</button><button id="zrecentrer" title="Tout voir — 0">Tout voir</button>
   </div>
   <div id="message"></div>
 
@@ -349,11 +393,12 @@ dialog.fenetre-ia::backdrop{background:rgba(17,17,20,.4)}
       <p class="sous">Dessinez le raisonnement d'une décision, d'un cours ou d'une question comme un arbre :
         <b>une idée = un cube</b>. Les traits disent laquelle s'appuie sur laquelle, et chaque branche porte son
         numéro — 2.3 se relit comme un considérant.</p>
-      <p class="sous"><b>Pour commencer, quatre gestes suffisent :</b></p>
+      <p class="sous"><b>Pour commencer, à la souris ou au doigt :</b> touchez un cube, puis « + enfant », « + voisin » ou « Écrire » ;
+        le bouton <b>+ Ajouter une idée</b>, en haut, fait la même chose. Au clavier :</p>
       <dl>
         <dt>double-clic</dt><dd>écrire dans un cube. <kbd>Échap</kbd> ou clic ailleurs pour valider.</dd>
         <dt>Tab</dt><dd>créer un cube <b>enfant</b>, rattaché à celui qui est sélectionné.</dd>
-        <dt>Entrée</dt><dd>créer un cube <b>voisin</b>, au même niveau.</dd>
+        <dt>Entrée</dt><dd>créer un cube <b>voisin</b>, au même niveau (en cours d'écriture : valide le cube, puis crée le voisin).</dd>
         <dt>glisser</dt><dd>déplacer un cube et toute sa descendance. Lâchez-le <b>sur un autre cube</b> pour le rattacher ailleurs.</dd>
       </dl>
       <details class="aide-plus"><summary>Autres gestes</summary>
@@ -375,7 +420,7 @@ dialog.fenetre-ia::backdrop{background:rgba(17,17,20,.4)}
 <input type="file" id="fichier" accept="application/json" hidden>
 <div id="impression"><img alt=""></div>
 
-<script src="commun.js"></script>
+<script src="commun.js"></script><script src="docx.js"></script>
 <script>
 (() => {
 "use strict";
@@ -429,6 +474,16 @@ function visible(n){
   let p = parentDe(n.id);
   while (p){ if (p.plie) return false; p = parentDe(p.id); }
   return true;
+}
+/* Un motif de trait par grande branche, en plus de la couleur : rouge et vert se confondaient pour les
+   personnes daltoniennes (quatrième passe). Branche 1 plein, 2 tirets, 3 pointillé, 4 tiret-point… */
+const MOTIFS = ['', '7 5', '1.5 5', '10 4 2 4', '3 3', '14 5'];
+function motifDe(n){
+  let x = n, chaine = [];
+  while (x){ chaine.unshift(x); x = parentDe(x.id); }
+  if (chaine.length < 2) return '';
+  const i = racine().enfants.findIndex(e => e.id === chaine[1].id);
+  return MOTIFS[(i < 0 ? 0 : i) % MOTIFS.length];
 }
 function teinteDe(n){
   let x = n, chaine = [];
@@ -564,6 +619,7 @@ function tracerLiensIndexe(vus){
       p.setAttribute('stroke', teinteDe(e));
       p.setAttribute('stroke-width', Math.max(1.2, 3 - profDe(e.id) * .5));
       p.setAttribute('stroke-linecap', 'round');
+      const motif = motifDe(e); if (motif) p.setAttribute('stroke-dasharray', motif);
       p.setAttribute('opacity', masque(e) ? .3 : .8);
       liens.appendChild(p);
     }
@@ -596,8 +652,12 @@ function placerReglette(){
   if (!n || !cubes.has(n.id) || redaction){ reglette.classList.remove('on'); return; }
   reglette.classList.add('on');
   const x = vue.x + n.x * vue.k, y = vue.y + n.y * vue.k;
-  reglette.style.left = Math.max(6, x) + 'px';
-  reglette.style.top = Math.max(6, y - reglette.offsetHeight - 9) + 'px';
+  // toujours dans l'écran (quatrième passe : « Supprimer » sortait à droite sur téléphone) ; sous le cube
+  // quand la place manque au-dessus, pour ne pas recouvrir le cube lui-même
+  const larg = toile.clientWidth, h = reglette.offsetHeight, w = reglette.offsetWidth;
+  reglette.style.left = Math.max(6, Math.min(x, larg - w - 6)) + 'px';
+  const dessus = y - h - 9, dessous = y + (n.h || 38) * vue.k + 9;
+  reglette.style.top = (dessus >= 6 ? dessus : dessous) + 'px';
   reglette.querySelector('[data-a="plier"]').textContent = n.plie ? 'Déplier' : 'Replier';
   reglette.querySelector('[data-a="plier"]').style.display = n.enfants.length ? '' : 'none';
   reglette.querySelector('[data-a="supprimer"]').style.display = n.id === racine().id ? 'none' : '';
@@ -666,7 +726,14 @@ function rediger(n, sansMemo){
   d.addEventListener('blur', finir, {once:true});
   d.addEventListener('keydown', ev => {
     ev.stopPropagation();
-    if (ev.key === 'Escape' || (ev.key === 'Enter' && !ev.shiftKey)){ ev.preventDefault(); d.blur(); }
+    if (ev.key === 'Escape'){ ev.preventDefault(); d.blur(); }
+    // Entrée : valide le cube et ouvre une idée voisine, comme l'annonce l'aide (un cube resté vide est seulement validé)
+    else if (ev.key === 'Enter' && !ev.shiftKey){
+      ev.preventDefault(); const vide = !d.innerText.trim(); d.blur();
+      if (!vide) n.id === racine().id ? ajouter(n, 'enfant') : ajouter(n, 'voisin');
+    }
+    // Tab : valide le cube et ouvre aussitôt une idée enfant en écriture (le focus reste dans l'arbre)
+    else if (ev.key === 'Tab' && !ev.shiftKey){ ev.preventDefault(); d.blur(); ajouter(n, 'enfant'); }
   });
 }
 
@@ -689,6 +756,7 @@ function libre(x, y, w, h, exclus = new Set()){
 
 function ajouter(n, quoi){
   memoriser();
+  document.getElementById('aide').classList.remove('on');   // l'aide couvrait les nouvelles idées (troisième passe)
   const parent = quoi === 'enfant' ? n : (parentDe(n.id) || n);
   const larg = n.w || 140;
   let x, y;
@@ -951,9 +1019,12 @@ function recentrer(){
   });
   const r = toile.getBoundingClientRect();
   const k = Math.min(1.1, (r.width - 120) / Math.max(1, x1 - x0), (r.height - 140) / Math.max(1, y1 - y0));
-  vue.k = Math.max(.2, k);
-  vue.x = (r.width - (x1 - x0) * vue.k) / 2 - x0 * vue.k;
-  vue.y = (r.height - (y1 - y0) * vue.k) / 2 - y0 * vue.k;
+  /* en dessous de 0,8 le texte des cubes devient illisible (test du 24 oct. 2026) : on garde 0,8, la racine
+     à gauche, et le reste de l'arbre se parcourt en glissant ; « − » permet toujours d'en voir plus */
+  vue.k = Math.max(innerWidth < 700 ? 1 : .8, k);   // sur téléphone, les cubes restent à leur taille réelle
+  const tient = (x1 - x0) * vue.k <= r.width - 60;
+  vue.x = tient ? (r.width - (x1 - x0) * vue.k) / 2 - x0 * vue.k : 40 - x0 * vue.k;
+  vue.y = (y1 - y0) * vue.k <= r.height - 80 ? (r.height - (y1 - y0) * vue.k) / 2 - y0 * vue.k : 40 - y0 * vue.k;
   appliquerVue();
 }
 
@@ -1189,6 +1260,110 @@ function telecharger(nom, texte, type){
 }
 const nomFichier = () => (racine().t || 'fiche').replace(/[^\w\-À-ÿ ]+/g, '').trim() || 'fiche';
 document.getElementById('expmd').onclick = () => telecharger(nomFichier() + '.md', versMarkdown(), 'text/markdown');
+
+/* ── Export Word : le plan juridique d'usage (I, A, 1, a), l'introduction et la conclusion hors numérotation ── */
+const ROMAINS = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X'];
+const horsPlan = t => /^\s*(introduction|conclusion)\b/i.test(t || '');
+function numeroPlan(prof, rang){
+  if (prof === 1) return (ROMAINS[rang] || String(rang + 1)) + '.';
+  if (prof === 2) return String.fromCharCode(65 + rang % 26) + '.';
+  if (prof === 3) return (rang + 1) + '.';
+  if (prof === 4) return String.fromCharCode(97 + rang % 26) + ')';
+  return '';
+}
+function versWord(){
+  const blocs = [], propre = t => String(t || '').replace(/`/g, '').trim();
+  // sous l'introduction ou la conclusion, les éléments se rédigent en paragraphes, sans numéro
+  (function descendre(n, prof, redige){
+    let rang = 0;
+    n.enfants.forEach(e => {
+      const texte = propre(e.t);
+      if (!texte && !e.enfants.length) return;
+      const plan = !horsPlan(texte);
+      if (redige) blocs.push({ style: 'Texte', texte, niveau: Math.max(0, prof - 1) });
+      else if (prof + 1 <= 4) blocs.push({ style: 'Titre' + (prof + 1), texte, numero: plan ? numeroPlan(prof + 1, rang) : '' });
+      else blocs.push({ style: 'Puce', texte, niveau: prof + 1 - 5 });
+      if (plan) rang++;
+      descendre(e, prof + 1, redige || !plan);
+    });
+  })(racine(), 0, false);
+  return ParapheDocx.creer({ titre: propre(racine().t) || 'Fiche sans titre', blocs,
+    sousTitre: 'Raisonnement préparé avec Considérant — ' + new Date().toLocaleDateString('fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }),
+    pied: 'Paraphe · Considérant' });
+}
+document.getElementById('expword').onclick = () => {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(versWord());
+  a.download = nomFichier() + '.docx'; a.click();
+  setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+  signaler('Document Word enregistré : les titres suivent le plan I, A, 1, a');
+};
+
+/* ── Modèles de raisonnement : un squelette à remplir, cube par cube ── */
+const MODELES = {
+  cas: { nom: 'Cas pratique (syllogisme)', aide: 'Faits, problème, règle, application, conclusion.', arbre: ['Cas pratique — [intitulé]', [
+    ['Faits utiles', [['Qui ? Quoi ? Quand ? Les faits qui comptent juridiquement'], ['Ce que demande la personne']]],
+    ['Problème de droit', [['La question, posée en termes juridiques']]],
+    ['Majeure : la règle', [['Texte applicable (art. …)'], ['Jurisprudence : juridiction, date, solution'], ['Conditions à réunir']]],
+    ['Mineure : application aux faits', [['Première condition : remplie ou non, et pourquoi'], ['Deuxième condition : remplie ou non, et pourquoi']]],
+    ['Conclusion', [['Réponse à la question posée'], ['Conseil pratique, délai à surveiller']]]]] },
+  dissertation: { nom: 'Dissertation', aide: 'Introduction, deux parties, deux sous-parties.', arbre: ['Dissertation — [sujet]', [
+    ['Introduction', [['Accroche'], ['Définition des termes du sujet'], ['Intérêt du sujet'], ['Problématique'], ['Annonce du plan']]],
+    ['Première idée directrice', [['Premier argument'], ['Deuxième argument']]],
+    ['Seconde idée directrice', [['Premier argument'], ['Deuxième argument']]]]] },
+  commentaire: { nom: 'Commentaire d\'arrêt', aide: 'Fiche d\'arrêt en introduction, sens puis valeur et portée.', arbre: ['Commentaire — [arrêt, juridiction, date]', [
+    ['Introduction', [['Accroche'], ['Faits'], ['Procédure'], ['Prétentions des parties'], ['Problème de droit'], ['Solution'], ['Annonce du plan']]],
+    ['Le sens de la décision', [['Ce que la Cour affirme'], ['Comment elle le justifie']]],
+    ['La valeur et la portée', [['Valeur : approbation ou critique, appuyée sur la doctrine'], ['Portée : arrêt de principe ou d\'espèce, suites jurisprudentielles']]]]] },
+  consultation: { nom: 'Consultation', aide: 'Faits, questions, analyse, recommandations.', arbre: ['Consultation — [client, objet]', [
+    ['Exposé des faits', [['Chronologie utile'], ['Pièces communiquées']]],
+    ['Questions posées', [['Question 1'], ['Question 2']]],
+    ['Analyse', [['Question 1 : règle, application, risque'], ['Question 2 : règle, application, risque']]],
+    ['Recommandations', [['Ce que nous conseillons'], ['Délais à surveiller (calcul dans Quantième)']]],
+    ['Réserves', [['Éléments à vérifier, pièces manquantes']]]]] },
+};
+function arbreDepuis([t, enfants = []]){
+  const n = neuf(t, 0, 0);
+  enfants.forEach(e => n.enfants.push(arbreDepuis(e)));
+  return n;
+}
+function ajouterFicheModele(arbre){
+  quitterRecitation();
+  document.getElementById('aide').classList.remove('on');   // l'aide masquait la moitié de l'arbre (seconde passe)
+  fiches.push({racine: arbreDepuis(arbre), mesure: 2});
+  iFiche = fiches.length - 1; sel = fiches[iFiche].racine.id;
+  pile.length = 0; refait.length = 0;
+  ranger(); rendre();
+  // les tailles réelles des cubes ne sont connues qu'après le premier dessin : on range une seconde fois
+  requestAnimationFrame(() => { ranger(); rendre(); recentrer(); enregistrerBientot(); });
+}
+window.ParapheModeles = { MODELES, ajouterFicheModele };   // repris par la méthode du commentaire (Fiches d'arrêt)
+// un plan préparé dans Fiches d'arrêt (« Préparer le commentaire ») devient une nouvelle fiche
+if (new URLSearchParams(location.search).get('depuis') === 'commentaire'){
+  let arbre = null;
+  try { arbre = JSON.parse(sessionStorage.getItem('paraphe_plan_considerant')); sessionStorage.removeItem('paraphe_plan_considerant'); } catch {}
+  history.replaceState(null, '', location.pathname);
+  if (Array.isArray(arbre)) window.planEnAttente = arbre;     // posé une fois les fiches chargées (fin du démarrage)
+}
+let fenModeles;
+document.getElementById('depuisModele').onclick = () => {
+  if (!fenModeles){
+    fenModeles = document.createElement('dialog');
+    fenModeles.className = 'fenetre-ia modeles';
+    fenModeles.setAttribute('aria-labelledby', 'modelesTitre');
+    fenModeles.innerHTML = '<h3 id="modelesTitre">Partir d\'un modèle</h3><p class="muet-texte">Un squelette de raisonnement à remplir : double-cliquez sur un cube pour écrire à la place des indications.</p>' +
+      '<div class="liste-modeles">' + Object.entries(MODELES).map(([k, m]) => `<button type="button" class="b modele" data-modele="${k}"><b>${m.nom}</b><span>${m.aide}</span></button>`).join('') +
+      '</div><div class="ia-actions"><button type="button" class="b" data-fermer>Annuler</button></div>';
+    document.body.appendChild(fenModeles);
+    fenModeles.addEventListener('click', e => {
+      const b = e.target.closest('[data-modele]');
+      if (b){ fenModeles.close(); ajouterFicheModele(MODELES[b.dataset.modele].arbre); signaler('Modèle « ' + MODELES[b.dataset.modele].nom + ' » ajouté'); }
+      else if (e.target.closest('[data-fermer]') || e.target === fenModeles) fenModeles.close();
+    });
+  }
+  fenModeles.showModal();
+  fenModeles.querySelector('[data-modele]').focus();
+};
 document.getElementById('sauvegarde').onclick = () =>
   telecharger('considerant-sauvegarde.json', sansPliagesDeRecitation(() => JSON.stringify({fiches}, null, 1)), 'application/json');
 
@@ -1277,10 +1452,15 @@ Commun.promptIA(document.getElementById('promptIA'), {
   options: { importer: texte => importerFiches(texte), apres: n => signaler(n > 1 ? n + ' fiches importées' : 'Fiche importée') }
 });
 
-document.getElementById('nuit').onclick = e => {
+// le bouton dit ce qu'il fera, comme dans les autres outils : « Nuit » le jour, « Jour » la nuit
+const majBoutonNuit = () => {
+  const b = document.getElementById('nuit'), on = estNuit();
+  b.textContent = on ? 'Jour' : 'Nuit'; b.setAttribute('aria-pressed', String(on));
+};
+document.getElementById('nuit').onclick = () => {
   const on = !estNuit();
   document.documentElement.dataset.nuit = on ? '1' : '0';
-  e.currentTarget.setAttribute('aria-pressed', String(on));
+  majBoutonNuit();
   try { localStorage.setItem('droit_sombre', on ? '1' : '0'); } catch {}   // thème commun aux 6 outils
   rendre(); sauver();
 };
@@ -1297,6 +1477,15 @@ document.getElementById('largeurAuto').onclick = () => {
   signaler('Format automatique pour toute la fiche');
 };
 document.getElementById('ranger').onclick = ranger;
+// la ligne d'astuces du bas cachait un cube (quatrième passe) : elle se masque, et le reste
+const astuces = document.getElementById('astuces');
+try { if (localStorage.getItem('considerant_astuces_masquees') === '1') astuces.hidden = true; } catch {}
+document.getElementById('masquerAstuces').onclick = () => { astuces.hidden = true; try { localStorage.setItem('considerant_astuces_masquees', '1'); } catch {} };
+document.getElementById('ajouterIdee').onclick = () => {
+  const n = (sel && trouver(sel)) || racine();
+  if (recitation) quitterRecitation();
+  ajouter(n, 'enfant');
+};
 document.getElementById('zplus').onclick = () => zoomer(1.2);
 document.getElementById('zmoins').onclick = () => zoomer(1/1.2);
 document.getElementById('zrecentrer').onclick = recentrer;
@@ -1312,7 +1501,7 @@ document.querySelectorAll('.menu-b').forEach(m => {
     document.querySelectorAll('.menu-b [aria-haspopup]').forEach(b => b.setAttribute('aria-expanded', 'false'));
     if (ouvrir) { liste.hidden = false; bouton.setAttribute('aria-expanded', 'true'); liste.querySelector('button').focus(); }
   });
-  liste.addEventListener('click', () => setTimeout(fermer, 0));
+  liste.addEventListener('click', ev => { if (!ev.target.closest('input, label')) setTimeout(fermer, 0); });
   document.addEventListener('click', ev => { if (!m.contains(ev.target)) fermer(); });
   document.addEventListener('keydown', ev => { if (ev.key === 'Escape' && !liste.hidden) { fermer(); bouton.focus(); } });
 });
@@ -1511,10 +1700,7 @@ function fichExemple(){
   if (sauvegarde && sauvegarde.fiches && sauvegarde.fiches.length){
     fiches = sauvegarde.fiches; iFiche = Math.min(sauvegarde.iFiche || 0, fiches.length - 1);
     compteurId = sauvegarde.compteurId || 999;
-    if (sauvegarde.nuit){
-      document.documentElement.dataset.nuit = '1';
-      document.getElementById('nuit').setAttribute('aria-pressed', 'true');
-    }
+    if (sauvegarde.nuit) document.documentElement.dataset.nuit = '1';
   } else {
     fiches = [fichExemple()];
   }
@@ -1522,12 +1708,11 @@ function fichExemple(){
   const ancre = new URLSearchParams(location.hash.slice(1));
   const ficheVisee = +ancre.get('fiche');
   if (ancre.has('fiche') && fiches[ficheVisee]) iFiche = ficheVisee;
-  // le thème choisi dans un autre outil de la suite l'emporte
+  // le thème choisi dans un autre outil de la suite l'emporte ; sans choix nulle part, celui du système
   let commun = null; try { commun = localStorage.getItem('droit_sombre'); } catch {}
-  if (commun !== null){
-    document.documentElement.dataset.nuit = commun === '1' ? '1' : '0';
-    document.getElementById('nuit').setAttribute('aria-pressed', String(commun === '1'));
-  }
+  if (commun !== null) document.documentElement.dataset.nuit = commun === '1' ? '1' : '0';
+  else if (!sauvegarde) document.documentElement.dataset.nuit = matchMedia('(prefers-color-scheme: dark)').matches ? '1' : '0';
+  majBoutonNuit();
   listerFiches();
   if (document.fonts) await document.fonts.ready.catch(() => {});
   rendre();
@@ -1542,6 +1727,7 @@ function fichExemple(){
     appliquerVue();
   }
   if (ancre.has('fiche')) history.replaceState(null, '', location.pathname);
+  if (window.planEnAttente){ ajouterFicheModele(window.planEnAttente); window.planEnAttente = null; signaler('Plan du commentaire ajouté : remplacez les crochets par vos mots'); }
   if (!(await rangement.lire('attendu-aide-vue'))) aide.classList.add('on');
 })();
 

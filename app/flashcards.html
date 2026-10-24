@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#131316">
-<script src="taille.js"></script><script src="clavier.js" defer></script><script src="navigation.js" defer></script>
+<script src="taille.js"></script><script src="icones.js" defer></script><script src="vides.js" defer></script><script src="clavier.js" defer></script><script src="navigation.js" defer></script><script src="sigles.js" defer></script><script src="aujourdhui.js" defer></script><script src="fouille.js" defer></script><script src="palette.js" defer></script><script src="rappels.js" defer></script><script src="aide.js" defer></script>
 <link rel="stylesheet" href="fonts/fonts.css">
 <script src="pwa.js" defer></script>
 <link rel="icon" type="image/svg+xml" href="icons/favicon.svg">
@@ -49,7 +49,17 @@
     background:var(--carte);color:var(--encre);font-weight:600;font-size:calc(13px * var(--ech))}
   .puce-mat::before{content:"";flex:none;width:8px;height:8px;border-radius:2px;background:var(--c,transparent)}
   .puce-mat b{font-weight:800}
-  .a-reviser #startReview{grid-column:2;grid-row:1 / span 2}
+  .a-reviser .a-reviser-actions{grid-column:2;grid-row:1 / span 2;display:flex;flex-direction:column;gap:var(--e2);align-items:stretch}
+  .rev-fin-actions{display:flex;gap:var(--e3);justify-content:center;flex-wrap:wrap}
+  button.puce-mat{cursor:pointer;min-height:32px}
+  button.puce-mat:hover{border-color:var(--gris)}
+  .plan-jours{grid-column:1 / -1;font-size:calc(14px * var(--ech))}
+  .plan-jours summary{cursor:pointer;font-weight:600;color:var(--encre-2)}
+  .plan-jours ol{list-style:none;margin:var(--e3) 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:var(--e2)}
+  .plan-jours li{display:flex;justify-content:space-between;gap:var(--e2);padding:var(--e2) var(--e3);border:1px solid var(--filet);border-radius:var(--r-s);background:var(--carte)}
+  .plan-jours li.auj{border-color:rgb(var(--acc))}
+  .plan-jours li b{font-variant-numeric:tabular-nums}
+  .plan-jours li.veille{background:var(--carte-2)}
   button.grand{min-height:56px;padding:0 var(--e6);font-size:calc(14px * var(--ech))}
   .liste-cartes{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:var(--e4)}
   .carte-item{border:1px solid var(--filet);border-radius:var(--r-m);background:var(--carte);transition:border-color .18s var(--ease),box-shadow .18s var(--ease);padding:var(--e4);display:flex;flex-direction:column;gap:var(--e2)}
@@ -67,10 +77,14 @@
   .revision{position:fixed;inset:0;z-index:60;background:var(--fond);color:var(--encre);display:flex;flex-direction:column}
   .revision[hidden]{display:none}
   .rev-barre{display:flex;align-items:center;gap:var(--e4);padding:var(--e3) var(--pad);border-bottom:1px solid var(--filet)}
+  /* téléphone : l'en-tête de la séance passe à la ligne (« Quitter » sortait de l'écran ; quatrième passe) */
+  @media (max-width:560px){ .rev-barre{flex-wrap:wrap;gap:var(--e2) var(--e3)} .rev-barre #reviewMatiere{max-width:100%;white-space:normal}
+    .rev-barre .rev-prog{order:5;flex:1 1 100%} .rev-barre #quitterRevision{margin-left:auto} }
+  .lecteur-seul{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
   .rev-prog{flex:1;height:6px;background:var(--filet);border-radius:99px;overflow:hidden}
-  .rev-prog i{display:block;height:100%;width:0;background:rgb(var(--acc));transition:width .3s}
+  .rev-prog i{display:block;height:100%;width:100%;background:rgb(var(--acc));transform:scaleX(0);transform-origin:left;transition:transform .2s var(--ease)}
   #reviewProgress{font-size:calc(13px * var(--ech));font-weight:600;color:var(--encre-2);white-space:nowrap}
-  .rev-centre{flex:1;overflow:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--e6);padding:var(--e6) var(--pad)}
+  .rev-centre{flex:1;overflow:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;justify-content:safe center;gap:var(--e6);padding:var(--e6) var(--pad)}
   .rev-carte{width:100%;max-width:780px;background:var(--carte);border:1px solid var(--filet);border-radius:var(--r-l);box-shadow:var(--ombre-forte);padding:clamp(24px,5vw,48px)}
   #reviewRecto{font:600 calc(26px * var(--ech))/1.35 var(--slab);white-space:pre-line}
   #reviewVerso{font-size:calc(19px * var(--ech));line-height:1.6;margin-top:var(--e6);padding-top:var(--e6);border-top:1px solid var(--filet);white-space:pre-line}
@@ -79,8 +93,19 @@
   .rev-notes[hidden],.rev-actions[hidden],.rev-fin[hidden],#reviewVerso[hidden]{display:none}
   .rev-notes button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;min-height:84px;height:auto;text-transform:none;letter-spacing:0}
   .rev-notes button kbd{margin:0 0 2px}
+  .rev-info{font-size:calc(13px * var(--ech));color:var(--encre-2)}
+  .choix-annee{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--e2);margin:var(--e4) 0 var(--e3)}
+  .choix-annee button{min-height:52px;font-size:calc(16px * var(--ech));font-weight:650}
+  .annee-ligne{margin:0 0 var(--e3);font-size:calc(14px * var(--ech));color:var(--encre-2)}
+  .niveau-carte{padding:1px 7px;border:1px solid var(--filet-2);border-radius:99px;font-weight:600}
+  .source-carte,.rev-source{margin:0;font-size:calc(12.5px * var(--ech));color:var(--gris)}
+  .rev-source{margin-top:var(--e3)}
+  .petit{font-size:calc(13px * var(--ech))}
+  .plan-tout{display:flex;gap:var(--e3);margin:var(--e1) 0 var(--e2)}
+  /* au doigt, les touches du clavier ne servent à rien (troisième passe du test : « Espace » sur téléphone) */
+  @media (hover:none) and (pointer:coarse){ #reviewArea kbd,footer.tip{display:none} }
   .rev-notes button b{font-size:calc(15px * var(--ech))}
-  .rev-notes button small{font-size:calc(12px * var(--ech));font-weight:500;opacity:.75}
+  .rev-notes button small{font-size:calc(12px * var(--ech));font-weight:500;color:var(--encre-2)}   /* pas d'opacité sur du texte : contraste ≥ 4,5:1 */
   .rev-notes .encore{border-color:var(--alerte);color:var(--alerte)}
   .rev-notes .facile{border-color:var(--succes);color:var(--succes)}
   .rev-fin{text-align:center;max-width:560px}
@@ -94,10 +119,62 @@
   dialog.fenetre-carte textarea{min-height:90px}
   @media (max-width:640px){
     .a-reviser{grid-template-columns:1fr}
-    .a-reviser #startReview{grid-column:1;grid-row:auto;width:100%}
+    .a-reviser .a-reviser-actions{grid-column:1;grid-row:auto;width:100%}
     .rev-notes{grid-template-columns:1fr 1fr}
   }
   .barre-cartes{margin-bottom:var(--e6)}
+
+  /* planning de révision jusqu'à l'examen */
+  .planning{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:var(--e3) var(--e6);align-items:center}
+  @media (min-width:1200px){ #vueReviser > .planning{grid-column:1 / -1;margin-bottom:var(--gouttiere)} }
+  .planning h2{margin:0;font:650 calc(20px * var(--ech))/1.25 var(--titre);letter-spacing:-.015em}
+  .planning p{margin:0;color:var(--encre-2);font-size:calc(15px * var(--ech));line-height:1.5}
+  .planning .plan-actions{display:flex;gap:var(--e2);flex-wrap:wrap;justify-content:flex-end}
+  .plan-barre{grid-column:1 / -1;height:8px;border-radius:99px;background:var(--carte-2);overflow:hidden;position:relative}
+  .plan-barre i{position:absolute;inset:0 auto 0 0;background:rgb(var(--acc-fond));border-radius:99px}
+  .plan-barre b{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--encre);border-radius:2px}
+  .plan-legende{grid-column:1 / -1;display:flex;justify-content:space-between;gap:var(--e3);flex-wrap:wrap;font-size:calc(13px * var(--ech));color:var(--gris)}
+  .plan-legende .avance{color:var(--succes);font-weight:650}
+  .plan-legende .retard{color:var(--alerte);font-weight:650}
+  dialog.fenetre-carte .plan-matieres{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:var(--e1) var(--e4);max-height:220px;overflow:auto;padding:var(--e2) var(--e3);border:1px solid var(--filet-2);border-radius:var(--r-s)}
+  dialog.fenetre-carte .plan-matieres label{display:flex;gap:var(--e2);align-items:center;margin:0;font-weight:500;text-transform:none;letter-spacing:0;color:var(--encre)}
+  dialog.fenetre-carte .plan-matieres input{width:auto}
+  @media (max-width:640px){ .planning{grid-template-columns:1fr} .planning .plan-actions{justify-content:flex-start} }
+
+  /* un cours devient des cartes */
+  dialog.fenetre-cours{width:min(860px,calc(100vw - 32px));max-height:calc(100vh - 32px)}
+  .fenetre-cours .note-ia{font-size:calc(13px * var(--ech));margin:var(--e3) 0 var(--e4)}
+  .alerte-cours{margin:var(--e3) 0 0;padding:var(--e3) var(--e4);border:1px solid var(--alerte);border-radius:var(--r-m);background:var(--alerte-doux);color:var(--alerte);font-size:calc(14px * var(--ech))}
+  .cours-tete{align-items:flex-end;gap:var(--e4);margin-bottom:var(--e3)}
+  .cours-tete p{margin:0 0 10px}
+  .cours-liste{list-style:none;margin:0 0 var(--e4);padding:0;display:grid;gap:var(--e2);max-height:min(56vh,560px);overflow:auto}
+  .cours-liste li{display:grid;grid-template-columns:auto minmax(0,1fr);gap:var(--e1) var(--e3);padding:var(--e3);border:1px solid var(--filet);border-radius:var(--r-m);background:var(--carte)}
+  .cours-liste li.ecartee{background:var(--carte-2)}
+  .cours-liste li.ecartee textarea{color:var(--gris)}
+  .cours-liste input[type=checkbox]{width:20px;height:20px;margin:4px 0 0;grid-row:span 3}
+  .cours-liste .genre{font-size:calc(12.5px * var(--ech));font-weight:620;color:var(--gris)}
+  .cours-liste textarea{min-height:0;height:auto;margin:0;font-size:calc(14px * var(--ech));resize:vertical}
+
+  /* texte à trous : {{mot}} masqué à la révision, révélé avec la réponse */
+  .choix-type{display:inline-flex;gap:2px;padding:3px;margin:0 0 var(--e4);background:var(--carte-2);border:1px solid var(--filet);border-radius:10px}
+  .choix-type button{border:0;background:none;box-shadow:none;min-height:36px;height:36px;padding:0 var(--e4);border-radius:8px;font-size:calc(14px * var(--ech));color:var(--encre-2)}
+  .choix-type button[aria-checked="true"]{background:var(--carte);color:var(--encre);box-shadow:var(--ombre)}
+  .choix-type button:not([aria-checked="true"]):hover{background:none;color:var(--encre)}
+  .aide-trous{display:flex;flex-wrap:wrap;align-items:center;gap:var(--e2) var(--e3);margin:var(--e2) 0 0;font-size:calc(13px * var(--ech));color:var(--gris)}
+  .aide-trous button{min-height:36px;height:36px;font-size:calc(13px * var(--ech))}
+  .trou{display:inline-block;min-width:4.5em;padding:0 .35em;border-bottom:2px solid var(--filet-2);border-radius:4px 4px 0 0;background:var(--carte-2);color:var(--gris);text-align:center;font-weight:500;line-height:1.3}
+  .trou.vu{min-width:0;border-bottom-color:rgb(var(--acc));background:var(--acc-doux);color:var(--encre);font-weight:650}
+  .carte-item .type-trous{font-weight:600;color:var(--gris)}
+  /* images et schémas dans les cartes */
+  .carte-image{margin-top:var(--e3)}
+  .carte-image .row{gap:var(--e2)}
+  .carte-image select{width:auto;min-width:180px}
+  .aide-image{margin:var(--e2) 0 0;font-size:calc(13px * var(--ech))}
+  #fImageApercu{display:block;max-width:100%;max-height:200px;margin-top:var(--e3);border:1px solid var(--filet);border-radius:var(--r-s);background:#fff}
+  #fImageApercu[hidden]{display:none}
+  .rev-image{display:block;max-width:100%;max-height:44vh;margin:var(--e5) auto 0;border:1px solid var(--filet);border-radius:var(--r-m);background:#fff}
+  .carte-item .vignette{float:right;width:72px;height:54px;object-fit:cover;margin:0 0 var(--e2) var(--e3);border:1px solid var(--filet);border-radius:6px;background:#fff}
+  #reviewRecto .trou{font-size:.92em}
 </style>
 </head>
 <body>
@@ -125,10 +202,16 @@
   </div>
 
   <section id="vueReviser" role="tabpanel" aria-labelledby="ongReviser">
+    <section class="card planning" id="planning" aria-labelledby="planTitre"></section>
+
+    <p class="annee-ligne" id="anneeLigne"></p>
     <div class="card a-reviser">
       <div class="a-reviser-chiffre"><b id="dueCount">0</b><span id="dueLibelle">carte(s) à réviser aujourd'hui</span></div>
       <div class="muted" id="statMatieres"></div>
-      <button type="button" id="startReview" class="primary grand">Commencer la révision</button>
+      <div class="a-reviser-actions">
+        <button type="button" id="startReview" class="primary grand">Commencer la révision</button>
+        <button type="button" id="seanceCourte" hidden>Séance courte : 10 cartes</button>
+      </div>
     </div>
 
     <div class="card">
@@ -136,7 +219,7 @@
       <div class="stats-grille">
         <div><span class="stat-val" id="statJour">0</span><span class="stat-lbl">révisions aujourd'hui</span></div>
         <div><span class="stat-val" id="statSerie">0</span><span class="stat-lbl">jour(s) d'affilée</span></div>
-        <div><span class="stat-val" id="statMaitrisees">0</span><span class="stat-lbl">cartes maîtrisées (≥ 21 j)</span></div>
+        <div><span class="stat-val" id="statMaitrisees">0</span><span class="stat-lbl">cartes bien acquises (elles reviennent dans trois semaines ou plus)</span></div>
         <div><span class="stat-val" id="statNouvelles">0</span><span class="stat-lbl">jamais révisées</span></div>
       </div>
       <div class="histo" id="statHisto" aria-label="Révisions des 14 derniers jours"></div>
@@ -154,9 +237,11 @@
       <button type="button" id="nouvelleCarte" class="primary">+ Nouvelle carte</button>
       <div class="barre-groupe" role="group" aria-label="Importer">
         <span class="barre-titre">Importer</span>
+        <button type="button" id="importCours" title="Un cours en Word, en PDF ou en texte : Paraphe propose des cartes, vous les validez. Rien n'est envoyé.">Depuis un cours</button>
         <button type="button" id="importBtn" title="Reprendre un fichier .json enregistré depuis cet outil">Depuis un fichier</button>
-        <button type="button" id="promptIA" title="Copier un prompt qui fait convertir votre document (PDF, Word, texte…) par une IA au format d’import">Avec une IA</button>
+        <button type="button" id="promptIA" title="Copie une consigne à coller dans l'IA de votre choix, avec votre document : elle le convertit au format d'import. Paraphe n'envoie rien.">Avec une IA</button>
       </div>
+      <p class="barre-note">« Avec une IA » copie une consigne à coller dans l'IA de votre choix : Paraphe n'envoie rien.</p>
       <div class="barre-groupe" role="group" aria-label="Exporter">
         <span class="barre-titre">Exporter</span>
         <button type="button" id="exportBtn" title="Enregistrer une copie de vos cartes (fichier .json)">Sauvegarde</button>
@@ -183,12 +268,16 @@
     <span class="badge" id="reviewMatiere">—</span>
     <div class="rev-prog" aria-hidden="true"><i id="reviewBar"></i></div>
     <span id="reviewProgress"></span>
+    <span class="rev-info" id="reviewInfo" role="status" aria-live="polite"></span>
+    <span class="lecteur-seul" id="annonceRevision" aria-live="polite"></span>
     <button type="button" id="quitterRevision">Quitter</button>
   </div>
   <div class="rev-centre">
     <div class="rev-carte" id="revCarte">
       <div id="reviewRecto"></div>
+      <img class="rev-image" id="reviewImage" alt="" hidden>
       <div id="reviewVerso" hidden></div>
+      <p class="rev-source" id="reviewSource" hidden></p>
     </div>
     <div class="rev-actions" id="showAnswerRow">
       <button type="button" id="showAnswerBtn" class="primary grand">Afficher la réponse<kbd>Espace</kbd></button>
@@ -203,7 +292,10 @@
       <span class="badge">Séance terminée</span>
       <h2 id="finTitre">Tout est à jour.</h2>
       <p class="muted" id="finTexte"></p>
-      <button type="button" id="fermerRevision" class="primary grand">Terminer</button>
+      <div class="rev-fin-actions">
+        <button type="button" id="encoreCinq" hidden>Encore cinq cartes</button>
+        <button type="button" id="fermerRevision" class="primary grand">Terminer</button>
+      </div>
     </div>
   </div>
 </div>
@@ -211,22 +303,89 @@
 <!-- Ajout / modification d'une carte -->
 <dialog class="fenetre-carte" id="formCard" aria-labelledby="formTitle">
   <h2 id="formTitle" class="titre-3">Nouvelle carte</h2>
+  <div class="choix-type" role="radiogroup" aria-label="Type de carte">
+    <button type="button" role="radio" aria-checked="true" data-type="qr">Question et réponse</button>
+    <button type="button" role="radio" aria-checked="false" data-type="trous">Texte à trous</button>
+  </div>
   <label for="fMatiere">Matière</label>
   <input type="text" id="fMatiere" list="matiereList" placeholder="ex. Droit civil">
   <datalist id="matiereList"></datalist>
-  <label for="fRecto">Recto (question / terme)</label>
+  <label for="fRecto" id="fRectoEt">Recto (question / terme)</label>
   <textarea id="fRecto" placeholder="ex. Définition de la faute délictuelle ?"></textarea>
-  <label for="fVerso">Verso (réponse / définition)</label>
+  <p class="aide-trous" id="aideTrous" hidden>
+    <button type="button" id="masquerSelection">Masquer la sélection</button>
+    <span>Sélectionnez un mot, un délai ou un numéro d'article, puis masquez-le. Il apparaît entre {{ }}.</span>
+  </p>
+  <label for="fVerso" id="fVersoEt">Verso (réponse / définition)</label>
   <textarea id="fVerso" placeholder="ex. Comportement contraire à une norme de conduite…"></textarea>
+  <div class="carte-image">
+    <div class="row">
+      <button type="button" id="fImageChoisir">Ajouter une image ou un schéma</button>
+      <select id="fImageCote" aria-label="Où montrer l'image" hidden><option value="recto">avec la question</option><option value="verso">avec la réponse</option></select>
+      <button type="button" id="fImageRetirer" class="danger" hidden>Retirer l'image</button>
+    </div>
+    <p class="muted aide-image">Une photo de votre schéma, un tableau, une frise : choisissez un fichier, ou collez une image dans le texte (Ctrl V, ⌘ V sur Mac).</p>
+    <img id="fImageApercu" alt="Aperçu de l'image de la carte" hidden>
+    <input type="file" id="fImageFichier" accept="image/*" hidden>
+  </div>
   <div class="row end" style="margin-top:var(--e4);">
     <button type="button" id="cancelEditBtn">Annuler</button>
     <button type="button" id="addAnotherBtn">Ajouter et en créer une autre</button>
     <button type="button" id="addCardBtn" class="primary">Ajouter la carte</button>
   </div>
 </dialog>
+<dialog class="fenetre-carte" id="formAnnee" aria-labelledby="anneeTitre">
+  <h2 id="anneeTitre" class="titre-3">Votre année d'études</h2>
+  <p class="muted">Paraphe propose des cartes d'exemple par niveau. Choisissez votre année : seules les cartes de ce niveau (et, en licence, des années précédentes) seront à réviser ; les autres restent dans « Mes cartes ». Vos propres cartes ne sont jamais concernées.</p>
+  <div class="choix-annee" role="group" aria-labelledby="anneeTitre">
+    <button type="button" data-annee="L1">Licence 1</button><button type="button" data-annee="L2">Licence 2</button>
+    <button type="button" data-annee="L3">Licence 3</button><button type="button" data-annee="M">Master</button>
+  </div>
+  <button type="button" class="lien" data-annee="tout">Je ne suis pas étudiant : toutes les cartes</button>
+  <p class="muted petit">Les cartes d'exemple couvrent les trois années de licence et le master (190 cartes, chacune avec sa source).</p>
+</dialog>
+
+<dialog class="fenetre-carte" id="formPlanning" aria-labelledby="planFormTitre">
+  <h2 id="planFormTitre" class="titre-3">Planning de révision</h2>
+  <p class="muted">Indiquez la date de l'examen : Paraphe répartit les cartes que vous n'avez jamais révisées jour après jour, et aucune carte de ces matières n'est repoussée après l'examen.</p>
+  <label for="pNom">Examen</label>
+  <input type="text" id="pNom" placeholder="ex. Partiel de droit des obligations">
+  <label for="pDate">Date de l'examen</label>
+  <input type="date" id="pDate">
+  <label>Matières concernées</label>
+  <div class="plan-tout"><button type="button" class="lien" data-plan-tout="1">Tout cocher</button><button type="button" class="lien" data-plan-tout="0">Tout décocher</button></div>
+  <div class="plan-matieres" id="pMatieres"></div>
+  <div class="row end" style="margin-top:var(--e4);">
+    <button type="button" id="pAnnuler">Annuler</button>
+    <button type="button" id="pEnregistrer" class="primary">Répartir mes cartes</button>
+  </div>
+</dialog>
+<dialog class="fenetre-carte fenetre-cours" id="fenCours" aria-labelledby="coursTitre">
+  <h2 id="coursTitre" class="titre-3">Un cours devient des cartes</h2>
+  <div id="coursEtape1">
+    <p class="muted">Choisissez votre cours (Word, PDF ou texte) ou collez son texte. Paraphe le lit sur cet ordinateur, sans rien envoyer, et vous propose des cartes : définitions, articles, délais en texte à trous, solutions d'arrêts. Vous gardez celles qui vous servent.</p>
+    <label for="coursFichier">Fichier du cours</label>
+    <input type="file" id="coursFichier" accept=".docx,.pdf,.txt,.md,application/pdf,application/vnd.openxmlformats-officedocument.wordprocessingml.document,text/plain">
+    <label for="coursTexte">Ou collez le texte</label>
+    <textarea id="coursTexte" rows="6" placeholder="Collez ici une partie de votre cours"></textarea>
+    <p class="alerte-cours" id="coursErreur" role="alert" hidden></p>
+    <p class="muted note-ia">Vous préférez qu'une IA rédige les cartes ? Fermez cette fenêtre et choisissez « Avec une IA » : votre cours passe alors par le service d'IA que vous choisissez.</p>
+    <div class="row end"><button type="button" data-cours="fermer">Annuler</button><button type="button" class="primary" id="coursProposer">Proposer des cartes</button></div>
+  </div>
+  <div id="coursEtape2" hidden>
+    <div class="row cours-tete">
+      <div style="flex:1;min-width:200px"><label for="coursMatiere">Matière des cartes</label><input type="text" id="coursMatiere" list="matiereList"></div>
+      <p class="muted" id="coursCompte"></p>
+    </div>
+    <ol class="cours-liste" id="coursListe"></ol>
+    <div class="row end"><button type="button" id="coursRetour">Changer de cours</button><button type="button" class="primary" id="coursAjouter">Ajouter les cartes cochées</button></div>
+  </div>
+</dialog>
 <div id="printArea"></div>
 
 <script src="commun.js"></script>
+<script src="cartes-exemples.js"></script>
+<script src="cours.js"></script>
 <script>
 const STORAGE_KEY = "droit_flashcards";
 // Cartes d'exemple supprimées par l'utilisateur : sans cette liste, elles revenaient à chaque chargement
@@ -320,7 +479,28 @@ const SEED_RAW = [
 ["Régime général des obligations", "Qu'est-ce que la cession de dette ?", "Convention par laquelle un débiteur cédant transmet sa dette à un tiers cessionnaire, avec l'accord du créancier, qui peut ou non libérer le débiteur originaire."],
 ];
 
-const SEED = SEED_RAW.map(([m, r, v], i) => mkSeedCard("seed-fc-" + i, m, r, v));
+/* Les 70 cartes historiques sont de master ; les cartes par niveau viennent de src/cartes-exemples.js
+   (scripts/flashcards/lot*.py, chacune avec sa source, relues avant intégration). */
+const SEED = SEED_RAW.map(([m, r, v], i) => Object.assign(mkSeedCard("seed-fc-" + i, m, r, v), { niveau: "M1-M2" }))
+  .concat((window.PARAPHE_CARTES || []).map(c => Object.assign({}, c, nouvelleProgression())));
+
+/* « Votre année » : au premier passage, Fiches mémo demande l'année d'études ; les cartes d'exemple d'un
+   autre niveau, jamais révisées, restent dans « Mes cartes » sans être programmées (« en réserve »).
+   Une carte que vous avez créée, ou déjà révisée, n'est jamais mise en réserve. */
+const ANNEE_KEY = "droit_flashcards_annee";
+const lireAnnee = () => { try { return localStorage.getItem(ANNEE_KEY); } catch { return null; } };
+const NOMS_ANNEE = { L1: "Licence 1", L2: "Licence 2", L3: "Licence 3", M: "Master", tout: "Toutes les cartes" };
+const niveauDe = c => c.niveau || (/^seed-fc-\d+$/.test(c.id) ? "M1-M2" : "");
+function enReserve(c) {
+  const annee = lireAnnee();
+  if (!annee || annee === "tout" || !String(c.id).startsWith("seed-fc-") || c.reps || c.vue || c.interval) return false;
+  const niv = niveauDe(c); if (!niv) return false;
+  // en licence, les années précédentes restent utiles (un L2 révise aussi le droit constitutionnel de L1)
+  const voulu = annee === "M" ? ["M1", "M2"] : { L1: ["L1"], L2: ["L1", "L2"], L3: ["L1", "L2", "L3"] }[annee] || [annee];
+  const [a, b] = niv.split("-"), ordre = ["L1", "L2", "L3", "M1", "M2"];
+  const couverts = b ? ordre.slice(ordre.indexOf(a), ordre.indexOf(b) + 1) : [a];
+  return !voulu.some(v => couverts.includes(v));
+}
 
 const loadCards = () => Commun.avecExemples(STORAGE_KEY, SEED, DELETED_SEEDS_KEY);
 const saveCards = list => Commun.ecrire(STORAGE_KEY, list);
@@ -331,7 +511,24 @@ let reviewQueue = [];
 let currentCard = null;
 let reviewTotal = 0;
 
+// --- Texte à trous : « Le délai est de {{deux ans}} » (la syntaxe d'Anki {{c1::…}} est acceptée) ---
+const TROU = /\{\{(?:c\d+::)?(.+?)(?:::[^}]*)?\}\}/g;
+const estTrous = c => c.type === "trous";
+const reponsesTrous = texte => [...String(texte || "").matchAll(TROU)].map(m => m[1]);
+// texte échappé, trous masqués (« […] ») ou révélés
+function rendreTrous(texte, revele) {
+  const brut = String(texte || "");
+  let html = "", dernier = 0;
+  for (const m of brut.matchAll(TROU)) {
+    html += escapeHtml(brut.slice(dernier, m.index));
+    html += revele ? `<span class="trou vu">${escapeHtml(m[1])}</span>` : '<span class="trou" aria-label="mot masqué">[…]</span>';
+    dernier = m.index + m[0].length;
+  }
+  return html + escapeHtml(brut.slice(dernier));
+}
+
 function isDue(card) {
+  if (enReserve(card)) return false;
   return !card.dueDate || card.dueDate <= todayISO();
 }
 
@@ -352,8 +549,110 @@ function updateCounts() {
   document.getElementById("dueCount").textContent = aReviser;
   document.getElementById("dueLibelle").textContent = aReviser > 1 ? "cartes à réviser aujourd'hui" : (aReviser ? "carte à réviser aujourd'hui" : "carte à réviser aujourd'hui — tout est à jour");
   document.getElementById("startReview").disabled = !aReviser;
+  document.getElementById("startReview").textContent = aReviser > 10 ? "Tout réviser (" + aReviser + " cartes)" : "Commencer la révision";
+  document.getElementById("seanceCourte").hidden = aReviser <= 10;
   renderStats();
+  renderPlanning();
 }
+
+// --- Planning de révision : une date d'examen, les cartes réparties jusqu'au jour J ---
+const PLAN_KEY = "droit_flashcards_examen";
+const lirePlan = () => { const p = Commun.lire(PLAN_KEY, null); return p && p.date ? p : null; };
+const jourDe = iso => new Date(iso + "T12:00");
+const ecartJours = (a, b) => Math.round((jourDe(b) - jourDe(a)) / 86400000);
+const plusJours = (iso, n) => { const d = jourDe(iso); d.setDate(d.getDate() + n); return localISO(d); };
+const vue = c => !!(c.vue || c.reps || c.interval);
+const dansPlan = (plan, c) => !plan.matieres || !plan.matieres.length || plan.matieres.includes(c.matiere || "Sans matière");
+// la veille de l'examen au plus tard : aucune carte du planning ne part après le jour J
+function plafonner(c, plan = lirePlan()) {
+  if (!plan || !dansPlan(plan, c)) return;
+  const veille = plusJours(plan.date, -1);
+  if (todayISO() < veille && c.dueDate > veille) c.dueDate = veille;
+}
+function repartir(plan) {
+  const auj = todayISO(), jours = Math.max(1, ecartJours(auj, plan.date) - 1);   // la veille reste pour une dernière revue
+  const neuves = cards.filter(c => dansPlan(plan, c) && !vue(c))
+    .sort((a, b) => (a.matiere || "").localeCompare(b.matiere || ""));
+  neuves.forEach((c, i) => { c.dueDate = plusJours(auj, Math.floor(i * jours / neuves.length)); });
+  cards.forEach(c => { if (vue(c)) plafonner(c, plan); });
+  saveCards(cards);
+}
+function renderPlanning() {
+  const zone = document.getElementById("planning"), plan = lirePlan();
+  if (!plan || ecartJours(todayISO(), plan.date) < 0) {
+    zone.innerHTML = `<div><h2 id="planTitre">Un examen approche ?</h2><p>Indiquez sa date : Paraphe répartit vos cartes jour après jour jusqu'au jour J, et vous dit si vous êtes en avance ou en retard.</p></div>
+      <div class="plan-actions"><button type="button" id="ouvrirPlanning">Préparer un examen</button></div>`;
+    if (plan) { try { localStorage.removeItem(PLAN_KEY); } catch {} }
+    return;
+  }
+  const auj = todayISO(), restants = ecartJours(auj, plan.date), total = Math.max(1, ecartJours(plan.debut || auj, plan.date));
+  const concernees = cards.filter(c => dansPlan(plan, c)), vues = concernees.filter(vue).length;
+  // ce qui devait être vu avant aujourd'hui : le jour en cours n'est pas encore compté
+  const ecoule = Math.min(1, Math.max(0, ecartJours(plan.debut || auj, auj) / total));
+  const attendu = Math.round(concernees.length * ecoule), ecart = vues - attendu;
+  const duJour = concernees.filter(isDue).length;
+  const u = restants <= 7 ? "u-urgent" : restants <= 30 ? "u-bientot" : "";
+  const quand = restants === 0 ? "aujourd'hui" : restants === 1 ? "demain" : "dans " + restants + " jours";
+  zone.innerHTML = `<div><h2 id="planTitre">${escapeHtml(plan.nom || "Examen")} : <span class="u ${u}">${quand}</span></h2>
+      <p>${new Date(plan.date + "T12:00").toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" })} · pour cet examen, aujourd'hui : <b>${duJour} carte${duJour > 1 ? "s" : ""}</b>${plan.matieres && plan.matieres.length ? " · " + escapeHtml(plan.matieres.join(", ")) : ""}</p></div>
+    <div class="plan-actions">${duJour ? `<button type="button" id="reviserPlan" class="primary">${duJour > 1 ? "Réviser ces " + duJour + " cartes" : "Réviser cette carte"}</button>` : ""}<button type="button" id="ouvrirPlanning">Modifier</button><button type="button" id="arreterPlanning" class="danger">Arrêter</button></div>
+    <div class="plan-barre" role="img" aria-label="${vues} cartes vues sur ${concernees.length}, ${attendu} attendues à ce jour"><i style="width:${concernees.length ? vues / concernees.length * 100 : 0}%"></i><b style="left:calc(${ecoule * 100}% - 1px)" title="Où vous devriez en être"></b></div>
+    <div class="plan-legende"><span>${vues ? vues + " carte" + (vues > 1 ? "s" : "") + " vue" + (vues > 1 ? "s" : "") : "Aucune carte vue"} sur ${concernees.length}</span>
+      <span class="${ecart > 0 ? "avance" : ecart < 0 ? "retard" : ""}">${ecart > 0 ? "En avance de " + ecart + " carte" + (ecart > 1 ? "s" : "") : ecart < 0 ? "En retard de " + (-ecart) + " carte" + (ecart < -1 ? "s" : "") : "Dans les temps"}</span></div>
+    ${planJourParJour(plan)}`;
+}
+/* Le planning jour par jour, jusqu'à la veille de l'examen : combien de cartes de l'examen reviennent chaque jour
+   (celles en retard comptent pour aujourd'hui). Seconde passe du test : seul l'objectif du jour était visible. */
+function planJourParJour(plan) {
+  const auj = todayISO(), veille = plusJours(plan.date, -1), n = ecartJours(auj, veille);
+  if (n < 0) return "";
+  const parJour = {};
+  cards.filter(c => dansPlan(plan, c)).forEach(c => {
+    const j = !c.dueDate || c.dueDate < auj ? auj : c.dueDate;
+    if (j <= veille) parJour[j] = (parJour[j] || 0) + 1;
+  });
+  const jours = [];
+  for (let i = 0; i <= Math.min(n, 120); i++) jours.push(plusJours(auj, i));
+  const fmt = iso => new Date(iso + "T12:00").toLocaleDateString("fr-FR", { weekday: "short", day: "numeric", month: "short" });
+  return `<details class="plan-jours"><summary>Voir le planning jour par jour, jusqu'à la veille de l'examen</summary><ol>`
+    + jours.map(j => `<li class="${j === auj ? "auj" : ""}${j === veille ? " veille" : ""}"><span>${j === auj ? "Aujourd'hui" : j === veille ? "Veille : " + fmt(j) : fmt(j)}</span><b>${parJour[j] || 0} carte${(parJour[j] || 0) > 1 ? "s" : ""}</b></li>`).join("")
+    + `</ol></details>`;
+}
+const fenPlan = document.getElementById("formPlanning");
+document.getElementById("planning").addEventListener("click", e => {
+  if (e.target.closest("#reviserPlan")) { const plan = lirePlan(); startReview(0, c => dansPlan(plan, c)); return; }
+  if (e.target.closest("#arreterPlanning")) {
+    if (!confirm("Arrêter le planning ? Vos cartes gardent leurs dates actuelles.")) return;
+    try { localStorage.removeItem(PLAN_KEY); } catch {}
+    renderPlanning(); return;
+  }
+  if (!e.target.closest("#ouvrirPlanning")) return;
+  const plan = lirePlan() || {}, matieres = [...new Set(cards.map(c => c.matiere || "Sans matière"))].sort();
+  document.getElementById("pNom").value = plan.nom || "";
+  document.getElementById("pDate").value = plan.date || "";
+  document.getElementById("pDate").min = plusJours(todayISO(), 1);
+  document.getElementById("pMatieres").innerHTML = matieres.map(m =>
+    `<label><input type="checkbox" value="${escapeHtml(m)}"${!plan.matieres || !plan.matieres.length || plan.matieres.includes(m) ? " checked" : ""}> ${escapeHtml(m)}</label>`).join("");
+  fenPlan.showModal(); document.getElementById("pNom").focus();
+});
+document.getElementById("pAnnuler").addEventListener("click", () => fenPlan.close());
+fenPlan.addEventListener("click", e => {
+  const b = e.target.closest("[data-plan-tout]");
+  if (b) document.querySelectorAll("#pMatieres input").forEach(i => i.checked = b.dataset.planTout === "1");
+});
+document.getElementById("pEnregistrer").addEventListener("click", () => {
+  const date = document.getElementById("pDate").value;
+  if (!date || date <= todayISO()) { alert("Choisissez une date d'examen à venir."); return; }
+  const matieres = [...document.querySelectorAll("#pMatieres input:checked")].map(i => i.value);
+  if (!matieres.length) { alert("Cochez au moins une matière."); return; }
+  const tout = matieres.length === document.querySelectorAll("#pMatieres input").length;
+  const ancien = lirePlan();
+  const plan = { nom: document.getElementById("pNom").value.trim() || "Examen", date, matieres: tout ? [] : matieres, debut: ancien && ancien.date === date ? ancien.debut : todayISO() };
+  Commun.ecrire(PLAN_KEY, plan);
+  repartir(plan);
+  fenPlan.close();
+  updateCounts(); renderList();
+});
 
 // --- Statistiques : nombre de révisions par jour, conservé à part des cartes ---
 const STATS_KEY = "droit_flashcards_stats";
@@ -391,8 +690,8 @@ function renderStats() {
   const parMatiere = {};
   cards.filter(isDue).forEach(c => { const m = c.matiere || "Sans matière"; parMatiere[m] = (parMatiere[m] || 0) + 1; });
   const liste = Object.entries(parMatiere).sort((a, b) => b[1] - a[1])
-    .map(([m, n]) => `<span class="puce-mat ${Commun.classeMatiere(m)}">${escapeHtml(m)} <b>${n}</b></span>`);
-  document.getElementById("statMatieres").innerHTML = liste.length ? 'À réviser, par matière :<span class="puces-mat">' + liste.join("") + "</span>" : "Rien à réviser aujourd'hui.";
+    .map(([m, n]) => `<button type="button" class="puce-mat ${Commun.classeMatiere(m)}" data-reviser-matiere="${escapeHtml(m)}" title="Réviser seulement « ${escapeHtml(m)} »">${escapeHtml(m)} <b>${n}</b></button>`);
+  document.getElementById("statMatieres").innerHTML = liste.length ? 'À réviser, par matière (touchez une matière pour ne réviser qu\'elle) :<span class="puces-mat">' + liste.join("") + "</span>" : "Rien à réviser aujourd'hui.";
 }
 
 // Cartes correspondant à la recherche et au filtre (liste et export PDF)
@@ -401,9 +700,11 @@ function cartesFiltrees() {
   const matiereFilter = document.getElementById("filterMatiere").value;
   return cards.filter(c =>
     (!matiereFilter || c.matiere === matiereFilter) &&
-    (!search || [c.matiere, c.recto, c.verso].join(" ").toLowerCase().includes(search)));
+    (!search || [c.matiere, c.recto.replace(TROU, "$1"), c.verso].join(" ").toLowerCase().includes(search)));
 }
 
+const niveauEnMots = n => n.split("-").map(x => ({ L1: "L1", L2: "L2", L3: "L3", M1: "M1", M2: "M2" })[x] || x).join("-");
+let derniereCarte = null;   // la dernière carte ajoutée s'affiche en tête de la liste
 function renderList() {
   const list = document.getElementById("cardList");
   const filtered = cartesFiltrees();
@@ -416,17 +717,19 @@ function renderList() {
     return;
   }
 
-  filtered.sort((a, b) => (a.matiere || "").localeCompare(b.matiere || ""));
+  filtered.sort((a, b) => (b.id === derniereCarte) - (a.id === derniereCarte) || (a.matiere || "").localeCompare(b.matiere || ""));
 
   document.getElementById("compteListe").textContent = filtered.length + (filtered.length > 1 ? " cartes" : " carte") + (filtered.length < cards.length ? " sur " + cards.length : "");
   list.innerHTML = filtered.map(c => { const mat = Commun.classeMatiere(c.matiere); return `
     <article class="carte-item${mat ? " repere " + mat : ""}">
       <div class="meta">
         <span class="badge${mat ? " matiere" : ""}">${escapeHtml(c.matiere || "Sans matière")}</span>
-        ${isDue(c) ? '<span class="due">à réviser</span>' : "<span>prochaine révision : " + new Date(c.dueDate + "T12:00").toLocaleDateString("fr-FR", { day: "numeric", month: "long" }) + "</span>"}
+        ${niveauDe(c) ? `<span class="niveau-carte">${escapeHtml(niveauEnMots(niveauDe(c)))}</span>` : ""}
+        ${enReserve(c) ? '<span title="Carte d\'exemple d\'un autre niveau : elle n\'est pas programmée. Changez « Votre année » pour la réviser.">en réserve</span>' : isDue(c) ? '<span class="due">à réviser</span>' : "<span>prochaine révision : " + new Date(c.dueDate + "T12:00").toLocaleDateString("fr-FR", { day: "numeric", month: "long" }) + "</span>"}
       </div>
-      <h4>${escapeHtml(c.recto)}</h4>
-      <p>${escapeHtml(c.verso)}</p>
+      <h4>${imageSure(c) ? '<img class="vignette" src="' + imageSure(c) + '" alt="">' : ""}${estTrous(c) ? rendreTrous(c.recto, false) : escapeHtml(c.recto)}</h4>
+      <p>${estTrous(c) ? '<span class="type-trous">Texte à trous · </span>' + escapeHtml(reponsesTrous(c.recto).join(", ")) + (c.verso ? " — " + escapeHtml(c.verso) : "") : escapeHtml(c.verso)}</p>
+      ${c.source ? `<p class="source-carte">Source : ${escapeHtml(c.source)}</p>` : ""}
       <div class="actions">
         <button type="button" class="lien-action" data-edit="${escapeHtml(c.id)}">Modifier</button>
         <button type="button" class="lien-action danger" data-delete="${escapeHtml(c.id)}">Supprimer</button>
@@ -443,7 +746,73 @@ document.getElementById("cardList").addEventListener("click", (e) => {
 
 // --- Modification d'une carte : le formulaire d'ajout passe en mode édition ---
 let editingId = null;
+let typeCarte = "qr";
+// --- Image ou schéma d'une carte : réduite (1 000 px au plus) et compressée avant d'être gardée ---
+let imageCarte = null;
+// une image ne s'affiche que si c'est bien une image encodée (une carte importée peut venir de n'importe où)
+const imageSure = c => c && /^data:image\/(png|jpe?g|webp|gif);base64,[A-Za-z0-9+/=]+$/.test(c.image || "") ? c.image : "";
+function montrerImageForm() {
+  const ap = document.getElementById("fImageApercu");
+  ap.hidden = !imageCarte; if (imageCarte) ap.src = imageCarte.src;
+  document.getElementById("fImageCote").hidden = !imageCarte;
+  document.getElementById("fImageRetirer").hidden = !imageCarte;
+  if (imageCarte) document.getElementById("fImageCote").value = imageCarte.cote || "recto";
+  document.getElementById("fImageChoisir").textContent = imageCarte ? "Changer l'image" : "Ajouter une image ou un schéma";
+}
+function reduireImage(fichier) {
+  return new Promise((ok, ko) => {
+    const url = URL.createObjectURL(fichier), img = new Image();
+    img.onload = () => {
+      const k = Math.min(1, 1000 / Math.max(img.width, img.height)), c = document.createElement("canvas");
+      c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
+      const g = c.getContext("2d"); g.fillStyle = "#fff"; g.fillRect(0, 0, c.width, c.height); g.drawImage(img, 0, 0, c.width, c.height);
+      URL.revokeObjectURL(url);
+      const webp = c.toDataURL("image/webp", .82);
+      ok(webp.startsWith("data:image/webp") ? webp : c.toDataURL("image/jpeg", .82));
+    };
+    img.onerror = () => { URL.revokeObjectURL(url); ko(new Error("Cette image n'a pas pu être lue.")); };
+    img.src = url;
+  });
+}
+async function prendreImage(fichier) {
+  if (!fichier || !/^image\//.test(fichier.type)) return;
+  try { imageCarte = { src: await reduireImage(fichier), cote: imageCarte ? imageCarte.cote : "recto" }; montrerImageForm(); }
+  catch (e) { alert(e.message); }
+}
+document.getElementById("fImageChoisir").addEventListener("click", () => document.getElementById("fImageFichier").click());
+document.getElementById("fImageFichier").addEventListener("change", e => { prendreImage(e.target.files[0]); e.target.value = ""; });
+document.getElementById("fImageRetirer").addEventListener("click", () => { imageCarte = null; montrerImageForm(); });
+document.getElementById("fImageCote").addEventListener("change", e => { if (imageCarte) imageCarte.cote = e.target.value; });
+["fRecto", "fVerso"].forEach(id => document.getElementById(id).addEventListener("paste", e => {
+  const f = [...(e.clipboardData && e.clipboardData.files || [])].find(x => /^image\//.test(x.type));
+  if (f) { e.preventDefault(); prendreImage(f); }
+}));
 const fenetre = document.getElementById("formCard");
+function choisirType(type) {
+  typeCarte = type;
+  document.querySelectorAll(".choix-type button").forEach(b => b.setAttribute("aria-checked", String(b.dataset.type === type)));
+  const trous = type === "trous";
+  document.getElementById("fRectoEt").textContent = trous ? "Texte (une définition, un article…)" : "Recto (question / terme)";
+  document.getElementById("fRecto").placeholder = trous ? "ex. L'action en responsabilité se prescrit par {{cinq ans}} (art. 2224 C. civ.)." : "ex. Définition de la faute délictuelle ?";
+  document.getElementById("fVersoEt").textContent = trous ? "Précision affichée avec la réponse (facultatif)" : "Verso (réponse / définition)";
+  document.getElementById("fVerso").placeholder = trous ? "ex. Point de départ : le jour où le titulaire a connu les faits." : "ex. Comportement contraire à une norme de conduite…";
+  document.getElementById("aideTrous").hidden = !trous;
+}
+document.querySelector(".choix-type").addEventListener("click", e => { const b = e.target.closest("[data-type]"); if (b) choisirType(b.dataset.type); });
+document.querySelector(".choix-type").addEventListener("keydown", e => {
+  if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+  e.preventDefault(); choisirType(typeCarte === "qr" ? "trous" : "qr");
+  document.querySelector(`.choix-type [data-type="${typeCarte}"]`).focus();
+});
+document.getElementById("masquerSelection").addEventListener("click", () => {
+  const z = document.getElementById("fRecto"), d = z.selectionStart, f = z.selectionEnd;
+  const choisi = z.value.slice(d, f).trim();
+  if (!choisi) { alert("Sélectionnez d'abord, dans le texte, le mot à masquer."); z.focus(); return; }
+  const avant = z.value.slice(0, d), apres = z.value.slice(f), espaceD = z.value.slice(d, f).match(/^\s*/)[0], espaceF = z.value.slice(d, f).match(/\s*$/)[0];
+  z.value = avant + espaceD + "{{" + choisi + "}}" + espaceF + apres;
+  const fin = (avant + espaceD + "{{" + choisi + "}}").length;
+  z.focus(); z.setSelectionRange(fin, fin);
+});
 function ouvrirFormulaire() { fenetre.showModal ? fenetre.showModal() : fenetre.setAttribute("open", ""); document.getElementById("fRecto").focus(); }
 function startEdit(id) {
   const c = cards.find(x => x.id === id);
@@ -452,13 +821,17 @@ function startEdit(id) {
   document.getElementById("fMatiere").value = c.matiere || "";
   document.getElementById("fRecto").value = c.recto || "";
   document.getElementById("fVerso").value = c.verso || "";
+  choisirType(estTrous(c) ? "trous" : "qr");
+  imageCarte = imageSure(c) ? { src: imageSure(c), cote: c.imageCote || "recto" } : null; montrerImageForm();
   document.getElementById("formTitle").textContent = "Modifier la carte";
   document.getElementById("addCardBtn").textContent = "Enregistrer";
   document.getElementById("addAnotherBtn").hidden = true;
   ouvrirFormulaire();
 }
-function nouvelleCarte() {
+function nouvelleCarte(type = "qr") {
   editingId = null;
+  choisirType(type);
+  imageCarte = null; montrerImageForm();
   document.getElementById("fRecto").value = "";
   document.getElementById("fVerso").value = "";
   document.getElementById("formTitle").textContent = "Nouvelle carte";
@@ -472,7 +845,7 @@ function endEdit() {
   document.getElementById("fVerso").value = "";
   if (fenetre.open) fenetre.close();
 }
-document.getElementById("nouvelleCarte").addEventListener("click", nouvelleCarte);
+document.getElementById("nouvelleCarte").addEventListener("click", () => nouvelleCarte());
 document.getElementById("cancelEditBtn").addEventListener("click", endEdit);
 
 function deleteCard(id) {
@@ -497,20 +870,30 @@ function enregistrerCarte(continuer) {
   const matiere = document.getElementById("fMatiere").value.trim();
   const recto = document.getElementById("fRecto").value.trim();
   const verso = document.getElementById("fVerso").value.trim();
-  if (!recto || !verso) { alert("Merci de remplir le recto et le verso."); return; }
+  const trous = typeCarte === "trous";
+  if (trous) {
+    if (!recto) { alert("Écrivez le texte de la carte."); return; }
+    if (!reponsesTrous(recto).length) { alert("Masquez au moins un mot : sélectionnez-le puis « Masquer la sélection », ou entourez-le de {{ }}."); return; }
+  } else if (!recto || !verso) { alert("Merci de remplir le recto et le verso."); return; }
+  const type = trous ? { type: "trous" } : {};
+  const image = imageCarte ? { image: imageCarte.src, imageCote: imageCarte.cote || "recto" } : {};
   let id = editingId;
   if (editingId) {
     // on garde la progression de révision (ease, interval, échéance)
     const c = cards.find(x => x.id === editingId);
-    if (c) Object.assign(c, { matiere, recto, verso });
+    if (c) { Object.assign(c, { matiere, recto, verso }, type, image); if (!trous) delete c.type; if (!imageCarte) { delete c.image; delete c.imageCote; } }
   } else {
     id = crypto.randomUUID();
-    cards.push({ id, matiere, recto, verso, ...nouvelleProgression() });
+    cards.push({ id, matiere, recto, verso, ...type, ...image, ...nouvelleProgression() });
+    derniereCarte = id;
   }
+  // un retour visible, et la carte en tête de la liste (troisième passe : « la carte créée n'est ni signalée ni visible »)
+  Commun.annoncer(editingId ? "Carte enregistrée." : "Carte ajoutée" + (matiere ? " en « " + matiere + " »" : "") + " : elle est en tête de la liste, et vous attend dans « Réviser ».");
   saveCards(cards);
   refreshMatiereOptions();
   updateCounts();
   renderList();
+  imageCarte = null; montrerImageForm();
   if (continuer) {                      // la matière reste : on enchaîne les cartes d'un même cours
     document.getElementById("fRecto").value = "";
     document.getElementById("fVerso").value = "";
@@ -550,8 +933,9 @@ document.getElementById("exportPdfBtn").addEventListener("click", () => {
     html += `<div class="print-group-title">${escapeHtml(m)}</div>`;
     groups[m].forEach(c => {
       html += `<div class="print-item">
-        <h3>${escapeHtml(c.recto)}</h3>
-        <p>${escapeHtml(c.verso).replace(/\n/g, "<br>")}</p>
+        <h3>${estTrous(c) ? rendreTrous(c.recto, true) : escapeHtml(c.recto)}</h3>
+        ${c.verso ? `<p>${escapeHtml(c.verso).replace(/\n/g, "<br>")}</p>` : ""}
+        ${imageSure(c) ? `<img src="${imageSure(c)}" alt="" style="max-width:60%;max-height:6cm;margin-top:6px">` : ""}
       </div>`;
     });
   });
@@ -575,6 +959,9 @@ FORMAT : un tableau JSON, un objet par carte.
   }
 ]
 
+CARTES À TROUS : pour un délai, une condition ou un numéro d'article à retenir mot pour mot, tu peux aussi rendre une carte à trous : "type": "trous", le texte dans "recto" avec le passage à retenir entre doubles accolades, et une précision facultative dans "verso".
+  { "matiere": "Procédure civile", "type": "trous", "recto": "Le délai d'appel est d'{{un mois}} en matière contentieuse (art. 538 CPC).", "verso": "" }
+
 RÈGLES
 - Si le document contient déjà des paires question / réponse (export Anki ou Quizlet, liste de questions), reprends-les telles quelles, une carte par paire, sans les réécrire.
 - Sinon, rédige des cartes qui couvrent les notions importantes du document : définitions, conditions, régimes, délais, exceptions, arrêts de principe.
@@ -585,7 +972,7 @@ RÈGLES
 - Ne crée aucune carte sur une information qui ne figure pas dans le document.` + Commun.FIN_PROMPT("memo-cartes.json");
 const IMPORT = {
   liste: () => cards,
-  valide: c => c.recto && c.verso,
+  valide: c => c.recto && (c.verso || (c.type === "trous" && reponsesTrous(c.recto).length)),
   defauts: () => ({ matiere: "", ...nouvelleProgression() }),
   apres: n => {
     saveCards(cards);
@@ -606,12 +993,15 @@ function afficherFin() {
   document.getElementById("showAnswerRow").hidden = true;
   document.getElementById("ratingRow").hidden = true;
   const n = reviewDoneIds.size;
-  document.getElementById("finTitre").textContent = n ? "Bravo, séance terminée." : "Rien à réviser aujourd'hui.";
+  const restantes = cards.filter(c => isDue(c) && (!seance.filtre || seance.filtre(c))).length;
+  document.getElementById("finTitre").textContent = n ? (seance.limite && n >= seance.limite ? "Bravo, " + (n > 1 ? n + " cartes faites." : "une carte faite.") : "Bravo, séance terminée.") : "Rien à réviser aujourd'hui.";
   document.getElementById("finTexte").textContent = n
     ? n + (n > 1 ? " cartes révisées" : " carte révisée") + ". Les prochaines reviendront au bon moment."
+      + (restantes ? " Il en reste " + restantes + " à réviser aujourd'hui, si vous voulez continuer." : "")
     : "Toutes vos cartes sont à jour. Revenez demain, ou ajoutez de nouvelles cartes.";
+  document.getElementById("encoreCinq").hidden = !(n && restantes);
   document.getElementById("reviewDone").hidden = false;
-  document.getElementById("reviewBar").style.width = "100%";
+  document.getElementById("reviewBar").style.transform = "scaleX(1)";
   document.getElementById("fermerRevision").focus();
   updateCounts();
   renderList();
@@ -623,10 +1013,16 @@ function quitterRevision() {
   renderList();
   document.getElementById("startReview").focus();
 }
-function startReview() {
-  reviewQueue = cards.filter(isDue);
+/* Une séance peut être limitée (cinq cartes depuis « Réviser cinq cartes » de l'accueil, dix pour la séance courte)
+   ou réduite à une matière, ou aux cartes de l'examen (seconde passe du test : 70 cartes d'un coup décourageaient). */
+let seance = { limite: 0, filtre: null };
+function startReview(limite, filtre) {
+  seance = { limite: typeof limite === "number" ? limite : 0, filtre: typeof filtre === "function" ? filtre : null };
+  reviewQueue = cards.filter(c => isDue(c) && (!seance.filtre || seance.filtre(c)));
+  if (seance.limite) reviewQueue = reviewQueue.slice(0, seance.limite);
   reviewTotal = reviewQueue.length;
   reviewDoneIds = new Set();
+  document.getElementById("reviewInfo").textContent = "";
   zone.hidden = false;
   document.body.style.overflow = "hidden";
   document.getElementById("reviewDone").hidden = true;
@@ -642,22 +1038,38 @@ function nextCard() {
   badgeMatiere.textContent = currentCard.matiere || "Sans matière";
   badgeMatiere.className = "badge" + (mat ? " matiere " + mat : "");
   // les cartes « Encore » reviennent en fin de séance : on compte les cartes validées, pas les passages
+  const aRevoir = reviewQueue.filter(c => c.retour).length + (currentCard.retour ? 1 : 0);
   document.getElementById("reviewProgress").textContent =
-    reviewDoneIds.size + " / " + reviewTotal + (currentCard.retour ? " · 2e passage" : "");
-  document.getElementById("reviewBar").style.width = (reviewTotal ? reviewDoneIds.size / reviewTotal * 100 : 0) + "%";
-  document.getElementById("reviewRecto").textContent = currentCard.recto;
+    reviewDoneIds.size + " / " + reviewTotal + (currentCard.retour ? " · 2e passage" : "") + (aRevoir ? " · " + aRevoir + " à revoir" : "");
+  document.getElementById("reviewBar").style.transform = "scaleX(" + (reviewTotal ? reviewDoneIds.size / reviewTotal : 0) + ")";
+  const recto = document.getElementById("reviewRecto");
+  if (estTrous(currentCard)) recto.innerHTML = rendreTrous(currentCard.recto, false);
+  else recto.textContent = currentCard.recto;
+  const imgRev = document.getElementById("reviewImage");
+  imgRev.hidden = !(imageSure(currentCard) && (currentCard.imageCote || "recto") === "recto");
+  if (imageSure(currentCard)) { imgRev.src = imageSure(currentCard); imgRev.alt = "Image de la carte"; }
   document.getElementById("reviewVerso").textContent = currentCard.verso;
   document.getElementById("reviewVerso").hidden = true;
+  document.getElementById("reviewSource").hidden = true;
+  document.getElementById("reviewSource").textContent = currentCard.source ? "Source : " + currentCard.source : "";
   document.getElementById("showAnswerRow").hidden = false;
   document.getElementById("ratingRow").hidden = true;
   document.getElementById("showAnswerBtn").focus();
+  // au lecteur d'écran, la question est lue, pas seulement le bouton (quatrième passe : Aïcha n'entendait que « Afficher la réponse »)
+  document.getElementById("annonceRevision").textContent = "Carte " + (reviewDoneIds.size + 1) + " sur " + reviewTotal + ". Question : "
+    + (estTrous(currentCard) ? currentCard.recto.replace(/\{\{[^}]*\}\}/g, "blanc") : currentCard.recto);
 }
 
 function showAnswer() {
-  document.getElementById("reviewVerso").hidden = false;
+  if (estTrous(currentCard)) document.getElementById("reviewRecto").innerHTML = rendreTrous(currentCard.recto, true);
+  if (imageSure(currentCard)) document.getElementById("reviewImage").hidden = false;
+  document.getElementById("reviewVerso").hidden = estTrous(currentCard) && !currentCard.verso;
+  document.getElementById("reviewSource").hidden = !currentCard.source;
   document.getElementById("showAnswerRow").hidden = true;
   document.getElementById("ratingRow").hidden = false;
   document.querySelector('#ratingRow [data-rating="2"]').focus();
+  document.getElementById("annonceRevision").textContent = "Réponse : " + (estTrous(currentCard) ? currentCard.recto.replace(/\{\{([^}:]*)(::[^}]*)?\}\}/g, "$1") + (currentCard.verso ? ". " + currentCard.verso : "") : currentCard.verso)
+    + ". Notez de 1, encore, à 4, facile.";
 }
 
 function rateCard(rating) {
@@ -685,15 +1097,25 @@ function rateCard(rating) {
   const due = new Date();
   due.setDate(due.getDate() + Math.max(c.interval, rating === 0 ? 0 : 1));
   c.dueDate = localISO(due);
+  c.vue = true;
+  plafonner(c);                         // planning d'examen : jamais après la veille du jour J
 
   saveCards(cards);
   logReview();
-  if (rating === 0) reviewQueue.push({ id: c.id, matiere: c.matiere, recto: c.recto, verso: c.verso, retour: true });
+  document.getElementById("reviewInfo").textContent = rating === 0 ? "« Encore » : cette carte reviendra en fin de séance." : "";
+  if (rating === 0) reviewQueue.push({ id: c.id, matiere: c.matiere, recto: c.recto, verso: c.verso, type: c.type, image: c.image, imageCote: c.imageCote, retour: true });
   else reviewDoneIds.add(c.id);
   nextCard();
 }
 
-document.getElementById("startReview").addEventListener("click", startReview);
+document.getElementById("startReview").addEventListener("click", () => startReview());
+document.getElementById("seanceCourte").addEventListener("click", () => startReview(10));
+document.getElementById("encoreCinq").addEventListener("click", () => startReview(5, seance.filtre));
+// une matière seule : touchez sa pastille sous le nombre de cartes
+document.getElementById("statMatieres").addEventListener("click", e => {
+  const b = e.target.closest("[data-reviser-matiere]");
+  if (b) startReview(0, c => (c.matiere || "Sans matière") === b.dataset.reviserMatiere);
+});
 document.getElementById("quitterRevision").addEventListener("click", quitterRevision);
 document.getElementById("fermerRevision").addEventListener("click", quitterRevision);
 document.getElementById("showAnswerBtn").addEventListener("click", showAnswer);
@@ -727,6 +1149,112 @@ refreshMatiereOptions();
 updateCounts();
 renderList();
 if (location.hash === "#cartes") montrerOnglet("cartes");
+
+// Carte préparée par un autre outil (« Faire une carte à trous » dans Codes & articles)
+if (new URLSearchParams(location.search).has("nouvelle")) {
+  history.replaceState(null, "", location.pathname + "#cartes");
+  let brouillon = null;
+  try { brouillon = JSON.parse(sessionStorage.getItem("paraphe_carte_a_creer")); sessionStorage.removeItem("paraphe_carte_a_creer"); } catch {}
+  montrerOnglet("cartes");
+  nouvelleCarte(brouillon && brouillon.type === "trous" ? "trous" : "qr");
+  if (brouillon) {
+    document.getElementById("fMatiere").value = brouillon.matiere || "";
+    document.getElementById("fRecto").value = brouillon.recto || "";
+    document.getElementById("fVerso").value = brouillon.verso || "";
+  }
+}
+
+// --- Un cours devient des cartes (cours.js) : propositions locales, validées une à une ---
+const fenCours = document.getElementById("fenCours");
+let propositions = [];
+const GENRES = { definition: "Définition", article: "Article", trous: "Délai · texte à trous", arret: "Arrêt" };
+function etapeCours(n) { document.getElementById("coursEtape1").hidden = n !== 1; document.getElementById("coursEtape2").hidden = n !== 2; }
+document.getElementById("importCours").addEventListener("click", () => {
+  etapeCours(1); document.getElementById("coursErreur").hidden = true;
+  fenCours.showModal(); document.getElementById("coursFichier").focus();
+});
+fenCours.addEventListener("click", e => { if (e.target.closest('[data-cours="fermer"]') || e.target === fenCours) fenCours.close(); });
+document.getElementById("coursRetour").addEventListener("click", () => etapeCours(1));
+document.getElementById("coursProposer").addEventListener("click", async () => {
+  const erreur = document.getElementById("coursErreur"), fichier = document.getElementById("coursFichier").files[0], colle = document.getElementById("coursTexte").value.trim();
+  erreur.hidden = true;
+  if (!fichier && !colle) { erreur.textContent = "Choisissez un fichier ou collez un texte."; erreur.hidden = false; return; }
+  let lu;
+  try { lu = fichier ? await ParapheCours.lire(fichier) : { titre: "", paragraphes: ParapheCours.texteEnParagraphes(colle) }; }
+  catch (err) { erreur.textContent = err.message || "Ce fichier n'a pas pu être lu."; erreur.hidden = false; return; }
+  propositions = ParapheCours.proposer(lu.paragraphes);
+  if (!propositions.length) {
+    erreur.textContent = "Aucune carte n'a pu être proposée : ce texte ne contient pas de définition, d'article ou de délai repérable. Essayez « Avec une IA », ou créez vos cartes à la main.";
+    erreur.hidden = false; return;
+  }
+  document.getElementById("coursMatiere").value = lu.titre && lu.titre.length < 60 ? lu.titre : (document.getElementById("filterMatiere").value || "");
+  document.getElementById("coursListe").innerHTML = propositions.map((c, i) => `<li data-i="${i}">
+      <input type="checkbox" checked aria-label="Garder la carte ${i + 1}">
+      <span class="genre">${GENRES[c.type] || "Carte"}${c.section ? " · " + escapeHtml(c.section) : ""}</span>
+      <textarea rows="2" data-champ="recto" aria-label="${c.type === "trous" ? "Texte, mot masqué entre {{ }}" : "Recto"}">${escapeHtml(c.recto)}</textarea>
+      ${c.type === "trous" ? "" : `<textarea rows="2" data-champ="verso" aria-label="Verso">${escapeHtml(c.verso)}</textarea>`}</li>`).join("");
+  majCompteCours(); etapeCours(2);
+});
+function majCompteCours() {
+  const n = document.querySelectorAll("#coursListe input:checked").length;
+  document.getElementById("coursCompte").textContent = n + " carte" + (n > 1 ? "s" : "") + " cochée" + (n > 1 ? "s" : "") + " sur " + propositions.length;
+  document.getElementById("coursAjouter").disabled = !n;
+  document.querySelectorAll("#coursListe li").forEach(li => li.classList.toggle("ecartee", !li.querySelector("input").checked));
+}
+document.getElementById("coursListe").addEventListener("change", majCompteCours);
+document.getElementById("coursAjouter").addEventListener("click", () => {
+  const matiere = document.getElementById("coursMatiere").value.trim();
+  let n = 0;
+  document.querySelectorAll("#coursListe li").forEach(li => {
+    if (!li.querySelector("input").checked) return;
+    const c = propositions[+li.dataset.i];
+    const recto = li.querySelector('[data-champ="recto"]').value.trim(), verso = (li.querySelector('[data-champ="verso"]') || { value: "" }).value.trim();
+    if (!recto || (c.type !== "trous" && !verso) || (c.type === "trous" && !reponsesTrous(recto).length)) return;
+    cards.push(Object.assign({ id: crypto.randomUUID(), matiere, recto, verso }, c.type === "trous" ? { type: "trous" } : {}, nouvelleProgression()));
+    n++;
+  });
+  const plan = lirePlan(); if (plan) repartir(plan);
+  saveCards(cards); refreshMatiereOptions(); updateCounts(); renderList();
+  fenCours.close();
+  alert(n + " carte" + (n > 1 ? "s ajoutées" : " ajoutée") + (matiere ? " en « " + matiere + " »" : "") + ". Elles vous attendent dans « Réviser ».");
+});
+
+// « Votre année » : demandé une fois, modifiable depuis l'onglet « Réviser »
+const fenAnnee = document.getElementById("formAnnee");
+let apresAnnee = null;
+function majAnneeLigne() {
+  const a = lireAnnee();
+  document.getElementById("anneeLigne").innerHTML = a
+    ? 'Cartes d\'exemple : <b>' + escapeHtml(NOMS_ANNEE[a] || a) + '</b> · <button type="button" class="lien" id="changerAnnee">changer</button>'
+    : '<button type="button" class="lien" id="changerAnnee">Choisir votre année d\'études</button>';
+}
+function demanderAnnee(ensuite) {
+  apresAnnee = ensuite || null;
+  fenAnnee.showModal(); fenAnnee.querySelector("[data-annee]").focus();
+}
+fenAnnee.addEventListener("click", e => {
+  const b = e.target.closest("[data-annee]"); if (!b) return;
+  try { localStorage.setItem(ANNEE_KEY, b.dataset.annee); } catch {}
+  fenAnnee.close();
+  majAnneeLigne(); updateCounts(); renderList();
+  Commun.annoncer(b.dataset.annee === "tout" ? "Toutes les cartes d'exemple sont à réviser." : "Cartes d'exemple de " + NOMS_ANNEE[b.dataset.annee] + " : les autres restent dans « Mes cartes ».");
+  const f = apresAnnee; apresAnnee = null; if (f) f();
+});
+fenAnnee.addEventListener("cancel", () => { const f = apresAnnee; apresAnnee = null; if (f) setTimeout(f, 0); });
+document.getElementById("vueReviser").addEventListener("click", e => { if (e.target.closest("#changerAnnee")) demanderAnnee(); });
+majAnneeLigne(); updateCounts();
+const demandeInitiale = !lireAnnee();
+
+// premier passage sans lien particulier : la question vient d'elle-même (pas par-dessus une carte en création)
+const parametres = new URLSearchParams(location.search);
+if (demandeInitiale && !parametres.has("reviser") && !parametres.has("nouvelle") && !parametres.has("q")) demanderAnnee();
+
+// Lien depuis « Aujourd'hui » à l'accueil : flashcards.html?reviser=1 lance la séance
+if (new URLSearchParams(location.search).has("reviser")) {
+  history.replaceState(null, "", location.pathname);
+  const lancer = () => { if (cards.some(isDue)) startReview(5); };   // le premier pas « Réviser cinq cartes » tient sa promesse
+  if (demandeInitiale) demanderAnnee(lancer); else lancer();
+}
 
 // Lien depuis la recherche globale du Hub : flashcards.html?q=…
 const rechercheInitiale = new URLSearchParams(location.search).get("q");

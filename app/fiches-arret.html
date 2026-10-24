@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#131316">
-<script src="taille.js"></script><script src="clavier.js" defer></script><script src="navigation.js" defer></script>
+<script src="taille.js"></script><script src="icones.js" defer></script><script src="vides.js" defer></script><script src="clavier.js" defer></script><script src="navigation.js" defer></script><script src="sigles.js" defer></script><script src="aujourdhui.js" defer></script><script src="fouille.js" defer></script><script src="palette.js" defer></script><script src="rappels.js" defer></script><script src="aide.js" defer></script>
 <link rel="stylesheet" href="fonts/fonts.css">
 <script src="pwa.js" defer></script>
 <link rel="icon" type="image/svg+xml" href="icons/favicon.svg">
@@ -23,6 +23,29 @@
   #panneauFiche[hidden]{display:none}
   .panneau-tete{display:flex;justify-content:space-between;align-items:center;gap:var(--e3)}
   .panneau-tete h2,.panneau-tete h3{margin:0}
+  /* méthode du commentaire guidée */
+  dialog.fenetre-commentaire{border:1px solid var(--filet);border-radius:var(--r-l);background:var(--carte);color:var(--encre);padding:var(--e6);width:min(880px,calc(100vw - 32px));max-height:calc(100vh - 32px);box-shadow:var(--ombre-fenetre)}
+  dialog.fenetre-commentaire::backdrop{background:rgba(17,17,20,.45)}
+  .com-tete{display:flex;justify-content:space-between;align-items:flex-start;gap:var(--e4)}
+  .com-tete h2{margin:0;font-size:calc(22px * var(--ech))}
+  .com-intro{margin:var(--e2) 0 var(--e5);max-width:70ch}
+  .com-plan{display:grid;gap:var(--e4)}
+  .com-bloc{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:var(--e5);padding-top:var(--e4);border-top:1px solid var(--filet)}
+  .com-bloc h3{margin:0 0 var(--e2);font-size:calc(17px * var(--ech))}
+  .com-bloc h4{margin:var(--e3) 0 var(--e1);font-size:calc(15px * var(--ech));font-weight:650}
+  .com-bloc p{margin:0 0 var(--e2);font-size:calc(14.5px * var(--ech));line-height:1.55;color:var(--encre-2)}
+  .com-bloc p b{color:var(--encre)}
+  .com-bloc .a-faire{color:var(--gris)}
+  .com-conseil{align-self:start;padding:var(--e3) var(--e4);border-radius:var(--r-m);background:var(--acc-doux);font-size:calc(13.5px * var(--ech));line-height:1.55;color:var(--encre)}
+  .com-conseil b{display:block;margin-bottom:var(--e1)}
+  .com-actions{margin-top:var(--e5)}
+  @media (max-width:720px){ .com-bloc{grid-template-columns:1fr} }
+  .deja-la{margin:var(--e2) 0 0;font-size:calc(14px * var(--ech));color:var(--encre)}
+  .deja-la a{font-weight:600}
+  .reprise{display:flex;align-items:center;gap:var(--e3);flex-wrap:wrap;margin:0 0 var(--e4);padding:var(--e3) var(--e4);border:1px solid var(--filet-2);border-radius:var(--r-m);background:var(--carte)}
+  .reprise[hidden]{display:none}
+  .badge.etiquette.plus{cursor:help}
+  .badge.ma-fiche{margin-left:.3rem;background:var(--acc-doux);color:var(--encre);border-color:transparent}
 </style>
 </head>
 <body>
@@ -42,7 +65,7 @@
 <main class="arrets large">
   <p class="eyebrow">Analyse de jurisprudence</p>
   <h1>Fiches d'arrêt</h1>
-  <p class="muted">Une fiche par décision : faits, procédure, problème de droit, solution et portée. Quelques arrêts de référence sont préchargés pour démarrer ; recoupez noms et dates avec votre cours avant un examen.</p>
+  <p class="muted">Une fiche par décision : faits, procédure, problème de droit, solution et portée. 352 arrêts de référence sont préchargés, chacun avec sa juridiction et sa date pour le retrouver dans votre cours ou sur Légifrance.</p>
 
   <div class="card" id="panneauFiche" hidden>
     <div class="panneau-tete"><h2 id="formTitle" class="titre-3">Nouvelle fiche</h2><button type="button" id="fermerPanneau" aria-label="Fermer le formulaire">Fermer</button></div>
@@ -50,7 +73,8 @@
     <div class="row">
       <div style="flex:2; min-width:200px;">
         <label for="fTitre">Titre (nom de l'arrêt)</label>
-        <input type="text" id="fTitre" placeholder="ex. Cass. civ. 1re, 28 janvier 1998">
+        <input type="text" id="fTitre" placeholder="ex. Cass. civ. 1re, 28 janvier 1998" aria-describedby="dejaLa">
+        <p class="deja-la" id="dejaLa" aria-live="polite" hidden></p>
       </div>
       <div style="flex:1; min-width:160px;">
         <label for="fJuridiction">Juridiction</label>
@@ -76,7 +100,7 @@
     <input type="text" id="fMatiere" list="matiereList" placeholder="ex. Droit des obligations">
     <datalist id="matiereList"></datalist>
     <label for="fNiveau">Niveau d'étude</label>
-    <select id="fNiveau"><option value="">Non précisé</option><option>L1</option><option>L2</option><option>L3</option><option>M1</option><option>M2</option></select>
+    <select id="fNiveau"><option value="">Non précisé</option><option value="L1">Licence 1</option><option value="L2">Licence 2</option><option value="L3">Licence 3</option><option value="M1">Master 1</option><option value="M2">Master 2</option></select>
     <label for="fTags">Étiquettes</label>
     <input type="text" id="fTags" placeholder="ex. revirement, responsabilité, à revoir — séparées par des virgules">
 
@@ -109,17 +133,20 @@
       <div class="barre-filtres">
         <input type="search" id="searchBox" placeholder="Rechercher (titre, faits, matière…)" aria-label="Rechercher une fiche">
         <select id="filterMatiere" aria-label="Filtrer par matière"><option value="">Toutes les matières</option></select>
-        <select id="filterNiveau" aria-label="Filtrer par niveau d'étude"><option value="">Tous niveaux</option><option>L1</option><option>L2</option><option>L3</option><option>M1</option><option>M2</option></select>
+        <select id="filterNiveau" aria-label="Filtrer par niveau d'étude"><option value="">Tous niveaux</option><option value="L1">Licence 1</option><option value="L2">Licence 2</option><option value="L3">Licence 3</option><option value="M1">Master 1</option><option value="M2">Master 2</option></select>
         <select id="filterJuridiction" aria-label="Filtrer par juridiction"><option value="">Toutes juridictions</option></select>
-        <select id="filterTag" aria-label="Filtrer par étiquette"><option value="">Toutes étiquettes</option></select>
+        <input type="search" id="filterTag" list="listeTags" placeholder="Une étiquette (ex. preuve)…" aria-label="Filtrer par étiquette" autocomplete="off">
+        <datalist id="listeTags"></datalist>
+        <select id="filterOrigine" aria-label="Filtrer par origine"><option value="">Toutes les fiches</option><option value="miennes">Mes fiches</option><option value="prechargees">Fiches préchargées</option></select>
       </div>
       <div class="barre-actions">
       <button type="button" id="nouvelleFiche" class="primary">+ Nouvelle fiche</button>
       <div class="barre-groupe" role="group" aria-label="Importer">
         <span class="barre-titre">Importer</span>
         <button type="button" id="importBtn" title="Reprendre un fichier .json enregistré depuis cet outil">Depuis un fichier</button>
-        <button type="button" id="promptIA" title="Copier un prompt qui fait convertir votre document (PDF, Word, texte…) par une IA au format d’import">Avec une IA</button>
+        <button type="button" id="promptIA" title="Copie une consigne à coller dans l'IA de votre choix, avec votre document : elle le convertit au format d'import. Paraphe n'envoie rien.">Avec une IA</button>
       </div>
+      <p class="barre-note">« Avec une IA » copie une consigne à coller dans l'IA de votre choix : Paraphe n'envoie rien.</p>
       <div class="barre-groupe" role="group" aria-label="Exporter">
         <span class="barre-titre">Exporter</span>
         <button type="button" id="exportBtn" title="Enregistrer une copie de vos fiches (fichier .json)">Sauvegarde</button>
@@ -133,13 +160,28 @@
     </div>
     </div>
     <p class="compte-liste" id="compteListe"></p>
-    <div id="ficheList" class="liste-fiches"></div>
+    <!-- le lexique et la liste dans une même cellule de la mise en page (le lexique passait sous les cartes) -->
+    <div class="liste-zone">
+      <p class="reprise" id="reprise" hidden>Votre nouvelle fiche n'est pas perdue. <button type="button" class="primary" id="reprendre">Reprendre ma saisie</button></p>
+      <p class="lexique" data-lexique-de="#ficheList" data-sans-sigles hidden></p>
+      <div id="ficheList" class="liste-fiches"></div>
+    </div>
   </div>
 </main>
+<dialog class="fenetre-commentaire" id="fenCommentaire" aria-labelledby="comTitre">
+  <div class="com-tete"><h2 id="comTitre"></h2><button type="button" data-com="fermer">Fermer</button></div>
+  <p class="muted com-intro">Un plan en deux parties, pré-rempli avec votre fiche. Les crochets sont à remplacer par vos propres mots : un plan se formule avec les termes de l'arrêt, pas avec «&nbsp;le sens&nbsp;» et «&nbsp;la portée&nbsp;» tels quels.</p>
+  <div id="comPlan" class="com-plan"></div>
+  <div class="row end com-actions">
+    <button type="button" data-com="imprimer">Imprimer</button>
+    <button type="button" class="primary" data-com="considerant">Continuer dans Considérant</button>
+  </div>
+</dialog>
 <div id="printArea"></div>
 
 <script src="commun.js"></script>
 <script src="jurisprudence.js"></script>
+<script src="liens-juridiques.js"></script>
 <script>
 const STORAGE_KEY = "droit_fiches_arret";
 // Fiches d'exemple supprimées par l'utilisateur : sans cette liste, elles revenaient à chaque chargement
@@ -288,6 +330,38 @@ const dateFr = iso => Commun.dateLongue(iso);
 const escapeHtml = Commun.echapper;
 
 // Rubriques d'une fiche, dans l'ordre d'affichage (liste et export PDF)
+const estPrechargee = f => String(f.id).startsWith("seed-");
+const CHAMPS_FORM = ["fTitre","fDate","fMatiere","fNiveau","fTags","fFaits","fProcedure","fProbleme","fSolution","fAttendu","fPortee","fJuridiction"];
+let brouillon = null;
+/* Titres affichés : la formation entre parenthèses écrite en entier (« Blieck (assemblée plénière) ») ;
+   le titre enregistré ne change pas (quatrième passe : les sigles des titres restaient le premier grief). */
+const FORMATIONS = { "Ass. plén.": "assemblée plénière", "Ch. réun.": "chambres réunies", "ch. mixte": "chambre mixte", "Ch. mixte": "chambre mixte",
+  "1re civ.": "1re chambre civile", "2e civ.": "2e chambre civile", "3e civ.": "3e chambre civile", "Civ.": "chambre civile",
+  "soc.": "chambre sociale", "Soc.": "chambre sociale", "Com.": "chambre commerciale", "com.": "chambre commerciale",
+  "Crim.": "chambre criminelle", "crim.": "chambre criminelle", "Req.": "chambre des requêtes", "GC": "Grande Chambre",
+  "TC": "Tribunal des conflits", "CIJ": "Cour internationale de justice", "CJCE": "Cour de justice des Communautés européennes",
+  "CPJI": "Cour permanente de justice internationale", "CPA": "Cour permanente d'arbitrage", "TPIR": "Tribunal pénal international pour le Rwanda",
+  "ord. référé-liberté": "ordonnance de référé-liberté" };
+function titreEnEntier(f) {
+  const t = String(f.titre || "");
+  return t.replace(/\(([^()]*)\)\s*$/, (tout, dedans) => "(" + dedans.split(/,\s*/).map(m =>
+    f.juridiction === "Conseil d'État" && m === "Ass." ? "assemblée du contentieux"
+    : f.juridiction === "Conseil d'État" && m === "Sect." ? "section du contentieux"
+    : FORMATIONS[m] || m).join(", ") + ")");
+}
+const sansAccents = t => String(t || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
+// Étiquettes des fiches écrites en entier (test par 100 utilisateurs fictifs : « CJUE », « L3-M1 » bloquaient)
+const JURIDICTIONS_EN_ENTIER = { CJUE: "Cour de justice de l'Union européenne", CEDH: "Cour européenne des droits de l'homme", CIJ: "Cour internationale de justice" };
+const juridictionEnEntier = j => JURIDICTIONS_EN_ENTIER[j] || j || "";
+const matiereEnEntier = m => String(m || "").replace(/\bCEDH\b/, "Convention européenne des droits de l'homme");
+function niveauEnEntier(n) {
+  const nom = x => x[0] === "L" ? "licence " + x[1] : "master " + x[1];
+  const [a, b] = String(n || "").split("-");
+  if (!/^[LM][1-3]$/.test(a)) return n || "";
+  if (!b) return nom(a).replace(/^./, c => c.toUpperCase());
+  const debut = nom(a).replace(/^./, c => c.toUpperCase());
+  return a[0] === b[0] ? debut + " et " + b[1] : debut + " et " + nom(b);   // « Licence 2 et 3 », « Licence 3 et master 1 »
+}
 const CHAMPS = [
   ["faits", "Faits"], ["procedure", "Procédure"], ["probleme", "Problème de droit"],
   ["solution", "Solution / motifs"], ["attendu", "Attendu de principe"], ["portee", "Portée"]
@@ -303,24 +377,59 @@ function refreshFilters() {
 
   const selM = document.getElementById("filterMatiere");
   const curM = selM.value;
-  selM.innerHTML = '<option value="">Toutes les matières</option>' + matieres.map(m => `<option value="${escapeHtml(m)}">${escapeHtml(m)}</option>`).join("");
+  selM.innerHTML = '<option value="">Toutes les matières</option>' + matieres.map(m => `<option value="${escapeHtml(m)}">${escapeHtml(matiereEnEntier(m))}</option>`).join("");
   selM.value = curM;
 
   const juridictions = [...new Set(fiches.map(f => f.juridiction).filter(Boolean))].sort();
   const selJ = document.getElementById("filterJuridiction");
   const curJ = selJ.value;
-  selJ.innerHTML = '<option value="">Toutes juridictions</option>' + juridictions.map(j => `<option value="${escapeHtml(j)}">${escapeHtml(j)}</option>`).join("");
+  selJ.innerHTML = '<option value="">Toutes juridictions</option>' + juridictions.map(j => `<option value="${escapeHtml(j)}">${escapeHtml(juridictionEnEntier(j))}</option>`).join("");
   selJ.value = curJ;
 
-  const tags = [...new Set(fiches.flatMap(f => f.tags || []))].sort((a, b) => a.localeCompare(b));
-  const selT = document.getElementById("filterTag");
-  const curT = selT.value;
-  selT.innerHTML = '<option value="">Toutes étiquettes</option>' + tags.map(t => `<option value="${escapeHtml(t)}">${escapeHtml(t)}</option>`).join("");
-  selT.value = curT;
+  // étiquettes dédoublonnées sans tenir compte des majuscules ni des accents (« Preuve » = « preuve »)
+  const parCle = new Map();
+  fiches.flatMap(f => f.tags || []).forEach(t => { const k = sansAccents(t); if (k && !parCle.has(k)) parCle.set(k, t); });
+  document.getElementById("listeTags").innerHTML = [...parCle.values()].sort((a, b) => a.localeCompare(b, "fr"))
+    .map(t => `<option value="${escapeHtml(t)}">`).join("");
 }
 
+/* Un arrêt déjà dans vos fiches (préchargé ou saisi) est signalé pendant la saisie d'une nouvelle fiche :
+   même titre, ou même date et même juridiction (seconde passe du test : « Myr'Ho » ressaisi à la main). */
+function signalerDoublon() {
+  const zone = document.getElementById("dejaLa");
+  if (document.getElementById("editId").value) { zone.hidden = true; return; }
+  const titre = sansAccents(document.getElementById("fTitre").value), date = document.getElementById("fDate").value;
+  const jur = document.getElementById("fJuridiction").value;
+  const trouve = fiches.find(f => (titre.length >= 4 && sansAccents(f.titre).includes(titre)) || (date && f.date === date && f.juridiction === jur));
+  zone.hidden = !trouve;
+  if (trouve) zone.innerHTML = (String(trouve.id).startsWith("seed-") ? "Une fiche toute prête existe déjà pour cet arrêt : " : "Vous avez déjà une fiche pour cet arrêt : ")
+    + '<b>' + escapeHtml(trouve.titre) + (trouve.date ? " (" + escapeHtml(dateFr(trouve.date)) + ")" : "") + "</b>. "
+    + '<a href="#fiche-' + encodeURIComponent(trouve.id) + '" data-voir-doublon="' + escapeHtml(trouve.id) + '">La voir</a> (votre saisie est gardée) ou continuez.';
+}
+["fTitre", "fDate", "fJuridiction"].forEach(id => document.getElementById(id).addEventListener(id === "fJuridiction" ? "change" : "input", signalerDoublon));
+document.getElementById("reprendre").addEventListener("click", () => {
+  if (!brouillon) return;
+  resetForm();
+  CHAMPS_FORM.forEach(id => { if (brouillon[id] !== undefined) document.getElementById(id).value = brouillon[id]; });
+  brouillon = null; document.getElementById("reprise").hidden = true;
+  ouvrirPanneau(); signalerDoublon();
+});
+document.getElementById("dejaLa").addEventListener("click", e => {
+  const a = e.target.closest("[data-voir-doublon]"); if (!a) return;
+  e.preventDefault();
+  const f = fiches.find(x => x.id === a.dataset.voirDoublon); if (!f) return;
+  // la saisie en cours est gardée : « Reprendre ma saisie » la rend (quatrième passe : elle était perdue)
+  brouillon = Object.fromEntries(CHAMPS_FORM.map(id => [id, document.getElementById(id).value]));
+  resetForm();
+  document.getElementById("reprise").hidden = false;
+  // la fiche existante, seule à l'écran et dépliée
+  ["filterMatiere", "filterJuridiction", "filterTag", "filterNiveau", "filterOrigine"].forEach(id => document.getElementById(id).value = "");
+  document.getElementById("searchBox").value = f.titre;
+  expanded.add(f.id); renderList(); montrerFiche(f.id);
+});
 function resetForm() {
   document.getElementById("editId").value = "";
+  document.getElementById("dejaLa").hidden = true;
   document.getElementById("formTitle").textContent = "Nouvelle fiche";
   ["fTitre","fDate","fMatiere","fNiveau","fTags","fFaits","fProcedure","fProbleme","fSolution","fAttendu","fPortee"].forEach(id => document.getElementById(id).value = "");
   document.getElementById("fJuridiction").value = "Cour de cassation";
@@ -386,6 +495,7 @@ document.getElementById("saveBtn").addEventListener("click", () => {
   expanded.add(data.id);
   renderList();
   montrerFiche(data.id);
+  Commun.annoncer(id ? "Fiche enregistrée sur cet appareil." : "Fiche « " + data.titre + " » enregistrée sur cet appareil. Elle porte l'étiquette « Ma fiche ».");
 });
 
 // ramène la fiche sous les yeux (après enregistrement, ou quand on referme le formulaire)
@@ -431,12 +541,14 @@ function toggleExpand(id) {
 function fichesFiltrees() {
   const valeur = id => document.getElementById(id).value;
   const search = valeur("searchBox").trim().toLowerCase();
-  const matiere = valeur("filterMatiere"), juridiction = valeur("filterJuridiction"), tag = valeur("filterTag"), niveau = valeur("filterNiveau");
+  const matiere = valeur("filterMatiere"), juridiction = valeur("filterJuridiction"), tag = sansAccents(valeur("filterTag")), niveau = valeur("filterNiveau");
+  const origine = valeur("filterOrigine");
   return fiches.filter(f =>
+    (!origine || (origine === "miennes") === !estPrechargee(f)) &&
     (!matiere || f.matiere === matiere) &&
     (!niveau || (f.niveau || "").split("-").includes(niveau)) &&
     (!juridiction || f.juridiction === juridiction) &&
-    (!tag || (f.tags || []).includes(tag)) &&
+    (!tag || (f.tags || []).some(t => sansAccents(t) === tag || sansAccents(t).includes(tag))) &&
     (!search || Object.values(f).join(" ").toLowerCase().includes(search)));
 }
 
@@ -451,14 +563,16 @@ function renderList() {
 
   filtered.sort((a, b) => (b.date || "").localeCompare(a.date || ""));
 
-  const signature = ["searchBox", "filterMatiere", "filterJuridiction", "filterTag", "filterNiveau"].map(id => document.getElementById(id).value).join("|");
+  const signature = ["searchBox", "filterMatiere", "filterJuridiction", "filterTag", "filterNiveau", "filterOrigine"].map(id => document.getElementById(id).value).join("|");
   if (signature !== signatureFiltres) { signatureFiltres = signature; limite = LOT; }
   filtered.forEach((f, i) => { if (expanded.has(f.id) && i >= limite) limite = i + 1; });
   const reste = Math.max(0, filtered.length - limite);
 
   if (filtered.length === 0) {
     document.getElementById("compteListe").textContent = "";
-    list.innerHTML = '<div class="empty-state">Aucune fiche pour l\'instant.</div>';
+    list.innerHTML = '<div class="empty-state">' + (!fiches.length ? "Aucune fiche pour l'instant."
+      : document.getElementById("filterOrigine").value === "miennes" ? "Vous n'avez pas encore saisi de fiche : « + Nouvelle fiche » pour commencer."
+      : "Aucune fiche ne correspond à cette recherche ou à ces filtres.") + '</div>';
     return;
   }
 
@@ -471,19 +585,22 @@ function renderList() {
     <div class="card${mat ? " repere " + mat : ""}${isOpen ? " ouverte" : ""}">
       <div class="row between" style="cursor:pointer;" data-toggle="${escapeHtml(f.id)}" id="fiche-${escapeHtml(f.id)}" role="button" tabindex="0" aria-expanded="${isOpen}">
         <div>
-          <strong>${escapeHtml(f.titre)}</strong>
-          <span class="badge" style="margin-left:0.5rem;">${escapeHtml(f.juridiction || "")}</span>
-          ${f.niveau ? `<span class="badge" style="margin-left:0.3rem;">${escapeHtml(f.niveau)}</span>` : ""}
-          ${f.matiere ? `<span class="badge${mat ? " matiere" : ""}" style="margin-left:0.3rem;">${escapeHtml(f.matiere)}</span>` : ""}
-          ${(f.tags || []).map(t => `<span class="badge etiquette">#${escapeHtml(t)}</span>`).join("")}
+          <strong>${escapeHtml(titreEnEntier(f))}</strong>
+          ${estPrechargee(f) ? "" : '<span class="badge ma-fiche">Ma fiche</span>'}
+          <span class="badge" style="margin-left:0.5rem;">${escapeHtml(juridictionEnEntier(f.juridiction))}</span>
+          ${f.niveau ? `<span class="badge" style="margin-left:0.3rem;">${escapeHtml(niveauEnEntier(f.niveau))}</span>` : ""}
+          ${f.matiere ? `<span class="badge${mat ? " matiere" : ""}" style="margin-left:0.3rem;">${escapeHtml(matiereEnEntier(f.matiere))}</span>` : ""}
+          ${(isOpen ? (f.tags || []) : (f.tags || []).slice(0, 3)).map(t => `<span class="badge etiquette">#${escapeHtml(t)}</span>`).join("")}
+          ${!isOpen && (f.tags || []).length > 3 ? `<span class="badge etiquette plus" title="${escapeHtml(f.tags.slice(3).map(t => "#" + t).join(" "))}">+${f.tags.length - 3}</span>` : ""}
         </div>
         <span class="muted" style="white-space:nowrap;">${escapeHtml(dateFr(f.date))} ${isOpen ? "▲" : "▼"}</span>
       </div>
       ${isOpen ? `
         <hr class="sep">
-        ${CHAMPS.map(([key,label]) => f[key] ? `<p><strong>${label}.</strong> ${escapeHtml(f[key]).replace(/\n/g,"<br>")}</p>` : "").join("")}
-        ${articlesLies(f.id)}
+        ${CHAMPS.map(([key,label]) => f[key] ? `<p${key === "attendu" ? " data-texte-exact" : ""}><strong>${label}.</strong> ${escapeHtml(f[key]).replace(/\n/g,"<br>")}</p>` : "").join("")}
+        ${articlesLies(f)}
         <div class="row end">
+          <button data-commentaire="${escapeHtml(f.id)}" title="Un plan de commentaire pré-rempli à partir de cette fiche, avec les conseils de méthode">Préparer le commentaire</button>
           <button data-memo="${escapeHtml(f.id)}" title="Créer des cartes de révision (problème, solution, attendu, portée)">→ Fiches mémo</button>
           <button data-edit="${escapeHtml(f.id)}">Modifier</button>
           <button class="danger" data-delete="${escapeHtml(f.id)}">Supprimer</button>
@@ -496,14 +613,15 @@ function renderList() {
 }
 
 document.getElementById("ficheList").addEventListener("click", (e) => {
-  const el = e.target.closest("[data-toggle], [data-edit], [data-delete], [data-memo], [data-plus]");
+  const el = e.target.closest("[data-toggle], [data-edit], [data-delete], [data-memo], [data-plus], [data-commentaire]");
   if (!el) return;
   if (el.hasAttribute("data-plus")) {
     const premiere = limite; limite += LOT; renderList();
     document.querySelectorAll("#ficheList [data-toggle]")[premiere]?.focus();   /* le clavier reprend à la première fiche ajoutée */
     return;
   }
-  if (el.dataset.memo) versFichesMemo(el.dataset.memo);
+  if (el.dataset.commentaire) preparerCommentaire(el.dataset.commentaire);
+  else if (el.dataset.memo) versFichesMemo(el.dataset.memo);
   else if (el.dataset.edit) editFiche(el.dataset.edit);
   else if (el.dataset.delete) deleteFiche(el.dataset.delete);
   else toggleExpand(el.dataset.toggle);
@@ -520,16 +638,79 @@ document.getElementById("ficheList").addEventListener("keydown", (e) => {
 document.getElementById("searchBox").addEventListener("input", renderList);
 document.getElementById("filterMatiere").addEventListener("change", renderList);
 document.getElementById("filterJuridiction").addEventListener("change", renderList);
-document.getElementById("filterTag").addEventListener("change", renderList);
+document.getElementById("filterTag").addEventListener("input", renderList);
+document.getElementById("filterOrigine").addEventListener("change", renderList);
 document.getElementById("filterNiveau").addEventListener("change", renderList);
 
-// --- Liens avec Codes & articles : articles qui citent cette fiche (champ « arrets » côté Codes) ---
-function articlesLies(id) {
-  const lies = Commun.lire("droit_codes", []).filter(a => (a.arrets || []).includes(id));
-  if (!lies.length) return "";
-  return `<p><strong>Articles liés.</strong> ` + lies.map(a =>
-    `<a class="lien-croise" href="codes.html#art-${encodeURIComponent(a.id)}">Art. ${escapeHtml(a.numero)} ${escapeHtml(a.code || "")}</a>`).join(" · ") + `</p>`;
+// --- Liens avec Codes & articles : les articles reliés à la main (champ « arrets » côté Codes)
+//     et ceux que la fiche cite dans son texte (liens-juridiques.js) ---
+const NOMS_CODES = { CIV: "C. civ.", COM: "C. com.", TRAV: "C. trav.", CPC: "CPC", CPP: "CPP", PEN: "C. pén.", CPCE: "CPCE", CGI: "CGI", LPF: "LPF",
+  CCP: "CCP", CGCT: "CGCT", CG3P: "CG3P", CONSO: "C. consom.", CJA: "CJA", CSS: "CSS", CONST: "Constitution", DDHC: "DDHC", CEDH: "CEDH", TFUE: "TFUE" };
+const REQUETES_CODES = { CIV: "code civil", COM: "code de commerce", TRAV: "code du travail", CPC: "code de procédure civile", CPP: "code de procédure pénale",
+  PEN: "code pénal", CPCE: "code des procédures civiles d'exécution", CGI: "code général des impôts", LPF: "livre des procédures fiscales",
+  CCP: "code de la commande publique", CGCT: "code général des collectivités territoriales", CG3P: "code général de la propriété des personnes publiques",
+  CONSO: "code de la consommation", CJA: "code de justice administrative", CSS: "code de la sécurité sociale", CONST: "Constitution du 4 octobre 1958",
+  DDHC: "Déclaration des droits de l'homme et du citoyen", CEDH: "Convention européenne des droits de l'homme", TFUE: "TFUE" };
+function articlesLies(f) {
+  const articles = Commun.lire("droit_codes", []);
+  const lies = articles.filter(a => (a.arrets || []).includes(f.id));
+  const refs = window.ParapheRefs ? window.ParapheRefs.extraire([f.probleme, f.solution, f.attendu, f.portee, f.procedure].join(" ")) : [];
+  const liens = lies.map(a => `<a class="lien-croise" href="codes.html#art-${encodeURIComponent(a.id)}">Art. ${escapeHtml(a.numero)} ${escapeHtml(a.code || "")}</a>`);
+  refs.forEach(r => {
+    const a = window.ParapheRefs.trouver(articles, r);
+    if (a && lies.includes(a)) return;
+    const libelle = "Art. " + escapeHtml(r.numero.replace(/^1ER$/, "1er").replace(/^PRELIMINAIRE$/, "préliminaire")) + " " + escapeHtml(NOMS_CODES[r.code] || r.code);
+    liens.push(a ? `<a class="lien-croise" href="codes.html#art-${encodeURIComponent(a.id)}">${libelle}</a>`
+      : `<a class="lien-croise" href="https://www.legifrance.gouv.fr/search/all?tab_selection=all&searchField=ALL&query=${encodeURIComponent("article " + r.numero + " " + (REQUETES_CODES[r.code] || r.code))}&page=1&init=true" target="_blank" rel="noopener" title="Pas encore dans vos articles : ouvrir sur Légifrance">${libelle} ↗</a>`);
+  });
+  if (!liens.length) return "";
+  return `<p><strong>Articles appliqués.</strong> ${liens.join(" · ")}</p>`;
 }
+
+// --- Méthode du commentaire guidée : un plan I / II, A / B pré-rempli depuis la fiche, avec la méthode ---
+const aRediger = t => "[" + t + "]";
+function planCommentaire(f) {
+  const nom = f.titre + (f.juridiction ? ", " + f.juridiction : "") + (f.date ? ", " + dateFr(f.date) : "");
+  return { titre: "Commentaire — " + nom, blocs: [
+    { titre: "Introduction", conseil: ["Dix à quinze lignes, sans recopier la fiche.", "Le problème de droit est une question juridique et générale, pas un résumé des faits.", "Annoncez le plan en reprenant vos deux titres."],
+      elements: [["Accroche", aRediger("une phrase qui situe le thème" + (f.matiere ? " (" + f.matiere.toLowerCase() + ")" : ""))], ["Faits", f.faits], ["Procédure", f.procedure],
+        ["Problème de droit", f.probleme], ["Solution", f.solution], ["Annonce du plan", aRediger("I. … puis II. …")]] },
+    { titre: "I. " + aRediger("Le sens de la décision, avec les mots de l'arrêt"), conseil: ["Expliquez avant de juger : que dit la Cour, sur quel texte, avec quels mots (« seul », « nécessairement », « en principe ») ?", "Chaque sous-partie s'appuie sur un passage précis de la décision."],
+      elements: [["A. " + aRediger("La règle posée"), f.attendu || f.solution], ["B. " + aRediger("Sa justification"), aRediger("le raisonnement de la Cour, le texte appliqué, l'interprétation retenue")]] },
+    { titre: "II. " + aRediger("La valeur et la portée de la décision"), conseil: ["Appréciez : la solution est-elle conforme aux textes et à la jurisprudence antérieure ? Est-elle opportune ?", "La portée : arrêt de principe ou d'espèce, publié ou non, confirmé ou contredit depuis."],
+      elements: [["A. " + aRediger("Une solution approuvée ou discutée"), aRediger("doctrine, cohérence avec la jurisprudence antérieure")], ["B. " + aRediger("Une portée de principe ou d'espèce"), f.portee]] },
+  ] };
+}
+let planEnCours = null;
+function preparerCommentaire(id) {
+  const f = fiches.find(x => x.id === id);
+  if (!f) return;
+  planEnCours = planCommentaire(f);
+  document.getElementById("comTitre").textContent = planEnCours.titre;
+  document.getElementById("comPlan").innerHTML = planEnCours.blocs.map(b => `<section class="com-bloc"><div><h3>${escapeHtml(b.titre)}</h3>` +
+    b.elements.map(([t, v]) => `<h4>${escapeHtml(t)}</h4><p class="${!v || /^\[/.test(v) ? "a-faire" : ""}">${escapeHtml(v || aRediger("à compléter : la fiche ne le dit pas"))}</p>`).join("") +
+    `</div><aside class="com-conseil"><b>Méthode</b>${b.conseil.map(escapeHtml).join("<br>")}</aside></section>`).join("");
+  document.getElementById("fenCommentaire").showModal();
+}
+document.getElementById("fenCommentaire").addEventListener("click", e => {
+  const fen = document.getElementById("fenCommentaire"), a = e.target.closest("[data-com]");
+  if (e.target === fen || (a && a.dataset.com === "fermer")) { fen.close(); return; }
+  if (!a || !planEnCours) return;
+  if (a.dataset.com === "imprimer") {
+    const today = new Date().toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" });
+    document.getElementById("printArea").innerHTML = `<div class="print-header"><div><p class="print-brand">Paraphe</p><h1>${escapeHtml(planEnCours.titre)}</h1></div><div class="print-meta">Méthode du commentaire<br>${today}</div></div>` +
+      planEnCours.blocs.map(b => `<div class="print-group-title">${escapeHtml(b.titre)}</div><div class="print-item">` +
+        b.elements.map(([t, v]) => `<h3>${escapeHtml(t)}</h3><p>${escapeHtml(v || aRediger("à compléter"))}</p>`).join("") +
+        `<div class="print-note"><b>Méthode —</b> ${b.conseil.map(escapeHtml).join(" ")}</div></div>`).join("") +
+      `<div class="print-footer"><span>Paraphe — Fiches d'arrêt</span><span>${today}</span></div>`;
+    fen.close(); window.print();
+  } else if (a.dataset.com === "considerant") {
+    // le plan part dans Considérant (sessionStorage), où il devient une fiche de cubes
+    const arbre = [planEnCours.titre, planEnCours.blocs.map(b => [b.titre, b.elements.map(([t, v]) => [t + (v && !/^\[/.test(v) ? " — " + v : ""), []])])];
+    try { sessionStorage.setItem("paraphe_plan_considerant", JSON.stringify(arbre)); } catch {}
+    location.href = "considerant.html?depuis=commentaire";
+  }
+});
 
 // --- Génère des cartes de révision dans Fiches mémo (mises à jour si déjà créées) ---
 function versFichesMemo(id) {
@@ -591,11 +772,11 @@ document.getElementById("exportPdfBtn").addEventListener("click", () => {
     groups[m].forEach(f => {
       html += `<div class="print-item">
         <h3>${escapeHtml(f.titre)}
-          ${f.juridiction ? `<span class="print-tag">${escapeHtml(f.juridiction)}</span>` : ""}
+          ${f.juridiction ? `<span class="print-tag">${escapeHtml(juridictionEnEntier(f.juridiction))}</span>` : ""}
           ${f.date ? `<span class="print-tag accent">${escapeHtml(dateFr(f.date))}</span>` : ""}
         </h3>
         <dl>
-          ${CHAMPS.map(([key, label]) => f[key] ? `<dt>${label}</dt><dd>${escapeHtml(f[key]).replace(/\n/g, "<br>")}</dd>` : "").join("")}
+          ${CHAMPS.map(([key, label]) => f[key] ? `<dt>${label}</dt><dd${key === "attendu" ? " data-texte-exact" : ""}>${escapeHtml(f[key]).replace(/\n/g, "<br>")}</dd>` : "").join("")}
         </dl>
       </div>`;
     });

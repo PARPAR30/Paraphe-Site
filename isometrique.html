@@ -1,0 +1,462 @@
+<!doctype html>
+<!-- Le monde isométrique : le tout premier accueil de Paraphe (23 oct. 2026), gardé comme page cachée.
+     On y arrive par le vélo de contre-la-montre en bas de l'accueil. Fichiers figés : assets/iso/. -->
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Paraphe — le monde isométrique</title>
+<meta name="robots" content="noindex">
+<link rel="canonical" href="https://paraphe-app.fr/">
+<meta name="description" content="Six outils pour les étudiants en droit et les jeunes praticiens : fiches mémo, fiches d’arrêt, codes, suivi des dossiers, raisonnement et délais de procédure. Sur votre ordinateur, sans compte, hors ligne. macOS et Windows.">
+<meta name="theme-color" content="#F6F6FA" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0F0F16" media="(prefers-color-scheme: dark)">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Paraphe — réviser le droit, puis le pratiquer">
+<meta property="og:description" content="Six outils pour les études et la pratique du droit, réunis dans une application pour macOS et Windows. Sans compte, hors ligne.">
+<meta property="og:image" content="https://paraphe-app.fr/assets/img/og-image.jpg">
+<meta property="og:url" content="https://paraphe-app.fr/isometrique.html">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/img/paraphe-icone-32.png">
+<link rel="icon" type="image/svg+xml" href="assets/img/paraphe-icone.svg">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/img/paraphe-icone-180.png">
+<link rel="preload" href="assets/fonts/FunnelSans-variable-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/FunnelDisplay-variable-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/iso/site.css">
+<script>
+/* orientation du monde 3D de l'accueil : 16:9 sur ordinateur, 9:16 sur téléphone (cadrages du film et des Reels) */
+(function(){var v=innerHeight>innerWidth*1.05,d=document.createElement("div");d.setAttribute("data-composition-id","site");d.dataset.width=v?1080:1920;d.dataset.height=v?1920:1080;d.hidden=true;document.documentElement.appendChild(d);document.documentElement.classList.add(v?"vertical":"horizontal","js");})();
+</script>
+<script>try{var t=localStorage.getItem('ml-theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t);}catch(e){}</script>
+<style>
+/* ---------- accueil : le monde 3D du film, piloté par le défilement (assets/3d/accueil-3d.js) ----------
+   La section est haute de plusieurs écrans ; son contenu reste fixé et le défilement fait avancer
+   le temps du film. L'habillage (#calque) vit dans les coordonnées du film (1920×1080, ou 1080×1920
+   sur téléphone), mis à la même échelle que l'image. */
+.monde3d{position:relative;height:900vh;margin-top:-74px}
+.fixe3d{position:sticky;top:0;height:100vh;height:100dvh;overflow:hidden}   /* dvh : suit la barre du navigateur sur téléphone */
+#gl{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;opacity:0;transition:opacity .6s var(--ease)}
+.pret-3d #gl{opacity:1}
+.accroche{position:absolute;left:0;right:0;top:calc(74px + 13vh);z-index:3;will-change:opacity,transform}
+.accroche > *{max-width:min(660px,52vw)}
+.une{font-size:clamp(46px,6.2vw,104px);line-height:.96;font-weight:720;letter-spacing:-.045em;max-width:11ch}
+.une em{font-style:normal;color:var(--accent-text)}
+.accroche .lead{margin-top:22px;max-width:34ch}
+.hero__cta{display:grid;gap:12px;justify-items:start;margin-top:30px}
+.hero__cta .row{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.hero__meta{font-size:14px;color:var(--ink-3)}
+.hero__mobile{display:none}
+.si-petit{display:none}
+@media (max-width:899px){.si-grand{display:none}.si-petit{display:inline}}
+.is-mobile .hero__mobile{display:grid;gap:10px;justify-items:start}
+.is-mobile .hero__cta [data-dl],.is-mobile .hero__cta [data-dl-meta]{display:none}
+.indice{display:flex;flex-wrap:wrap;align-items:center;gap:6px 14px;margin-top:26px;font-size:15px;font-weight:560;color:var(--ink-2)}
+.indice span{display:inline-flex;align-items:center;gap:8px}
+.passer{color:var(--accent-text);font-weight:600}
+.indice svg{width:16px;height:16px}
+@media (prefers-reduced-motion:no-preference){.indice svg{animation:indice 1.8s var(--ease) infinite}}
+@keyframes indice{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
+
+/* le cadre place le calque ; le calque est mis à l'échelle par zoom (textes nets), sinon par transform */
+.calque-cadre{position:absolute;left:0;top:0;width:0;height:0;pointer-events:none;z-index:2}
+.calque{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;pointer-events:none}
+.vertical .calque{width:1080px;height:1920px}
+.calque > *{position:absolute;opacity:0;visibility:hidden;will-change:opacity,transform}
+.calque a{pointer-events:auto}
+.calque h2{font-family:var(--titre);font-weight:720;letter-spacing:-.045em;color:var(--ink)}
+.calque h2 b{font-weight:inherit;color:var(--accent-text)}
+#m-mots{left:var(--g);top:var(--ay);font-family:var(--titre);font-weight:700;font-size:var(--mots,60px);line-height:1.08;letter-spacing:-.035em;color:var(--ink);opacity:1;visibility:visible}
+#m-mots span{display:block;opacity:0}
+#m-titre{left:var(--g);top:var(--h);width:560px}
+#m-titre h2{font-size:72px;line-height:.98}
+#m-titre p{font-size:22px;color:var(--ink-2);margin-top:14px;line-height:1.4;max-width:24ch}
+.station{left:var(--g);bottom:var(--b);width:660px;display:grid;grid-template-columns:auto 1fr;gap:4px 18px;align-items:start;padding:22px 26px;border-radius:22px}
+.station .n{grid-row:span 3;width:50px;height:50px;border-radius:14px;background:var(--ink);color:var(--bg);display:grid;place-items:center;font-family:var(--titre);font-weight:700;font-size:25px}
+.station small{font-size:16px;font-weight:600;color:var(--ink-3)}
+.station h3{font-size:38px;font-weight:700;letter-spacing:-.035em;line-height:1}
+.station p{font-size:21px;line-height:1.4;color:var(--ink);margin-top:6px}
+.station p i{font-style:normal;opacity:.18;transition:opacity .25s ease}
+.station p i.on{opacity:1}
+.fenetre3d{right:var(--g);top:var(--h);width:760px;border-radius:18px;overflow:hidden;background:var(--surface);box-shadow:0 0 0 1px rgba(17,17,24,.08),0 40px 80px -30px rgba(17,17,24,.45)}
+.fenetre3d .chrome{height:34px;display:flex;align-items:center;gap:9px;padding:0 16px;background:var(--surface-2);border-bottom:1px solid var(--line)}
+.fenetre3d .chrome i{width:11px;height:11px;border-radius:50%;background:#FF6159}.fenetre3d .chrome i:nth-child(2){background:#FFBD2E}.fenetre3d .chrome i:nth-child(3){background:#28C941}
+.fenetre3d .chrome span{margin-left:8px;font-size:14px;font-weight:600;color:var(--ink-3)}
+.fenetre3d img{width:100%;height:426px;object-fit:cover;object-position:top}
+.fenetre3d img.jour{display:block}
+:root[data-theme="dark"] .fenetre3d img.jour{display:none}
+:root[data-theme="dark"] .fenetre3d img.nuit{display:block}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .fenetre3d img.jour{display:none}:root:not([data-theme="light"]) .fenetre3d img.nuit{display:block}}
+#m-local,#m-donnees{left:var(--g);top:calc(var(--h) + 120px);width:640px}
+#m-local h2,#m-donnees h2{font-size:88px;line-height:.95}
+#m-local ul{list-style:none;margin:28px 0 0;padding:0;display:grid;gap:14px}
+#m-local li{font-size:24px;font-weight:600;color:var(--ink);display:flex;align-items:center;gap:14px;opacity:0}
+#m-local li::before{content:"";width:9px;height:9px;border-radius:50%;background:var(--ink)}
+#m-donnees p{font-size:23px;line-height:1.4;color:var(--ink-2);margin-top:22px}
+#m-fin{left:0;right:0;top:0;bottom:0}
+#m-logo{position:absolute;font-family:var(--titre);font-weight:720;font-size:140px;letter-spacing:-.05em;line-height:1;white-space:nowrap;color:var(--ink)}
+#m-logo .point{display:inline-block;width:.15em;height:.15em;margin-left:.04em}
+#m-devise{position:absolute;left:0;right:0;text-align:center;font-size:25px;color:var(--ink-2)}
+#m-cta{position:absolute;left:0;right:0;display:flex;justify-content:center;gap:14px}
+#m-cta .btn{min-height:58px;font-size:19px;padding:0 26px}
+
+/* téléphone : le monde en haut, les textes dessous ; le calque est réduit à ~0,4, on grossit d'autant */
+@media (max-width:759px){
+  .accroche{top:auto;bottom:calc(20px + env(safe-area-inset-bottom))}
+  .accroche > *{max-width:none}
+  .une{font-size:clamp(40px,11.5vw,56px)}
+  .accroche .lead{font-size:17px;margin-top:14px}
+  .hero__cta{margin-top:20px}
+  .indice{margin-top:16px}
+}
+/* téléphone à l'écran court (barre du navigateur visible) : l'accroche se resserre pour laisser la place au monde */
+@media (max-width:759px) and (max-height:780px){
+  .une{font-size:clamp(34px,10vw,46px)}
+  .accroche .lead,.hero__meta{display:none}
+  .hero__cta{margin-top:16px;gap:8px}
+  .hero__cta .btn--lg{min-height:48px;padding:0 18px;font-size:16px}
+  .is-mobile .hero__mobile{gap:8px}
+  .indice{margin-top:12px;font-size:14px}
+}
+@media (max-width:759px) and (max-height:620px){.indice span{display:none}}
+/* le film baisse le monde pendant ces plans (cadrages des Reels) : le texte va au-dessus */
+.vertical #m-titre,.vertical #m-local,.vertical #m-donnees{left:var(--g);right:var(--g);width:auto;top:var(--h)}
+.vertical #m-mots{left:var(--g);top:var(--ay)}
+.vertical .station{left:var(--g);right:var(--g);width:auto;bottom:var(--b);padding:40px 44px;border-radius:40px;gap:10px 30px}
+.vertical .fenetre3d{left:var(--g);right:var(--g);width:auto;top:var(--h)}
+.vertical .fenetre3d img{height:620px;object-position:top left}
+.vertical .fenetre3d .chrome{height:64px}.vertical .fenetre3d .chrome span{font-size:30px}.vertical .fenetre3d .chrome i{width:20px;height:20px}
+.vertical .station .n{width:84px;height:84px;font-size:42px;border-radius:22px}
+.vertical .station small{font-size:27px}.vertical .station h3{font-size:64px}.vertical .station p{font-size:35px}
+.vertical #m-titre h2,.vertical #m-local h2,.vertical #m-donnees h2{font-size:108px}
+.vertical #m-titre p,.vertical #m-donnees p{font-size:42px;max-width:none}
+.vertical #m-local li{font-size:44px}
+.vertical #m-devise{font-size:44px}
+.vertical #m-cta{flex-direction:column;align-items:center;gap:20px}.vertical #m-cta .btn{min-height:104px;font-size:38px;padding:0 48px}
+@media (prefers-reduced-motion:reduce){.station p i{transition:none}}
+
+/* sans JavaScript, sans WebGL ou navigateur trop ancien : l'accroche et une image fixe du monde */
+.repli{display:none!important}   /* le thème du site ne doit pas les afficher : ce sont des images de secours */
+html:not(.js) .monde3d,.sans-3d .monde3d{height:auto;margin-top:-74px}
+html:not(.js) .fixe3d,.sans-3d .fixe3d{position:relative;height:auto;min-height:0;padding:calc(74px + 9vh) 0 64px;display:grid}
+html:not(.js) .accroche,.sans-3d .accroche{position:relative;top:auto;bottom:auto;width:100%;opacity:1!important;transform:none!important;visibility:visible!important}
+html:not(.js) #gl,html:not(.js) .calque-cadre,html:not(.js) .indice span,.sans-3d #gl,.sans-3d .calque-cadre,.sans-3d .indice span{display:none}
+html:not(.js) .repli,.sans-3d .repli{width:min(1000px,calc(100% - 2 * var(--gut)));height:auto;margin:40px auto 0;pointer-events:none}
+html:not(.js) .repli.jour,.sans-3d .repli.jour,:root[data-theme="dark"].sans-3d .repli.nuit{display:block!important}
+:root[data-theme="dark"].sans-3d .repli.jour{display:none!important}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]).sans-3d .repli.nuit,:root:not(.js) .repli.nuit{display:block!important}
+  :root:not([data-theme="light"]).sans-3d .repli.jour,:root:not(.js) .repli.jour{display:none!important}
+}
+@media (max-width:759px){html:not(.js) .repli,.sans-3d .repli{margin:0 auto 8px;order:-1}}
+.vitrine{padding-bottom:clamp(72px,9vw,128px)}
+
+/* portes */
+.portes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+.porte{display:grid;gap:14px;align-content:start;padding:clamp(24px,3vw,36px);color:inherit;text-decoration:none;transition:box-shadow .25s var(--ease-out),border-color .25s var(--ease-out),transform .25s var(--ease-out)}
+@media (hover:hover) and (pointer:fine){.porte:hover{text-decoration:none;box-shadow:var(--sh-2);border-color:var(--line-2);transform:translateY(-2px)}}
+.porte:active{transform:scale(.99)}
+.porte h3{font-size:clamp(28px,2.6vw,36px);font-weight:740;letter-spacing:-.03em}
+.porte__qui{font-size:16px;color:var(--ink-2);margin-top:-6px}
+.porte ul{list-style:none;margin:4px 0 0;padding:0;display:grid}
+.porte li{display:grid;grid-template-columns:minmax(0,9.5em) minmax(0,1fr);gap:16px;padding:12px 0;border-top:1px solid var(--line);font-size:15px;color:var(--ink-2)}
+.porte li b{font-weight:640;color:var(--ink)}
+.porte .link{margin-top:6px}
+@media (max-width:860px){.portes{grid-template-columns:1fr}.porte li{grid-template-columns:1fr;gap:2px}}
+
+/* film */
+.film{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px;align-items:center}
+.film__txt{grid-column:1 / span 4;display:grid;gap:16px}
+.film__v{grid-column:6 / span 7;position:relative;border-radius:var(--r-l);overflow:hidden;box-shadow:var(--sh-win);background:#000;aspect-ratio:16 / 9}
+.film__v video{width:100%;height:100%;object-fit:cover}
+.film__play{position:absolute;inset:0;display:grid;place-items:center;border:0;background:transparent;cursor:pointer}
+.film__play span{display:inline-flex;align-items:center;gap:10px;padding:14px 22px;border-radius:999px;background:rgba(255,255,255,.94);color:#16161A;font-weight:650;font-size:16px;box-shadow:0 8px 30px rgba(0,0,0,.25);transition:transform .2s var(--ease-out)}
+.film__play:hover span{transform:scale(1.04)}
+.film__play:active span{transform:scale(.97)}
+.film__play svg{width:18px;height:18px}
+@media (max-width:980px){.film__txt,.film__v{grid-column:1 / -1}}
+
+/* données */
+.don{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:24px;align-items:center}
+.don__txt{grid-column:1 / span 5;display:grid;gap:22px}
+.don__pts{display:grid;gap:18px;margin:0;padding:0;list-style:none}
+.don__pts li{display:grid;grid-template-columns:24px minmax(0,1fr);gap:14px}
+.don__pts svg{width:22px;height:22px;color:var(--ink-2);margin-top:2px}
+.don__pts b{display:block;font-weight:660;color:var(--ink);margin-bottom:2px}
+.don__pts p{font-size:16px;color:var(--ink-2)}
+.schema{grid-column:7 / span 6;display:grid;gap:14px}
+.poste{padding:22px;display:grid;gap:12px}
+.poste__h{display:flex;align-items:center;gap:10px;font-weight:660}
+.poste__h svg{width:22px;height:22px}
+.fichier{display:grid;grid-template-columns:22px minmax(0,1fr) auto;align-items:center;gap:12px;padding:12px 14px;border-radius:var(--r-s);background:var(--surface-2);font-size:15px}
+.fichier svg{width:20px;height:20px;color:var(--ink-3)}
+.fichier small{font-size:13px;color:var(--ink-3);white-space:nowrap}
+.dehors{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:14px}
+.dehors > div{padding:16px 18px;border:1px dashed var(--line-2);border-radius:var(--r-m);font-size:14px;color:var(--ink-2);display:grid;gap:4px}
+.dehors b{font-size:15px;color:var(--ink)}
+@media (max-width:980px){.don__txt,.schema{grid-column:1 / -1}}
+@media (max-width:520px){.dehors{grid-template-columns:1fr}.fichier small{display:none}}
+/* page cachée : le chemin du retour */
+.foot .iso-retour{flex-basis:100%;font-weight:620;color:var(--accent-text)}
+</style>
+</head>
+<body>
+<a class="skip" href="#contenu">Aller au contenu</a>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="logo" viewBox="0 0 32 32"><rect x="5.25" y="4.25" width="18.5" height="21.5" fill="none" stroke="currentColor" stroke-width="2.5"/><path d="M24 9h4v20H9v-4h15z" fill="currentColor"/><rect x="9" y="9" width="11" height="2.2" fill="currentColor"/><rect x="9" y="13.4" width="7" height="2.2" fill="currentColor"/><rect x="15" y="18" width="5" height="4.5" style="fill:var(--accent-text)"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M8.2 12.3l2.6 2.6 5-5.3"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v12M6.5 10.5L12 16l5.5-5.5M5 20h14"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+  <symbol id="i-laptop" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="5" width="15" height="10.5" rx="1.5"/><path d="M2.5 18.5h19"/></symbol>
+  <symbol id="i-desktop" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="12.5" rx="1.5"/><path d="M9 20.5h6M12 16.5v4"/></symbol>
+  <symbol id="i-disk" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="14" rx="2"/><path d="M3.5 14h17M7.5 16.5h.01"/></symbol>
+  <symbol id="i-copies" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="10" rx="2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></symbol>
+  <symbol id="i-spark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5l1.9 5.1 5.1 1.9-5.1 1.9L12 17.5l-1.9-5.1L5 10.5l5.1-1.9z"/><path d="M18.5 16v4M16.5 18h4"/></symbol>
+  <symbol id="i-folder" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 7.5a2 2 0 0 1 2-2h4l2 2.5h7a2 2 0 0 1 2 2v7.5a2 2 0 0 1-2 2h-13a2 2 0 0 1-2-2z"/></symbol>
+  <symbol id="i-app" viewBox="0 0 32 32"><rect x="5.25" y="4.25" width="18.5" height="21.5" fill="none" stroke="currentColor" stroke-width="2.2"/><path d="M24 9h4v20H9v-4h15z" fill="currentColor"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="2"/><path d="M3.5 10h17M8 3v4M16 3v4"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.5v13l10.5-6.5z"/></symbol>
+  <symbol id="i-ext" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-9 9M18 14v4.5A1.5 1.5 0 0 1 16.5 20h-11A1.5 1.5 0 0 1 4 18.5v-11A1.5 1.5 0 0 1 5.5 6H10"/></symbol>
+  <symbol id="i-bas" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></symbol>
+  <symbol id="i-share" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5V19a1.5 1.5 0 0 0 1.5 1.5h13A1.5 1.5 0 0 0 20 19v-6.5M12 3.5v11M7.5 8L12 3.5 16.5 8"/></symbol>
+</svg>
+
+<header class="top">
+  <div class="top__in verre">
+    <a class="brand" href="index.html" aria-label="Paraphe, accueil"><svg aria-hidden="true"><use href="#logo"/></svg>Paraphe</a>
+    <nav class="nav" aria-label="Navigation principale">
+      <a href="etudier.html">J’étudie</a>
+      <a href="exercer.html">J’exerce</a>
+      <a href="#donnees">Vos données</a>
+    </nav>
+    <button class="iconbtn" id="theme" type="button" aria-pressed="false" aria-label="Passer en thème nuit"><svg aria-hidden="true"><use href="#i-moon"/></svg></button>
+    <a class="btn btn--primary btn--nav" href="#telecharger">Télécharger</a>
+    <button class="iconbtn menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="panel" aria-label="Menu"><svg aria-hidden="true"><use href="#i-menu"/></svg></button>
+  </div>
+  <nav class="panel verre" id="panel" hidden aria-label="Menu">
+    <a href="etudier.html">J’étudie</a><a href="exercer.html">J’exerce</a><a href="#donnees">Vos données</a><a href="#telecharger">Télécharger</a>
+  </nav>
+</header>
+
+<main id="contenu">
+
+<!-- ============================ PROMESSE ============================ -->
+<section class="monde3d" aria-labelledby="titre">
+  <div class="fixe3d">
+    <canvas id="gl" width="1920" height="1080" aria-hidden="true"></canvas>
+    <div class="accroche wrap">
+      <h1 class="une" id="titre">Réviser le droit, puis <em>le pratiquer.</em></h1>
+      <p class="lead">Six outils dans une seule application pour Mac et Windows&#8239;: pour les étudiants en droit, de la L1 au M2, et pour les avocats et juristes qui débutent.</p>
+      <div class="hero__cta">
+        <div class="row">
+          <a class="btn btn--primary btn--lg" href="#telecharger">Télécharger Paraphe</a>
+          <a class="btn btn--quiet btn--lg" href="#essayer"><span class="si-grand">Essayer dans le navigateur</span><span class="si-petit">Voir le logiciel</span></a>
+        </div>
+        <p class="hero__meta">Version&nbsp;1.2.0 · Mac et Windows · sans compte</p>
+        <div class="hero__mobile">
+          <p class="hero__meta">Paraphe s’installe sur un ordinateur Mac ou Windows.</p>
+          <button class="btn btn--quiet btn--lg" type="button" data-share><svg aria-hidden="true"><use href="#i-share"/></svg>M’envoyer le lien</button>
+        </div>
+      </div>
+      <p class="indice"><span aria-hidden="true"><svg><use href="#i-bas"/></svg>Faites défiler&#8239;: Paraphe met de l’ordre</span><a class="passer" href="#essayer">ou passez directement à la démo</a></p>
+    </div>
+    <img class="repli jour" src="assets/iso/accueil-3d.jpg" width="1340" height="840" alt="" loading="lazy">
+    <img class="repli nuit" src="assets/iso/accueil-3d-nuit.jpg" width="1340" height="840" alt="" loading="lazy">
+    <div class="calque-cadre" id="calque-cadre"><div class="calque" id="calque">
+      <div id="m-mots" aria-hidden="true"><span>Des cours.</span><span>Des arrêts.</span><span>Des articles.</span><span>Des dossiers…</span><span>Et des délais.</span></div>
+      <div id="m-titre"><h2>Paraphe met tout <b>en ordre.</b></h2><p>Six outils pour étudier et pratiquer le droit, dans une seule application.</p></div>
+      <div id="m-stations"></div>
+      <div id="m-local"><h2>100&nbsp;% <b>local.</b></h2><ul><li>Aucun compte.</li><li>Aucun serveur.</li><li>Aucune connexion nécessaire.</li></ul></div>
+      <div id="m-donnees"><h2>Vos données restent <b>ici.</b></h2><p>Enregistrées sur votre ordinateur, pas sur un serveur. Copies de sécurité chiffrables.</p></div>
+      <div id="m-fin">
+        <div id="m-logo" aria-hidden="true"><span class="lettres">Paraphe<i class="point"></i></span></div>
+        <p id="m-devise">Du cours au cabinet.</p>
+        <div id="m-cta"><a class="btn btn--primary" href="#telecharger">Télécharger Paraphe</a><a class="btn btn--quiet" href="#essayer">Essayer dans le navigateur</a></div>
+      </div>
+    </div></div>
+  </div>
+</section>
+
+<!-- le vrai logiciel, en entier -->
+<section class="vitrine" id="essayer" aria-label="Essayer Paraphe">
+  <div class="ecran">
+    <figure class="live live--d-emblee" data-src="app/Hub.html" data-titre="Paraphe, l’accueil du logiciel (démonstration)">
+      <div class="win">
+        <div class="win__bar"><span class="live__titre"><svg aria-hidden="true"><use href="#i-app"/></svg><span>Paraphe — l’accueil, avec des données d’exemple</span></span>
+          <span class="live__etat" aria-hidden="true"><i></i>Démo en direct · cliquez dedans pour l’essayer</span>
+          <a class="live__plein" href="app/Hub.html" target="_blank" rel="noopener">Plein écran<svg aria-hidden="true"><use href="#i-ext"/></svg></a></div>
+        <div class="live__cadre">
+          <img loading="lazy" class="jour" src="assets/img/app/ecran-accueil.jpg" srcset="assets/img/app/ecran-accueil.jpg 1440w, assets/img/app/ecran-accueil@2x.jpg 2880w" sizes="(max-width: 900px) 92vw, min(1200px, 86vw)" width="1440" height="1020" alt="L’accueil de Paraphe : la recherche dans tout ce que vous avez saisi, puis les six outils, Étudier (Fiches mémo, Fiches d’arrêt, Codes et articles) et Pratiquer (Diligences, Considérant, Quantième)." fetchpriority="high">
+          <img class="nuit" src="assets/img/app/ecran-accueil-nuit.jpg" srcset="assets/img/app/ecran-accueil-nuit.jpg 1440w, assets/img/app/ecran-accueil-nuit@2x.jpg 2880w" sizes="(max-width: 900px) 92vw, min(1200px, 86vw)" width="1440" height="1020" alt="L’accueil de Paraphe en thème nuit : la recherche, puis les six outils." loading="lazy">
+        </div>
+      </div>
+      <figcaption><span><b>C’est le vrai logiciel.</b> Ouvrez un outil, cherchez, cliquez : tout fonctionne. Rien n’est enregistré, et un rechargement remet la démo à zéro.</span><a class="link live__mobile" href="app/Hub.html" target="_blank" rel="noopener">Ouvrir la démo<svg aria-hidden="true"><use href="#i-ext"/></svg></a></figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============================ DEUX PORTES ============================ -->
+<section class="sec" style="padding-top:0" aria-labelledby="portes-t">
+  <div class="wrap">
+    <div class="sec__head">
+      <h2 class="h2" id="portes-t">Par où commencez&#8209;vous&nbsp;?</h2>
+      <p class="lead">Les deux familles d’outils vivent dans la même application et la même sauvegarde. Ce que vous apprenez en cours vous suit au cabinet.</p>
+    </div>
+    <div class="portes">
+      <a class="card porte" href="etudier.html">
+        <h3>J’étudie</h3>
+        <p class="porte__qui">Pour les étudiants, de la L1 au M2.</p>
+        <ul>
+          <li><b>Fiches mémo</b><span>Répétition espacée : ce qui coince revient vite.</span></li>
+          <li><b>Fiches d’arrêt</b><span>352 fiches d’arrêt préchargées, filtrables par niveau.</span></li>
+          <li><b>Codes &amp; articles</b><span>Vos articles de référence, annotés.</span></li>
+        </ul>
+        <span class="link">Essayer les outils d’étude<svg aria-hidden="true"><use href="#i-arrow"/></svg></span>
+      </a>
+      <a class="card porte" href="exercer.html">
+        <h3>J’exerce</h3>
+        <p class="porte__qui">Pour les avocats, juristes et collaborateurs.</p>
+        <ul>
+          <li><b>Diligences</b><span>Dossiers, litiges, échéances, pièces et honoraires.</span></li>
+          <li><b>Considérant</b><span>Construire un raisonnement, branche par branche.</span></li>
+          <li><b>Quantième</b><span>Les délais de procédure, article à l’appui.</span></li>
+        </ul>
+        <span class="link">Essayer les outils de pratique<svg aria-hidden="true"><use href="#i-arrow"/></svg></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ FILM ============================ -->
+<section class="sec" aria-labelledby="film-t">
+  <div class="wrap film">
+    <div class="film__txt">
+      <h2 class="h2" id="film-t">Paraphe en une minute.</h2>
+      <p class="lead">Les six outils, de la révision aux délais de procédure, dans un court film. Il est sous-titré&nbsp;; pensez à monter le son.</p>
+    </div>
+    <div class="film__v">
+      <video id="film" preload="none" playsinline data-poster-jour="assets/media/paraphe-film.jpg" data-poster-nuit="assets/media/paraphe-film-nuit.jpg" aria-label="Film de présentation de Paraphe (1 minute)">
+        <source src="assets/media/paraphe-film.mp4" type="video/mp4">
+        <track kind="captions" src="assets/media/paraphe-film.fr.vtt" srclang="fr" label="Français">
+      </video>
+      <button class="film__play" id="film-play" type="button" aria-label="Lire le film de présentation"><span><svg aria-hidden="true"><use href="#i-play"/></svg>Lire le film · 1 min</span></button>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ DONNÉES ============================ -->
+<section class="sec" id="donnees" style="padding-top:0" aria-labelledby="don-t">
+  <div class="wrap don">
+    <div class="don__txt">
+      <h2 class="h2" id="don-t">Vos données restent sous votre contrôle.</h2>
+      <ul class="don__pts">
+        <li><svg aria-hidden="true"><use href="#i-disk"/></svg><div><b>Sans compte, sans serveur Paraphe</b><p>Chaque outil enregistre ses données dans le dossier de l’application, sur votre disque. Aucune inscription, aucun traceur.</p></div></li>
+        <li><svg aria-hidden="true"><use href="#i-copies"/></svg><div><b>Des copies de sécurité automatiques</b><p>Toutes les six heures au plus, gardées sept jours, dans le dossier de votre choix si vous le souhaitez.</p></div></li>
+        <li><svg aria-hidden="true"><use href="#i-lock"/></svg><div><b>Protégées par un mot de passe, si vous voulez</b><p>Copies et sauvegardes peuvent être chiffrées ; le mot de passe est gardé dans le trousseau de votre système.</p></div></li>
+        <li><svg aria-hidden="true"><use href="#i-spark"/></svg><div><b>Un assistant IA facultatif</b><p>Dans Diligences, il utilise votre propre clé et vous demande votre accord avant tout envoi au service choisi.</p></div></li>
+      </ul>
+    </div>
+    <div class="schema" role="img" aria-label="Schéma : l’application et les données des six outils sont sur votre ordinateur, les copies de sécurité vont dans le dossier que vous choisissez ; il n’y a ni compte ni serveur Paraphe ; l’assistant IA, facultatif, n’envoie rien sans votre accord.">
+      <div class="card poste">
+        <div class="poste__h"><svg aria-hidden="true"><use href="#i-laptop"/></svg>Votre ordinateur</div>
+        <div class="fichier"><svg aria-hidden="true"><use href="#i-app"/></svg><span>Paraphe</span><small>application</small></div>
+        <div class="fichier"><svg aria-hidden="true"><use href="#i-folder"/></svg><span>Données des six outils</span><small>sur votre disque</small></div>
+        <div class="fichier"><svg aria-hidden="true"><use href="#i-copies"/></svg><span>Copies de sécurité</span><small>chiffrables</small></div>
+      </div>
+      <div class="dehors">
+        <div><b>Serveur Paraphe</b>Il n’y en a pas : rien à créer, rien à synchroniser.</div>
+        <div><b>Assistant IA</b>Facultatif, avec votre clé, après votre accord.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ TÉLÉCHARGER ============================ -->
+<section class="sec" id="telecharger" style="background:var(--surface);border-top:1px solid var(--line)" aria-labelledby="dl-t">
+  <div class="wrap dl">
+    <div class="dl__intro">
+      <h2 class="h2" id="dl-t">Télécharger Paraphe.</h2>
+      <p class="lead">Une seule installation pour les six outils. Version <span data-version>1.2.0</span>.</p>
+      <ul class="promesses" aria-label="Garanties">
+        <li><svg aria-hidden="true"><use href="#i-check"/></svg>Aucun compte à créer</li>
+        <li><svg aria-hidden="true"><use href="#i-check"/></svg>Rien n’est envoyé sans votre accord</li>
+      </ul>
+      <p class="cond">En téléchargeant Paraphe, vous acceptez ses <a href="mentions-legales.html#conditions">conditions d’utilisation</a>. Les délais calculés sont indicatifs et ne constituent pas un avis juridique : vérifiez toujours les textes en vigueur.</p>
+      <div class="dl__mobile">
+        <p>Vous êtes sur un téléphone : Paraphe s’installe sur un ordinateur Mac ou Windows.</p>
+        <div class="row">
+          <button class="btn btn--primary" type="button" data-share><svg aria-hidden="true"><use href="#i-share"/></svg>M’envoyer le lien</button>
+          <button class="btn btn--quiet" type="button" data-copy><span data-copy-label>Copier le lien</span></button>
+        </div>
+      </div>
+    </div>
+    <div class="dl__opts">
+      <article class="card os" data-os="mac">
+        <div class="os__h"><svg aria-hidden="true"><use href="#i-laptop"/></svg><h3>macOS</h3><span class="os__tag" hidden>Pour cet ordinateur</span></div>
+        <dl class="os__spec">
+          <div><dt>Taille</dt><dd>15,9 Mo</dd></div><div><dt>Système</dt><dd>macOS 12 ou plus</dd></div><div><dt>Processeur</dt><dd>Apple Silicon et Intel</dd></div>
+        </dl>
+        <a class="btn btn--primary btn--dl" data-dl="mac" href="logiciels/Paraphe_1.2.0_universal.dmg"><svg aria-hidden="true"><use href="#i-down"/></svg>Télécharger pour Mac</a>
+        <details>
+          <summary><svg aria-hidden="true"><use href="#i-chev"/></svg>Première ouverture sur Mac</summary>
+          <ol>
+            <li>Ouvrez le fichier .dmg, puis glissez Paraphe dans le dossier Applications.</li>
+            <li>Ouvrez Paraphe. Si macOS indique qu’il ne peut pas vérifier le développeur, cliquez sur « Terminé ».</li>
+            <li>Ouvrez Réglages Système, puis Confidentialité et sécurité. En bas de la page, cliquez sur « Ouvrir quand même » à côté de Paraphe et confirmez.</li>
+            <li>Sur macOS 12 à 14, un clic droit sur Paraphe puis « Ouvrir » suffit aussi.</li>
+          </ol>
+        </details>
+      </article>
+      <article class="card os" data-os="windows">
+        <div class="os__h"><svg aria-hidden="true"><use href="#i-desktop"/></svg><h3>Windows</h3><span class="os__tag" hidden>Pour cet ordinateur</span></div>
+        <dl class="os__spec">
+          <div><dt>Taille</dt><dd>6,1 Mo</dd></div><div><dt>Système</dt><dd>Windows 10 ou 11</dd></div><div><dt>Version</dt><dd>64 bits</dd></div>
+        </dl>
+        <a class="btn btn--primary btn--dl" data-dl="windows" href="logiciels/Paraphe_1.2.0_x64-setup.exe"><svg aria-hidden="true"><use href="#i-down"/></svg>Télécharger pour Windows</a>
+        <details>
+          <summary><svg aria-hidden="true"><use href="#i-chev"/></svg>Première ouverture sur Windows</summary>
+          <ol>
+            <li>Lancez l’installateur que vous venez de télécharger.</li>
+            <li>Si Windows affiche « Windows a protégé votre ordinateur », cliquez sur « Informations complémentaires », puis sur « Exécuter quand même ».</li>
+            <li>Suivez l’installation. Sur Windows 10, elle peut ajouter le composant Microsoft Edge WebView2 s’il manque.</li>
+            <li>Ouvrez Paraphe depuis le menu Démarrer.</li>
+          </ol>
+        </details>
+      </article>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="foot">
+  <div class="wrap foot__in">
+    <a class="brand" href="index.html"><svg aria-hidden="true"><use href="#logo"/></svg>Paraphe</a>
+    <a class="iso-retour" href="index.html">Vous êtes dans le monde isométrique, le premier accueil de Paraphe · revenir au site</a>
+    <span>Du cours au cabinet · © <span data-annee>2026</span> Pierre-Antoine Ruat · <a href="mailto:paraphe.droit@gmail.com">paraphe.droit@gmail.com</a></span>
+    <nav aria-label="Informations légales">
+      <a href="mentions-legales.html#mentions">Mentions légales</a>
+      <a href="mentions-legales.html#confidentialite">Confidentialité</a>
+      <a href="mentions-legales.html#conditions">Conditions d’utilisation</a>
+      <a href="mentions-legales.html#credits">Crédits</a>
+    </nav>
+  </div>
+</footer>
+
+<script src="assets/iso/site.js"></script>
+<script type="module" src="assets/iso/accueil-3d.js"></script>
+<script nomodule>document.documentElement.classList.add("sans-3d")</script>
+<script>
+/* film : rien n'est chargé avant le clic */
+(() => {
+  const v = document.getElementById("film"), b = document.getElementById("film-play");
+  if (!v || !b) return;
+  b.addEventListener("click", () => { v.controls = true; b.hidden = true; v.play().catch(() => {}); v.focus(); });
+  v.addEventListener("ended", () => { v.controls = false; b.hidden = false; });
+})();
+</script>
+</body>
+</html>
