@@ -205,11 +205,33 @@ html{scrollbar-color:var(--line-2) transparent}
    ZONES — le haut à l'encre (accroche), la feuille réglée au milieu, le bas à l'encre (questions, pied)
    ══════════════════════════════════════════════════════════════════════ */
 .haut{position:relative;background:var(--cadre);padding-top:clamp(120px,15vh,168px)}
-/* trame de points neutres derrière l'accroche (pas de halo de couleur) */
+/* le fond de l'accroche, d'après celui de Trendtrack : une lueur neutre au centre, deux colonnes de verre fines de chaque côté,
+   et entre elles une trame de pixels minuscules, d'intensités irrégulières, que des anneaux de lumière floutés allument
+   en passant (toutes les trois secondes). Aucune couleur : du blanc sur l'encre. */
+.haut{--fond-a:min(600px,calc(50% - 16px));--fond-b:min(528px,calc(50% - 64px))}
 .haut::before{content:"";position:absolute;inset:0 0 auto;height:min(900px,110vh);pointer-events:none;
-  background-image:radial-gradient(rgba(255,255,255,.075) 1px,transparent 1.4px);background-size:14px 14px;
-  -webkit-mask-image:radial-gradient(ellipse 55% 50% at 50% 34%,#000 20%,transparent 72%);mask-image:radial-gradient(ellipse 55% 50% at 50% 34%,#000 20%,transparent 72%)}
+  background:radial-gradient(44% 46% at 50% 36%,rgba(255,255,255,.075),transparent 100%)}
 .haut > *{position:relative}
+.haut > .colonnes{position:absolute;inset:0 0 auto;height:min(900px,110vh);pointer-events:none;
+  -webkit-mask-image:linear-gradient(transparent,#000 22%,#000 58%,transparent);mask-image:linear-gradient(transparent,#000 22%,#000 58%,transparent)}
+.colonnes::before,.colonnes::after{content:"";position:absolute;top:0;bottom:0;width:calc(var(--fond-a) - var(--fond-b));
+  border:solid rgba(255,255,255,.075);border-width:0 1px;background:linear-gradient(90deg,rgba(255,255,255,.008),rgba(255,255,255,.028))}
+.colonnes::before{left:calc(50% - var(--fond-a))}
+.colonnes::after{right:calc(50% - var(--fond-a));transform:scaleX(-1)}
+.haut > .onde{position:absolute;top:0;left:calc(50% - var(--fond-b));width:calc(2 * var(--fond-b));height:min(900px,110vh);overflow:hidden;pointer-events:none;
+  background:rgba(255,255,255,.04);
+  -webkit-mask-image:url(img/trame-pixels.png),linear-gradient(transparent,#000 15%,#000 62%,transparent);
+  -webkit-mask-size:72px 72px,100% 100%;-webkit-mask-composite:source-in;
+  mask-image:url(img/trame-pixels.png),linear-gradient(transparent,#000 15%,#000 62%,transparent);
+  mask-size:72px 72px,100% 100%;mask-composite:intersect}
+.onde i{position:absolute;left:0;top:calc(34% - var(--fond-b));width:100%;aspect-ratio:1;border-radius:50%;
+  border:clamp(44px,8vw,92px) solid rgba(255,255,255,.95);filter:blur(14px);opacity:0;transform:scale(0)}
+@media (prefers-reduced-motion:no-preference){
+  .onde i{animation:onde 9s ease infinite}
+  .onde i:nth-child(2){animation-delay:3s}
+  .onde i:nth-child(3){animation-delay:6s}
+}
+@keyframes onde{0%{transform:scale(0);opacity:1}100%{transform:scale(1);opacity:0}}
 .bas{background:var(--cadre)}
 .feuille{position:relative;margin:0 8px;border-radius:var(--r-xl);background:var(--bg);color:var(--ink);overflow:clip;isolation:isolate}
 :root[data-theme="dark"] .feuille{box-shadow:0 0 0 1px rgba(255,255,255,.06)}
@@ -542,3 +564,15 @@ img.nuit{display:none}
 .top.sombre .btn--clair{--fond:color-mix(in srgb,currentColor 11%,transparent);--anneau:color-mix(in srgb,currentColor 18%,transparent)}
 .top.ton-page .btn--clair{--fond:var(--ink);--anneau:var(--ink);--ombre:var(--sh-1);color:var(--bg)}
 .top.ton-page .btn--clair:hover{--fond:var(--ink)}
+
+/* la vidéo en boucle du haut de l'accueil, dans le cadre de verre ; « Essayer le logiciel ici » la remplace par la démo */
+.boucle{position:relative;aspect-ratio:1920 / 1200;border-radius:27px;overflow:hidden;background:#F6F6FA}
+.boucle__video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.boucle__essayer{position:absolute;left:50%;bottom:clamp(14px,2.4vw,28px);transform:translateX(-50%)}
+.boucle__essayer:active{transform:translateX(-50%) scale(.97)}
+@media (hover:hover) and (pointer:fine){.boucle__essayer:hover{transform:translateX(-50%)}}
+.live:not(.est-boucle) .boucle{display:none}
+.live.est-boucle .win{display:none}
+@media (max-width:640px){.boucle__essayer{min-height:44px;padding:0 16px;font-size:15px}}
+/* sur téléphone, le bouton cacherait la vidéo : la légende garde le lien « Ouvrir la démo » */
+@media (max-width:640px){.boucle__essayer{display:none}}

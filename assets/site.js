@@ -198,7 +198,20 @@ const PARAPHE = {
   const visible = "IntersectionObserver" in window && new IntersectionObserver(es => es.forEach(e => {
     if (e.isIntersecting) { e.target.classList.replace("attend", "ouvre"); visible.unobserve(e.target); }
   }), { rootMargin: "0px 0px -12% 0px" });
-  const observer = () => lives.forEach(fig => proche ? proche.observe(fig) : charger(fig));
+  // la fenêtre du haut de l'accueil montre d'abord la vidéo en boucle : sa démo ne se charge qu'au clic sur « Essayer »
+  const observer = () => lives.forEach(fig => { if (fig.matches(".est-boucle")) return; proche ? proche.observe(fig) : charger(fig); });
+  $$(".live[data-differe]").forEach(fig => {
+    const v = fig.querySelector(".boucle__video");
+    if (v && matchMedia("(prefers-reduced-motion: reduce)").matches) { v.removeAttribute("autoplay"); v.pause(); }
+    fig.querySelector("[data-essayer]")?.addEventListener("click", e => {
+      if (!LARGE.matches) return;   // sur téléphone, le lien ouvre la démo dans un nouvel onglet
+      e.preventDefault();
+      v?.pause();
+      fig.classList.remove("est-boucle");
+      charger(fig);
+      fig.querySelector("iframe")?.addEventListener("load", () => activer(fig, true), { once: true });
+    });
+  });
   $$(".live:not(.live--d-emblee)").forEach(fig => { if (visible) { fig.classList.add("attend"); visible.observe(fig); } });
   observer();
   /* écran agrandi au-delà de 900 px : les fenêtres se chargent toujours à l'approche, pas toutes d'un coup */

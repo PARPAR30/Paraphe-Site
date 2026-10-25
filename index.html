@@ -101,6 +101,8 @@
 
 <!-- ============================ HAUT DE PAGE, À L'ENCRE ============================ -->
 <div class="haut sombre">
+  <div class="colonnes" aria-hidden="true"></div>
+  <div class="onde" aria-hidden="true"><i></i><i></i><i></i></div>
   <section class="accroche" aria-labelledby="titre">
     <p class="pilule liquide refraction intro"><svg aria-hidden="true"><use href="#i-app"/></svg><span>Version <span data-version>1.2.1</span> · pour Mac et Windows</span></p>
     <h1 class="une intro" style="--i:1" id="titre">Réviser le droit, puis <em>le pratiquer.</em></h1>
@@ -118,8 +120,15 @@
 
   <!-- le vrai logiciel, en entier, dans un cadre de verre -->
   <section class="vitrine" id="essayer" aria-label="Essayer Paraphe">
-    <figure class="live live--d-emblee" data-src="app/Hub.html" data-titre="Paraphe, l’accueil du logiciel (démonstration)">
+    <figure class="live live--d-emblee est-boucle" data-src="app/Hub.html" data-differe data-titre="Paraphe, l’accueil du logiciel (démonstration)">
       <div class="cadre-verre liquide">
+        <!-- la vidéo en boucle (45 s, muette ; source : 5-Videos/Boucle-site) ; le bouton la remplace par le vrai logiciel -->
+        <div class="boucle">
+          <video class="boucle__video" autoplay muted loop playsinline preload="metadata" poster="assets/media/paraphe-boucle.jpg" aria-label="Paraphe en 45 secondes : des cours, des arrêts, des articles, des dossiers et des délais, rangés dans six outils (vidéo sans son)">
+            <source src="assets/media/paraphe-boucle.mp4" type="video/mp4">
+          </video>
+          <a class="btn btn--primary btn--lg boucle__essayer" data-essayer data-fleche href="app/Hub.html" target="_blank" rel="noopener">Essayer le logiciel ici</a>
+        </div>
         <div class="win">
           <div class="win__bar"><span class="live__titre"><svg aria-hidden="true"><use href="#i-app"/></svg><span>Paraphe — l’accueil, avec des données d’exemple</span></span>
             <span class="live__etat" aria-hidden="true"><i></i>Démo en direct · cliquez dedans pour l’essayer</span>
@@ -130,7 +139,7 @@
           </div>
         </div>
       </div>
-      <figcaption><span><b>C’est le vrai logiciel, dans sa dernière version.</b> La page Aujourd’hui, la recherche, les six outils : tout fonctionne. Rien n’est enregistré, et un rechargement remet la démo à zéro.</span><a class="link live__mobile" href="app/Hub.html" target="_blank" rel="noopener">Ouvrir la démo<svg aria-hidden="true"><use href="#i-ext"/></svg></a></figcaption>
+      <figcaption><span><b>Paraphe en 45 secondes, puis le vrai logiciel.</b> Le bouton ouvre la dernière version, ici même : la page Aujourd’hui, la recherche, les six outils. Rien n’est enregistré, et un rechargement remet la démo à zéro.</span><a class="link live__mobile" href="app/Hub.html" target="_blank" rel="noopener">Ouvrir la démo<svg aria-hidden="true"><use href="#i-ext"/></svg></a></figcaption>
     </figure>
   </section>
 
