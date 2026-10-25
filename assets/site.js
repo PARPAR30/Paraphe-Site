@@ -6,7 +6,7 @@
    (cherchez « Paraphe_ » dans index.html, etudier.html, exercer.html). */
 const PARAPHE = {
   version: "1.3.0",
-  tailles: { mac: "31,5 Mo", windows: "20,6 Mo" },
+  tailles: { mac: "31,6 Mo", windows: "20,6 Mo" },
   // « mac » de version.json : le .dmg publié sur GitHub Releases (trop lourd pour le site) ; sinon, l'ancien emplacement
   fichiers: (v, mac) => ({ mac: mac || `logiciels/Paraphe_${v}_universal.dmg`, windows: `logiciels/Paraphe_${v}_x64-setup.exe` })
 };
