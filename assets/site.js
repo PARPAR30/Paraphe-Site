@@ -152,6 +152,14 @@ const PARAPHE = {
     const cadre = fig.querySelector(".live__cadre"), f = cadre.querySelector("iframe");
     fig.classList.toggle("is-actif", oui);
     cadre.inert = !oui;
+    // la fenêtre du haut de l'accueil : quitter la démo remet la vidéo en boucle (la démo reste chargée, prête pour le prochain essai)
+    if (!oui && fig.matches("[data-differe]")) {
+      fig.classList.add("est-boucle");
+      const v = fig.querySelector(".boucle__video");
+      if (v && !matchMedia("(prefers-reduced-motion: reduce)").matches) v.play().catch(() => {});
+      fig.querySelector("[data-essayer]")?.focus();
+      return;
+    }
     if (oui) f?.focus(); else fig.querySelector(".live__essayer")?.focus();
   };
   const charger = fig => {
@@ -208,6 +216,7 @@ const PARAPHE = {
       e.preventDefault();
       v?.pause();
       fig.classList.remove("est-boucle");
+      if (fig.classList.contains("is-live")) { activer(fig, true); return; }   // déjà chargée : on y retourne
       charger(fig);
       fig.querySelector("iframe")?.addEventListener("load", () => activer(fig, true), { once: true });
     });
