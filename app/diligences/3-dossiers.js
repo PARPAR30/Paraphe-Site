@@ -11,7 +11,7 @@ function sjAccueil() {
   q('acc-stats').hidden = vide;
 
   var nom = '';
-  try { var pf = pfAll().find(function(x) { return x.id === _pfActive; }); nom = pf && pf.name ? pf.name : ''; } catch (e) {}
+  try { var pf = pfAll().find(function(x) { return x.id === _pfActive; }); nom = pf && pf.name && !/^(Profil \d+|Mon profil)$/.test(pf.name) ? pf.name : ''; } catch (e) {}
   var salut = new Date().getHours() < 18 ? 'Bonjour' : 'Bonsoir';
   q('acc-salut').textContent = salut + (nom ? ' ' + nom : '') + '. '
     + (vide ? 'Commençons par ajouter vos premiers éléments.' : 'Voici ce qui demande votre attention.');
@@ -69,6 +69,12 @@ function renderDash() {
   var alertCount = 0;
   DB.lit.filter(function(l) { return l.niv === 'Critique' && sjOuvert(l); }).forEach(function(l) {
     alerts += '<div class="al al-r"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/></svg> Litige critique : <strong>' + esc(l.obj) + '</strong> — ' + esc(l.adv) + '</div>';
+    alertCount++;
+  });
+  // dernier jour pour dénoncer un contrat (fin moins le préavis), 30 jours avant
+  var in60 = new Date(today); in60.setDate(in60.getDate() + 60);
+  DB.ctr.filter(function(c) { var d = sjDenonciation(c); return d && d >= today && d <= in60 && c.stat === 'En cours'; }).forEach(function(c) {
+    alerts += '<div class="al al-y">Dernier jour pour dénoncer' + (c.tacite ? ' (sinon renouvelé tacitement)' : '') + ' : <strong>' + esc(c.titre) + '</strong> — ' + fmtDate(sjIso(sjDenonciation(c))) + '</div>';
     alertCount++;
   });
   DB.ctr.filter(function(c) { return c.fin && new Date(c.fin) >= today && new Date(c.fin) <= in7 && c.stat === 'En cours'; }).forEach(function(c) {
@@ -191,7 +197,9 @@ function editSoc(i) {
 document.getElementById('btn-new-ctr').addEventListener('click', function() {
   editIdx = -1;
   document.getElementById('m-ctr-t').textContent = 'Nouveau contrat';
-  ['c-titre', 'c-partie', 'c-soc', 'c-debut', 'c-fin', 'c-val', 'c-notes'].forEach(function(id) { document.getElementById(id).value = ''; });
+  ['c-titre', 'c-partie', 'c-soc', 'c-debut', 'c-fin', 'c-val', 'c-notes', 'c-preavis'].forEach(function(id) { document.getElementById(id).value = ''; });
+  document.getElementById('c-tacite').checked = false;
+  document.getElementById('c-preavis-unite').value = 'jours';
   document.getElementById('c-statut').value = 'En cours';
   setTags('c', 'c-tw', 'c-ti', []);
   openM('m-ctr');
@@ -200,7 +208,7 @@ document.getElementById('btn-new-ctr').addEventListener('click', function() {
 document.getElementById('btn-ctr-save').addEventListener('click', function() {
   var titre = document.getElementById('c-titre').value.trim();
   if (!titre) { alert('Titre requis'); return; }
-  var obj = { titre: titre, type: document.getElementById('c-type').value, partie: document.getElementById('c-partie').value, soc: document.getElementById('c-soc').value, debut: document.getElementById('c-debut').value, fin: document.getElementById('c-fin').value, val: document.getElementById('c-val').value, stat: document.getElementById('c-statut').value, notes: document.getElementById('c-notes').value, tags: tags.c.slice() };
+  var obj = { titre: titre, type: document.getElementById('c-type').value, partie: document.getElementById('c-partie').value, soc: document.getElementById('c-soc').value, debut: document.getElementById('c-debut').value, fin: document.getElementById('c-fin').value, preavis: document.getElementById('c-preavis').value, preavis_unite: document.getElementById('c-preavis-unite').value, tacite: document.getElementById('c-tacite').checked, val: document.getElementById('c-val').value, stat: document.getElementById('c-statut').value, notes: document.getElementById('c-notes').value, tags: tags.c.slice() };
   if (editIdx >= 0) { DB.ctr[editIdx] = Object.assign({}, DB.ctr[editIdx], obj); }
   else { obj.ref = 'CTR-' + String(CNT.c++).padStart(4, '0'); DB.ctr.push(obj); }
   var sauve = editIdx >= 0 ? DB.ctr[editIdx] : obj;
@@ -283,7 +291,7 @@ function renderCtr() {
   function getLit(ref) { return DB.lit.filter(function(l) { return l.ctr === ref; }).map(function(l) { return '<span class="lnk"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> ' + l.ref + '</span>'; }).join(' ') || '–'; }
   document.getElementById('list-ctr').innerHTML = filtered.length ? filtered.map(function(c) {
     var i = DB.ctr.indexOf(c);
-    return '<tr class="clickable-row" data-act-row="ctr" data-i="' + i + '"><td><code style="color:var(--gold);font-size:.75rem">' + c.ref + '</code></td><td><strong>' + esc(c.titre) + '</strong></td><td>' + c.type + '</td><td>' + esc(c.partie) + '</td><td>' + fmtDate(c.fin) + jxBadge(c.fin) + '</td><td>' + renderTagBadges(c.tags) + '</td><td>' + getLit(c.ref) + '</td><td>' + sb(c.stat) + '</td><td><div style="display:flex;gap:4px"><button class="btn btn-e btn-sm" data-act="edit-ctr" data-i="' + i + '" title="Modifier" aria-label="Modifier"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button><button class="btn btn-d btn-sm" data-act="del-ctr" data-i="' + i + '" title="Supprimer" aria-label="Supprimer"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3,6 5,6 21,6"/><path d="M19,6v14a2,2,0,0,1-2,2H7a2,2,0,0,1-2-2V6m3,0V4a1,1,0,0,1,1-1h4a1,1,0,0,1,1,1v2"/></svg></button></div></td></tr>';
+    return '<tr class="clickable-row" data-act-row="ctr" data-i="' + i + '"><td><code style="color:var(--gold);font-size:.75rem">' + c.ref + '</code></td><td><strong>' + esc(c.titre) + '</strong></td><td>' + c.type + '</td><td>' + esc(c.partie) + '</td><td>' + fmtDate(c.fin) + jxBadge(c.fin) + (sjDenonciation(c) ? '<br><small>dénoncer avant le ' + fmtDate(sjIso(sjDenonciation(c))) + jxBadge(sjIso(sjDenonciation(c))) + '</small>' : '') + '</td><td>' + renderTagBadges(c.tags) + '</td><td>' + getLit(c.ref) + '</td><td>' + sb(c.stat) + '</td><td><div style="display:flex;gap:4px"><button class="btn btn-e btn-sm" data-act="edit-ctr" data-i="' + i + '" title="Modifier" aria-label="Modifier"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button><button class="btn btn-d btn-sm" data-act="del-ctr" data-i="' + i + '" title="Supprimer" aria-label="Supprimer"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="3,6 5,6 21,6"/><path d="M19,6v14a2,2,0,0,1-2,2H7a2,2,0,0,1-2-2V6m3,0V4a1,1,0,0,1,1-1h4a1,1,0,0,1,1,1v2"/></svg></button></div></td></tr>';
   }).join('') : emptyRow(9, 'Aucun contrat à afficher. Ajoutez le premier avec « + Nouveau contrat », ou modifiez vos filtres.');
   attachTableActions('list-ctr');
 }
@@ -297,6 +305,9 @@ function editCtr(i) {
   document.getElementById('c-soc').value = c.soc || '';
   document.getElementById('c-debut').value = c.debut || '';
   document.getElementById('c-fin').value = c.fin || '';
+  document.getElementById('c-preavis').value = c.preavis || '';
+  document.getElementById('c-preavis-unite').value = c.preavis_unite || 'jours';
+  document.getElementById('c-tacite').checked = !!c.tacite;
   document.getElementById('c-val').value = c.val || '';
   setSel('c-statut', c.stat);
   document.getElementById('c-notes').value = c.notes || '';
@@ -331,8 +342,8 @@ document.getElementById('kbn-btn-crit').addEventListener('click', function() {
 
 document.getElementById('btn-new-lit').addEventListener('click', function() {
   editIdx = -1;
-  document.getElementById('m-lit-t').innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Nouveau litige';
-  ['l-obj', 'l-adv', 'l-jur', 'l-rg', 'l-risque', 'l-honoraires', 'l-date', 'l-date-dec', 'l-aud', 'l-notes', 'l-avocat', 'l-avocat-contact'].forEach(function(id) { var el=document.getElementById(id); if(el) el.value = ''; }); var lpsel=document.getElementById('l-type-presc'); if(lpsel) lpsel.value='';
+  document.getElementById('m-lit-t').innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg> Nouveau litige';
+  ['l-obj', 'l-adv', 'l-jur', 'l-rg', 'l-risque', 'l-honoraires', 'l-date', 'l-date-dec', 'l-aud', 'l-aud-heure', 'l-chambre', 'l-notes', 'l-avocat', 'l-avocat-contact'].forEach(function(id) { var el=document.getElementById(id); if(el) el.value = ''; }); var lpsel=document.getElementById('l-type-presc'); if(lpsel) lpsel.value='';
   document.getElementById('l-stat').value = 'Actif';
   fillCtrSel();
   setTags('l', 'l-tw', 'l-ti', []);
@@ -356,7 +367,7 @@ document.getElementById('btn-new-lit').addEventListener('click', function() {
 document.getElementById('btn-lit-save').addEventListener('click', function() {
   var obj = document.getElementById('l-obj').value.trim();
   if (!obj) { alert('Objet requis'); return; }
-  var item = { obj: obj, adv: document.getElementById('l-adv').value, jur: document.getElementById('l-jur').value, rg: document.getElementById('l-rg').value, risque: document.getElementById('l-risque').value, honoraires: document.getElementById('l-honoraires').value, niv: document.getElementById('l-niv').value, date: document.getElementById('l-date').value, date_dec: document.getElementById('l-date-dec').value, aud: document.getElementById('l-aud').value, notes: document.getElementById('l-notes').value, type_presc: document.getElementById('l-type-presc').value, stat: document.getElementById('l-stat').value, ctr: document.getElementById('l-ctr-sel').value, avocat: document.getElementById('l-avocat').value, avocat_contact: document.getElementById('l-avocat-contact').value, tags: tags.l.slice() };
+  var item = { obj: obj, adv: document.getElementById('l-adv').value, jur: document.getElementById('l-jur').value, rg: document.getElementById('l-rg').value, risque: document.getElementById('l-risque').value, honoraires: document.getElementById('l-honoraires').value, niv: document.getElementById('l-niv').value, date: document.getElementById('l-date').value, date_dec: document.getElementById('l-date-dec').value, aud: document.getElementById('l-aud').value, aud_heure: document.getElementById('l-aud-heure').value, chambre: document.getElementById('l-chambre').value, notes: document.getElementById('l-notes').value, type_presc: document.getElementById('l-type-presc').value, stat: document.getElementById('l-stat').value, ctr: document.getElementById('l-ctr-sel').value, avocat: document.getElementById('l-avocat').value, avocat_contact: document.getElementById('l-avocat-contact').value, tags: tags.l.slice() };
   if (editIdx >= 0) { DB.lit[editIdx] = Object.assign({}, DB.lit[editIdx], item); if (!DB.lit[editIdx].events) DB.lit[editIdx].events = []; }
   else { item.ref = 'LIT-' + String(CNT.l++).padStart(4, '0'); item.events = []; DB.lit.push(item); }
   var refDossier = document.getElementById('page-timeline').classList.contains('active') && DB.lit[currentLitIdx] ? DB.lit[currentLitIdx].ref : null;
@@ -458,6 +469,8 @@ function editLit(i) {
   document.getElementById('l-date').value = l.date || '';
   document.getElementById('l-date-dec').value = l.date_dec || '';
   document.getElementById('l-aud').value = l.aud || '';
+  document.getElementById('l-aud-heure').value = l.aud_heure || '';
+  document.getElementById('l-chambre').value = l.chambre || '';
   document.getElementById('l-notes').value = l.notes || '';
   setSel('l-type-presc', l.type_presc || '');
   setSel('l-stat', l.stat);
@@ -502,7 +515,7 @@ function sjFicheResume(l) {
   var suite = '';
   if (l.aud) {
     var d = new Date(l.aud); var n = Math.round((d - auj) / 86400000);
-    lignes.push('Prochaine audience : <b>' + fmtDate(l.aud) + '</b>' + (n >= 0 ? (n === 0 ? ' — c\'est aujourd\'hui' : ' — dans ' + n + ' jour' + (n > 1 ? 's' : '')) : ' — <b>date passée</b>'));
+    lignes.push('Prochaine audience : <b>' + fmtDate(l.aud) + (l.aud_heure ? ' à ' + esc(l.aud_heure.replace(':', ' h ')) : '') + '</b>' + (l.chambre ? ' (' + esc(l.chambre) + ')' : '') + (n >= 0 ? (n === 0 ? ' — c\'est aujourd\'hui' : ' — dans ' + n + ' jour' + (n > 1 ? 's' : '')) : ' — <b>date passée</b>'));
     if (n < 0 && ouvert) suite = 'La date d\'audience est passée : mettez-la à jour dans « Modifier ce litige ».';
   } else if (ouvert) {
     lignes.push('Aucune audience renseignée');
@@ -544,7 +557,7 @@ function openTimeline(i) {
       ['Juridiction', esc(l.jur) || '–'],
       ['N° RG', esc(l.rg) || '–'],
       ['Date ouverture', l.date ? fmtDate(l.date) : '–'],
-      ['Audience prévue', l.aud ? fmtDate(l.aud) + jxBadge(l.aud) : '–'],
+      ['Audience prévue', l.aud ? fmtDate(l.aud) + (l.aud_heure ? ' à ' + esc(l.aud_heure.replace(':', ' h ')) : '') + (l.chambre ? ' · ' + esc(l.chambre) : '') + jxBadge(l.aud) : '–'],
       ['Avocat', esc(l.avocat) || '–'],
       ['Expert', esc(l.expert) || '–'],
       ['Risque estimé', l.risque ? parseFloat(l.risque).toLocaleString('fr-FR').replace(/\u202f/g, '\u00a0') + ' €' : '–'],
@@ -1129,3 +1142,12 @@ function editCons(i) {
 
 })();
 
+/* date ISO locale (aaaa-mm-jj) */
+function sjIso(d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
+/* Dernier jour pour dénoncer un contrat : sa fin moins le préavis (6e passe) ; null sans fin ni préavis */
+function sjDenonciation(c) {
+  if (!c || !c.fin || !(parseInt(c.preavis, 10) > 0)) return null;
+  var d = new Date(c.fin + 'T12:00:00');
+  if (c.preavis_unite === 'mois') d.setMonth(d.getMonth() - parseInt(c.preavis, 10)); else d.setDate(d.getDate() - parseInt(c.preavis, 10));
+  return d;
+}

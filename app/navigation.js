@@ -42,6 +42,10 @@
       font-family:"Funnel Sans",system-ui,sans-serif;font-size:calc(14px * var(--ech,1))}
     .pxn-liste[hidden]{display:none}
     .pxn-liste .pxn-groupe{padding:10px 12px 4px;font-size:calc(12.5px * var(--ech,1));font-weight:620;letter-spacing:0;text-transform:none;opacity:.7}
+    html .pxn-taille{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding:6px 12px 8px}
+    html .pxn-taille span{width:100%;font-size:12px;font-weight:600;opacity:.75}
+    html .pxn-taille button{min-height:32px;padding:0 10px;border:1px solid rgba(127,127,127,.38);border-radius:8px;background:transparent;color:inherit;font:600 13px/1 inherit;cursor:pointer}
+    html .pxn-taille button[aria-pressed="true"]{background:rgba(127,127,127,.18)}
     html .pxn-liste a{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 12px;border-radius:8px;color:inherit;text-decoration:none;font-weight:600}
     .pxn-liste a:hover,.pxn-liste a:focus-visible{background:rgba(127,127,127,.16);outline:none}
     .pxn-liste a[aria-current="page"]{background:rgba(127,127,127,.12)}
@@ -71,7 +75,11 @@
     </span>`;
     const liste = document.createElement("div");
     liste.className = "pxn-liste"; liste.setAttribute("role", "menu"); liste.hidden = true;
-    liste.innerHTML = `<a href="Hub.html" role="menuitem">Accueil de Paraphe</a><hr>${liens}`;
+    liste.innerHTML = `<a href="Hub.html" role="menuitem">Accueil de Paraphe</a><hr>${liens}`
+      // la taille du texte réglable depuis chaque outil (8e passe : « on ne la trouve qu'à l'accueil »)
+      + (window.parapheTaille ? `<hr><div class="pxn-taille" role="group" aria-label="Taille du texte"><span>Taille du texte</span>${[[1, "Normal"], [1.15, "Grand"], [1.3, "Très grand"]].map(([v, n]) =>
+        `<button type="button" data-taille="${v}" aria-pressed="${(window.PARAPHE_TAILLE || 1) === v}">${n}</button>`).join("")}</div>` : "");
+    liste.addEventListener("click", e => { const b = e.target.closest("[data-taille]"); if (b) { window.parapheTaille(Number(b.dataset.taille)); location.reload(); } });
     document.body.appendChild(liste);
     // la palette (⌘K) au doigt : sur tablette, sans clavier, c'est le seul chemin
     hote.querySelector(".pxn-chercher").addEventListener("click", () => {

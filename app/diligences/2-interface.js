@@ -131,7 +131,10 @@ function goPage(pg) {
 // ---- THEME ----
 document.getElementById('theme-btn').addEventListener('click', function() {
   document.body.classList.toggle('light');
-  this.innerHTML = document.body.classList.contains('light') ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="4.22" x2="19.78" y2="5.64"/></svg>' : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
+  var clair = document.body.classList.contains('light');
+  /* l'icône dit ce que fera le bouton, comme « Nuit » / « Jour » dans les autres outils */
+  this.innerHTML = clair ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>' : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="4.22" x2="19.78" y2="5.64"/></svg>';
+  this.title = clair ? 'Passer au thème sombre' : 'Revenir au thème clair';
 });
 
 // Thème partagé par les 6 outils (clé droit_sombre) ; sj-theme reste en secours pour les anciennes installations
@@ -157,8 +160,21 @@ document.getElementById('theme-btn').addEventListener('click', sjSaveTheme);
 })();
 
 // ---- MODALS ----
-function openM(id) { document.getElementById(id).classList.add('open'); }
-function closeM(id) { document.getElementById(id).classList.remove('open'); }
+// 8e passe : la page derrière restait active (filtres modifiés) et le focus n'entrait pas dans la fenêtre
+var _avantModale = null;
+function openM(id) {
+  var bg = document.getElementById(id); bg.classList.add('open');
+  var m = bg.querySelector('.modal'); if (m) { m.setAttribute('role', 'dialog'); m.setAttribute('aria-modal', 'true'); var t = m.querySelector('h3'); if (t) { if (!t.id) t.id = id + '-titre'; m.setAttribute('aria-labelledby', t.id); } }
+  _avantModale = document.activeElement;
+  Array.prototype.forEach.call(document.body.children, function(el) { if (el !== bg && !el.contains(bg) && el.tagName !== 'SCRIPT') el.inert = true; });
+  var p = bg.closest('body > *'); if (p && p !== bg) Array.prototype.forEach.call(p.children, function(el) { if (el !== bg && !el.contains(bg)) el.inert = true; });
+  setTimeout(function() { var champ = bg.querySelector('input:not([type=hidden]):not([disabled]), select, textarea'); if (champ) champ.focus(); }, 30);
+}
+function closeM(id) {
+  document.getElementById(id).classList.remove('open');
+  if (!document.querySelector('.modal-bg.open')) document.querySelectorAll('[inert]').forEach(function(el) { el.inert = false; });
+  if (_avantModale && _avantModale.isConnected) { try { _avantModale.focus(); } catch (e) {} } _avantModale = null;
+}
 
 document.querySelectorAll('.modal-bg').forEach(function(m) {
   m.addEventListener('click', function(e) { if (e.target === m) closeM(m.id); });
@@ -228,13 +244,15 @@ function sjNivLabel(n) { return { Modere: 'Modéré', Eleve: 'Élevé' }[n] || n
 
 // ---- BADGES ----
 function sb(s) {
-  var m = { 'En cours': 'bg', 'Active': 'bg', 'Actif': 'br', 'En attente': 'by', 'En négociation': 'bb', 'En appel': 'by', 'Expiré': 'bx', 'Résilié': 'bx', 'Suspendu': 'by', 'Cloture - gagne': 'bg', 'Cloture - perdu': 'br', 'Transactionnel': 'bb', 'Répondu': 'bg', 'Clôturé': 'bx', 'En liquidation': 'by', 'Dissoute': 'bx' };
+  var m = { 'En cours': 'bg', 'Active': 'bg', 'Actif': 'bb', 'En attente': 'by', 'En négociation': 'bb', 'En appel': 'by', 'Expiré': 'bx', 'Résilié': 'bx', 'Suspendu': 'by', 'Cloture - gagne': 'bg', 'Cloture - perdu': 'br', 'Transactionnel': 'bb', 'Répondu': 'bg', 'Clôturé': 'bx', 'En liquidation': 'by', 'Dissoute': 'bx' };
   var lbl = { 'Cloture - gagne': 'Clôturé – gagné', 'Cloture - perdu': 'Clôturé – perdu' };
   return '<span class="badge ' + (m[s] || 'bx') + '">' + (lbl[s] || s) + '</span>';
 }
 function rb(r) {
-  var m = { 'Faible': 'bg', 'Modere': 'by', 'Eleve': 'br', 'Critique': 'br' };
-  var lbl = { 'Modere': 'Modéré', 'Eleve': 'Élevé' };
+  // 6e passe : « Élevé » et « Critique » étaient deux pastilles rouges presque identiques ; quatre teintes distinctes,
+  // et « Critique » en aplat plein, reconnaissable aussi sans distinguer les couleurs
+  var m = { 'Faible': 'bg', 'Modere': 'bb', 'Eleve': 'by', 'Critique': 'br bcrit' };
+  var lbl = { 'Modere': 'Modéré', 'Eleve': 'Élevé', 'Critique': '‼ Critique' };
   return '<span class="badge ' + (m[r] || 'bx') + '">' + (lbl[r] || r) + '</span>';
 }
 function pb(p) {

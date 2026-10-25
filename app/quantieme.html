@@ -183,6 +183,9 @@ input.ctrl{cursor:text}
 .bt[disabled]:hover{border-color:var(--filet-2)}
 .bt:focus-visible{outline:2px solid rgb(var(--acc));outline-offset:2px}
 .bt--mini{padding:var(--e1) var(--e3);min-height:32px;font-size:13px}
+/* Jour / Nuit : icône + mot, comme dans les autres outils (style.css) */
+#bt-nuit-rapide{display:inline-flex;align-items:center;gap:7px}
+#bt-nuit-rapide .ic-theme{flex:none;width:calc(15px * var(--ech));height:calc(15px * var(--ech))}
 /* un groupe de boutons soudés, pour des choix qui vont ensemble */
 .groupe-bt{display:flex;gap:-1px;margin:var(--e3) 0 var(--e5);flex-wrap:wrap}
 .groupe-bt .bt+.bt{margin-left:var(--e2)}
@@ -286,6 +289,10 @@ input.ctrl{cursor:text}
   background:var(--carte);border:1px solid var(--filet-2);
   box-shadow:var(--ombre);max-height:60vh;overflow-y:auto;padding:var(--e1);
 }
+.situations{margin-top:var(--e4)}
+.sit-liste{display:flex;flex-wrap:wrap;gap:var(--e2)}
+.sit{border:1px solid var(--filet-2);background:var(--carte);color:var(--encre);border-radius:999px;padding:var(--e2) var(--e4);font:inherit;font-size:calc(14px * var(--ech));cursor:pointer;min-height:40px;text-align:left}
+.sit:hover{border-color:rgb(var(--acc))}
 .q-item{display:block;width:100%;text-align:left;background:none;border:0;cursor:pointer;border-radius:6px;
   padding:var(--e3) var(--e3);color:inherit;border-bottom:1px solid var(--filet)}
 .q-item:last-child{border-bottom:0}
@@ -344,15 +351,10 @@ body.sombre .cal-j.ferie::after{background:rgb(var(--acc))}
    ═════════════════════════════════════════════════════════════════════ */
 .accueil{
   flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  text-align:center;gap:var(--e5);padding:clamp(40px,9vh,110px) var(--pad);
+  text-align:left;gap:var(--e6);padding:clamp(32px,7vh,88px) var(--pad);
 }
-.accueil h1{
-  font-family:var(--slab);font-weight:700;margin:0;max-width:22ch;
-  font-size:calc(clamp(28px,3.4vw,50px) * var(--ech));line-height:1.04;
-  letter-spacing:-.03em;text-wrap:balance;text-align:center;
-}
-.accueil h1 span{color:rgb(var(--acc))}
-body.sombre .accueil h1 span{color:rgb(var(--acc))}   /* le violet de la charte est trop sombre sur l'encre */
+/* le titre d'accroche (« Délais, audiences… ») est parti sur le site : l'outil commence par sa question */
+.accueil h1.cf-q{font-size:calc(clamp(24px,2.4vw,32px) * var(--ech));letter-spacing:-.02em}
 .accueil p{margin:0;max-width:52ch;color:var(--encre-2);
   font-size:calc(clamp(15px,1.25vw,19px) * var(--ech));line-height:1.6}
 /* écran de départ : on choisit la procédure, puis la date, une seule fois */
@@ -373,14 +375,27 @@ body.sombre .accueil h1 span{color:rgb(var(--acc))}   /* le violet de la charte 
 .cf-apercu:empty{display:none}
 .cf-defaut{font-size:calc(12.5px * var(--ech));color:var(--gris)}
 .cf-date.cf-attente .champ-date{opacity:.7}
-.accueil .ac-notice{margin-top:var(--e5)}
+.cf-etape-date{display:flex;flex-direction:column;gap:var(--e3)}
+.cf-etape-date[hidden]{display:none}
+/* l'entonnoir juridiction › procédure, replié : la recherche et les situations suffisent le plus souvent */
+.cf-parcourir{margin-top:var(--e2)}
+.cf-parcourir>summary{cursor:pointer;width:max-content;max-width:100%;font-weight:600;font-size:calc(14px * var(--ech));color:var(--encre-2);padding:var(--e1) 0}
+.cf-parcourir>summary:hover{color:var(--encre)}
+.cf-parcourir[open]>summary{margin-bottom:var(--e3)}
+.cf-choisie{margin:var(--e3) 0 0!important;max-width:none!important;padding:var(--e3) var(--e4);border:1px solid var(--filet);border-radius:var(--r-m);background:var(--carte);
+  font-size:calc(14.5px * var(--ech))!important;color:var(--encre)!important;line-height:1.5!important}
+.cf-choisie[hidden]{display:none}
+.cf-choisie .cf-jur{color:var(--gris)}
+.cf-choisie .mini{margin-left:var(--e2)}
+.accueil .ac-notice{width:min(760px,100%)}
 .ac-plus{margin:10px 0 14px}
 .ac-plus>summary{cursor:pointer;font-weight:600;font-size:calc(13px * var(--ech));color:var(--encre)}
 .ac-notice{
-  margin-top:var(--e2);padding:clamp(20px,2.4vw,30px) clamp(20px,2.6vw,34px);
-  border:1px solid var(--filet);border-radius:var(--r-l);background:var(--carte);box-shadow:var(--ombre-petite);text-align:left;max-width:min(880px,92vw);
-  display:flex;flex-direction:column;gap:var(--e5);
+  margin:0;padding:clamp(20px,2.4vw,28px) clamp(20px,2.6vw,30px);
+  border:1px solid var(--filet);border-radius:var(--r-l);background:var(--carte);box-shadow:var(--ombre-petite);text-align:left;
+  display:flex;flex-direction:column;gap:var(--e4);
 }
+.ac-titre{margin:0;font-family:var(--slab);font-weight:700;letter-spacing:-.015em;font-size:calc(18px * var(--ech))}
 .ac-principe{font-size:calc(14.5px * var(--ech))!important;max-width:none!important;
   color:var(--encre-2);line-height:1.65!important;margin:0!important}
 .ac-principe b{color:var(--encre);font-weight:600}
@@ -392,19 +407,16 @@ body.sombre .accueil h1 span{color:rgb(var(--acc))}   /* le violet de la charte 
 .ac-modes code{font-family:var(--sans);font-size:calc(12px * var(--ech));font-weight:600;
   background:var(--carte-2);border:1px solid var(--filet);border-radius:4px;padding:1px var(--e1)}
 .ac-notice .bt{align-self:flex-start}
-.ac-reserve{font-size:calc(14.5px * var(--ech))!important;color:var(--encre-2)!important;
-  max-width:min(72ch,90vw)!important;line-height:1.65!important;margin-top:var(--e1)!important}
-.ac-reserve b{color:var(--encre);font-weight:600}
-.ac-reserve p{margin:0 0 var(--e2)}
+.ac-reserve{font-size:calc(13px * var(--ech))!important;color:var(--gris)!important;
+  max-width:none!important;line-height:1.6!important;margin:0!important;padding-top:var(--e4);border-top:1px solid var(--filet)}
+.ac-reserve b{color:var(--encre-2);font-weight:600}
 /* grands écrans : l'écran de départ occupe la bande commune — le formulaire à gauche, ce qu'il faut savoir à droite */
 @media (min-width:1280px){
   .accueil{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);column-gap:var(--gouttiere,40px);row-gap:var(--e5);
     align-items:start;align-content:center;justify-content:stretch;text-align:left;
     padding-left:max(var(--pad), calc((100% - var(--largeur-contenu)) / 2));padding-right:max(var(--pad), calc((100% - var(--largeur-contenu)) / 2))}
-  .accueil h1{grid-column:1 / -1;max-width:24ch;text-align:left;justify-self:start}
-  .accueil .choix-form{grid-column:1;grid-row:2 / span 2;width:100%}
-  .accueil .ac-notice{grid-column:2;grid-row:2;margin-top:0;max-width:none}
-  .accueil .ac-reserve{grid-column:2;grid-row:3;max-width:none!important}
+  .accueil .choix-form{grid-column:1;grid-row:1;width:100%}
+  .accueil .ac-notice{grid-column:2;grid-row:1;width:100%;margin-top:0}   /* son haut sur celui de « Quelle procédure ? » */
 }
 
 .pied{padding:12px var(--pad) 18px;border-top:1px solid var(--filet);
@@ -485,6 +497,8 @@ body.sombre .res-titre h1::after{color:rgb(var(--acc))}
 .hero-reperes{display:flex;justify-content:space-between;gap:var(--e3);margin-top:var(--e2);
   font-size:calc(12.5px * var(--ech));color:var(--gris)}
 .hero-actions{display:flex;flex-wrap:wrap;gap:var(--e3);margin-top:var(--e5)}
+.hero-clair{margin:var(--e2) 0 0;font-size:calc(15px * var(--ech));line-height:1.5;color:var(--encre-2);max-width:60em}
+.hero-clair b{color:var(--encre);font-weight:600}
 .hero-cas{margin:var(--e1) 0 0}
 .hero-pourquoi,.hero-depart{margin:var(--e3) 0 0;font-size:calc(14px * var(--ech));line-height:1.55;color:var(--encre-2)}
 .hero-pourquoi b{color:var(--encre);font-weight:600}
@@ -522,7 +536,7 @@ body.sombre .res-titre h1::after{color:rgb(var(--acc))}
 .e-tete{border-radius:var(--r-s)}
 .e-tete:hover .e-titre{text-decoration:underline;text-decoration-color:var(--filet-2);text-underline-offset:3px}
 .e-tete:focus-visible{outline:2px solid rgb(var(--acc));outline-offset:2px}
-.e-meta{display:flex;flex-wrap:wrap;align-items:center;gap:var(--e3);font-size:calc(13px * var(--ech));color:var(--gris)}
+.e-meta{display:flex;flex-wrap:wrap;align-items:center;gap:var(--e3);font-size:calc(14px * var(--ech));color:var(--encre-2)}
 .e-quand.rouge{color:var(--alerte);font-weight:600}
 .delai{font-weight:650;white-space:nowrap}
 .delai::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:currentColor;margin-right:6px;vertical-align:2px}
@@ -532,7 +546,7 @@ body.sombre .res-titre h1::after{color:rgb(var(--acc))}
 .e-titre{display:block;margin-top:var(--e1);font-size:calc(18px * var(--ech));line-height:1.4;font-weight:600}
 .jalon.estime .e-titre,.jalon.fait .e-titre,.jalon.depart .e-titre{font-weight:400}
 .jalon.fait .e-titre,.jalon.depart .e-titre{color:var(--gris)}
-.e-chev{position:absolute;right:0;top:var(--e2);color:var(--gris);font-size:15px}
+.e-chev{position:absolute;right:0;top:var(--e1);color:var(--encre-2);font-size:calc(20px * var(--ech));min-width:32px;min-height:32px;display:grid;place-items:center;border-radius:8px;background:var(--carte-2)}
 /* « date limite » : pastille pleine ; « date estimée » : contour pointillé (la nature se lit sans couleur) */
 .tag{display:inline-block;font-size:calc(12px * var(--ech));font-weight:600;
   padding:1px 8px;border:1.5px solid var(--encre);border-radius:999px;color:var(--fond);background:var(--encre)}
@@ -713,7 +727,7 @@ dialog.avant-agenda::backdrop{background:rgba(15,15,22,.35)}
 .verif{flex:none;position:relative;max-width:100%}
 .v-puce{display:flex;align-items:center;gap:var(--e2);cursor:pointer;white-space:nowrap;
   background:var(--carte);border:1px solid var(--filet);border-radius:999px;padding:var(--e1) var(--e3);color:var(--encre-2);
-  font-family:var(--sans);font-size:calc(12px * var(--ech));line-height:1.3;
+  font-family:var(--sans);font-size:calc(14px * var(--ech));line-height:1.3;min-height:36px;
   transition:border-color .15s ease}
 .v-puce:hover{border-color:var(--gris)}
 .v-point{font-weight:700;flex:none}
@@ -722,7 +736,9 @@ dialog.avant-agenda::backdrop{background:rgba(15,15,22,.35)}
 .verif--perimee .v-puce{border-color:rgba(184,119,10,.5);color:#8A5A08}
 body.sombre .verif--ok .v-puce{border-color:rgba(76,195,138,.45);color:#4CC38A}
 body.sombre .verif--perimee .v-puce{border-color:rgba(232,176,74,.5);color:#E8B04A}
-.verif--absente .v-puce{border-style:dashed}
+/* 6e passe : « Vérification : à faire par vous » était l'élément le plus petit de la page */
+.verif--absente .v-puce{border-style:dashed;color:var(--encre);font-weight:600}
+@media (max-width:700px){ .v-puce{white-space:normal;text-align:left;border-radius:var(--r-m)} }
 .v-corps{
   border-radius:var(--r-m);
   position:absolute;top:calc(100% + 6px);right:0;z-index:66;width:min(370px,84vw);
@@ -970,6 +986,8 @@ body.sombre .legende .ref,body.sombre .jour .an,body.sombre .epingle{filter:brig
 
 /* liens Légifrance */
 .lf{color:inherit;text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:1px}
+.lf-lire{margin-left:2px;font-size:.9em;font-weight:600;color:rgb(var(--acc));text-decoration:none}
+.lf-lire:hover{text-decoration:underline}
 .lf:hover{opacity:.7}
 .lf::after{content:" ↗";border:0;font-size:.85em;opacity:.75}
 .lf-mini{display:inline-block;margin-top:var(--e2);font-size:12px;font-weight:600;letter-spacing:.06em;
@@ -1124,11 +1142,11 @@ textarea.saisie{resize:vertical;font-family:var(--sans);font-size:13.5px;line-he
   width:min(460px,90vw);background:var(--carte);border:1px solid var(--filet);border-radius:var(--r-l);
   box-shadow:var(--ombre-forte);padding:var(--e6) var(--e7) var(--e5);
 }
-.tuto-etape{margin:0 0 var(--e2);font-size:13px;font-weight:600;
+.tuto-etape{margin:0 0 var(--e2);font-size:calc(13px * var(--ech));font-weight:600;
   color:rgb(var(--acc))}
 body.sombre .tuto-etape{color:rgb(var(--acc))}
-.tuto h2{font-family:var(--slab);font-size:22px;font-weight:700;letter-spacing:-.02em;margin:0 0 var(--e2)}
-.tuto p:not(.tuto-etape){margin:0;font-size:14.5px;line-height:1.65;color:var(--encre-2)}
+.tuto h2{font-family:var(--slab);font-size:calc(22px * var(--ech));font-weight:700;letter-spacing:-.02em;margin:0 0 var(--e2)}
+.tuto p:not(.tuto-etape){margin:0;font-size:calc(15px * var(--ech));line-height:1.65;color:var(--encre-2)}
 .tuto-pied{display:flex;align-items:center;gap:var(--e3);margin-top:var(--e6)}
 .tuto-points{display:flex;gap:var(--e1);margin-left:auto}
 .tuto-points i{width:7px;height:7px;border-radius:50%;background:var(--filet-2);display:block}
@@ -1424,10 +1442,10 @@ body.sombre .tuto-etape{color:rgb(var(--acc))}
   <div class="actions">
     <span data-paraphe-outils class="q-outils"></span>
     <button type="button" class="bt" id="bt-agenda" aria-pressed="false" hidden
-            title="Voir toutes les affaires">Agenda</button>
+            title="Voir toutes les affaires">Mes affaires</button>
     <button type="button" class="bt" id="bt-aide" aria-pressed="false"
             title="Comment fonctionne Quantième">Aide</button>
-    <button type="button" class="bt" id="bt-nuit-rapide" aria-pressed="false"
+    <button type="button" class="bt" id="bt-nuit-rapide"
             title="Basculer fond clair / sombre">Nuit</button>
   </div>
 </header>
@@ -1466,7 +1484,7 @@ body.sombre .tuto-etape{color:rgb(var(--acc))}
           <button type="button" role="menuitem" id="bt-ics">
             <b>Ajouter les dates à mon agenda</b><span>Outlook, Google Agenda, Apple Calendrier</span></button>
           <button type="button" role="menuitem" id="bt-affaires">
-            <b>Ajouter à la liste de mes affaires</b><span>Pour voir ce dossier avec les autres, dans « Agenda »</span></button>
+            <b>Ajouter à la liste de mes affaires</b><span>Pour voir ce dossier avec les autres, dans « Mes affaires » (en haut)</span></button>
           <p class="menu-groupe">Envoyer</p>
           <button type="button" role="menuitem" id="bt-lien">
             <b>Copier un lien à envoyer</b><span>Le dossier entier tient dans l'adresse</span></button>
@@ -1515,17 +1533,33 @@ body.sombre .tuto-etape{color:rgb(var(--acc))}
 </main>
 
 <section class="accueil" id="accueil">
-  <h1><span>Délais</span>, <span>audiences</span>, prescriptions : tout se déplie d'un coup.</h1>
-
+  <!-- audit du 25 oct. 2026 : une seule entrée (la recherche, avec les situations en suggestions), la date
+       seulement une fois la procédure choisie, un seul bouton violet, chaque mise en garde dite une fois -->
   <div class="choix-form">
-    <h2 class="cf-q">Quelle procédure ?</h2>
-    <p class="cf-aide">Tapez un mot de tous les jours (« licenciement », « divorce », « appel », « loyer ») ou un article (« 908 »), ou parcourez par juridiction.</p>
+    <h1 class="cf-q">Quelle procédure ?</h1>
+    <p class="cf-aide">Tapez un mot de tous les jours (« licenciement », « divorce », « appel », « loyer ») ou un article (« 908 »).</p>
     <div class="recherche">
     <input type="search" id="q" class="ctrl" autocomplete="off"
            placeholder="Rechercher : licenciement, divorce, appel…"
            aria-label="Rechercher une procédure ou un article">
     <div class="q-res" id="q-res" hidden role="listbox"></div>
   </div>
+    <!-- 8e passe : « il faut connaître sa procédure dès l'entrée ; rien n'aide un particulier » -->
+    <div class="situations" id="situations" role="group" aria-label="Partir de votre situation">
+      <p class="cf-aide">Ou partez de votre situation :</p>
+      <div class="sit-liste">
+        <button type="button" class="sit" data-sit="appel-sign">J'ai reçu un jugement et je veux faire appel</button>
+        <button type="button" class="sit" data-sit="opposition-defaut">Un jugement a été rendu sans moi</button>
+        <button type="button" class="sit" data-sit="ipayer">J'ai reçu une injonction de payer</button>
+        <button type="button" class="sit" data-sit="licenciement-proc">Je suis convoqué(e) à un entretien de licenciement</button>
+        <button type="button" class="sit" data-sit="prudhommes">Je conteste mon licenciement aux prud'hommes</button>
+        <button type="button" class="sit" data-sit="bail-conge">Mon bailleur m'a donné congé</button>
+        <button type="button" class="sit" data-sit="conso">Je veux annuler un achat ou un contrat</button>
+        <button type="button" class="sit" data-sit="succession-option">Un proche est décédé : accepter ou refuser la succession</button>
+      </div>
+    </div>
+    <details class="cf-parcourir" id="cf-parcourir">
+      <summary>Parcourir toutes les procédures, par juridiction</summary>
     <div class="cf-ou">
       <div class="entonnoir">
     <div class="choix" id="choix-jur">
@@ -1537,7 +1571,7 @@ body.sombre .tuto-etape{color:rgb(var(--acc))}
     </div>
     <span class="fleche">›</span>
     <div class="choix choix--large" id="choix-proc">
-      <button type="button" class="ctrl choix-bt" id="bt-proc" disabled
+      <button type="button" class="ctrl choix-bt" id="bt-proc" disabled title="Choisissez d'abord une juridiction (ou tapez un mot dans la recherche)"
               aria-haspopup="listbox" aria-expanded="false">
         <span class="choix-lbl" id="lbl-proc">Procédure</span><span class="chevron">▾</span>
       </button>
@@ -1548,9 +1582,13 @@ body.sombre .tuto-etape{color:rgb(var(--acc))}
       <select id="jur" class="select-cache" tabindex="-1" aria-hidden="true"></select>
   <select id="proc" class="select-cache" tabindex="-1" aria-hidden="true" disabled></select>
     </div>
+    </div>
+    </details>
+    <p class="cf-choisie" id="cf-choisie" hidden></p>
     <div id="cf-cas"></div>
+    <div class="cf-etape-date" id="cf-etape-date" hidden>
     <h2 class="cf-q" id="cf-date-q">Date de départ</h2>
-    <p class="cf-aide" id="cf-date-aide">Choisissez d'abord une procédure : la date demandée dépend de l'acte qui fait courir les délais (signification, notification, dépôt…).</p>
+    <p class="cf-aide" id="cf-date-aide"></p>
     <div class="cf-date">
       <div class="champ-date">
     <button type="button" class="ctrl bt-date" id="bt-date" aria-haspopup="dialog" aria-expanded="false">
@@ -1563,12 +1601,14 @@ body.sombre .tuto-etape{color:rgb(var(--acc))}
       <button type="button" class="bt bt--plein" id="bt-voir">Voir les échéances</button>
     </div>
     <p class="cf-apercu" id="cf-apercu" aria-live="polite"></p>
+    </div>
   </div>
 
   <div class="ac-notice">
-    <p class="ac-principe"><b>Rien ne quitte votre appareil.</b> Aucune donnée n'est envoyée sur
-      internet. Quantième garde un dossier seulement si vous le lui demandez : dans un fichier, un
-      lien partagé ou votre agenda.</p>
+    <h2 class="ac-titre">Vos dossiers</h2>
+    <p class="ac-principe">Quantième garde un dossier seulement si vous le lui demandez : dans un fichier, un
+      lien partagé ou votre agenda. <b>Vos données restent sur cet appareil. Rien n'est envoyé sans votre accord.</b></p>
+    <button class="bt" id="bt-ouvrir-accueil">Ouvrir un dossier enregistré</button>
     <details class="ac-plus">
       <summary>Comment garder un dossier : fichier, lien partagé ou agenda</summary>
     <dl class="ac-modes">
@@ -1580,8 +1620,9 @@ body.sombre .tuto-etape{color:rgb(var(--acc))}
       </div>
       <div>
         <dt>Le lien partagé</dt>
-        <dd>Le dossier entier tient dans l'adresse. Collé dans un courriel, il ouvre chez votre
-          correspondant exactement vos dates. Il ne se met pas à jour tout seul.</dd>
+        <dd>Le dossier entier (son nom, ses notes et ses dates) tient dans l'adresse, sans passer par aucun
+          serveur. Collé dans un courriel, il ouvre chez votre correspondant exactement vos dates ; ne le donnez
+          qu'à qui doit les voir. Il ne se met pas à jour tout seul.</dd>
       </div>
       <div>
         <dt>L'agenda</dt>
@@ -1591,15 +1632,9 @@ body.sombre .tuto-etape{color:rgb(var(--acc))}
       </div>
     </dl>
     </details>
-    <button class="bt bt--plein" id="bt-ouvrir-accueil">Ouvrir des dossiers enregistrés</button>
+    <p class="ac-reserve"><b>Ce que fait Quantième.</b> Le référentiel compte <span id="ac-compte">—</span>.
+      Chaque date cite son article, avec un lien vers Légifrance.</p>
   </div>
-
-  <div class="ac-reserve"><p><b>Ce que fait Quantième.</b> Le référentiel compte <span id="ac-compte">—</span>.
-    Chaque date cite son article, avec un lien vers Légifrance, et le calcul applique le report
-    des samedis, dimanches et jours fériés (art. 642 CPC).</p>
-  <p><b>Ce qui reste à faire par vous</b>, comme pour tout calcul de délai : relire
-    les dates au regard des actes de votre dossier (date exacte de la signification, domicile à l'étranger…).
-    La fiche de vérification, dans le menu <em>Enregistrer et imprimer</em>, sert à cela.</p></div>
 </section>
 
 <section class="agenda" id="agenda" hidden></section>
@@ -1628,8 +1663,8 @@ body.sombre .tuto-etape{color:rgb(var(--acc))}
     <h1 class="ai-titre">Fonctionnement de Quantième</h1>
     <p class="ai-chapo">Quantième calcule les échéances d'une procédure française à partir
       d'un acte déclencheur, en tenant compte des jours fériés, des délais de distance et
-      des délais francs. Tout tient dans un fichier unique : rien n'est envoyé sur un
-      serveur, rien n'est conservé sans votre geste.</p>
+      des délais francs. Vos données restent sur cet appareil : rien n'est envoyé sans votre
+      accord, rien n'est conservé sans votre geste.</p>
 
     <section id="ai-1">
       <h2>1. L'écran en un coup d'œil</h2>
@@ -1753,14 +1788,15 @@ body.sombre .tuto-etape{color:rgb(var(--acc))}
 
     <section id="ai-8">
       <h2>8. Conserver et partager</h2>
-      <p><strong>Le navigateur ne conserve aucun dossier</strong>, et rien n'est envoyé sur
-        un serveur. Un dossier vit donc dans un fichier ou dans un lien.</p>
+      <p><strong>Le navigateur ne conserve aucun dossier</strong>, et aucun serveur ne le reçoit.
+        Un dossier vit donc dans un fichier ou dans un lien.</p>
       <dl class="ai-liste">
         <dt>Le fichier</dt><dd>un <code>.json</code> à ranger avec l'affaire. Il ne contient
           que vos écarts au référentiel : une correction apportée plus tard au fichier
           profite aux anciens dossiers.</dd>
-        <dt>Le lien</dt><dd>le dossier entier tient dans l'adresse, compressé. Collé dans un
-          courriel, il ouvre chez votre correspondant exactement vos dates.</dd>
+        <dt>Le lien</dt><dd>le dossier entier (nom, notes et dates) tient dans l'adresse, compressé.
+          Collé dans un courriel, il ouvre chez votre correspondant exactement vos dates : ne le
+          donnez qu'à qui doit les voir.</dd>
         <dt>L'agenda</dt><dd>y verser le dossier permet de le voir avec les autres.</dd>
       </dl>
       <p>Un point rouge <em>modifications non enregistrées</em> apparaît dès que le dossier
@@ -1874,7 +1910,8 @@ body.sombre .tuto-etape{color:rgb(var(--acc))}
 
 <footer class="pied" id="pied">
   <b>À relire par vous.</b> Les dates suivent les textes cités ; une échéance qui tombe un samedi, un dimanche
-  ou un jour férié est reportée au premier jour ouvrable (art. 642 CPC). Vérifiez-les au regard des actes du dossier.
+  ou un jour férié est reportée au premier jour ouvrable (art. 642 CPC). Vérifiez-les au regard des actes du dossier
+  (date exacte de la signification, domicile à l'étranger…) : la fiche de vérification, dans le menu <em>Enregistrer et imprimer</em>, sert à cela.
 </footer>
 
 <!-- ─────────── panneau de réglages ─────────── -->
@@ -1961,6 +1998,9 @@ body.sombre .tuto-etape{color:rgb(var(--acc))}
 <div class="bulle" id="bulle" role="status" aria-live="polite"></div>
 
 <script src="quantieme-referentiel.js"></script>
+<script src="liens-legifrance.js"></script>
+<script src="bibliotheque/catalogue.js"></script>
+<script src="termes.js"></script>
 <script>
 "use strict";
 /* ═════════════════════════════════════════════════════════════════════
@@ -2293,13 +2333,30 @@ function requeteLegifrance(texte){
 function lienLegifrance(texte){
   const requete=requeteLegifrance(texte);
   if(!requete) return null;
+  // l'article lui-même quand son identifiant est connu (liens-legifrance.js ; 6e passe : la recherche ne suffisait pas)
+  const L=window.LIENS_LEGIFRANCE||{};
+  let abr=null; Object.keys(CODES).forEach(k=>{ if(texte.includes(k) && (!abr||k.length>abr.length)) abr=k; });
+  const num=abr && texte.match(/(?:art\.?\s*)([LRD]\.?\s?\*?\s?[0-9][0-9\-.]*|[0-9][0-9\-.]*)/i);
+  const legi=num && L[abr+"|"+num[1].replace(/[\s.*]/g,"").replace(/-$/,"").toUpperCase()];
+  if(legi) return "https://www.legifrance.gouv.fr/codes/article_lc/"+legi;
   return "https://www.legifrance.gouv.fr/search/all?tab_selection=all&searchField=ALL&query="
        + encodeURIComponent(requete) + "&page=1&init=true";
 }
+/* l'article dans la bibliothèque de Codes & articles (bibliotheque/catalogue.js), quand son code y est */
+const REF_BIBLIO={"C. civ.":"CIV","CPC":"CPC","C. com.":"COM","C. trav.":"TRAV","C. pén.":"PEN","CPP":"CPP","CPCE":"CPCE","C. consom.":"CONSO","CJA":"CJA","CSS":"CSS","CGI":"CGI","LPF":"LPF","CCP":"CCP","CGCT":"CGCT",
+  "CRPA":"CRPA","CSP":"CSP","CPI":"CPI","CESEDA":"CESEDA","C. urb.":"URB","CCH":"CCH","C. assur.":"ASSUR","C. rur.":"RUR","C. expr.":"EXPR","CMF":"CMF"};
+function lienBiblio(texte){
+  const refs=new Set(((window.PARAPHE_CATALOGUE||{}).codes||[]).map(c=>c.ref));
+  let abr=null; Object.keys(REF_BIBLIO).forEach(k=>{ if(texte.includes(k) && (!abr||k.length>abr.length)) abr=k; });
+  if(!abr || !refs.has(REF_BIBLIO[abr])) return null;
+  const num=texte.match(/(?:art\.?\s*)([LRD]\.?\s?\*?\s?[0-9][0-9\-]*|[0-9][0-9\-]*)/i);
+  return num ? "codes.html#code="+REF_BIBLIO[abr]+"&art="+encodeURIComponent(num[1].replace(/[\s.*]/g,"").replace(/-$/,"").toUpperCase()) : null;
+}
 function refHTML(texte, suffixe){
-  const url=lienLegifrance(texte);
+  const url=lienLegifrance(texte), biblio=lienBiblio(texte);
   const t=echapper(texte)+(suffixe||"");
-  return url ? '<a class="lf" href="'+url+'" target="_blank" rel="noopener">'+t+"</a>" : t;
+  return (url ? '<a class="lf" href="'+url+'" target="_blank" rel="noopener">'+t+"</a>" : t)
+    +(biblio ? ' <a class="lf-lire" href="'+biblio+'" title="Lire l\'article dans Codes & articles">lire</a>' : "");
 }
 
 
@@ -2312,6 +2369,8 @@ const cle = d => d.getFullYear()+"-"+deuxChiffres(d.getMonth()+1)+"-"+deuxChiffr
 const echapper = s => String(s==null?"":s).replace(/[&<>]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
 const attribut = s => echapper(s).replace(/"/g,"&quot;");
 const minuit = d => { const x=new Date(d); x.setHours(0,0,0,0); return x; };
+/* aujourd'hui, ou le dernier jour ouvré avant un samedi, un dimanche ou un jour férié */
+function jourParDefaut(){ const d=minuit(new Date()); let g=0; while(estChome(d,false) && g++<10) d.setDate(d.getDate()-1); return d; }
 const sansAccent = s => s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
 
 const MOIS=["janvier","février","mars","avril","mai","juin","juillet","août",
@@ -2846,7 +2905,7 @@ function afficherResultats(saisie){
   boite.innerHTML=resultats.map((r,i)=>
     '<button type="button" class="q-item" data-i="'+i+'" role="option">'
     +'<span class="q-nom">'+echapper(r.procedure.nom)+"</span>"
-    +'<span class="q-meta">'+echapper(r.procedure.juridiction)+" · "+echapper(r.procedure.matiere)+"</span>"
+    +'<span class="q-meta">'+echapper(r.procedure.lieu||r.procedure.juridiction)+" · "+echapper(r.procedure.matiere)+"</span>"
     +(r.contexte?'<span class="q-ctx">'+echapper(r.contexte)+"</span>":"")
     +"</button>").join("");
   boite.hidden=false;
@@ -2854,6 +2913,14 @@ function afficherResultats(saisie){
     ev.preventDefault(); choisirProcedure(resultats[Number(b.dataset.i)].procedure);
   }));
 }
+document.getElementById("situations").addEventListener("click", ev=>{
+  const b=ev.target.closest("[data-sit]"); if(!b) return;
+  const p=procedureParId(b.dataset.sit); if(p){ choisirProcedure(p); const q=$("cf-date-q"); if(q) q.scrollIntoView({block:"center", behavior:"smooth"}); }
+});
+document.addEventListener("click", ev=>{
+  if(!ev.target.closest("#cf-changer")) return;
+  $("q").focus(); $("q").scrollIntoView({block:"center", behavior:"smooth"});
+});
 function choisirProcedure(p){
   selJuridiction.value=p.juridiction;
   remplirProcedures(p.juridiction);
@@ -3070,7 +3137,7 @@ function dessinerCalendrier(){
       +(nom?" ferie":"")
       +(k===aujourdhui?" auj":"")
       +(cal.selection&&k===cle(cal.selection)?" sel":"")
-      +'" data-d="'+k+'" data-f="'+attribut(nom||"")+'">'+d.getDate()+"</button>";
+      +'" data-d="'+k+'" data-f="'+attribut(nom||"")+'" aria-label="'+attribut(dateLongue(d)+(d.getMonth()!==m?" (autre mois)":"")+(nom?", "+nom:""))+'">'+d.getDate()+"</button>";
   }
   $("cal").innerHTML=
      '<div class="cal-tete">'
@@ -3149,17 +3216,25 @@ function majFormulaire(){
   /* les questions de la procédure (seuils du PSE, voie, côté) se posent ici, avant le calcul
      (seconde passe du test : posées après « Voir les échéances », elles arrivaient trop tard) */
   $("cf-cas").innerHTML = (source && app.procedure && app.procedure.id===source.id) ? questionsHTML(true) : "";
+  $("cf-etape-date").hidden = !source;
+  const choisie=$("cf-choisie");
+  choisie.hidden = !source;
   if(!source){
     q.textContent="Date de départ";
-    aide.textContent="Choisissez d'abord une procédure : la date demandée dépend de l'acte qui fait courir les délais (signification, notification, dépôt…).";
+    aide.textContent="";
     apercu.textContent="";
     return;
   }
+  choisie.innerHTML='Procédure choisie : <b>'+echapper(source.nom)+'</b> <span class="cf-jur">· '+echapper(source.juridiction)+'</span>'
+    +' <button type="button" class="mini" id="cf-changer">Changer</button>';
   q.textContent=source.declencheur;
-  const aujourdhui=cle(new Date());
+  const aujourdhui=cle(new Date()), parDefaut=cle(jourParDefaut());
   aide.textContent="C'est le jour à partir duquel les délais se comptent."
-    +(champDate.value===aujourdhui ? " La date du jour est proposée : changez-la si l'acte est plus ancien ou à venir." : "");
-  if(app.procedure && app.procedure.id===source.id && app.echeances.length && champDate.value){
+    +(champDate.value===aujourdhui ? " La date du jour est proposée : changez-la si l'acte est plus ancien ou à venir."
+      : champDate.value===parDefaut ? " Le dernier jour ouvré est proposé : changez-la si l'acte est d'un autre jour." : "");
+  const casOuvert=(source.questions||[]).some(q=>!q.role && !(app.reponses||{})[q.id]);
+  if(casOuvert && app.procedure && app.procedure.id===source.id) apercu.textContent="Répondez aux questions ci-dessus pour voir vos dates.";
+  else if(app.procedure && app.procedure.id===source.id && app.echeances.length && champDate.value){
     const premiere=app.echeances.slice().sort((a,b)=>a.date-b.date)[0];
     apercu.innerHTML="Avec cette date, la première échéance est le <b>"+echapper(dateLongue(premiere.date).toLowerCase())
       +"</b> : "+echapper(premiere.etape.libelle)+". "+app.echeances.length+" échéance"
@@ -3380,7 +3455,7 @@ function quiDe(e){
   const o=q && q.options.find(x=>x.id===e.pour.slice(i+1));
   return o ? (o.qui||o.libelle) : "";
 }
-const natureTexte=pt=>({plancher:"Pas avant", autorite:"Décision attendue", tiers:"Délai d'un tiers",
+const natureTexte=pt=>(pt && pt.etape && pt.etape.ouvertA && genreDe(pt)==="limite") ? "Si vous contestez" : ({plancher:"Pas avant", autorite:"Décision attendue", tiers:"Délai d'un tiers",
   autre:"Autre partie", estimee:"Date estimée", limite:"Date limite"})[genreDe(pt)]||"";
 function natureAide(pt){
   const g=genreDe(pt), qui=quiDe(pt.etape);
@@ -3388,6 +3463,7 @@ function natureAide(pt){
   if(g==="autorite") return "Ce délai s'impose à "+(qui||"l'autorité")+", pas à vous : à cette date, vérifiez la décision reçue ou ce que vaut son silence (voir « À savoir »).";
   if(g==="tiers")    return "C'est le délai "+deQui(qui||"un tiers")+" : à surveiller, il ne vous oblige pas.";
   if(g==="autre")    return "C'est le délai de l'autre partie ("+(qui||"la partie adverse")+") : à surveiller. S'il est dépassé, vérifiez la sanction prévue (caducité, irrecevabilité…).";
+  if(g==="limite" && pt.etape && pt.etape.ouvertA) return "Ce recours est ouvert à "+pt.etape.ouvertA.replace(/\s*\(art\.[^)]*\)\s*$/,"")+" : c'est une date limite seulement si vous voulez contester.";
   if(g==="limite")   return "Passé ce jour, il est trop tard pour agir.";
   return "Calculée sur une hypothèse (date d'audience, d'un autre acte…) : un repère tant que la date réelle n'est pas connue. Saisissez-la dès que possible, la date peut devenir une date limite.";
 }
@@ -3437,18 +3513,53 @@ function pointHero(){
   const qs=(app.procedure && app.procedure.questions)||[];
   // le côté (« de quel côté êtes-vous ? ») n'empêche pas la carte : chaque date dit alors pour qui elle vaut
   if(qs.some(q=>!q.role && !(app.reponses||{})[q.id])) return {casAPreciser:true};
-  const reste=echeancesTriees().filter(p=>!p.fait), aujourdhui=minuit(new Date());
+  const reste=echeancesTriees().filter(p=>!p.fait && !enAttenteDuCas(p)), aujourdhui=minuit(new Date());
+  const avenir=reste.filter(p=>p.date>=aujourdhui);
+  // 6e passe : une date sûre passe avant une date provisoire (appel : l'art. 908 avant la signification de l'art. 902,
+  // qui dépend de l'avis du greffe) ; un recours ouvert à plusieurs parties (« ouvert à l'employeur, aux syndicats… »)
+  // est une faculté, pas l'étape suivante : il passe après les étapes du calendrier (plan social)
+  const facultatif=p=>!!(p.etape && p.etape.ouvertA);
   return reste.find(p=>p.date<aujourdhui && estLimite(p))
-      || reste.find(p=>p.date>=aujourdhui && estLimite(p))
-      || reste.find(p=>p.date>=aujourdhui)
+      || avenir.find(p=>estLimite(p) && !facultatif(p) && !departProvisoire(p))
+      || avenir.find(p=>estLimite(p) && !facultatif(p))
+      || avenir.find(p=>!facultatif(p))
+      || avenir.find(p=>estLimite(p))
+      || avenir[0]
       || null;
+}
+/* Étape d'un cas pas encore précisé (« Si 100 licenciements ou plus ») : cachée jusqu'à la réponse
+   (6e passe : avant « Précisez votre cas », toutes les branches s'affichaient mêlées, 22 profils) */
+function enAttenteDuCas(p){ return etapeEnAttente(p && p.etape, 0); }
+/* une étape attend le cas si elle porte un « si » sans réponse, ou si elle part d'une telle étape (transmission du PSE) */
+function etapeEnAttente(e, prof){
+  if(!e || prof>20) return false;
+  const s=optionDe(e.si);
+  if(s && s.o && !(app.reponses||{})[s.q.id]) return true;
+  const id=e._depuis||e.depuis; if(!id || e.dateFixee) return false;
+  return etapeEnAttente((app.procedure && app.procedure.etapes||[]).find(x=>x.id===id), prof+1);
+}
+/* La date limite provisoire qui précède la vedette, s'il y en a une : dite sous la carte plutôt qu'en vedette */
+function provisoireAvant(pt){
+  const aujourdhui=minuit(new Date());
+  return echeancesTriees().find(p=>!p.fait && !enAttenteDuCas(p) && p!==pt && p.date>=aujourdhui && p.date<pt.date
+    && estLimite(p) && departProvisoire(p)) || null;
 }
 function pointParId(id){ return lesPoints.find(p=>cleSel(p)===id); }
 
 function calculEtFondement(pt){
   const calcul=suiteCalcul(pt).join(", ");
   return majuscule(calcul)+"."
+    +hypotheseDe(pt)
     +(pt.epingle?" ◆ Date saisie par vous.":"")+(pt.interrompu?" ↻ Délai interrompu.":"");
+}
+/* Une date qui part d'une étape encore à faire suppose que celle-ci tombe le dernier jour (8e passe : « 3 mois à compter
+   des conclusions » ne disait pas sur quelle date il comptait) */
+function hypotheseDe(pt){
+  const e=pt && pt.etape; if(!e || e.dateFixee) return "";
+  const id=e._depuis||e.depuis; if(!id) return "";
+  const a=(app.procedure.etapes||[]).find(x=>x.id===id); if(!a || a.dateFixee || a.fait) return "";
+  const pa=lesPoints.find(p=>p.etape===a); if(!pa) return "";
+  return " En supposant que « "+a.libelle+" » ait lieu le "+texteDate(pa.date)+" : saisissez sa vraie date pour recalculer.";
 }
 
 function dessinerResultat(){
@@ -3461,6 +3572,8 @@ function dessinerResultat(){
    à la réponse (il reste en bas : « Mode d'emploi de cette page ») ; « Masquer » le retire tout de suite. */
 const CLEF_GUIDE="quantieme_guide_vu", CLEF_GUIDE_VUES="quantieme_guide_vues";
 let guideCompte=false;
+// la date d'abord, le mode d'emploi ensuite (8e passe : « le bandeau de quatre lignes passe avant la date »)
+(()=>{ const g=$("guide"), h=$("hero"); if(g && h) h.after(g); })();
 function dessinerGuide(){
   let vues=+(lireStockage(CLEF_GUIDE_VUES)||0);
   if(!guideCompte){ guideCompte=true; vues++; ecrireStockage(CLEF_GUIDE_VUES, String(vues)); }
@@ -3472,8 +3585,8 @@ function dessinerHero(){
   if(pt && pt.casAPreciser){
     el.className="hero hero--cas"; el.style.setProperty("--u","");
     el.innerHTML='<p class="hero-sur">Votre prochaine date</p>'
-      +'<h2 class="hero-titre">Précisez d\'abord votre cas</h2>'
-      +'<p class="hero-reste">Cette procédure prévoit plusieurs cas, et les dates changent selon votre réponse. Répondez aux questions de « Précisez votre cas » : cette carte affichera alors votre prochaine date.</p>'
+      +'<h2 class="hero-titre">Vos dates dépendent de vos réponses</h2>'
+      +'<p class="hero-reste">Cette procédure prévoit plusieurs cas. Répondez aux questions juste en dessous : cette carte affichera alors votre prochaine date.</p>'
       +'<div class="hero-actions"><button type="button" class="bt bt--plein" data-act="aller-cas">Répondre aux questions</button></div>';
     return;
   }
@@ -3486,7 +3599,8 @@ function dessinerHero(){
     return;
   }
   const n=joursJusque(pt.date), retard=n<0, limite=estLimite(pt), id=attribut(cleSel(pt));
-  const depart=minuit(app.depart), fin=minuit(pt.date), aujourdhui=minuit(new Date());
+  const aujourdhui=minuit(new Date()), departVrai=minuit(app.depart), fin=minuit(pt.date);
+  const depart = departVrai>aujourdhui ? aujourdhui : departVrai;   // 8e passe : « 100 jours » contre « sur 92 »
   const total=Math.max(1,Math.round((fin-depart)/86400000));
   const ecoule=Math.min(total, Math.max(0, Math.round((aujourdhui-depart)/86400000)));
   const sur = retard ? (limite ? "Date limite dépassée" : "Date estimée dépassée")
@@ -3497,7 +3611,8 @@ function dessinerHero(){
   const reste = retard ? '<b class="rouge">Elle est passée depuis '+(-n)+" jour"+(n<-1?"s":"")+".</b>"
               : n===0  ? "<b>C'est aujourd'hui.</b>"
               : n===1  ? "<b>C'est demain.</b>"
-              :          "<b>Il vous reste "+n+" jours.</b>";
+              : limite ? "<b>Il vous reste "+n+" jours.</b>"
+              :          "<b>Dans "+n+" jours.</b>";
   el.className="hero"+(retard?" hero--retard":"");
   const u=niveauUrgence(n); el.style.setProperty("--u", u ? "var(--u-"+u+")" : "");
   el.innerHTML=
@@ -3505,9 +3620,11 @@ function dessinerHero(){
     +'<p class="hero-date">'+echapper(dateLongue(pt.date))+"</p>"
     +'<h2 class="hero-titre">'+echapper(pt.libelle)+"</h2>"
     +(casHTML(pt) ? '<p class="hero-cas">'+casHTML(pt)+"</p>" : "")
+    +(enClair(pt.libelle+" "+(pt.note||""), 3) ? '<p class="hero-clair">En clair · '+enClair(pt.libelle+" "+(pt.note||""), 3)+"</p>" : "")
     +'<p class="hero-reste">'+reste+" "+(retard && limite
         ? "Si l'étape est faite, indiquez-le ci-dessous ; sinon, vérifiez sans attendre ce qui reste possible."
         : natureAide(pt))+"</p>"
+    +(provisoireAvant(pt) ? '<p class="hero-cas"><b>Avant, peut-être</b> : '+echapper(dateLongue(provisoireAvant(pt).date).toLowerCase())+', « '+echapper(provisoireAvant(pt).libelle)+' ». Cette date est provisoire : elle part de « '+echapper(departProvisoire(provisoireAvant(pt)).libelle)+' », dont la date n\'est qu\'estimée.</p>' : "")
     +(departProvisoire(pt) ? '<p class="hero-cas"><b>Date provisoire</b> : elle part de « '+echapper(departProvisoire(pt).libelle)+' », dont la date n\'est qu\'estimée. Saisissez la vraie date dès que vous la connaissez.</p>' : "")
     +'<p class="hero-pourquoi"><b>Pourquoi cette date ?</b> '+echapper(calculEtFondement(pt))+(pt.texte?" "+refHTML(pt.texte,""):"")+"</p>"
     +'<p class="hero-depart">Calculé à partir du '+echapper(dateCourte(app.depart))
@@ -3516,7 +3633,7 @@ function dessinerHero(){
     +'<div class="hero-barre" role="img" aria-label="'+attribut(ecoule+" jours écoulés sur "+total)+'">'
     +'<i style="width:'+(retard?100:Math.max(2,Math.round(ecoule/total*100)))+'%"></i></div>'
     +'<div class="hero-reperes"><span>'+dateCourte(app.depart)+" · départ</span>"
-    +"<span>"+(retard?"": aujourdhui<depart ? "départ dans "+Math.round((depart-aujourdhui)/86400000)+" j" : "aujourd'hui : jour "+ecoule+" sur "+total)+"</span>"
+    +"<span>"+(retard?"": aujourdhui<departVrai ? "départ dans "+Math.round((departVrai-aujourdhui)/86400000)+" j" : "aujourd'hui : jour "+ecoule+" sur "+total)+"</span>"
     +"<span>"+dateCourte(pt.date)+"</span></div>"
     +'<div class="hero-actions">'
     +'<button type="button" class="bt bt--plein" data-act="agenda">Ajouter ces dates à mon agenda</button>'
@@ -3524,6 +3641,9 @@ function dessinerHero(){
     +((pt.pieces||[]).length||pt.note ? '<button type="button" class="bt bt--lien" data-act="voir-etape" data-id="'+id+'">Ce qu\'il faut préparer</button>' : "")
     +"</div>";
 }
+
+/* « En clair » : termes.js (lexique commun à Quantième et à Codes & articles) */
+const enClair=(t, max)=>window.ParapheTermes ? window.ParapheTermes.enClair(t, max) : "";
 
 /* Ce qu'une question encore sans réponse laisse ouvert : « Si moins de 100 licenciements », « Pour l'intimé » ;
    et qui doit agir quand ce n'est pas vous. */
@@ -3583,6 +3703,7 @@ function etapeHTML(pt, num, hero){
           +"<span>"+echapper(x)+"</span></label></li>";
       }).join("");
       detail='<div class="e-detail">'
+        +(enClair(pt.libelle+" "+(pt.note||""), 3) ? '<p class="e-texte e-clair"><b>En clair.</b> '+enClair(pt.libelle+" "+(pt.note||""), 3).replace(/<\/?b>/g,"")+"</p>" : "")
         +'<p class="e-texte"><b>Pourquoi cette date ?</b> '+echapper(calculEtFondement(pt))
         +(pt.texte?" "+refHTML(pt.texte,""):"")
         +(pt.franc?'<span class="badge badge--franc" title="Ni le jour de l\'acte ni celui de l\'échéance ne comptent">franc</span>':"")+"</p>"
@@ -3619,12 +3740,17 @@ function idOuvert(){
 function dessinerSuite(){
   const hero=pointHero(), aujourdhui=minuit(new Date());
   const toutes=echeancesTriees();
-  const aFaire=toutes.filter(p=>!p.fait);
+  const caches=toutes.filter(p=>!p.fait && enAttenteDuCas(p)).length;
+  const aFaire=toutes.filter(p=>!p.fait && !enAttenteDuCas(p));
   const retards=aFaire.filter(p=>p.date<aujourdhui && estLimite(p));
   const aVenir=aFaire.filter(p=>p.date>=aujourdhui);
+  // un point de départ encore à venir (réunion du CSE dans 8 jours) n'est pas « déjà passé » (6e passe)
+  const departFutur=lesPoints[0] && minuit(lesPoints[0].date)>aujourdhui;
   /* déjà passé : ce qui est fait, et les estimations dépassées (sans urgence) */
-  const faites=toutes.filter(p=>p.fait || (p.date<aujourdhui && !estLimite(p))).sort((a,b)=>b.date-a.date);
+  const faites=toutes.filter(p=>!enAttenteDuCas(p) && (p.fait || (p.date<aujourdhui && !estLimite(p)))).sort((a,b)=>b.date-a.date);
   let h=questionsHTML()+'<h3 class="p-titre">Votre parcours, étape par étape</h3>';
+  if(caches) h+='<p class="p-sous">'+caches+(caches>1?" étapes dépendent":" étape dépend")+' de votre cas : '+(caches>1?"elles apparaîtront":"elle apparaîtra")+' dès que vous aurez répondu à « Précisez votre cas », juste au-dessus.</p>';
+  if(departFutur) h+=etapeHTML(lesPoints[0],0,false);
   let num=0;
   if(retards.length){
     h+='<p class="p-sous p-sous--retard">Dates dépassées — à traiter en priorité</p>';
@@ -3634,9 +3760,10 @@ function dessinerSuite(){
     if(retards.length) h+='<p class="p-sous">À venir</p>';
     aVenir.forEach(p=>{ h+=etapeHTML(p, ++num, p===hero); });
   }
-  if(!retards.length && !aVenir.length) h+='<p class="p-vide">Rien à faire pour le moment.</p>';
-  h+='<details class="p-passe"'+(app.vue.faitesOuvert?" open":"")+"><summary>Déjà passé ou fait ("+(faites.length+1)+")</summary>"
-    +faites.map(p=>etapeHTML(p,0,false)).join("")+etapeHTML(lesPoints[0],0,false)+"</details>";
+  if(!retards.length && !aVenir.length && !caches) h+='<p class="p-vide">Rien à faire pour le moment.</p>';
+  const nPasse=faites.length+(departFutur?0:1);
+  if(nPasse) h+='<details class="p-passe"'+(app.vue.faitesOuvert?" open":"")+"><summary>Déjà passé ou fait ("+nPasse+")</summary>"
+    +faites.map(p=>etapeHTML(p,0,false)).join("")+(departFutur?"":etapeHTML(lesPoints[0],0,false))+"</details>";
   $("suite").innerHTML=h;
   const det=$("suite").querySelector(".p-passe");
   if(det) det.addEventListener("toggle",()=>{ app.vue.faitesOuvert=det.open; });
@@ -3655,7 +3782,7 @@ function questionsHTML(depart){
                    : "Cette procédure prévoit plusieurs cas. Répondez pour ne garder que vos dates ; en attendant, chaque date dit dans quel cas elle vaut.")+"</p>"
     +qs.map(q=>'<fieldset class="cas-q"><legend>'+echapper(q.texte)+'</legend><div class="cas-opts">'
       +q.options.map(o=>'<button type="button" data-act="repondre" data-q="'+attribut(q.id)+'" data-o="'+attribut(o.id)+'" aria-pressed="'+(r[q.id]===o.id)+'">'+echapper(o.libelle)+"</button>").join("")
-      +(r[q.id] ? '<button type="button" class="cas-rien" data-act="repondre" data-q="'+attribut(q.id)+'" data-o="">'+(q.role?"Les deux côtés":"Je ne sais pas encore")+"</button>" : "")
+      +'<button type="button" class="cas-rien" data-act="repondre" data-q="'+attribut(q.id)+'" data-o="" aria-pressed="'+(!r[q.id])+'">'+(q.role?"Les deux côtés":"Je ne sais pas encore")+"</button>"
       +"</div></fieldset>").join("")
     +"</section>";
 }
@@ -3778,7 +3905,7 @@ function montrerEcran(nom){
   $("pied").hidden         = surFrise;   /* la mention est déjà portée par la puce de vérification */
   $("bt-agenda").setAttribute("aria-pressed", String(nom==="agenda"));
   $("bt-agenda").hidden    = app.portefeuille.length===0;
-  $("bt-agenda").textContent = (nom==="frise" && app.indexCourant>=0) ? "← Agenda" : "Agenda";
+  $("bt-agenda").textContent = (nom==="frise" && app.indexCourant>=0) ? "← Mes affaires" : "Mes affaires";
   if(nom==="agenda") dessinerAgenda();
   if(nom==="aide"){
     dessinerSchemas();
@@ -3886,7 +4013,7 @@ function dessinerAgenda(){
 
   let html=
      '<div class="ag-tete">'
-    +"<div><h2>Agenda</h2>"
+    +"<div><h2>Mes affaires</h2>"
     +'<p class="ag-compte">'+nbDossiers+" dossier"+(nbDossiers>1?"s":"")+" · "
     +lignes.length+" échéance"+(lignes.length>1?"s":"")
     +(retards?' · <b class="ag-retard">'+retards+" en retard</b>":"")
@@ -4330,7 +4457,7 @@ function nouveauDossier(){
   app.piecesCochees=new Set();
   app.indexCourant=-1;
   viderHistorique();
-  cal.selection=new Date();
+  cal.selection=jourParDefaut();
   champDate.value=cle(cal.selection);
   champHeure.value=DEFAUTS.heure;
   majBoutonDate();
@@ -4383,7 +4510,7 @@ function majBandeauVerification(){
   const v=verificationDe(app.procedure.id);
   const perime = v && v.arrete!==REFERENTIEL_ARRETE;
   const etat = !v ? "absente" : perime ? "perimee" : "ok";
-  const resume = !v ? "Vérification : à faire par vous"
+  const resume = !v ? "À vérifier par vous sur Légifrance : chaque délai cite son article"
                : perime ? "Vérification à reprendre"
                : "Vérifiée le "+texteDate(new Date(v.le+"T12:00:00"))
                  +(v.par?" par "+echapper(v.par):"");
@@ -4392,7 +4519,7 @@ function majBandeauVerification(){
   boite.className="verif verif--"+etat+(verifDepliee?" verif--ouverte":"");
   boite.innerHTML=
      '<button type="button" class="v-puce" id="v-puce" aria-expanded="'+verifDepliee+'">'
-    +'<span class="v-point">'+(!v?"○":perime?"⚠":"✓")+"</span>"+resume
+    +'<span class="v-point">'+(!v?"!":perime?"⚠":"✓")+"</span>"+resume
     +'<span class="chevron">'+(verifDepliee?"▴":"▾")+"</span></button>"
     +(verifDepliee
       ? '<div class="v-corps">'
@@ -4466,9 +4593,10 @@ function majLegendeFrise(){
 
 function majBandeauSuivi(){
   if(!app.procedure) return;
-  const total=app.echeances.length;
-  const faits=app.echeances.filter(e=>e.etape.fait).length;
-  const retards=app.echeances.filter(e=>statut(e).classe==="retard").length;
+  const vues=app.echeances.filter(e=>!enAttenteDuCas(e));   // 8e passe : « 0 / 8 » pour trois étapes visibles
+  const total=vues.length;
+  const faits=vues.filter(e=>e.etape.fait).length;
+  const retards=vues.filter(e=>statut(e).classe==="retard").length;
   $("sb-jauge").style.width = (total?Math.round(faits/total*100):0)+"%";
   $("sb-texte").innerHTML =
       "<b>"+faits+" / "+total+"</b> étape"+(total>1?"s":"")+" accomplie"+(total>1?"s":"")
@@ -4486,8 +4614,8 @@ function decocherTout(){
 /* Pied du résultat : ce qui part à l'export, et l'état de la sauvegarde. */
 function majBarreActions(){
   if(!app.procedure) return;
-  const n=app.echeances.filter(e=>e.etape.exporte).length;
-  const faits=app.echeances.filter(e=>e.etape.fait).length;
+  const n=app.echeances.filter(e=>e.etape.exporte && !enAttenteDuCas(e)).length;
+  const faits=app.echeances.filter(e=>e.etape.fait && !enAttenteDuCas(e)).length;
   const ref=app.dossier.trim();
   const modifie=aDesModifications();
   $("ba-detail").innerHTML =
@@ -4495,8 +4623,9 @@ function majBarreActions(){
     + n+" échéance"+(n>1?"s":"")+" retenue"+(n>1?"s":"")+" pour l'export"
     + (faits?" · "+faits+" accomplie"+(faits>1?"s":""):"")
     + (app.carnet.trim()?" · carnet renseigné":"")
-    + (modifie ? ' · <button type="button" class="alerte-lien" id="ba-alerte">'
-                +"⬤ modifications non enregistrées</button>"
+    // 7e passe : un calcul tout neuf affichait « modifications non enregistrées » en rouge sans qu'on ait rien modifié
+    + (modifie ? (app.repere ? ' · <button type="button" class="alerte-lien" id="ba-alerte">'+"⬤ modifications non enregistrées</button>"
+                             : ' · <button type="button" class="lien-mini" id="ba-alerte">pas encore enregistré · l\'enregistrer</button>')
                : (ref?"":" · nommez le dossier dans « Mon dossier »"));
   if(modifie){
     $("ba-alerte").addEventListener("click",ev=>{ ev.stopPropagation(); $("bt-exporter").click(); });
@@ -4512,6 +4641,7 @@ function basculerFait(etape){
   etape.fait=!etape.fait;
   etape.faitLe = etape.fait ? cle(new Date()) : "";
   rafraichir();
+  bulle(etape.fait ? "Étape notée comme faite. Elle est gardée avec le dossier quand vous l'enregistrez." : "Étape remise « à faire ».");
 }
 function statut(e){
   const aujourdhui=minuit(new Date());
@@ -4588,7 +4718,7 @@ function basculerAgenda(){
     const etat=etatDossier();
     if(!etat) return;
     app.indexCourant=deposerDossier(etat);
-    bulle("Dossier ajouté — "+app.portefeuille.length+" en tout dans « Agenda ».");
+    bulle("Dossier ajouté — "+app.portefeuille.length+" en tout dans « Mes affaires ».");
   }
   $("bt-agenda").hidden=app.portefeuille.length===0;
   majMenuDossier();
@@ -4741,7 +4871,10 @@ function exporterICS(){
     d.setAttribute("aria-labelledby","aa-titre");
     document.body.appendChild(d);
   }
+  const avant=document.activeElement;
+  d.onclose=()=>{ if(avant && avant.isConnected) avant.focus(); };
   d.innerHTML='<h2 id="aa-titre">Avant d\'ajouter ces dates à votre agenda</h2>'
+    +'<p class="aa-note">Un fichier « .ics » va être téléchargé : ouvrez-le, et votre agenda (Outlook, Google, Apple) proposera d\'ajouter les dates. Il ne se met pas à jour tout seul : si une date change, exportez-la de nouveau.</p>'
     +'<label for="aa-nom">Nom du dossier <span>(il précède chaque événement)</span></label>'
     +'<input id="aa-nom" type="text" autocomplete="off" placeholder="Ex. : Dupont c/ SARL Bati" value="'+attribut(app.dossier)+'">'
     +(manqueCote ? '<fieldset class="cas-q"><legend>'+echapper(cote.texte)+'</legend><div class="cas-opts">'
@@ -5575,9 +5708,14 @@ construirePalettes();
 appliquerPrefs();
 
 /* bascule rapide jour/nuit dans la barre, synchronisée avec le panneau Apparence */
+/* le bouton dit ce qu'il fera, avec la même icône que dans les autres outils (theme.js) ; pas d'état enfoncé */
+const IC_LUNE='<svg class="ic-theme" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>';
+const IC_SOLEIL='<svg class="ic-theme" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>';
 function syncBtNuitRapide(){
-  $("bt-nuit-rapide").setAttribute("aria-pressed", String(prefs.sombre));
-  $("bt-nuit-rapide").textContent = prefs.sombre ? "Jour" : "Nuit";
+  const b=$("bt-nuit-rapide");
+  b.removeAttribute("aria-pressed");
+  b.innerHTML = (prefs.sombre ? IC_SOLEIL : IC_LUNE) + "<span>" + (prefs.sombre ? "Jour" : "Nuit") + "</span>";
+  b.title = prefs.sombre ? "Revenir au thème clair" : "Passer au thème sombre";
 }
 syncBtNuitRapide();
 majFormulaire();
@@ -5632,7 +5770,7 @@ function retourAccueil(){
   viderHistorique();
   fermerPanneau();
 
-  cal.selection=new Date();
+  cal.selection=jourParDefaut();
   champDate.value=cle(cal.selection);
   champHeure.value=DEFAUTS.heure;
   champHeure.classList.remove("visible");
@@ -5679,8 +5817,9 @@ document.addEventListener("drop",ev=>{
 const CLEF_VU="quantieme_vu";
 const TUTO=[
   { titre:"Choisissez une procédure",
-    texte:"Deux chemins : la recherche, qui interroge aussi les articles et les pièces — "
-        + "tapez « licenciement », « divorce » ou un article comme « 908 » — ou les deux menus, juridiction puis procédure." },
+    texte:"Tapez un mot dans la recherche, qui interroge aussi les articles et les pièces — "
+        + "« licenciement », « divorce » ou un article comme « 908 » —, ou touchez votre situation. "
+        + "« Parcourir toutes les procédures » ouvre la liste par juridiction." },
   { titre:"Indiquez la date de l'acte",
     texte:"Le calendrier signale les jours fériés d'une pastille : ce sont eux qui reportent "
         + "les échéances au premier jour ouvrable, selon l'article 642 du code de procédure civile." },
@@ -5951,8 +6090,8 @@ if(!lireStockage(CLEF_VU) && location.search.indexOf("test=1")<0 && !location.ha
 }
 
 
-/* amorce : la date du jour est proposée d'emblée */
-cal.selection=new Date();
+/* amorce : le dernier jour ouvré est proposé d'emblée (6e passe : un dimanche proposé comme date d'un acte) */
+cal.selection=jourParDefaut();
 champDate.value=cle(cal.selection);
 champHeure.value=DEFAUTS.heure;
 majBoutonDate();

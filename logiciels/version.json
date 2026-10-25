@@ -1,11 +1,12 @@
 {
-  "version": "1.2.1",
+  "version": "1.3.0",
   "date": "2026-10-25",
   "lien": "https://parpar30.github.io/Paraphe-Site/#telecharger",
+  "mac": "https://github.com/PARPAR30/Paraphe-Site/releases/download/v1.3.0/Paraphe_1.3.0_universal.dmg",
   "nouveautes": [
-    "Une page « Aujourd’hui » à l’accueil : ce qui vous attend dans chaque outil, et vos premiers pas selon que vous étudiez ou exercez",
-    "Fiches mémo : cartes à trous, planning jusqu’au jour de l’examen, vos cours Word ou PDF transformés en cartes, et une page de révision mieux rangée",
-    "Codes & articles : les articles cités par les fiches d’arrêt et par Quantième, préchargés avec leur texte officiel daté",
-    "Considérant : modèles de raisonnement et export Word ; la recherche (⌘ K ou Ctrl K) dans tous les outils"
+    "Codes & articles : les 62 codes en vigueur, à lire dans leur plan officiel et à fouiller par numéro ou par mots (onglet « Tous les codes ») ; 20 sont fournis, les autres se téléchargent d’un clic",
+    "Quantième et l’accueil plus simples : une seule recherche pour commencer, et la date demandée seulement une fois la procédure choisie",
+    "Considérant se lit en liste sur téléphone ; Fiches mémo montre la charge de chaque jour du planning et range mieux ses cartes",
+    "Le bouton Jour / Nuit dit ce qu’il va faire, dans les six outils"
   ]
 }

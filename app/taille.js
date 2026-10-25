@@ -6,9 +6,11 @@
    · font-size de <html> : base des tailles en rem (Diligences).
    ═════════════════════════════════════════════════════════════════════ */
 (() => {
-  const TAILLES = [1, 1.12, 1.25];
+  // 8e passe : « Grand grossit à peine » : les paliers s'écartent (les anciens réglages 1,12 et 1,25 sont repris)
+  const TAILLES = [1, 1.15, 1.3];
   let f = 1;
   try { f = parseFloat(localStorage.getItem("paraphe_taille")) || 1; } catch (e) {}
+  if (f === 1.12) f = 1.15; else if (f === 1.25) f = 1.3;
   if (!TAILLES.includes(f)) f = 1;
   window.PARAPHE_TAILLE = f;
   // les très grands écrans s'éloignent des yeux : un léger supplément de taille, qui s'ajoute au choix de l'utilisateur

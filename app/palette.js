@@ -50,7 +50,7 @@ window.ParaphePalette = (() => {
     extra.forEach(a => liste.push(Object.assign({ groupe: "Dans cet outil" }, a)));
     const bascule = document.querySelector("#theme-toggle, #nuit, #bt-nuit-rapide");
     if (bascule) liste.push({ groupe: "Affichage", titre: nuit() ? "Passer en thème jour" : "Passer en thème nuit", detail: "Pour tous les outils", faire: () => bascule.click() });
-    if (window.parapheTaille) [[1, "normal"], [1.12, "grand"], [1.25, "très grand"]].forEach(([v, nom]) =>
+    if (window.parapheTaille) [[1, "normal"], [1.15, "grand"], [1.3, "très grand"]].forEach(([v, nom]) =>
       liste.push({ groupe: "Affichage", titre: "Texte " + nom, detail: "Taille du texte dans tous les outils", faire: () => window.parapheTaille(v) }));
     return liste;
   }

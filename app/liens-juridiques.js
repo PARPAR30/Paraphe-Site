@@ -50,6 +50,9 @@ window.ParapheRefs = (() => {
     const source = plat(texte).replace(/[’]/g, "'");
     const vus = new Set(), out = [];
     for (const m of source.matchAll(MOTIF)) {
+      // « ancien art. 1384 » : l'ancienne numérotation ne désigne pas l'article qui porte ce numéro aujourd'hui
+      // (l'actuel 1384 traite du serment) ; on ne le relie pas
+      if (/\bancien(?:ne)?s?\s*$/.test(source.slice(Math.max(0, m.index - 12), m.index))) continue;
       const c = code(m[2]) || code("code " + m[2]);
       if (!c) continue;
       m[1].split(/\s*(?:,|\bet\b|\ba\b)\s*/).forEach(n => {

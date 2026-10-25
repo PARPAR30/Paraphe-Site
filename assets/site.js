@@ -1,12 +1,14 @@
 /* Paraphe — script commun du site : thème, en-tête, boutons, onglets, apparitions, téléchargement.
    ------------------------------------------------------------------------
-   À CHAQUE VERSION : logiciels/version.json donne le numéro (lu ici) ;
+   À CHAQUE VERSION : logiciels/version.json donne le numéro (lu ici) et, depuis que le .dmg dépasse 25 Mo
+   (pack des codes, 25 oct. 2026), l'adresse du .dmg sur GitHub Releases (champ « mac ») ;
    mettre à jour TAILLES ci-dessous et les liens par défaut des pages
    (cherchez « Paraphe_ » dans index.html, etudier.html, exercer.html). */
 const PARAPHE = {
-  version: "1.2.1",
-  tailles: { mac: "15,9 Mo", windows: "6,1 Mo" },
-  fichiers: v => ({ mac: `logiciels/Paraphe_${v}_universal.dmg`, windows: `logiciels/Paraphe_${v}_x64-setup.exe` })
+  version: "1.3.0",
+  tailles: { mac: "31,5 Mo", windows: "20,6 Mo" },
+  // « mac » de version.json : le .dmg publié sur GitHub Releases (trop lourd pour le site) ; sinon, l'ancien emplacement
+  fichiers: (v, mac) => ({ mac: mac || `logiciels/Paraphe_${v}_universal.dmg`, windows: `logiciels/Paraphe_${v}_x64-setup.exe` })
 };
 
 (() => {
@@ -239,8 +241,8 @@ const PARAPHE = {
   const os = /Win/i.test(plat) || /Windows/i.test(ua) ? "windows" : /Mac/i.test(plat) || /Mac OS X/.test(ua) ? "mac" : null;
   if (mobile) root.classList.add("is-mobile");
 
-  const appliquer = v => {
-    const f = PARAPHE.fichiers(v);
+  const appliquer = (v, mac) => {
+    const f = PARAPHE.fichiers(v, mac);
     $$("[data-dl]").forEach(a => {
       const cible = a.dataset.dl === "auto" ? (os || "mac") : a.dataset.dl;
       a.href = f[cible];
@@ -276,7 +278,7 @@ const PARAPHE = {
   });
   if (location.protocol.startsWith("http")) {
     fetch("logiciels/version.json", { cache: "no-cache" }).then(r => r.ok ? r.json() : null)
-      .then(j => { if (j && /^\d+\.\d+\.\d+$/.test(j.version)) appliquer(j.version); }).catch(() => {});
+      .then(j => { if (j && /^\d+\.\d+\.\d+$/.test(j.version)) appliquer(j.version, /^https:\/\/github\.com\/PARPAR30\/Paraphe-Site\/releases\/download\//.test(j.mac || "") ? j.mac : ""); }).catch(() => {});
   }
 
   /* sur téléphone : s'envoyer le lien plutôt que télécharger un fichier inutilisable */

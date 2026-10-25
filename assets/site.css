@@ -569,3 +569,25 @@ img.nuit{display:none}
 @media (max-width:640px){.boucle__essayer{min-height:44px;padding:0 16px;font-size:15px}}
 /* sur téléphone, le bouton cacherait la vidéo : la légende garde le lien « Ouvrir la démo » */
 @media (max-width:640px){.boucle__essayer{display:none}}
+/* l'affiche de la boucle reste visible tant que la vidéo n'a pas démarré (connexion lente, vidéo refusée) */
+.boucle{background:#F6F6FA url(media/paraphe-boucle-affiche.jpg) center / cover no-repeat}
+
+/* un verbe à côté de chaque nom d'outil : les noms seuls (Quantième, Considérant, Diligences) ne disaient pas
+   ce que font les outils (panel du site, 22 profils sur 46) */
+.verbe{display:block;margin-top:.45em;font-family:var(--sans);font-size:max(15px,.36em);font-weight:560;line-height:1.3;letter-spacing:-.005em;color:var(--ink-2)}
+.six li{align-items:flex-start;text-align:left}
+.six li i{margin-top:2px}
+.six li .verbe{font-size:14px;margin-top:3px;font-weight:520;color:var(--ink-3)}
+.sommaire a .verbe{display:inline;margin:0;font-size:14px;font-weight:500;color:var(--ink-2)}
+.onglet .verbe{display:inline;margin:0;font:inherit;font-weight:620;color:var(--ink)}
+
+/* téléphone : dit dès l'accroche que Paraphe s'installe sur ordinateur */
+.accroche__mobile{display:none;max-width:34em;margin:18px auto 0;font-size:15px;line-height:1.5;color:var(--ink-2);text-align:center}
+@media (max-width:899px){.accroche__mobile{display:block}}
+/* installer sans peur : pourquoi l'avertissement, et l'empreinte du fichier */
+.avert{margin-top:18px;padding:16px 18px;border-radius:var(--r-l);background:var(--accent-soft);font-size:15px;line-height:1.55;color:var(--ink-2)}
+.avert b{display:block;margin-bottom:4px;color:var(--ink);font-weight:650}
+.empreinte__p{margin:10px 0 0;font-size:14px;line-height:1.5;color:var(--ink-2)}
+.empreinte__p code,.empreinte{font-family:ui-monospace,"SF Mono",Menlo,monospace;font-size:12.5px}
+.empreinte{display:block;margin-top:6px;padding:8px 10px;border-radius:10px;background:color-mix(in srgb,currentColor 6%,transparent);color:var(--ink);word-break:break-all;line-height:1.5;user-select:all}
+.qr p a{color:inherit;text-decoration:underline;text-underline-offset:2px}

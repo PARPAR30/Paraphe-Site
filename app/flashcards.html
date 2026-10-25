@@ -60,22 +60,40 @@
   button.puce-mat:hover{border-color:var(--gris)}
   .plan-jours{grid-column:1 / -1;font-size:calc(14px * var(--ech))}
   .plan-jours summary{cursor:pointer;font-weight:600;color:var(--encre-2)}
-  .plan-jours ol{list-style:none;margin:var(--e3) 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:var(--e2)}
-  .plan-jours li{display:flex;justify-content:space-between;gap:var(--e2);padding:var(--e2) var(--e3);border:1px solid var(--filet);border-radius:var(--r-s);background:var(--carte)}
+  .plan-jours ol{list-style:none;margin:var(--e3) 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:var(--e2)}
+  /* une case par jour : la date, puis le total, puis le détail ; rien ne se coupe en deux lignes (« 2 / cartes ») */
+  .plan-jours li{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:baseline;gap:2px var(--e2);padding:var(--e2) var(--e3);border:1px solid var(--filet);border-radius:var(--r-s);background:var(--carte)}
+  .plan-jours li .pj-date,.plan-jours li b{white-space:nowrap}
+  .plan-jours li small{grid-column:1 / -1;font-size:calc(12.5px * var(--ech));color:var(--gris)}
+  .plan-jours li.pic{border-color:var(--filet-2);border-width:1.5px}
+  .plan-charge{margin:var(--e3) 0 0;color:var(--encre-2);font-size:calc(13.5px * var(--ech))}
   .plan-jours li.auj{border-color:rgb(var(--acc))}
   .plan-jours li b{font-variant-numeric:tabular-nums}
   .plan-jours li.veille{background:var(--carte-2)}
   button.grand{min-height:56px;padding:0 var(--e6);font-size:calc(14px * var(--ech))}
   .liste-cartes{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:var(--e4)}
   .carte-item{border:1px solid var(--filet);border-radius:var(--r-m);background:var(--carte);transition:border-color .18s var(--ease),box-shadow .18s var(--ease);padding:var(--e4);display:flex;flex-direction:column;gap:var(--e2)}
-  .carte-item .meta{display:flex;justify-content:space-between;gap:var(--e3);align-items:center;font-size:calc(12px * var(--ech));color:var(--gris)}
+  /* en-tête de carte, toujours dans le même ordre : matière et niveau sur une ligne (sans couper un mot), l'état en dessous */
+  .carte-item .meta{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:calc(12px * var(--ech));color:var(--gris)}
+  .carte-item .meta .badge{margin:0;white-space:nowrap;line-height:1.35}
+  .carte-item .meta .etat{flex:1 0 100%;line-height:1.4}
   .carte-item .meta .due{color:rgb(var(--acc));font-weight:650;text-transform:none;letter-spacing:0}
   .carte-item h4{margin:0;font:600 calc(16px * var(--ech))/1.35 var(--slab)}
   .carte-item p{margin:0;color:var(--encre-2);font-size:calc(14px * var(--ech));display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .retour-article{margin:0 0 var(--e3);font-size:calc(14px * var(--ech));color:var(--encre-2)}
+  .carte-item.deplie p{-webkit-line-clamp:unset;display:block}
   .carte-item .actions{display:flex;gap:var(--e4);margin-top:auto;padding-top:var(--e2);border-top:1px solid var(--filet)}
   .lien-action{border:0;background:none;box-shadow:none;padding:0;height:auto;min-height:28px;font-size:calc(13.5px * var(--ech));font-weight:620;letter-spacing:0;text-transform:none;color:var(--encre-2)}
   .lien-action:hover{background:none;color:rgb(var(--acc))}
   .lien-action.danger{color:var(--gris)}
+  .menu-carte{position:relative;margin-left:auto}
+  .menu-carte summary{list-style:none;display:inline-flex;align-items:center;justify-content:center;min-width:32px;min-height:28px;border-radius:var(--r-s);cursor:pointer}
+  .menu-carte summary::-webkit-details-marker{display:none}
+  .menu-carte summary:hover,.menu-carte[open] summary{background:var(--carte-2);color:var(--encre)}
+  .menu-carte-liste{position:absolute;right:0;bottom:calc(100% + 4px);z-index:5;min-width:150px;display:flex;flex-direction:column;padding:4px;border:1px solid var(--filet-2);border-radius:var(--r-s);background:var(--carte);box-shadow:var(--ombre-forte)}
+  .menu-carte-liste button{justify-content:flex-start;text-align:left;border:0;box-shadow:none;background:none;height:auto;min-height:36px;padding:0 var(--e3);font-size:calc(14px * var(--ech));font-weight:560}
+  .menu-carte-liste button:hover{background:var(--carte-2)}
+  .menu-carte-liste button.danger{color:var(--alerte)}
   .lien-action.danger:hover{background:none;color:var(--alerte)}
 
   /* révision en plein écran : la carte seule, au centre */
@@ -102,8 +120,10 @@
   .choix-annee{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--e2);margin:var(--e4) 0 var(--e3)}
   .choix-annee button{min-height:52px;font-size:calc(16px * var(--ech));font-weight:650}
   .annee-ligne{margin:0 0 var(--e3);font-size:calc(14px * var(--ech));color:var(--encre-2)}
-  .niveau-carte{padding:1px 7px;border:1px solid var(--filet-2);border-radius:99px;font-weight:600}
+  .niveau-carte{padding:1px 7px;border:1px solid var(--filet-2);border-radius:99px;font-weight:600;white-space:nowrap}
+  .carte-item .meta .niveau-carte{padding:2px 9px;background:none;color:var(--encre-2)}
   .source-carte,.rev-source{margin:0;font-size:calc(12.5px * var(--ech));color:var(--gris)}
+  .source-carte a,.rev-source a{color:rgb(var(--acc));font-weight:600;text-decoration:none}
   .rev-source{margin-top:var(--e3)}
   .petit{font-size:calc(13px * var(--ech))}
   .plan-tout{display:flex;gap:var(--e3);margin:var(--e1) 0 var(--e2)}
@@ -167,8 +187,10 @@
   .choix-type button:not([aria-checked="true"]):hover{background:none;color:var(--encre)}
   .aide-trous{display:flex;flex-wrap:wrap;align-items:center;gap:var(--e2) var(--e3);margin:var(--e2) 0 0;font-size:calc(13px * var(--ech));color:var(--gris)}
   .aide-trous button{min-height:36px;height:36px;font-size:calc(13px * var(--ech))}
-  .trou{display:inline-block;min-width:4.5em;padding:0 .35em;border-bottom:2px solid var(--filet-2);border-radius:4px 4px 0 0;background:var(--carte-2);color:var(--gris);text-align:center;font-weight:500;line-height:1.3}
-  .trou.vu{min-width:0;border-bottom-color:rgb(var(--acc));background:var(--acc-doux);color:var(--encre);font-weight:650}
+  .rev-notes button:focus:not(:focus-visible){outline:none;box-shadow:none}
+  /* le mot à trouver : une case vide, arrondie, en pointillé violet doux (le « […] » faisait vieux logiciel) */
+  .trou{display:inline-block;width:4.2em;height:1.05em;vertical-align:-.16em;margin:0 .1em;border:1.5px dashed rgba(var(--acc),.5);border-radius:.4em;background:rgba(var(--acc),.08)}
+  .trou.vu{display:inline;padding:0 .08em;min-width:0;border-bottom-color:rgb(var(--acc));background:var(--acc-doux);color:var(--encre);font-weight:650}
   .carte-item .type-trous{font-weight:600;color:var(--gris)}
   /* images et schémas dans les cartes */
   .carte-image{margin-top:var(--e3)}
@@ -203,7 +225,7 @@
 
   <div class="onglets" role="tablist" aria-label="Fiches mémo">
     <button type="button" role="tab" id="ongReviser" aria-selected="true" aria-controls="vueReviser">Réviser</button>
-    <button type="button" role="tab" id="ongCartes" aria-selected="false" aria-controls="vueCartes">Mes cartes<span class="compte" id="totalCount">0</span></button>
+    <button type="button" role="tab" id="ongCartes" aria-selected="false" aria-controls="vueCartes">Toutes les cartes<span class="compte" id="totalCount">0</span></button>
   </div>
 
   <section id="vueReviser" role="tabpanel" aria-labelledby="ongReviser">
@@ -216,6 +238,7 @@
       <div class="a-reviser-actions">
         <button type="button" id="startReview" class="primary grand">Commencer la révision</button>
         <button type="button" id="seanceCourte" hidden>Séance courte : 10 cartes</button>
+        <button type="button" id="creerDepuisReviser">+ Créer une carte</button>
       </div>
     </div>
 
@@ -243,7 +266,7 @@
       <div class="barre-groupe" role="group" aria-label="Importer">
         <span class="barre-titre">Importer</span>
         <button type="button" id="importCours" title="Un cours en Word, en PDF ou en texte : Paraphe propose des cartes, vous les validez. Rien n'est envoyé.">Depuis un cours</button>
-        <button type="button" id="importBtn" title="Reprendre un fichier .json enregistré depuis cet outil">Depuis un fichier</button>
+        <button type="button" id="importBtn" title="Un fichier de Paraphe (.json), ou un export d'Anki ou de Quizlet (texte : question, tabulation, réponse)">Depuis un fichier<span class="sous">Paraphe, Anki ou Quizlet</span></button>
         <button type="button" id="promptIA" title="Copie une consigne à coller dans l'IA de votre choix, avec votre document : elle le convertit au format d'import. Paraphe n'envoie rien.">Avec une IA</button>
       </div>
       <p class="barre-note">« Avec une IA » copie une consigne à coller dans l'IA de votre choix : Paraphe n'envoie rien.</p>
@@ -251,12 +274,13 @@
         <span class="barre-titre">Exporter</span>
         <button type="button" id="exportBtn" title="Enregistrer une copie de vos cartes (fichier .json)">Sauvegarde</button>
         <button type="button" id="exportPdfBtn" title="Mettre en page vos cartes pour les imprimer ou les enregistrer en PDF">Imprimer / PDF</button>
+        <button type="button" id="partagerCartes" title="Un fichier avec les cartes affichées (filtre et recherche compris), à envoyer à votre groupe : il s'importe avec « Depuis un fichier »">Partager les cartes affichées</button>
       </div>
       <div class="barre-groupe" role="group" aria-label="Supprimer">
         <span class="barre-titre">Supprimer</span>
         <button type="button" id="toutSupprimer" class="danger" title="Effacer toutes vos cartes (double confirmation)">Tout supprimer…</button>
       </div>
-      <input type="file" id="importFile" accept="application/json" hidden>
+      <input type="file" id="importFile" accept="application/json,.json,.txt,.tsv,.csv" hidden>
     </div>
     </div>
     <p class="compte-liste" id="compteListe"></p>
@@ -346,8 +370,9 @@
     <button type="button" data-annee="L1">Licence 1</button><button type="button" data-annee="L2">Licence 2</button>
     <button type="button" data-annee="L3">Licence 3</button><button type="button" data-annee="M">Master</button>
   </div>
+  <button type="button" data-annee="L1">Je découvre le droit (reconversion, curiosité) : les bases</button>
   <button type="button" class="lien" data-annee="tout">Je ne suis pas étudiant : toutes les cartes</button>
-  <p class="muted petit">Les cartes d'exemple couvrent les trois années de licence et le master (190 cartes, chacune avec sa source).</p>
+  <p class="muted petit">Paraphe fournit 260 cartes d'exemple, de la L1 au M2. Pour commencer en douceur, 20 nouvelles cartes au plus entrent en révision chaque jour.</p>
 </dialog>
 
 <dialog class="fenetre-carte" id="formPlanning" aria-labelledby="planFormTitre">
@@ -389,6 +414,7 @@
 <div id="printArea"></div>
 
 <script src="commun.js"></script>
+<script src="bibliotheque/catalogue.js"></script>
 <script src="cartes-exemples.js"></script>
 <script src="cours.js"></script>
 <script>
@@ -508,7 +534,8 @@ function enReserve(c) {
 }
 
 const loadCards = () => Commun.avecExemples(STORAGE_KEY, SEED, DELETED_SEEDS_KEY);
-const saveCards = list => Commun.ecrire(STORAGE_KEY, list);
+let nouvellesDuJour = null;   // nouvelles cartes du jour (voir isDue) : vidé à chaque enregistrement et à chaque changement d'année
+const saveCards = list => { nouvellesDuJour = null; return Commun.ecrire(STORAGE_KEY, list); };
 
 let cards = loadCards();
 saveCards(cards);
@@ -519,6 +546,22 @@ let reviewTotal = 0;
 // --- Texte à trous : « Le délai est de {{deux ans}} » (la syntaxe d'Anki {{c1::…}} est acceptée) ---
 const TROU = /\{\{(?:c\d+::)?(.+?)(?:::[^}]*)?\}\}/g;
 const estTrous = c => c.type === "trous";
+// menu « … » d'une carte (8e passe : « Supprimer » était au même niveau que la lecture) : un seul ouvert, fermé au clic ailleurs ou par Échap
+document.addEventListener("click", e => document.querySelectorAll("details.menu-carte[open]").forEach(d => { if (!d.contains(e.target)) d.open = false; }));
+document.getElementById("cardList").addEventListener("keydown", e => {
+  const d = e.key === "Escape" && e.target.closest("details.menu-carte[open]");
+  if (d) { d.open = false; d.querySelector("summary").focus(); }
+});
+// « Source : Code de commerce, art. L. 145-4 » → l'article dans Codes & articles, onglet « Tous les codes », si son code y est
+const sansAccentsSrc = t => String(t || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+function lienSource(source) {
+  const codes = ((window.PARAPHE_CATALOGUE || {}).codes || []).slice().sort((a, b) => b.nom.length - a.nom.length);
+  const t = sansAccentsSrc(source), c = codes.find(x => t.includes(sansAccentsSrc(x.nom)));
+  const m = String(source).match(/art(?:icle)?s?\.?\s*((?:[LRDA]\.?\s?)?\d+(?:-\d+)*)/i);
+  return c && m ? "codes.html#code=" + c.ref + "&art=" + encodeURIComponent(m[1].replace(/[\s.]/g, "").toUpperCase()) : "";
+}
+// guillemets et ponctuation haute sans retour à la ligne orphelin (8e passe : « des « / arrêts »)
+const insecables = t => String(t || "").replace(/« /g, "«\u00a0").replace(/ (»|:|;|\?|!)/g, "\u00a0$1");
 const reponsesTrous = texte => [...String(texte || "").matchAll(TROU)].map(m => m[1]);
 // texte échappé, trous masqués (« […] ») ou révélés
 function rendreTrous(texte, revele) {
@@ -526,14 +569,41 @@ function rendreTrous(texte, revele) {
   let html = "", dernier = 0;
   for (const m of brut.matchAll(TROU)) {
     html += escapeHtml(brut.slice(dernier, m.index));
-    html += revele ? `<span class="trou vu">${escapeHtml(m[1])}</span>` : '<span class="trou" aria-label="mot masqué">[…]</span>';
+    html += revele ? `<span class="trou vu">${escapeHtml(m[1])}</span>` : '<span class="trou" role="img" aria-label="mot à trouver"></span>';
     dernier = m.index + m[0].length;
   }
   return html + escapeHtml(brut.slice(dernier));
 }
 
+// Première séance dosée (5e passe du panel : « 260 cartes à réviser aujourd'hui » décourageait) : au plus
+// NOUVELLES_PAR_JOUR cartes d'exemple jamais vues entrent en révision chaque jour, dans l'ordre de la liste.
+// Vos propres cartes ne sont pas concernées, ni rien quand un planning d'examen est en cours (il dose déjà les cartes).
+const NOUVELLES_PAR_JOUR = 20;
+const jamaisVueExemple = c => String(c.id).startsWith("seed-fc-") && !c.vue && !c.reps && !c.interval;
+function etatNouvelles() {
+  if (nouvellesDuJour && nouvellesDuJour.jour === todayISO()) return nouvellesDuJour;
+  const plan = lirePlan(), planEnCours = !!(plan && plan.date && ecartJours(todayISO(), plan.date) >= 0);
+  const deja = cards.filter(c => c.premiereFois === todayISO()).length;
+  // les nouvelles cartes viennent de l'année choisie d'abord, puis des années précédentes ; en « toutes les années »,
+  // de la licence vers le master (6e passe : un débutant commençait par du droit public des affaires de master)
+  const R = { L1: 1, L2: 2, L3: 3, M: 4 }[lireAnnee()] || 0;
+  const rang = c => { const r = String(niveauDe(c) || "").split("-").map(n => ({ L1: 1, L2: 2, L3: 3, M1: 4, M2: 4 })[n]).filter(Boolean);
+    if (!r.length) return 9; return R ? Math.min(...r.map(x => x === R ? 0 : x < R ? R - x : 5 + x)) : Math.min(...r); };
+  // pendant un planning d'examen, le planning seul fait entrer les nouvelles cartes de l'examen ; aucune nouvelle carte
+  // d'exemple d'une autre matière n'arrive (6e passe : 74 cartes de toutes les matières ; 8e passe : 18 cartes de
+  // droit administratif et de pénal à la place de celles de l'examen). Les révisions déjà commencées continuent.
+  const candidates = planEnCours ? [] : cards.filter(c => jamaisVueExemple(c) && !enReserve(c)).map((c, i) => [c, i]).sort((x, y) => rang(x[0]) - rang(y[0]) || x[1] - y[1]).map(x => x[0]);
+  const ids = new Set(candidates.slice(0, Math.max(0, NOUVELLES_PAR_JOUR - deja)).map(c => c.id));
+  nouvellesDuJour = { jour: todayISO(), ids, planEnCours, plan };
+  return nouvellesDuJour;
+}
+const nouvelleExemple = c => { const e = etatNouvelles(); return jamaisVueExemple(c) && !(e.planEnCours && dansPlan(e.plan, c)); };
+const nouvellesAutorisees = () => etatNouvelles().ids;
+const enAttente = c => nouvelleExemple(c) && !enReserve(c) && !nouvellesAutorisees().has(c.id);
+
 function isDue(card) {
   if (enReserve(card)) return false;
+  if (nouvelleExemple(card)) return nouvellesAutorisees().has(card.id);
   return !card.dueDate || card.dueDate <= todayISO();
 }
 
@@ -600,32 +670,52 @@ function renderPlanning() {
   const quand = restants === 0 ? "aujourd'hui" : restants === 1 ? "demain" : "dans " + restants + " jours";
   zone.innerHTML = `<div><h2 id="planTitre">${escapeHtml(plan.nom || "Examen")} : <span class="u ${u}">${quand}</span></h2>
       <p>${new Date(plan.date + "T12:00").toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" })} · pour cet examen, aujourd'hui : <b>${duJour} carte${duJour > 1 ? "s" : ""}</b>${plan.matieres && plan.matieres.length ? " · " + escapeHtml(plan.matieres.join(", ")) : ""}</p></div>
-    <div class="plan-actions">${duJour ? `<button type="button" id="reviserPlan" class="primary">${duJour > 1 ? "Réviser ces " + duJour + " cartes" : "Réviser cette carte"}</button>` : ""}<button type="button" id="ouvrirPlanning">Modifier</button><button type="button" id="arreterPlanning" class="danger">Arrêter</button></div>
+    <div class="plan-actions">${duJour ? `<button type="button" id="reviserPlan" class="primary">${duJour > 1 ? "Réviser ces " + duJour + " cartes" : "Réviser cette carte"}</button>` : ""}<button type="button" id="ajouterCartesPlan">Ajouter mes cartes</button><button type="button" id="ouvrirPlanning">Modifier</button><button type="button" id="arreterPlanning" class="danger">Arrêter</button></div>
     <div class="plan-barre" role="img" aria-label="${vues} cartes vues sur ${concernees.length}, ${attendu} attendues à ce jour"><i style="width:${concernees.length ? vues / concernees.length * 100 : 0}%"></i><b style="left:calc(${ecoule * 100}% - 1px)" title="Où vous devriez en être"></b></div>
     <div class="plan-legende"><span>${vues ? vues + " carte" + (vues > 1 ? "s" : "") + " vue" + (vues > 1 ? "s" : "") : "Aucune carte vue"} sur ${concernees.length}</span>
       <span class="${ecart > 0 ? "avance" : ecart < 0 ? "retard" : ""}">${ecart > 0 ? "En avance de " + ecart + " carte" + (ecart > 1 ? "s" : "") : ecart < 0 ? "En retard de " + (-ecart) + " carte" + (ecart < -1 ? "s" : "") : "Dans les temps"}</span></div>
     ${planJourParJour(plan)}`;
 }
 /* Le planning jour par jour, jusqu'à la veille de l'examen : combien de cartes de l'examen reviennent chaque jour
-   (celles en retard comptent pour aujourd'hui). Seconde passe du test : seul l'objectif du jour était visible. */
+   (celles en retard comptent pour aujourd'hui). Seconde passe du test : seul l'objectif du jour était visible.
+   8e passe : la charge comptait seulement les cartes déjà datées, pas les rappels qu'elles entraîneront. On simule
+   donc chaque carte notée « Correct » (même calcul que rateCard, plafonné à la veille) : nouvelles + rappels estimés. */
+function chargeEstimee(plan) {
+  const auj = todayISO(), veille = plusJours(plan.date, -1), parJour = {};
+  const compter = (j, cle) => { (parJour[j] = parJour[j] || { nouvelles: 0, rappels: 0 })[cle]++; };
+  cards.filter(c => dansPlan(plan, c)).forEach(c => {
+    let j = !c.dueDate || c.dueDate < auj ? auj : c.dueDate, reps = c.reps || 0, interval = c.interval || 0, neuve = !vue(c);
+    for (let garde = 0; j <= veille && garde < 40; garde++) {
+      compter(j, neuve ? "nouvelles" : "rappels");
+      neuve = false;
+      if (j === veille) break;
+      interval = reps === 0 ? 1 : reps === 1 ? 6 : Math.max(1, Math.round(interval * (c.ease || 2.5)));
+      reps++;
+      j = plusJours(j, interval);
+      if (j > veille) j = veille;   // plafonner : la veille de l'examen au plus tard
+    }
+  });
+  return parJour;
+}
 function planJourParJour(plan) {
   const auj = todayISO(), veille = plusJours(plan.date, -1), n = ecartJours(auj, veille);
   if (n < 0) return "";
-  const parJour = {};
-  cards.filter(c => dansPlan(plan, c)).forEach(c => {
-    const j = !c.dueDate || c.dueDate < auj ? auj : c.dueDate;
-    if (j <= veille) parJour[j] = (parJour[j] || 0) + 1;
-  });
+  const parJour = chargeEstimee(plan);
   const jours = [];
   for (let i = 0; i <= Math.min(n, 120); i++) jours.push(plusJours(auj, i));
   const fmt = iso => new Date(iso + "T12:00").toLocaleDateString("fr-FR", { weekday: "short", day: "numeric", month: "short" });
-  return `<details class="plan-jours"><summary>Voir le planning jour par jour, jusqu'à la veille de l'examen</summary><ol>`
-    + jours.map(j => `<li class="${j === auj ? "auj" : ""}${j === veille ? " veille" : ""}"><span>${j === auj ? "Aujourd'hui" : j === veille ? "Veille : " + fmt(j) : fmt(j)}</span><b>${parJour[j] || 0} carte${(parJour[j] || 0) > 1 ? "s" : ""}</b></li>`).join("")
+  const total = j => parJour[j] ? parJour[j].nouvelles + parJour[j].rappels : 0;
+  const pic = jours.reduce((m, j) => total(j) > total(m) ? j : m, jours[0]);
+  const detail = j => { const d = parJour[j]; if (!d) return "rien à revoir"; return [d.nouvelles ? d.nouvelles + " nouvelle" + (d.nouvelles > 1 ? "s" : "") : "", d.rappels ? d.rappels + " rappel" + (d.rappels > 1 ? "s" : "") : ""].filter(Boolean).join(" · "); };
+  return `<details class="plan-jours"><summary>Voir le planning jour par jour, jusqu'à la veille de l'examen</summary>
+    <p class="plan-charge">Charge totale estimée si vous répondez juste : les nouvelles cartes, plus les rappels qu'elles entraînent.${total(pic) ? " Journée la plus chargée : <b>" + (pic === auj ? "aujourd'hui" : fmt(pic)) + "</b>, " + total(pic) + " carte" + (total(pic) > 1 ? "s" : "") + "." : ""}</p><ol>`
+    + jours.map(j => `<li class="${j === auj ? "auj" : ""}${j === veille ? " veille" : ""}${j === pic && total(pic) ? " pic" : ""}"><span class="pj-date">${j === auj ? "Aujourd'hui" : j === veille ? "Veille : " + fmt(j) : fmt(j)}</span><b>${total(j)} carte${total(j) > 1 ? "s" : ""}</b><small>${detail(j)}</small></li>`).join("")
     + `</ol></details>`;
 }
 const fenPlan = document.getElementById("formPlanning");
 document.getElementById("planning").addEventListener("click", e => {
   if (e.target.closest("#reviserPlan")) { const plan = lirePlan(); startReview(0, c => dansPlan(plan, c)); return; }
+  if (e.target.closest("#ajouterCartesPlan")) { montrerOnglet("cartes"); nouvelleCarte(); return; }   // 8e passe : rien n'invitait à compléter un planning
   if (e.target.closest("#arreterPlanning")) {
     if (!confirm("Arrêter le planning ? Vos cartes gardent leurs dates actuelles.")) return;
     try { localStorage.removeItem(PLAN_KEY); } catch {}
@@ -633,11 +723,14 @@ document.getElementById("planning").addEventListener("click", e => {
   }
   if (!e.target.closest("#ouvrirPlanning")) return;
   const plan = lirePlan() || {}, matieres = [...new Set(cards.map(c => c.matiere || "Sans matière"))].sort();
+  // nouveau planning : on coche les matières de votre année (et celles de vos propres cartes), pas tout le master (7e passe)
+  const deMonAnnee = new Set(cards.filter(c => !enReserve(c)).map(c => c.matiere || "Sans matière"));
+  const parMatiere = {}; cards.forEach(c => { const m = c.matiere || "Sans matière"; if (!enReserve(c)) parMatiere[m] = (parMatiere[m] || 0) + 1; });
   document.getElementById("pNom").value = plan.nom || "";
   document.getElementById("pDate").value = plan.date || "";
   document.getElementById("pDate").min = plusJours(todayISO(), 1);
-  document.getElementById("pMatieres").innerHTML = matieres.map(m =>
-    `<label><input type="checkbox" value="${escapeHtml(m)}"${!plan.matieres || !plan.matieres.length || plan.matieres.includes(m) ? " checked" : ""}> ${escapeHtml(m)}</label>`).join("");
+  document.getElementById("pMatieres").innerHTML = matieres.filter(m => parMatiere[m] || (plan.matieres || []).includes(m)).map(m =>
+    `<label><input type="checkbox" value="${escapeHtml(m)}"${(plan.matieres && plan.matieres.length ? plan.matieres.includes(m) : plan.date ? true : deMonAnnee.has(m)) ? " checked" : ""}> ${escapeHtml(m)} <span class="muted">(${parMatiere[m] || 0})</span></label>`).join("");
   fenPlan.showModal(); document.getElementById("pNom").focus();
 });
 document.getElementById("pAnnuler").addEventListener("click", () => fenPlan.close());
@@ -654,9 +747,10 @@ document.getElementById("pEnregistrer").addEventListener("click", () => {
   const ancien = lirePlan();
   const plan = { nom: document.getElementById("pNom").value.trim() || "Examen", date, matieres: tout ? [] : matieres, debut: ancien && ancien.date === date ? ancien.debut : todayISO() };
   Commun.ecrire(PLAN_KEY, plan);
+  nouvellesDuJour = null;
   repartir(plan);
   fenPlan.close();
-  updateCounts(); renderList();
+  majAnneeLigne(); updateCounts(); renderList();
 });
 
 const MATIERES_VISIBLES = 8;   // pastilles de matières montrées d'emblée sous le nombre de cartes
@@ -682,7 +776,7 @@ function renderStats() {
   document.getElementById("statJour").textContent = jours[todayISO()] || 0;
   document.getElementById("statSerie").textContent = serie;
   document.getElementById("statMaitrisees").textContent = cards.filter(c => (c.interval || 0) >= 21).length;
-  document.getElementById("statNouvelles").textContent = cards.filter(c => !c.reps && !c.interval).length;
+  document.getElementById("statNouvelles").textContent = cards.filter(c => !c.reps && !c.interval && !enReserve(c)).length;   // sans les cartes d'exemple en réserve
 
   const derniers = [];
   for (let i = 13; i >= 0; i--) { const x = new Date(); x.setDate(x.getDate() - i); derniers.push([localISO(x), jours[localISO(x)] || 0]); }
@@ -713,7 +807,13 @@ function cartesFiltrees() {
     (!search || [c.matiere, c.recto.replace(TROU, "$1"), c.verso].join(" ").toLowerCase().includes(search)));
 }
 
-const niveauEnMots = n => n.split("-").map(x => ({ L1: "L1", L2: "L2", L3: "L3", M1: "M1", M2: "M2" })[x] || x).join("-");
+// niveau en mots courts, sans sigle (« Master 1 et 2 (M1-M2) » débordait de l'étiquette) : « Licence 2 », « Master 1-2 », « Licence 3 – Master 1 »
+const niveauEnMots = n => {
+  const [a, b] = String(n).split("-"), mot = x => ({ L: "Licence ", M: "Master " })[x[0]] + x.slice(1);
+  if (!/^[LM][1-3]$/.test(a || "")) return n;
+  if (!b) return mot(a);
+  return a[0] === b[0] ? mot(a) + "-" + b.slice(1) : mot(a) + " – " + mot(b);
+};
 let derniereCarte = null;   // la dernière carte ajoutée s'affiche en tête de la liste
 function renderList() {
   const list = document.getElementById("cardList");
@@ -734,22 +834,31 @@ function renderList() {
     <article class="carte-item${mat ? " repere " + mat : ""}">
       <div class="meta">
         <span class="badge${mat ? " matiere" : ""}">${escapeHtml(c.matiere || "Sans matière")}</span>
-        ${niveauDe(c) ? `<span class="niveau-carte">${escapeHtml(niveauEnMots(niveauDe(c)))}</span>` : ""}
-        ${enReserve(c) ? '<span title="Carte d\'exemple d\'un autre niveau : elle n\'est pas programmée. Changez « Votre année » pour la réviser.">en réserve</span>' : isDue(c) ? '<span class="due">à réviser</span>' : "<span>prochaine révision : " + new Date(c.dueDate + "T12:00").toLocaleDateString("fr-FR", { day: "numeric", month: "long" }) + "</span>"}
+        ${niveauDe(c) ? `<span class="badge niveau-carte" data-sans-sigles>${escapeHtml(niveauEnMots(niveauDe(c)))}</span>` : ""}
+        ${enReserve(c) ? '<span class="etat" title="Carte d\'exemple d\'un autre niveau : elle n\'est pas programmée. Changez « Votre année » pour la réviser.">en réserve</span>' : isDue(c) ? '<span class="etat due">à réviser</span>' : enAttente(c) ? '<span class="etat" title="Au plus ' + NOUVELLES_PAR_JOUR + ' nouvelles cartes d\'exemple par jour : celle-ci viendra dans une prochaine séance.">jamais révisée, viendra un prochain jour</span>' : "<span class=\"etat\">prochaine révision : " + new Date(c.dueDate + "T12:00").toLocaleDateString("fr-FR", { day: "numeric", month: "long" }) + "</span>"}
       </div>
-      <h4>${imageSure(c) ? '<img class="vignette" src="' + imageSure(c) + '" alt="">' : ""}${estTrous(c) ? rendreTrous(c.recto, false) : escapeHtml(c.recto)}</h4>
-      <p>${estTrous(c) ? '<span class="type-trous">Texte à trous · </span>' + escapeHtml(reponsesTrous(c.recto).join(", ")) + (c.verso ? " — " + escapeHtml(c.verso) : "") : escapeHtml(c.verso)}</p>
-      ${c.source ? `<p class="source-carte">Source : ${escapeHtml(c.source)}</p>` : ""}
+      <h4>${imageSure(c) ? '<img class="vignette" src="' + imageSure(c) + '" alt="">' : ""}${estTrous(c) ? rendreTrous(c.recto, false) : escapeHtml(insecables(c.recto))}</h4>
+      <p>${estTrous(c) ? '<span class="type-trous">Texte à trous · </span>' + escapeHtml(reponsesTrous(c.recto).join(", ")) + (c.verso ? " — " + escapeHtml(insecables(c.verso)) : "") : escapeHtml(insecables(c.verso))}</p>
+      ${c.source ? `<p class="source-carte">Source : ${escapeHtml(c.source)}${lienSource(c.source) ? ` · <a href="${lienSource(c.source)}">lire l'article</a>` : ""}</p>` : ""}
       <div class="actions">
-        <button type="button" class="lien-action" data-edit="${escapeHtml(c.id)}">Modifier</button>
-        <button type="button" class="lien-action danger" data-delete="${escapeHtml(c.id)}">Supprimer</button>
+        <button type="button" class="lien-action" data-deplier aria-expanded="false">Lire en entier</button>
+        <details class="menu-carte">
+          <summary class="lien-action" aria-label="Autres actions sur cette carte" title="Modifier ou supprimer"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="12" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="19" cy="12" r="1.8"/></svg></summary>
+          <div class="menu-carte-liste">
+            <button type="button" data-edit="${escapeHtml(c.id)}">Modifier</button>
+            <button type="button" class="danger" data-delete="${escapeHtml(c.id)}">Supprimer…</button>
+          </div>
+        </details>
       </div>
     </article>  `; }).join("");
 }
 
 document.getElementById("cardList").addEventListener("click", (e) => {
+  const dep = e.target.closest("button[data-deplier]");
+  if (dep) { const art = dep.closest(".carte-item"), o = art.classList.toggle("deplie"); dep.setAttribute("aria-expanded", String(o)); dep.textContent = o ? "Réduire" : "Lire en entier"; return; }
   const btn = e.target.closest("button[data-delete], button[data-edit]");
   if (!btn) return;
+  const menu = btn.closest("details.menu-carte"); if (menu) menu.open = false;
   if (btn.dataset.edit) startEdit(btn.dataset.edit);
   else deleteCard(btn.dataset.delete);
 });
@@ -856,6 +965,7 @@ function endEdit() {
   if (fenetre.open) fenetre.close();
 }
 document.getElementById("nouvelleCarte").addEventListener("click", () => nouvelleCarte());
+document.getElementById("creerDepuisReviser").addEventListener("click", () => { montrerOnglet("cartes"); nouvelleCarte(); });
 document.getElementById("cancelEditBtn").addEventListener("click", endEdit);
 
 function deleteCard(id) {
@@ -894,7 +1004,8 @@ function enregistrerCarte(continuer) {
     if (c) { Object.assign(c, { matiere, recto, verso }, type, image); if (!trous) delete c.type; if (!imageCarte) { delete c.image; delete c.imageCote; } }
   } else {
     id = crypto.randomUUID();
-    cards.push({ id, matiere, recto, verso, ...type, ...image, ...nouvelleProgression() });
+    cards.push({ id, matiere, recto, verso, ...type, ...image, ...(sourceCarte ? { source: sourceCarte } : {}), ...nouvelleProgression() });
+    sourceCarte = "";
     derniereCarte = id;
   }
   // un retour visible, et la carte en tête de la liste (troisième passe : « la carte créée n'est ni signalée ni visible »)
@@ -920,6 +1031,14 @@ document.getElementById("addAnotherBtn").addEventListener("click", () => enregis
 document.getElementById("searchBox").addEventListener("input", renderList);
 document.getElementById("filterMatiere").addEventListener("change", renderList);
 
+document.getElementById("partagerCartes").addEventListener("click", () => {
+  const recherche = document.getElementById("searchBox").value.trim().toLowerCase(), mat = document.getElementById("filterMatiere").value;
+  const choisies = cards.filter(c => (!mat || c.matiere === mat) && (!recherche || [c.recto, c.verso, c.matiere].join(" ").toLowerCase().includes(recherche)))
+    .map(c => ({ matiere: c.matiere, recto: c.recto, verso: c.verso, ...(c.type ? { type: c.type } : {}), ...(c.source ? { source: c.source } : {}) }));
+  if (!choisies.length) { alert("Aucune carte affichée à partager."); return; }
+  Commun.telecharger("cartes-" + (mat || "paraphe").toLowerCase().replace(/[^a-z0-9à-ÿ]+/g, "-") + ".json", JSON.stringify(choisies, null, 2));
+  Commun.annoncer(choisies.length + " carte" + (choisies.length > 1 ? "s" : "") + " dans le fichier. Envoyez-le : la personne l'importe avec « Depuis un fichier ».");
+});
 document.getElementById("exportBtn").addEventListener("click", () =>
   Commun.telecharger("fiches-memo-" + todayISO() + ".json", JSON.stringify(cards, null, 2)));
 
@@ -981,6 +1100,12 @@ RÈGLES
 - Pas de doublons. Formule les questions de façon impersonnelle.
 - Ne crée aucune carte sur une information qui ne figure pas dans le document.` + Commun.FIN_PROMPT("memo-cartes.json");
 const IMPORT = {
+  // export texte d'Anki (« Notes en texte brut ») ou de Quizlet : une carte par ligne, question puis réponse séparées
+  // par une tabulation (ou un point-virgule) ; les lignes « # » d'Anki sont des réglages
+  texte: brut => brut.split(/\r?\n/).filter(l => l.trim() && !l.startsWith("#")).map(l => {
+    const [recto, ...reste] = l.split(l.includes("\t") ? "\t" : ";");
+    return { recto: recto.replace(/<[^>]+>/g, "").trim(), verso: reste.join(" ").replace(/<[^>]+>/g, "").trim() };
+  }),
   liste: () => cards,
   valide: c => c.recto && (c.verso || (c.type === "trous" && reponsesTrous(c.recto).length)),
   defauts: () => ({ matiere: "", ...nouvelleProgression() }),
@@ -996,7 +1121,7 @@ Commun.importerJSON(document.getElementById("importFile"), IMPORT);
 Commun.promptIA(document.getElementById("promptIA"), { prompt: PROMPT_IA, quoi: "des cartes", input: document.getElementById("importFile"), options: IMPORT });
 
 // --- Review logic (simplified SM-2) ---
-let reviewDoneIds = new Set();
+let reviewDoneIds = new Set(), vuesSeance = new Set();   // vuesSeance : cartes notées au moins une fois (« Encore » compris)
 const zone = document.getElementById("reviewArea");
 function afficherFin() {
   document.getElementById("revCarte").hidden = true;
@@ -1004,11 +1129,15 @@ function afficherFin() {
   document.getElementById("ratingRow").hidden = true;
   const n = reviewDoneIds.size;
   const restantes = cards.filter(c => isDue(c) && (!seance.filtre || seance.filtre(c))).length;
+  // l'en-tête restait figé sur « 4 / 5 · 1 à revoir » au-dessus de « Bravo » (6e passe)
+  document.getElementById("reviewProgress").textContent = reviewTotal ? n + " / " + reviewTotal + " · terminé" : "";
   document.getElementById("finTitre").textContent = n ? (seance.limite && n >= seance.limite ? "Bravo, " + (n > 1 ? n + " cartes faites." : "une carte faite.") : "Bravo, séance terminée.") : "Rien à réviser aujourd'hui.";
+  const prochaine = cards.map(c => c.dueDate).filter(d => d && d > todayISO()).sort()[0];
+  const quand = prochaine ? (ecartJours(todayISO(), prochaine) === 1 ? "demain" : "le " + new Date(prochaine + "T12:00").toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" })) : "";
   document.getElementById("finTexte").textContent = n
-    ? n + (n > 1 ? " cartes révisées" : " carte révisée") + ". Les prochaines reviendront au bon moment."
-      + (restantes ? " Il en reste " + restantes + " à réviser aujourd'hui, si vous voulez continuer." : "")
+    ? (restantes ? "Il en reste " + restantes + " à réviser aujourd'hui, si vous voulez continuer." : (quand ? "Prochaines cartes à revoir : " + quand + "." : "Les prochaines reviendront au bon moment."))
     : "Toutes vos cartes sont à jour. Revenez demain, ou ajoutez de nouvelles cartes.";
+  document.getElementById("quitterRevision").hidden = true;
   document.getElementById("encoreCinq").hidden = !(n && restantes);
   document.getElementById("reviewDone").hidden = false;
   document.getElementById("reviewBar").style.transform = "scaleX(1)";
@@ -1017,6 +1146,7 @@ function afficherFin() {
   renderList();
 }
 function quitterRevision() {
+  [...document.body.children].forEach(el => { el.inert = false; });
   zone.hidden = true;
   document.body.style.overflow = "";
   updateCounts();
@@ -1031,9 +1161,12 @@ function startReview(limite, filtre) {
   reviewQueue = cards.filter(c => isDue(c) && (!seance.filtre || seance.filtre(c)));
   if (seance.limite) reviewQueue = reviewQueue.slice(0, seance.limite);
   reviewTotal = reviewQueue.length;
-  reviewDoneIds = new Set();
+  reviewDoneIds = new Set(); vuesSeance = new Set();
   document.getElementById("reviewInfo").textContent = "";
   zone.hidden = false;
+  document.getElementById("quitterRevision").hidden = false;
+  // la séance est une vraie fenêtre : la page derrière n'est plus lue ni atteinte (N10)
+  [...document.body.children].forEach(el => { if (el !== zone && el.tagName !== "SCRIPT") el.inert = true; });
   document.body.style.overflow = "hidden";
   document.getElementById("reviewDone").hidden = true;
   if (reviewQueue.length === 0) { afficherFin(); return; }
@@ -1050,18 +1183,18 @@ function nextCard() {
   // les cartes « Encore » reviennent en fin de séance : on compte les cartes validées, pas les passages
   const aRevoir = reviewQueue.filter(c => c.retour).length + (currentCard.retour ? 1 : 0);
   document.getElementById("reviewProgress").textContent =
-    reviewDoneIds.size + " / " + reviewTotal + (currentCard.retour ? " · 2e passage" : "") + (aRevoir ? " · " + aRevoir + " à revoir" : "");
+    vuesSeance.size + " / " + reviewTotal + (currentCard.retour ? " · 2e passage" : "") + (aRevoir ? " · " + aRevoir + " à revoir" : "");
   document.getElementById("reviewBar").style.transform = "scaleX(" + (reviewTotal ? reviewDoneIds.size / reviewTotal : 0) + ")";
   const recto = document.getElementById("reviewRecto");
   if (estTrous(currentCard)) recto.innerHTML = rendreTrous(currentCard.recto, false);
-  else recto.textContent = currentCard.recto;
+  else recto.textContent = insecables(currentCard.recto);
   const imgRev = document.getElementById("reviewImage");
   imgRev.hidden = !(imageSure(currentCard) && (currentCard.imageCote || "recto") === "recto");
   if (imageSure(currentCard)) { imgRev.src = imageSure(currentCard); imgRev.alt = "Image de la carte"; }
-  document.getElementById("reviewVerso").textContent = currentCard.verso;
+  document.getElementById("reviewVerso").textContent = insecables(currentCard.verso);
   document.getElementById("reviewVerso").hidden = true;
   document.getElementById("reviewSource").hidden = true;
-  document.getElementById("reviewSource").textContent = currentCard.source ? "Source : " + currentCard.source : "";
+  document.getElementById("reviewSource").textContent = currentCard.source ? "Source : " + currentCard.source : "";   // pas de lien pendant la séance : il la quitterait
   document.getElementById("showAnswerRow").hidden = false;
   document.getElementById("ratingRow").hidden = true;
   document.getElementById("showAnswerBtn").focus();
@@ -1070,7 +1203,19 @@ function nextCard() {
     + (estTrous(currentCard) ? currentCard.recto.replace(/\{\{[^}]*\}\}/g, "blanc") : currentCard.recto);
 }
 
+// ce que donnerait chaque note, sans rien modifier (même calcul que rateCard)
+function apercuNote(c, rating) {
+  let ease = c.ease || 2.5, reps = c.reps || 0, interval = c.interval || 0;
+  if (rating === 0) return 0;
+  if (rating === 1) ease = Math.max(1.3, ease - 0.15);
+  if (rating === 3) ease = ease + 0.15;
+  interval = reps === 0 ? 1 : reps === 1 ? 6 : Math.round(interval * ease);
+  return Math.max(interval, 1);
+}
+const dansJours = n => n === 0 ? "revient dans la séance" : n === 1 ? "revient demain" : "revient dans " + n + " jours";
 function showAnswer() {
+  const vraie = cards.find(x => x.id === currentCard.id) || currentCard;
+  document.querySelectorAll("#ratingRow [data-rating]").forEach(b => { const sm = b.querySelector("small"); if (sm) sm.textContent = dansJours(apercuNote(vraie, Number(b.dataset.rating))); });
   if (estTrous(currentCard)) document.getElementById("reviewRecto").innerHTML = rendreTrous(currentCard.recto, true);
   if (imageSure(currentCard)) document.getElementById("reviewImage").hidden = false;
   document.getElementById("reviewVerso").hidden = estTrous(currentCard) && !currentCard.verso;
@@ -1079,12 +1224,13 @@ function showAnswer() {
   document.getElementById("ratingRow").hidden = false;
   document.querySelector('#ratingRow [data-rating="2"]').focus();
   document.getElementById("annonceRevision").textContent = "Réponse : " + (estTrous(currentCard) ? currentCard.recto.replace(/\{\{([^}:]*)(::[^}]*)?\}\}/g, "$1") + (currentCard.verso ? ". " + currentCard.verso : "") : currentCard.verso)
-    + ". Notez de 1, encore, à 4, facile.";
+    .replace(/[.\s]+$/, "") + ". Notez de 1, encore, à 4, facile.";
 }
 
 function rateCard(rating) {
   const c = cards.find(x => x.id === currentCard.id);
   if (!c) { nextCard(); return; }
+  if (!c.vue && !c.reps && !c.interval) c.premiereFois = todayISO();   // compte dans les nouvelles du jour
   c.ease = c.ease || 2.5;
   c.reps = c.reps || 0;
   c.interval = c.interval || 0;
@@ -1113,6 +1259,8 @@ function rateCard(rating) {
   saveCards(cards);
   logReview();
   document.getElementById("reviewInfo").textContent = rating === 0 ? "« Encore » : cette carte reviendra en fin de séance." : "";
+  vuesSeance.add(c.id);
+  Commun.annoncer("Notée : " + ["Encore", "Difficile", "Correct", "Facile"][rating] + ". " + vuesSeance.size + " carte" + (vuesSeance.size > 1 ? "s" : "") + " sur " + reviewTotal + ".");
   if (rating === 0) reviewQueue.push({ id: c.id, matiere: c.matiere, recto: c.recto, verso: c.verso, type: c.type, image: c.image, imageCote: c.imageCote, retour: true });
   else reviewDoneIds.add(c.id);
   nextCard();
@@ -1170,7 +1318,10 @@ renderList();
 if (location.hash === "#cartes") montrerOnglet("cartes");
 
 // Carte préparée par un autre outil (« Faire une carte à trous » dans Codes & articles)
-if (new URLSearchParams(location.search).has("nouvelle")) {
+// (lu avant que l'adresse soit nettoyée : sinon « Votre année » s'ouvrait par-dessus la carte, 6e passe)
+const venuPourCreer = new URLSearchParams(location.search).has("nouvelle");
+let sourceCarte = "";   // l'article d'origine, gardé sur la carte créée
+if (venuPourCreer) {
   history.replaceState(null, "", location.pathname + "#cartes");
   let brouillon = null;
   try { brouillon = JSON.parse(sessionStorage.getItem("paraphe_carte_a_creer")); sessionStorage.removeItem("paraphe_carte_a_creer"); } catch {}
@@ -1180,6 +1331,17 @@ if (new URLSearchParams(location.search).has("nouvelle")) {
     document.getElementById("fMatiere").value = brouillon.matiere || "";
     document.getElementById("fRecto").value = brouillon.recto || "";
     document.getElementById("fVerso").value = brouillon.verso || "";
+    sourceCarte = brouillon.source || "";
+    // le chemin du retour vers l'article, et les cartes qui en parlent déjà (8e passe, N04)
+    if (brouillon.retour) {
+      const num = String(brouillon.numero || "").toLowerCase();
+      const deja = num ? cards.filter(c => new RegExp("art(icle)?\\.?\\s*" + num.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "\\b", "i").test((c.recto || "") + " " + (c.verso || ""))) : [];
+      const bandeau = document.createElement("p");
+      bandeau.className = "retour-article";
+      bandeau.innerHTML = '<a href="' + escapeHtml(brouillon.retour) + '">← Revenir à l\'art. ' + escapeHtml(brouillon.numero || "") + ' dans Codes &amp; articles</a>'
+        + (deja.length ? " · " + deja.length + (deja.length > 1 ? " cartes portent" : " carte porte") + " déjà sur cet article : cherchez « art. " + escapeHtml(brouillon.numero) + " » dans la liste." : "");
+      document.getElementById("cardList").before(bandeau);
+    }
   }
 }
 
@@ -1243,8 +1405,12 @@ const fenAnnee = document.getElementById("formAnnee");
 let apresAnnee = null;
 function majAnneeLigne() {
   const a = lireAnnee();
+  const exemples = cards.filter(c => String(c.id).startsWith("seed-fc-")), duNiveau = exemples.filter(c => !enReserve(c)).length;
   document.getElementById("anneeLigne").innerHTML = a
-    ? 'Cartes d\'exemple : <b>' + escapeHtml(NOMS_ANNEE[a] || a) + '</b> · <button type="button" class="lien" id="changerAnnee">changer</button>'
+    ? 'Cartes d\'exemple de <b>' + escapeHtml(a === "tout" ? "toutes les années" : NOMS_ANNEE[a] || a) + '</b> : ' + duNiveau + (duNiveau > 1 ? " cartes" : " carte")
+      + (duNiveau < exemples.length ? ". Les " + (exemples.length - duNiveau) + " autres attendent" : "") + '. <span class="annee-suite">'
+      // pendant un planning d'examen, c'est le planning qui répartit les cartes (6e passe : « 20 au plus » affiché au-dessus de 74 à réviser)
+      + (etatNouvelles().planEnCours ? "Pendant votre planning : seulement les cartes de l'examen" : 'Au plus ' + NOUVELLES_PAR_JOUR + ' nouvelles par jour') + '.</span> <button type="button" class="lien" id="changerAnnee">changer</button>'
     : '<button type="button" class="lien" id="changerAnnee">Choisir votre année d\'études</button>';
 }
 function demanderAnnee(ensuite) {
@@ -1254,6 +1420,7 @@ function demanderAnnee(ensuite) {
 fenAnnee.addEventListener("click", e => {
   const b = e.target.closest("[data-annee]"); if (!b) return;
   try { localStorage.setItem(ANNEE_KEY, b.dataset.annee); } catch {}
+  nouvellesDuJour = null;
   fenAnnee.close();
   majAnneeLigne(); updateCounts(); renderList();
   Commun.annoncer(b.dataset.annee === "tout" ? "Toutes les cartes d'exemple sont à réviser." : "Cartes d'exemple de " + NOMS_ANNEE[b.dataset.annee] + " : les autres restent dans « Mes cartes ».");
@@ -1266,7 +1433,7 @@ const demandeInitiale = !lireAnnee();
 
 // premier passage sans lien particulier : la question vient d'elle-même (pas par-dessus une carte en création)
 const parametres = new URLSearchParams(location.search);
-if (demandeInitiale && !parametres.has("reviser") && !parametres.has("nouvelle") && !parametres.has("q")) demanderAnnee();
+if (demandeInitiale && !parametres.has("reviser") && !venuPourCreer && !parametres.has("q")) demanderAnnee();
 
 // Lien depuis « Aujourd'hui » à l'accueil : flashcards.html?reviser=1 lance la séance
 if (new URLSearchParams(location.search).has("reviser")) {
@@ -1281,6 +1448,9 @@ if (rechercheInitiale) {
   document.getElementById("searchBox").value = rechercheInitiale;
   montrerOnglet("cartes");
   renderList();
+  // la carte trouvée, dépliée et sous les yeux (8e passe : réponse coupée, carte sous le bord)
+  const premiere = document.querySelector("#cardList .carte-item");
+  if (premiere) { premiere.classList.add("deplie"); const b = premiere.querySelector("[data-deplier]"); if (b) { b.textContent = "Réduire"; b.setAttribute("aria-expanded", "true"); } premiere.scrollIntoView({ block: "center" }); }
 }
 </script>
 </body>

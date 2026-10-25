@@ -60,6 +60,12 @@
   .date-vigueur input[type=date]{width:auto;min-width:180px}
   .case-verifie{display:flex;align-items:center;gap:var(--e2);margin:0 0 10px;font-weight:550;color:var(--encre)}
   .case-verifie input{width:auto}
+  .art-date{font-size:calc(13px * var(--ech))!important;color:var(--encre-2)!important}
+  .art-clair{margin:var(--e2) 0 0;font-size:calc(14px * var(--ech));color:var(--encre-2);line-height:1.5}
+  .art-clair b{color:var(--encre);font-weight:600}
+  .marque-note{font-size:calc(12px * var(--ech));font-weight:600;color:var(--encre-2);border:1px solid var(--filet-2);border-radius:999px;padding:0 var(--e2);margin-right:var(--e2)}
+  #formArticle.seulement-note > :not(#formTitle):not([for=fNote]):not(#fNote):not(.ligne-star):not(.row.end){display:none}
+  #formArticle.seulement-note #fNote{min-height:10em}
   .aide-vigueur{margin:var(--e2) 0 0;font-size:calc(13px * var(--ech))}
   .art-version{margin:0 0 var(--e3);font-size:calc(13px * var(--ech));color:var(--gris);line-height:1.5}
   .art-version b{color:var(--encre-2);font-weight:620}
@@ -74,7 +80,86 @@
   dialog.fenetre-article{border:1px solid var(--filet);border-radius:var(--r-l);background:var(--carte);color:var(--encre);padding:var(--e6);width:min(720px,calc(100vw - 32px));box-shadow:var(--ombre-fenetre);border-radius:var(--r-l)}
   dialog.fenetre-article::backdrop{background:rgba(17,17,20,.45)}
   dialog.fenetre-article h2,dialog.fenetre-article h3{margin-top:0}
+  /* ── bibliothèque des codes ── */
+  .onglets{display:inline-flex;gap:2px;margin:0 0 var(--e5);padding:3px;background:var(--carte-2);border:1px solid var(--filet);border-radius:10px}
+  .onglets button{border:0;background:none;box-shadow:none;min-height:36px;height:36px;padding:0 var(--e4);border-radius:8px;font-size:calc(14px * var(--ech));color:var(--encre-2)}
+  .onglets button[aria-selected="true"]{background:var(--carte);color:var(--encre);box-shadow:var(--ombre)}
+  .onglets button:not([aria-selected="true"]):hover{background:none;color:var(--encre)}
+  .onglets .compte{display:inline-block;margin-left:6px;padding:1px 7px;border-radius:999px;background:var(--carte-2);font-size:calc(12px * var(--ech));letter-spacing:0}
+  .onglets .compte:empty{display:none}
+  .b-codes{list-style:none;margin:var(--e3) 0 0;padding:var(--e3) 0 0;border-top:1px solid var(--filet);display:grid;gap:2px}
+  .b-codes ul{list-style:none;margin:0;padding:0;display:grid;gap:2px}
+  .b-groupe{display:flex;justify-content:space-between;font-size:calc(12.5px * var(--ech));font-weight:620;color:var(--gris);padding:0 var(--e3) var(--e1)}
+  .b-adl{margin-top:var(--e3);padding-top:var(--e3);border-top:1px solid var(--filet)}
+  .b-adl > summary{cursor:pointer;padding:var(--e1) var(--e3);font-size:calc(13.5px * var(--ech));font-weight:620;color:var(--encre-2)}
+  .b-adl-note{margin:var(--e1) var(--e3) var(--e2);font-size:calc(12.5px * var(--ech));color:var(--gris);line-height:1.45}
+  /* une ligne par code (62 codes) : le nom, le nombre d'articles à droite ; « Télécharger » dessous */
+  .b-code{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:var(--e2);align-items:baseline;width:100%;height:auto;min-height:0;padding:6px var(--e3);border:0;border-radius:var(--r-s);background:none;box-shadow:none;text-align:left;text-transform:none;letter-spacing:0;color:var(--encre);cursor:pointer}
+  .b-code:hover{background:var(--carte-2)}
+  .b-code.actif{background:var(--carte-2);box-shadow:inset 0 0 0 1px var(--filet-2)}
+  .b-code .b-nom{font-weight:620;font-size:calc(14.5px * var(--ech))}
+  .b-code small{font-size:calc(12px * var(--ech));color:var(--gris);white-space:nowrap;font-variant-numeric:tabular-nums}
+  .b-code .b-nom{font-size:calc(14px * var(--ech))}
+  /* la recherche reste en haut de la colonne quand la liste des codes défile */
+  @media (min-width:1200px){   /* la colonne défile alors toute seule (style.css, .mise-cote > .barre) */
+    .biblio > .barre .barre-filtres{position:sticky;top:calc(-1 * var(--e5));z-index:1;margin:calc(-1 * var(--e5)) calc(-1 * var(--e5)) 0;padding:var(--e5) var(--e5) var(--e2);background:var(--carte);border-radius:var(--r-l) var(--r-l) 0 0}
+  }
+  .b-code .b-dl{grid-column:1 / -1;margin-top:2px;font-size:calc(12.5px * var(--ech));font-weight:620;color:rgb(var(--acc))}
+  .b-index{margin:var(--e2) 0 0;font-size:calc(12.5px * var(--ech));color:var(--gris)}
+  .b-maj{margin-top:var(--e3);padding-top:var(--e3);border-top:1px solid var(--filet);font-size:calc(13px * var(--ech));color:var(--encre-2)}
+  .b-maj p{margin:0 0 var(--e2)}
+  .b-maj .b-maj-ok{color:var(--gris)}
+  .b-maj .lien{font-size:inherit}
+  .biblio-contenu{min-width:0}
+  .b-tete{margin:0 0 var(--e4)}
+  .b-tete h2{margin:0;font-size:calc(26px * var(--ech))}
+  .b-tete p{margin:var(--e1) 0 0;color:var(--gris);font-size:calc(13.5px * var(--ech))}
+  .b-tete a{color:rgb(var(--acc));font-weight:600;text-decoration:none}
+  .b-attente{color:var(--gris)}
+  .b-accueil{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:var(--e3)}
+  .b-carte{display:grid;gap:2px;height:auto;padding:var(--e4);text-align:left;border:1px solid var(--filet);border-radius:var(--r-m);background:var(--carte);box-shadow:none;text-transform:none;letter-spacing:0;color:var(--encre)}
+  .b-carte:hover{border-color:var(--filet-2);box-shadow:var(--ombre-forte)}
+  .b-carte b{font-size:calc(16px * var(--ech))}
+  .b-carte span{font-size:calc(13px * var(--ech));color:var(--gris)}
+  .b-conseil{margin:var(--e5) 0 0;color:var(--encre-2);font-size:calc(14px * var(--ech))}
+  .b-plan{border:1px solid var(--filet);border-radius:var(--r-l);background:var(--carte);overflow:hidden}
+  .b-sec{border-top:1px solid var(--filet)}
+  .b-plan > .b-sec:first-child,.b-plan > .b-art:first-child{border-top:0}
+  .b-sec > summary{display:flex;justify-content:space-between;align-items:baseline;gap:var(--e3);padding:var(--e3) var(--e4);cursor:pointer;font-weight:600;font-size:calc(14.5px * var(--ech));list-style:none}
+  .b-sec > summary::-webkit-details-marker{display:none}
+  .b-sec > summary span::before{content:"";display:inline-block;width:6px;height:6px;margin:0 10px 2px 0;border:solid currentColor;border-width:0 1.5px 1.5px 0;transform:rotate(-45deg);transition:transform .15s var(--ease);color:var(--gris)}
+  .b-sec[open] > summary span::before{transform:rotate(45deg)}
+  .b-sec > summary small{flex:none;font-weight:500;font-size:calc(12.5px * var(--ech));color:var(--gris)}
+  .b-sec > summary:hover{background:var(--carte-2)}
+  .b-dedans{padding-left:var(--e3);border-left:2px solid var(--filet);margin:0 0 var(--e2) var(--e3)}
+  /* le Code du travail a sept niveaux (partie, livre, titre, chapitre, section…) : au-delà du troisième, plus de retrait */
+  .b-dedans .b-dedans .b-dedans{padding-left:0;margin-left:0;border-left:0}
+  .b-dedans .b-sec > summary{font-weight:560}
+  .b-art{padding:var(--e3) var(--e4);border-top:1px solid var(--filet)}
+  .b-art h4{margin:0 0 var(--e1);font:700 calc(15.5px * var(--ech))/1.3 var(--sans)}
+  .b-texte{margin:0;font-size:calc(15px * var(--ech));line-height:1.65;color:var(--encre)}
+  .b-texte .b-ligne{display:block}
+  .b-texte .b-ligne + .b-ligne{margin-top:var(--e1)}
+  .b-tableau{border-collapse:collapse;margin:var(--e2) 0;font-size:calc(13.5px * var(--ech));max-width:100%;display:block;overflow-x:auto}
+  .b-tableau th,.b-tableau td{border:1px solid var(--filet-2);padding:4px 8px;text-align:left;vertical-align:top}
+  .b-tableau th{background:var(--carte-2);font-weight:620}
+  .b-meta{margin:var(--e2) 0 0;font-size:calc(12.5px * var(--ech));color:var(--gris)}
+  .b-meta a{color:rgb(var(--acc));font-weight:600;text-decoration:none}
+  .b-futur{color:var(--u-bientot);font-weight:620}
+  .b-actions{margin-top:var(--e1)}
+  .b-actions a.lien-action{display:inline-flex;align-items:center;text-decoration:none}
+  .b-art.cible{outline:2px solid rgb(var(--acc));outline-offset:-2px;border-radius:var(--r-s)}
+  .b-resultats{list-style:none;margin:0;padding:0;border:1px solid var(--filet);border-radius:var(--r-l);background:var(--carte);overflow:hidden}
+  .b-resultats li + li{border-top:1px solid var(--filet)}
+  .b-res{display:grid;gap:2px;width:100%;height:auto;padding:var(--e3) var(--e4);border:0;border-radius:0;background:none;box-shadow:none;text-align:left;text-transform:none;letter-spacing:0;color:var(--encre);cursor:pointer}
+  .b-res:hover{background:var(--carte-2)}
+  .b-res b{font-size:calc(15px * var(--ech))}
+  .b-res b span{font-weight:500;color:var(--gris);margin-left:6px}
+  .b-res small{font-size:calc(12.5px * var(--ech));color:var(--gris)}
+  .b-extrait{font-size:calc(14px * var(--ech));color:var(--encre-2);line-height:1.5}
+  .biblio mark{padding:0;border-radius:2px}
   @media (max-width:640px){
+    .b-dedans{padding-left:var(--e2);margin-left:var(--e2)}
     .art-tete{grid-template-columns:1fr auto}
     .art-ref{grid-column:1 / -1}
     .art-corps{padding-left:var(--e4)}
@@ -99,10 +184,18 @@
   <p class="eyebrow">Références</p>
   <h1>Codes &amp; articles</h1>
   <!-- une ligne, le reste replié : l'introduction remplissait l'écran du téléphone (troisième passe du test) -->
-  <p class="muted">Vos articles de référence, avec leur texte officiel daté, votre note et un marqueur « à retenir ».</p>
+  <p class="muted">Vos articles de référence, avec leur texte officiel daté, votre note et un marqueur « à retenir ». Les codes complets sont dans l'onglet « Tous les codes ».</p>
   <details class="intro-plus"><summary>Quels articles sont déjà là ?</summary>
-    <p>400 articles sont préchargés, classés par matière : ceux que citent les fiches d'arrêt et les calculs de délais de Quantième. Chacun porte la date de sa version en vigueur et le jour de sa vérification sur Légifrance. Il vous manque un article ? Tapez son numéro dans la recherche : Paraphe propose de l'ajouter et de le chercher sur Légifrance.</p></details>
+    <p>404 articles sont préchargés, classés par matière : ceux que citent les fiches d'arrêt et les calculs de délais de Quantième, et ceux qui ouvrent une matière. Chacun porte la date de sa version en vigueur et le jour de sa vérification sur Légifrance. Il vous manque un article ? Tapez son numéro dans la recherche : Paraphe propose de l'ajouter et de le chercher sur Légifrance.</p>
+    <p>Dans un numéro, « L » signale la partie législative du code (votée par le Parlement), « R » et « D » la partie réglementaire (prise par décret).</p></details>
 
+  <!-- 25 oct. 2026 : la bibliothèque des codes complets (LEGI), à côté de vos articles -->
+  <div class="onglets" role="tablist" aria-label="Codes & articles">
+    <button type="button" role="tab" id="ongMiens" aria-selected="true" aria-controls="vueMiens">Mes articles<span class="compte" id="compteMiens"></span></button>
+    <button type="button" role="tab" id="ongCodes" aria-selected="false" aria-controls="vueCodes">Tous les codes<span class="compte" id="compteCodes"></span></button>
+  </div>
+
+  <section id="vueMiens" role="tabpanel" aria-labelledby="ongMiens">
   <div class="mise-cote">
   <div class="card barre">
     <div class="barre-filtres">
@@ -110,12 +203,13 @@
       <select id="filterMatiere" aria-label="Filtrer par matière"><option value="">Toutes les matières</option></select>
       <select id="filterCode" aria-label="Filtrer par code"><option value="">Tous les codes</option></select>
       <label class="etoile-filtre"><input type="checkbox" id="filterStar" style="width:auto;"> À retenir</label>
+      <label class="etoile-filtre"><input type="checkbox" id="filterNote" style="width:auto;"> Avec ma note</label>
     </div>
     <div class="barre-actions">
       <button type="button" id="nouvelArticle" class="primary">+ Nouvel article</button>
       <div class="barre-groupe" role="group" aria-label="Importer">
         <span class="barre-titre">Importer</span>
-        <button type="button" id="importBtn" title="Reprendre un fichier .json enregistré depuis cet outil">Depuis un fichier</button>
+        <button type="button" id="importBtn" title="Reprendre un fichier .json enregistré depuis cet outil, ou reçu d'un autre utilisateur de Paraphe">Depuis un fichier<span class="sous">enregistré ou partagé depuis Paraphe</span></button>
         <button type="button" id="promptIA" title="Copie une consigne à coller dans l'IA de votre choix, avec votre document : elle le convertit au format d'import. Paraphe n'envoie rien.">Avec une IA</button>
       </div>
       <p class="barre-note">« Avec une IA » copie une consigne à coller dans l'IA de votre choix : Paraphe n'envoie rien.</p>
@@ -123,6 +217,7 @@
         <span class="barre-titre">Exporter</span>
         <button type="button" id="exportBtn" title="Enregistrer une copie de vos articles (fichier .json)">Sauvegarde</button>
         <button type="button" id="exportPdfBtn" title="Mettre en page vos articles pour les imprimer ou les enregistrer en PDF">Imprimer / PDF</button>
+        <button type="button" id="partagerArticles" title="Un fichier avec les articles affichés (filtres et recherche compris) : il s'importe avec « Depuis un fichier »">Partager les articles affichés</button>
       </div>
       <input type="file" id="importFile" accept="application/json" hidden>
     </div>
@@ -131,6 +226,24 @@
   <p class="compte-liste" id="compteListe"></p>
   <div id="articleList" class="liste-art"></div>
   </div>
+  </section>
+
+  <section id="vueCodes" role="tabpanel" aria-labelledby="ongCodes" hidden data-sans-sigles>
+  <div class="mise-cote biblio">
+    <div class="card barre">
+      <div class="barre-filtres">
+        <input type="search" id="biblioQ" placeholder="Un numéro ou des mots" aria-label="Chercher dans les codes : un numéro (1240, L1235-3) ou des mots">
+        <select id="biblioPortee" aria-label="Où chercher"><option value="">Dans tous les codes</option></select>
+      </div>
+      <p class="b-index" id="biblioIndex" role="status" hidden></p>
+      <ul class="b-codes" id="biblioCodes" aria-label="Les codes"></ul>
+      <div class="b-maj" id="biblioMaj" aria-live="polite"></div>
+      <p class="barre-note">Source : LEGI (DILA, data.gouv.fr), Licence Ouverte 2.0. Seul le texte publié sur Légifrance fait foi. Un code à télécharger vient du dépôt public Paraphe-Codes : rien de vos données n'est envoyé.</p>
+    </div>
+    <p class="compte-liste"></p>
+    <div id="biblioContenu" class="biblio-contenu"></div>
+  </div>
+  </section>
 </main>
 
 <dialog class="fenetre-article" id="formArticle" aria-labelledby="formTitle">
@@ -163,7 +276,7 @@
   <p class="muted aide-vigueur">Sur Légifrance, la date figure en tête de l'article : « Version en vigueur depuis le… ». Si vous modifiez le texte, l'ancienne version reste consultable sous l'article.</p>
   <label for="fNote">Note personnelle</label>
   <textarea id="fNote" placeholder="Votre note, exemple d'application, arrêt lié…"></textarea>
-  <div class="row" style="margin-top:0.4rem;">
+  <div class="row ligne-star" style="margin-top:0.4rem;">
     <label style="display:flex; align-items:center; gap:0.3rem; margin:0;">
       <input type="checkbox" id="fStar" style="width:auto;"> Marquer « à retenir »
     </label>
@@ -172,13 +285,13 @@
   <div id="fArrets" class="liste-arrets"></div>
   <div class="row end" style="margin-top:var(--e4);">
     <button type="button" id="cancelEditBtn">Annuler</button>
-    <button type="button" id="addBtn" class="primary">Ajouter l'article</button>
+    <button type="button" id="addBtn" class="primary" title="Raccourci : ⌘ Entrée (Ctrl Entrée)">Ajouter l'article</button>
   </div>
 </dialog>
 <div id="printArea"></div>
 
 <script src="commun.js"></script>
-<script src="textes-codes.js"></script><script src="liens-juridiques.js"></script><script src="articles-cites.js"></script>
+<script src="textes-codes.js"></script><script src="liens-juridiques.js"></script><script src="articles-cites.js"></script><script src="termes.js"></script>
 <script>
 const STORAGE_KEY = "droit_codes";
 // Articles d'exemple supprimés par l'utilisateur : sans cette liste, ils revenaient à chaque chargement
@@ -322,7 +435,7 @@ function migrerTextesVerifies(liste) {
     const neuf = SEED.find(x => x.id === a.id), ancien = SEED_ANCIEN.find(x => x.id === a.id);
     if (!neuf || !neuf.verifie) return;
     if (a.texte !== ancien.texte && a.texte !== neuf.texte) return;   // modifié par l'utilisateur : on n'y touche pas
-    if (a.texte === neuf.texte && a.verifie === neuf.verifie && a.source === neuf.source && a.modif === neuf.modif) return;
+    if (a.texte === neuf.texte && a.verifie === neuf.verifie && a.source === neuf.source && a.modif === neuf.modif && a.vigueur === neuf.vigueur) return;
     const note = a.note === ancien.note ? neuf.note : a.note;
     Object.assign(a, { numero: neuf.numero, texte: neuf.texte, note, vigueur: neuf.vigueur, modif: neuf.modif, source: neuf.source, verifie: neuf.verifie, extrait: neuf.extrait });
     change = true;
@@ -346,6 +459,9 @@ const escapeHtml = Commun.echapper;
 
 let articles = loadArticles();
 migrerTextesVerifies(articles);
+// matière d'un article préchargé corrigée après coup (7e passe : l'art. 2061, clause compromissoire, classé « Droit civil »,
+// ouvrait la liste d'un étudiant de L1) ; la copie déjà enregistrée suit, sauf matière changée par l'utilisateur
+(() => { const a = articles.find(x => x.id === "seed-ref-civ-2061" && x.matiere === "Droit civil"); if (a) { a.matiere = "Arbitrage"; saveArticles(articles); } })();
 // la mention « Fondement d'une étape de Quantième… » quitte la note personnelle (troisième passe du test :
 // on n'osait pas l'effacer) ; une note que l'utilisateur a écrite n'est jamais touchée
 (function deplacerOrigine() {
@@ -354,6 +470,9 @@ migrerTextesVerifies(articles);
     if (!String(a.id).startsWith("seed-ref-")) return;
     if (a.note && /^(Fondement d'une étape de Quantième|Appliqué par :)/.test(a.note)) { a.origine = a.note; a.note = ""; }
     if (!a.origine && ref.get(a.id) && ref.get(a.id).origine) a.origine = ref.get(a.id).origine;
+    // date d'entrée en vigueur corrigée dans articles-cites.js (25 oct. 2026) : reprise si le texte n'a pas été modifié
+    const r = ref.get(a.id);
+    if (r && r.vigueur && a.texte === r.texte && a.vigueur !== r.vigueur) a.vigueur = r.vigueur;
   });
 })();
 saveArticles(articles);
@@ -418,6 +537,7 @@ document.getElementById("addBtn").addEventListener("click", () => {
   const champs = {
     matiere, code, numero, texte,
     note: document.getElementById("fNote").value.trim(),
+    ...(editingId && (articles.find(x => x.id === editingId) || {}).note !== document.getElementById("fNote").value.trim() ? { noteMienne: true } : {}),
     star: document.getElementById("fStar").checked,
     arrets: [...document.querySelectorAll("#fArrets input:checked")].map(i => i.value),
     vigueur: document.getElementById("fVigueur").value || ""
@@ -444,7 +564,9 @@ document.getElementById("addBtn").addEventListener("click", () => {
   ouverts.add(id);
   renderList();
   Commun.montrer(document.getElementById("art-" + id));   // l'article enregistré, déplié sous vos yeux
-  Commun.annoncer("Article enregistré sur cet appareil.");
+  const surNote = fenetre.classList.contains("seulement-note");
+  Commun.annoncer(surNote ? "Note enregistrée sur cet appareil." : "Article enregistré sur cet appareil.");
+  const retour = document.querySelector(`#art-${CSS.escape(id)} [data-note]`); if (retour) retour.focus();
 });
 
 // --- Arrêts disponibles (lus dans Fiches d'arrêt) ---
@@ -478,6 +600,8 @@ function startEdit(id, surNote) {
   const officiel = !!a.vigueur;
   document.getElementById("fTexte").readOnly = officiel;
   document.getElementById("deverrouillerTexte").hidden = !officiel;
+  // « Ajouter une note » n'ouvre que la note (6e passe : tout le formulaire, texte officiel compris, s'ouvrait)
+  fenetre.classList.toggle("seulement-note", !!surNote);
   ouvrirFormulaire();
 }
 document.getElementById("deverrouillerTexte").addEventListener("click", () => {
@@ -485,9 +609,12 @@ document.getElementById("deverrouillerTexte").addEventListener("click", () => {
   document.getElementById("deverrouillerTexte").hidden = true;
 });
 const fenetre = document.getElementById("formArticle");
+// ⌘ Entrée (Ctrl Entrée) enregistre, comme dans les autres formulaires
+fenetre.addEventListener("keydown", e => { if ((e.metaKey || e.ctrlKey) && e.key === "Enter") { e.preventDefault(); document.getElementById("addBtn").click(); } });
 function ouvrirFormulaire() { fenetre.showModal ? fenetre.showModal() : fenetre.setAttribute("open", ""); document.getElementById(editingId ? "fNote" : "fCode").focus(); }
 function nouvelArticle(preRempli) {
   editingId = null;
+  fenetre.classList.remove("seulement-note");
   document.getElementById("fTexte").readOnly = false;
   document.getElementById("deverrouillerTexte").hidden = true;
   ["fNumero", "fTexte", "fNote", "fVigueur"].forEach(id => document.getElementById(id).value = "");
@@ -515,6 +642,7 @@ document.getElementById("cancelEditBtn").addEventListener("click", endEdit);
 
 // Même forme de requête que Quantième : « article 1240 Code civil »
 function lienLegifrance(a) {
+  if (a.legiarti) return "https://www.legifrance.gouv.fr/codes/article_lc/" + a.legiarti;   // copié depuis Tous les codes
   return "https://www.legifrance.gouv.fr/search/all?tab_selection=all&searchField=ALL&query="
     + encodeURIComponent("article " + String(a.numero).trim() + " " + (a.code || "")) + "&page=1&init=true";
 }
@@ -531,18 +659,48 @@ function deleteArticle(id) {
   saveArticles(articles);
   refreshCodeOptions();
   renderList();
+  majComptes();
 }
 
 // Articles correspondant à la recherche et aux filtres, triés matière › code › numéro (liste et PDF)
+// L'année d'études choisie dans Fiches mémo (5e passe du panel : une L1 voyait d'abord des arrêts de master)
+const ANNEE_ETUDES = (() => { try { return localStorage.getItem("droit_flashcards_annee"); } catch { return null; } })();
+const RANG_ANNEE = { L1: 1, L2: 2, L3: 3, M: 4 }[ANNEE_ETUDES] || 0;   // 0 : pas d'année choisie, ou « toutes »
+const NOM_ANNEE = { L1: "Licence 1", L2: "Licence 2", L3: "Licence 3", M: "Master" }[ANNEE_ETUDES] || "";
+// matière → année où elle s'étudie le plus souvent (1 à 3 : licence, 4 : master) ; sert seulement à l'ordre
+const ANNEE_MATIERE = { "Droit constitutionnel": 1, "Droit civil": 1, "Droit des personnes et de la famille": 1, "Introduction au droit": 1, "Institutions juridictionnelles": 1,
+  "Droit des contrats": 2, "Responsabilité civile": 2, "Régime général des obligations": 2, "Prescription": 2, "Droit pénal": 2, "Droit administratif": 2, "Biens, successions et libéralités": 2,
+  "Droit de l'Union européenne": 3, "Contrats spéciaux": 3, "Droit des sociétés": 3, "Droit commercial": 3, "Droit du travail": 3, "Procédure civile": 3, "Procédure pénale": 3,
+  "Contentieux administratif": 3, "Droit fiscal": 3,
+  "Baux commerciaux": 4, "Entreprises en difficulté": 4, "Voies d'exécution": 4, "Droit de la consommation": 4, "Sécurité sociale": 4, "Prud'hommes": 4,
+  "Droit de la concurrence": 4, "Droit public des affaires": 4, "Arbitrage": 4 };
+const ecartAnnee = a => { const r = ANNEE_MATIERE[a.matiere]; return !RANG_ANNEE || !r ? 2.5 : Math.abs(r - RANG_ANNEE) + (r > RANG_ANNEE ? 0.5 : 0); };
+const estMien = a => !/^seed-/.test(a.id);
+// une note est « de vous » si l'article est à vous ou si vous l'avez écrite (les exemples fournis portent un repère)
+const noteDeVous = a => estMien(a) || !!a.noteMienne;
+
+/* Recherche par mots, sans accents ni pluriels : « bail commercial » trouve « baux commerciaux » (6e passe : il fallait
+   l'expression exacte). Chaque mot doit apparaître, dans le texte, la matière, la note ou la procédure d'origine. */
+const sansAccents = t => String(t || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+const VARIANTES = { bail: "ba(?:il|ux)", baux: "ba(?:il|ux)", travail: "trava(?:il|ux)", travaux: "trava(?:il|ux)" };
+const matiereCorrespond = (a, search) => { const m = sansAccents(a.matiere); return sansAccents(search).split(/[^a-z0-9-]+/).filter(x => x.length > 2).every(x => new RegExp("\\b" + (VARIANTES[x] || (x.length > 5 ? x.slice(0, -2) : x))).test(m)) ? 1 : 0; };
+function correspond(a, search) {
+  const tout = sansAccents([a.matiere, a.code, a.numero, a.texte, a.note, a.origine].filter(Boolean).join(" "));
+  if (tout.includes(sansAccents(search))) return true;
+  const mots = sansAccents(search).split(/[^a-z0-9-]+/).filter(m => m.length > 1 && !/^(de|du|des|la|le|les|un|une|et|en|au|aux|art|article)$/.test(m));
+  return mots.length > 0 && mots.every(m => new RegExp("\\b" + (VARIANTES[m] || (m.length > 5 ? m.slice(0, -2) : m).replace(/[.*+?^${}()|[\]\\]/g, "\\$&"))).test(tout));
+}
+
 function articlesFiltres() {
   const search = document.getElementById("searchBox").value.trim().toLowerCase();
   const code = document.getElementById("filterCode").value;
   const matiere = document.getElementById("filterMatiere").value;
-  const starOnly = document.getElementById("filterStar").checked;
+  const starOnly = document.getElementById("filterStar").checked, noteOnly = document.getElementById("filterNote").checked;
   return articles
-    .filter(a => (!code || a.code === code) && (!matiere || a.matiere === matiere) && (!starOnly || a.star) &&
-      (!search || [a.matiere, a.code, a.numero, a.texte, a.note].filter(Boolean).join(" ").toLowerCase().includes(search)))
-    .sort((a, b) => (a.matiere || "").localeCompare(b.matiere || "") || (a.code || "").localeCompare(b.code || "") ||
+    .filter(a => (!code || a.code === code) && (!matiere || a.matiere === matiere) && (!starOnly || a.star) && (!noteOnly || (noteDeVous(a) && a.note)) &&
+      (!search || correspond(a, search)))
+    // vos articles d'abord, puis les matières de votre année d'études, puis l'ordre alphabétique
+    .sort((a, b) => (search ? matiereCorrespond(b, search) - matiereCorrespond(a, search) : 0) || (estMien(b) - estMien(a)) || (RANG_ANNEE ? ecartAnnee(a) - ecartAnnee(b) : (ANNEE_MATIERE[a.matiere] || 5) - (ANNEE_MATIERE[b.matiere] || 5)) || (a.matiere || "").localeCompare(b.matiere || "") || (a.code || "").localeCompare(b.code || "") ||
       String(a.numero || "").localeCompare(String(b.numero || ""), undefined, { numeric: true }));
 }
 
@@ -553,6 +711,7 @@ function renderList() {
   const filtered = articlesFiltres();
   document.getElementById("compteListe").textContent = filtered.length
     ? filtered.length + (filtered.length > 1 ? " articles" : " article") + (filtered.length < articles.length ? " sur " + articles.length : "")
+      + (NOM_ANNEE && !document.getElementById("filterMatiere").value ? " · matières de " + NOM_ANNEE + " en tête" : "")
     : "";
 
   if (filtered.length === 0) {
@@ -564,6 +723,7 @@ function renderList() {
       ? '<div class="empty-state">Aucun article. Ajoutez-en un avec « + Nouvel article ».</div>'
       : '<div class="empty-state">Aucun article ne correspond à cette recherche.'
         + (numero ? '<p class="row" style="justify-content:center;gap:var(--e3);margin-top:var(--e3)"><button type="button" class="primary" data-ajouter-num="' + escapeHtml(numero) + '" data-ajouter-code="' + escapeHtml(code) + '">Ajouter l\'article ' + escapeHtml(numero) + (code ? " (" + escapeHtml(code) + ")" : "") + '</button>'
+          + '<button type="button" data-chercher-codes="' + escapeHtml(q) + '">Le lire dans Tous les codes</button>'
           + '<a href="' + lienLegifrance({ numero, code }) + '" target="_blank" rel="noopener">Le chercher sur Légifrance ↗</a></p>'
           + '<p class="muted">« Ajouter » ouvre un formulaire où vous collez le texte trouvé sur Légifrance.</p>' : "")
         + '</div>';
@@ -580,13 +740,14 @@ function renderList() {
         aria-label="${escapeHtml("Art. " + a.numero + ", " + (a.code || "") + (a.matiere ? ", " + a.matiere : ""))}">
         <span class="art-ref"><b>Art. ${escapeHtml(a.numero)}</b><span>${escapeHtml(a.code)}</span>${a.vigueur ? `<span class="art-date">version du ${new Date(a.vigueur + "T12:00:00").toLocaleDateString("fr-FR", { day: "numeric", month: "short", year: "numeric" })}</span>` : ""}</span>
         <span class="art-milieu">${a.matiere ? `<span class="badge${mat ? " matiere" : ""}">${escapeHtml(a.matiere)}</span><br>` : ""}<span class="art-extrait">${highlight(a.texte, search)}</span></span>
-        <span class="art-etat">${a.star ? '<span class="etoile" title="À retenir" aria-label="À retenir">★</span>' : ""}<span class="chevron" aria-hidden="true">▾</span></span>
+        <span class="art-etat">${noteDeVous(a) && a.note ? '<span class="marque-note">Note</span>' : ""}${a.star ? '<span class="etoile" title="À retenir" aria-label="À retenir">★</span>' : ""}<span class="chevron" aria-hidden="true">▾</span></span>
       </button>
       <div class="art-corps"${ouvert ? "" : " hidden"}>
         <p class="art-texte">${highlight(a.texte, search)}</p>
+        ${window.ParapheTermes && window.ParapheTermes.enClair(a.texte, 3) ? `<p class="art-clair">En clair · ${window.ParapheTermes.enClair(a.texte, 3)}</p>` : ""}
         ${versionHTML(a)}
-        ${a.note ? `<p class="art-note"><b>Votre note</b>${highlight(a.note, search)}</p>` : ""}
-        ${a.origine ? `<p class="art-origine">Pourquoi cet article est ici : ${escapeHtml(a.origine)}</p>` : ""}
+        ${a.note ? `<p class="art-note"><b>${noteDeVous(a) ? "Votre note" : "Repère (exemple fourni)"}</b>${highlight(a.note, search)}</p>` : ""}
+        ${a.origine ? `<p class="art-origine">Pourquoi cet article est ici : ${escapeHtml(a.origine.replace(/^Fondement d'une étape de Quantième dans /, "Il sert au calcul des délais dans Quantième (l'outil des délais de procédure), pour ").replace(/^Appliqué par :/, "Cité par les fiches d'arrêt :"))}</p>` : ""}
         <p class="liens-article">
           <a href="${lienLegifrance(a)}" target="_blank" rel="noopener">Vérifier sur Légifrance ↗</a>
           ${(a.arrets || []).filter(id => titresArrets[id]).map(id =>
@@ -596,7 +757,7 @@ function renderList() {
         <div class="art-actions">
           <button type="button" class="lien-action${a.star ? " actif" : ""}" data-star="${escapeHtml(a.id)}">${a.star ? "★ À retenir" : "☆ Marquer à retenir"}</button>
           <button type="button" class="lien-action" data-trous="${escapeHtml(a.id)}" title="Créer une fiche mémo où vous masquez un délai, une condition ou un mot de cet article">Faire une carte à trous</button>
-          <button type="button" class="lien-action" data-note="${escapeHtml(a.id)}">${a.note ? "Modifier ma note" : "Ajouter une note"}</button>
+          <button type="button" class="lien-action" data-note="${escapeHtml(a.id)}">${noteDeVous(a) && a.note ? "Modifier ma note" : "Ajouter une note"}</button>
           <button type="button" class="lien-action" data-edit="${escapeHtml(a.id)}">Modifier</button>
           <button type="button" class="lien-action danger" data-delete="${escapeHtml(a.id)}">Supprimer</button>
         </div>
@@ -606,14 +767,17 @@ function renderList() {
 }
 
 document.getElementById("articleList").addEventListener("click", (e) => {
-  const el = e.target.closest("[data-ouvrir], [data-star], [data-delete], [data-edit], [data-trous], [data-note], [data-ajouter-num]");
+  const el = e.target.closest("[data-ouvrir], [data-star], [data-delete], [data-edit], [data-trous], [data-note], [data-ajouter-num], [data-chercher-codes]");
   if (!el) return;
+  if (el.dataset.chercherCodes !== undefined) { montrerOnglet("codes"); history.replaceState(null, "", "#codes"); window.ParapheBibliotheque.chercher(el.dataset.chercherCodes); return; }
   if (el.dataset.trous) {
     // l'article part dans Fiches mémo, où l'on choisit le passage à masquer
     const a = articles.find(x => x.id === el.dataset.trous);
     if (!a) return;
     try { sessionStorage.setItem("paraphe_carte_a_creer", JSON.stringify({ type: "trous", matiere: a.matiere || "",
-      recto: "Art. " + a.numero + (a.code ? " " + a.code : "") + " : " + (a.texte || ""), verso: "" })); } catch {}
+      recto: "Art. " + a.numero + (a.code ? " " + a.code : "") + " : " + (a.texte || ""), verso: "",
+      retour: "codes.html#art-" + a.id, numero: a.numero,
+      source: "Art. " + a.numero + (a.code ? " " + a.code : "") + (a.vigueur ? ", version du " + new Date(a.vigueur + "T12:00").toLocaleDateString("fr-FR", { day: "numeric", month: "long", year: "numeric" }).replace(/^1 /, "1er ") : "") })); } catch {}
     location.href = "flashcards.html?nouvelle=trous";
     return;
   }
@@ -632,6 +796,13 @@ document.getElementById("articleList").addEventListener("click", (e) => {
 });
 
 document.getElementById("searchBox").addEventListener("input", renderList);
+document.getElementById("filterNote").addEventListener("change", renderList);
+document.getElementById("partagerArticles").addEventListener("click", () => {
+  const liste = articlesFiltres().map(({ id, star, ...reste }) => reste);
+  if (!liste.length) { alert("Aucun article affiché à partager."); return; }
+  Commun.telecharger("articles-paraphe.json", JSON.stringify(liste, null, 2));
+  Commun.annoncer(liste.length + " article" + (liste.length > 1 ? "s" : "") + " dans le fichier. Envoyez-le : la personne l'importe avec « Depuis un fichier ».");
+});
 document.getElementById("filterCode").addEventListener("change", renderList);
 document.getElementById("filterMatiere").addEventListener("change", renderList);
 document.getElementById("filterStar").addEventListener("change", renderList);
@@ -728,6 +899,46 @@ function ouvrirDepuisAncre() {
 }
 window.addEventListener("hashchange", ouvrirDepuisAncre);
 ouvrirDepuisAncre();
+
+/* ── onglets « Mes articles » / « Tous les codes » et pont vers la bibliothèque (bibliotheque.js) ──
+   adresses : #codes (l'onglet), #code=CIV&art=1240 (un article d'un code), #art-<id> (un de vos articles) */
+function montrerOnglet(nom) {
+  const codes = nom === "codes";
+  document.getElementById("ongMiens").setAttribute("aria-selected", String(!codes));
+  document.getElementById("ongCodes").setAttribute("aria-selected", String(codes));
+  document.getElementById("vueMiens").hidden = codes;
+  document.getElementById("vueCodes").hidden = !codes;
+  if (codes && window.ParapheBibliotheque) window.ParapheBibliotheque.monter();
+}
+document.getElementById("ongMiens").addEventListener("click", () => { montrerOnglet("miens"); history.replaceState(null, "", location.pathname); });
+document.getElementById("ongCodes").addEventListener("click", () => { montrerOnglet("codes"); history.replaceState(null, "", "#codes"); });
+window.CodesArticles = {
+  // l'article d'un code déjà parmi les vôtres (même code, même numéro)
+  trouver(code, numero) { const cle = cleArticle({ code, numero }); return articles.find(a => cleArticle(a) === cle) || null; },
+  ajouter(a) {
+    const nouvel = Object.assign({ id: "art-" + Date.now() + "-" + Math.random().toString(36).slice(2, 6), note: "", star: false, arrets: [] }, a);
+    articles.unshift(nouvel); saveArticles(articles); refreshCodeOptions(); renderList(); majComptes();
+    return nouvel.id;
+  },
+  ouvrirMien(id) { montrerOnglet("miens"); location.hash = "#art-" + id; },
+};
+function majComptes() {
+  document.getElementById("compteMiens").textContent = articles.length;
+  const cat = window.PARAPHE_CATALOGUE;
+  document.getElementById("compteCodes").textContent = cat ? cat.codes.length : "";
+}
+majComptes();
+function suivreAdresse() {
+  const h = location.hash;
+  if (h === "#codes") { montrerOnglet("codes"); return; }
+  const m = /^#code=([^&]+)(?:&art=(.+))?$/.exec(h);
+  if (m) { montrerOnglet("codes"); window.ParapheBibliotheque.ouvrir(decodeURIComponent(m[1]), m[2] ? decodeURIComponent(m[2]) : ""); return; }
+  if (/^#art-/.test(h)) montrerOnglet("miens");
+}
+window.addEventListener("hashchange", suivreAdresse);
 </script>
+<script src="bibliotheque/catalogue.js"></script>
+<script src="bibliotheque.js"></script>
+<script>suivreAdresse();</script>
 </body>
 </html>

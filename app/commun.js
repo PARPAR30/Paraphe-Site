@@ -138,7 +138,13 @@ const Commun = (() => {
       if (!fichier) return;
       const lecteur = new FileReader();
       lecteur.onload = () => {
-        try { options.apres(ajouter(lireJSON(lecteur.result), options)); }
+        try {
+          // un fichier qui n'est pas du JSON passe par options.texte s'il existe (export texte d'Anki ou de Quizlet)
+          let donnees;
+          try { donnees = lireJSON(lecteur.result); }
+          catch (err) { if (!options.texte) throw err; donnees = options.texte(lecteur.result); if (!donnees.length) throw err; }
+          options.apres(ajouter(donnees, options));
+        }
         catch (err) { alert("Import impossible. " + err.message); }
       };
       lecteur.readAsText(fichier);

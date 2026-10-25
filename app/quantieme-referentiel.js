@@ -6,7 +6,7 @@
 
 /* Date à laquelle le référentiel a été arrêté. Mettez-la à jour quand vous
    corrigez des délais : elle figure sur la fiche de vérification. */
-const REFERENTIEL_ARRETE = "2026-10-24";
+const REFERENTIEL_ARRETE = "2026-10-25";
 
 /* ═════════════════════════════════════════════════════════════════════
    §2  RÉFÉRENTIEL DES PROCÉDURES
@@ -1042,9 +1042,10 @@ const PROCEDURES = [
           "Conclusions d'appelant",
           "Bordereau de pièces"
         ] },
-      { id: "exec", libelle: "Signification du jugement + 1 mois — exécution",
+      { id: "exec", libelle: "Sans appel dans le délai : le jugement passe en force de chose jugée",
         delai: 1, unite: "mois",
-        texte: "art. 503 CPC", nature: "indicatif",
+        texte: "art. 500 CPC", nature: "indicatif",
+        note: "Faute d'appel formé dans le mois de la signification, le jugement acquiert force de chose jugée (art. 500 CPC) et ne peut plus être attaqué par cette voie. Il peut souvent être exécuté plus tôt : les décisions de première instance sont de droit exécutoires à titre provisoire (art. 514 CPC), une fois notifiées (art. 503 CPC).",
         pieces: [
           "Signification du jugement par commissaire de justice",
           "Décompte des condamnations"
@@ -1203,6 +1204,7 @@ const PROCEDURES = [
       { id: "ord", libelle: "Ordonnance de clôture (estimation)",
         delai: 18, unite: "mois",
         texte: "art. 912 CPC", nature: "indicatif",
+        note: "Ordre de grandeur, pas un délai légal : l'art. 912 CPC laisse au conseiller de la mise en état le soin de fixer la date de la clôture, après l'expiration des délais pour conclure. Les dix-huit mois sont une simple hypothèse de travail : remplacez-les par la date que fixera le conseiller.",
         pieces: [
           "Conclusions récapitulatives",
           "Dossier de plaidoirie déposé avant la clôture"
@@ -1586,6 +1588,9 @@ const PROCEDURES = [
     juridiction: "Conseil de prud'hommes",
     matiere: "Droit du travail",
     declencheur: "Date de présentation de la convocation à l'entretien préalable",
+    questions: [
+      {"id": "motif", "texte": "Le licenciement est-il prononcé pour une faute (motif disciplinaire) ?", "options": [{"id": "faute", "libelle": "Oui, pour une faute", "si": "le licenciement est disciplinaire"}, {"id": "non-faute", "libelle": "Non (insuffisance professionnelle, inaptitude…)", "si": "le licenciement n'est pas disciplinaire"}]},
+    ],
     etapes: [
       { id: "entretien", apresExpiration: true, plancher: true, libelle: "Entretien préalable — date la plus proche possible",
         delai: 5, unite: "joursOuvrables",
@@ -1603,7 +1608,7 @@ const PROCEDURES = [
           "Lettre de licenciement motivée",
           "Compte rendu de l'entretien"
         ] },
-      { id: "notif-disc", libelle: "Notification du licenciement disciplinaire — au plus tard",
+      { id: "notif-disc", si: "motif:faute", libelle: "Notification du licenciement disciplinaire — au plus tard",
         delai: 1, unite: "mois", depuis: "entretien",
         texte: "art. L.1332-2 C. trav.", nature: "imperatif",
         pieces: [
@@ -1865,13 +1870,21 @@ const PROCEDURES = [
         texte: "art. L.1233-30 C. trav.", nature: "imperatif",
         note: "Quatre mois lorsque le nombre de licenciements est au moins égal à deux cent cinquante.",
         pieces: [] },
+      { id: "transmission-pse", libelle: "Transmission de l'accord ou du document à l'administration du travail (DREETS) — par vous, l'employeur",
+        delai: 0, unite: "jours", depuis: "consult-pse-2m",
+        texte: "art. L.1233-57-4 C. trav.", nature: "indicatif",
+        note: "Aucun délai n'est fixé pour cette transmission : c'est la date de RÉCEPTION de l'accord collectif ou du document complet par l'administration qui fait courir ses quinze jours (validation) ou vingt et un jours (homologation). Date repérée à la fin de la consultation du CSE : saisissez la date réelle de réception pour recaler la décision.",
+        pieces: [
+          "Accord collectif majoritaire ou document unilatéral complet",
+          "Accusé de réception de l'administration"
+        ] },
       { id: "validation-accord", si: "voie:accord", charge: "autorite", qui: "l'autorité administrative (DREETS)", libelle: "Décision de validation de l'accord collectif par l'autorité administrative",
-        delai: 15, unite: "jours", depuis: "consult-pse-2m",
+        delai: 15, unite: "jours", depuis: "transmission-pse",
         texte: "art. L.1233-57-4 C. trav.", nature: "imperatif",
         note: "Quinze jours à compter de la réception de l'accord collectif majoritaire (art. L.1233-24-1) ; à défaut de notification dans ce délai, la validation est réputée acquise. Étape repérée à partir de la fin de la consultation : recalez-la sur la date de réception de l'accord.",
         pieces: [] },
       { id: "homologation-document", si: "voie:document", charge: "autorite", qui: "l'autorité administrative (DREETS)", libelle: "Décision d'homologation du document unilatéral par l'autorité administrative",
-        delai: 21, unite: "jours", depuis: "consult-pse-2m",
+        delai: 21, unite: "jours", depuis: "transmission-pse",
         texte: "art. L.1233-57-4 C. trav.", nature: "imperatif",
         note: "Vingt et un jours à compter de la réception du document complet élaboré par l'employeur ; à défaut de notification, l'homologation est réputée acquise. Délais ramenés à 8 jours en redressement judiciaire et 4 jours en liquidation judiciaire, à compter de la dernière réunion du CSE (art. L.1233-58).",
         pieces: [] },

@@ -116,7 +116,8 @@ header.topnav nav a{
 header.topnav nav a:hover{color:var(--encre);background:var(--carte-2)}
 header.topnav nav a.active{color:var(--encre);font-weight:660;background:var(--carte-2)}
 
-#theme-toggle{height:auto;min-height:36px;padding:0 var(--e3);font-size:calc(14px * var(--ech))}
+#theme-toggle{display:inline-flex;align-items:center;gap:7px;height:auto;min-height:36px;padding:0 var(--e3);font-size:calc(14px * var(--ech))}
+#theme-toggle .ic-theme,.b-theme .ic-theme,#bt-nuit-rapide .ic-theme{flex:none;width:calc(15px * var(--ech,1));height:calc(15px * var(--ech,1))}
 /* « Nuit » n'est pas un onglet : séparé des outils par un espace et un filet */
 @media (min-width:901px){
   header.topnav nav #theme-toggle{position:relative;margin-left:var(--e5)}
@@ -407,11 +408,13 @@ dialog.fenetre-ia::backdrop{background:rgba(17,17,20,.45)}
 .barre-filtres select{width:auto;flex:1 1 170px;min-width:0}
 .barre-actions{display:flex;flex-wrap:wrap;align-items:center;gap:var(--e3) var(--e6);padding-top:var(--e4);border-top:1px solid var(--filet)}
 .barre-actions > .primary{margin-right:auto}
-.barre-groupe{display:flex;align-items:center}
-.barre-titre{font-size:calc(13px * var(--ech));font-weight:620;color:var(--gris);margin-right:var(--e3)}
+.barre-groupe{display:flex;align-items:stretch}   /* boutons soudés de même hauteur, même si l'un a une précision dessous */
+.barre-titre{align-self:center;font-size:calc(13px * var(--ech));font-weight:620;color:var(--gris);margin-right:var(--e3)}
 /* ce que fait l'IA, sous les boutons d'import (test du 24 oct. 2026) */
 .barre-note{margin:0;font-size:calc(12.5px * var(--ech));line-height:1.45;color:var(--gris);max-width:36ch}
-.barre-groupe button{height:36px;padding:0 var(--e3);font-size:calc(13.5px * var(--ech));border-radius:0;box-shadow:none}
+.barre-groupe button{height:auto;min-height:36px;padding:6px var(--e3);font-size:calc(13.5px * var(--ech));line-height:1.25;white-space:normal;overflow-wrap:anywhere;border-radius:0;box-shadow:none}
+/* précision sous le nom d'un bouton (formats acceptés…) : sur sa propre ligne, plus petite, jamais hors du cadre */
+.barre-groupe button .sous{display:block;margin-top:2px;font-size:calc(12px * var(--ech));font-weight:500;color:var(--gris)}
 .barre-groupe button:first-of-type{border-radius:var(--r-s) 0 0 var(--r-s)}
 .barre-groupe button:last-of-type{border-radius:0 var(--r-s) var(--r-s) 0}
 .barre-groupe button:only-of-type{border-radius:var(--r-s)}

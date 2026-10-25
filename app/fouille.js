@@ -3,7 +3,7 @@
    l'accueil (recherche.js), la palette ⌘K (palette.js) et Diligences.
    ParapheFouille.indexer() relit le stockage ; chercher(q) rend les entrées
    {outil, titre, detail, lien} triées et regroupées par outil.
-   Les contenus préchargés (cartes, fiches et articles d'exemple, 352 arrêts, 400 articles) sont
+   Les contenus préchargés (cartes, fiches et articles d'exemple, 355 arrêts, 404 articles) sont
    cherchés aussi, même si l'outil n'a jamais été ouvert : exemples.js, jurisprudence.js et
    articles-cites.js sont chargés à la première recherche, puis l'événement
    « paraphe-fouille-prete » est envoyé pour que la liste se mette à jour (test du 24 oct. 2026). 

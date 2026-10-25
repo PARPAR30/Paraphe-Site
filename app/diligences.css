@@ -747,6 +747,7 @@ td .tag{margin:1px 2px}
 .bg{background:rgba(46, 125, 82, 0.12)!important;color:#4EA878!important;border:1px solid rgba(46,125,82,0.25)}
 
 .br{background:rgba(169, 50, 38, 0.12)!important;color:var(--danger)!important;border:1px solid rgba(169,50,38,0.25)}
+.badge.bcrit,body.light .badge.bcrit{background:#B33124!important;color:#fff!important;border-color:#B33124!important;font-weight:700}
 
 .by{background:rgba(160, 105, 42, 0.12)!important;color:#C08040!important;border:1px solid rgba(160,105,42,0.25)}
 

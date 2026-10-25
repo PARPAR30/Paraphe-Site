@@ -103,7 +103,7 @@
 <div class="haut sombre">
   <div class="onde" aria-hidden="true"><i></i><i></i><i></i></div>
   <section class="accroche" aria-labelledby="titre">
-    <p class="pilule liquide refraction intro"><svg aria-hidden="true"><use href="#i-app"/></svg><span>Version <span data-version>1.2.1</span> · pour Mac et Windows</span></p>
+    <p class="pilule liquide refraction intro"><svg aria-hidden="true"><use href="#i-app"/></svg><span>Version <span data-version>1.3.0</span> · pour Mac et Windows</span></p>
     <h1 class="une intro" style="--i:1" id="titre">Réviser le droit, puis <em>le pratiquer.</em></h1>
     <p class="lead intro" style="--i:2">Six outils dans une seule application&#8239;: pour les étudiants en droit, de la L1 au M2, et pour les avocats et juristes qui débutent.</p>
     <ul class="puces intro" style="--i:3" aria-label="En bref">
@@ -115,6 +115,8 @@
       <a class="btn btn--primary btn--lg" href="#telecharger">Télécharger Paraphe</a>
       <a class="btn btn--verre btn--lg" href="#essayer"><span class="si-grand">Essayer dans le navigateur</span><span class="si-petit">Voir le logiciel</span></a>
     </div>
+    <!-- dit tôt sur téléphone (panel du site, 15 profils) : Paraphe s'installe sur ordinateur, la démo est faite pour un grand écran -->
+    <p class="accroche__mobile intro" style="--i:5">Paraphe s’installe sur un ordinateur Mac ou Windows. La démo se parcourt aussi ici, mais elle est faite pour un grand écran.</p>
   </section>
 
   <!-- le vrai logiciel, en entier, dans un cadre de verre -->
@@ -123,7 +125,7 @@
       <div class="cadre-verre liquide">
         <!-- la vidéo en boucle (45 s, muette ; source : 5-Videos/Boucle-site) ; le bouton la remplace par le vrai logiciel -->
         <div class="boucle">
-          <video class="boucle__video" autoplay muted loop playsinline preload="metadata" poster="assets/media/paraphe-boucle.jpg" aria-label="Paraphe en 45 secondes : des cours, des arrêts, des articles, des dossiers et des délais, rangés dans six outils (vidéo sans son)">
+          <video class="boucle__video" autoplay muted loop playsinline preload="metadata" poster="assets/media/paraphe-boucle-affiche.jpg" aria-label="Paraphe en 45 secondes : des cours, des arrêts, des articles, des dossiers et des délais, rangés dans six outils (vidéo sans son)">
             <source src="assets/media/paraphe-boucle.mp4" type="video/mp4">
           </video>
           <a class="btn btn--primary btn--lg boucle__essayer" data-essayer data-fleche href="app/Hub.html" target="_blank" rel="noopener">Essayer le logiciel ici</a>
@@ -145,8 +147,8 @@
   <div class="six">
     <p>Six outils, une seule application, une seule sauvegarde</p>
     <ul>
-      <li><i aria-hidden="true">1</i>Fiches mémo</li><li><i aria-hidden="true">2</i>Fiches d’arrêt</li><li><i aria-hidden="true">3</i>Codes &amp; articles</li>
-      <li><i aria-hidden="true">4</i>Diligences</li><li><i aria-hidden="true">5</i>Considérant</li><li><i aria-hidden="true">6</i>Quantième</li>
+      <li><i aria-hidden="true">1</i><span>Fiches mémo<span class="verbe">réviser vos cours</span></span></li><li><i aria-hidden="true">2</i><span>Fiches d’arrêt<span class="verbe">ficher la jurisprudence</span></span></li><li><i aria-hidden="true">3</i><span>Codes &amp; articles<span class="verbe">retrouver un article</span></span></li>
+      <li><i aria-hidden="true">4</i><span>Diligences<span class="verbe">suivre vos dossiers</span></span></li><li><i aria-hidden="true">5</i><span>Considérant<span class="verbe">construire un raisonnement</span></span></li><li><i aria-hidden="true">6</i><span>Quantième<span class="verbe">calculer vos délais</span></span></li>
     </ul>
   </div>
 </div>
@@ -174,9 +176,9 @@
         </div>
       </div>
       <div class="onglets__liste" role="tablist" aria-label="Les outils d’étude">
-        <button class="onglet" id="t-memo" type="button" role="tab" aria-controls="o-memo"><b><i aria-hidden="true">1</i>Fiches mémo</b><span>Répétition espacée, cartes à trous et planning d’examen&#8239;: ce qui coince revient vite, ce que vous savez s’espace.</span></button>
-        <button class="onglet" id="t-arret" type="button" role="tab" aria-controls="o-arret"><b><i aria-hidden="true">2</i>Fiches d’arrêt</b><span>352 fiches préchargées, de la L1 au M2&#8239;: faits, procédure, problème de droit, solution, portée.</span></button>
-        <button class="onglet" id="t-codes" type="button" role="tab" aria-controls="o-codes"><b><i aria-hidden="true">3</i>Codes &amp; articles</b><span>Les 367 articles cités par les fiches et par Quantième, avec leur texte officiel daté, votre note et un repère «&#8239;à retenir&#8239;».</span></button>
+        <button class="onglet" id="t-memo" type="button" role="tab" aria-controls="o-memo"><b><i aria-hidden="true">1</i>Fiches mémo</b><span><span class="verbe">Réviser vos cours.</span> Répétition espacée, cartes à trous et planning d’examen&#8239;: ce qui coince revient vite, ce que vous savez s’espace.</span></button>
+        <button class="onglet" id="t-arret" type="button" role="tab" aria-controls="o-arret"><b><i aria-hidden="true">2</i>Fiches d’arrêt</b><span><span class="verbe">Ficher la jurisprudence.</span> 355 fiches préchargées, de la L1 au M2&#8239;: faits, procédure, problème de droit, solution, portée.</span></button>
+        <button class="onglet" id="t-codes" type="button" role="tab" aria-controls="o-codes"><b><i aria-hidden="true">3</i>Codes &amp; articles</b><span><span class="verbe">Retrouver un article.</span> Les 62 codes en vigueur, à lire dans leur plan officiel, et vos articles, avec leur texte officiel daté, votre note et un repère «&#8239;à retenir&#8239;».</span></button>
       </div>
     </div>
   </section>
@@ -201,9 +203,9 @@
         </div>
       </div>
       <div class="onglets__liste" role="tablist" aria-label="Les outils de pratique">
-        <button class="onglet" id="t-dil" type="button" role="tab" aria-controls="o-dil"><b><i aria-hidden="true">4</i>Diligences</b><span>Sociétés, contrats, litiges et consultations, avec leurs échéances, leurs pièces, le temps passé et les honoraires.</span></button>
-        <button class="onglet" id="t-cons" type="button" role="tab" aria-controls="o-cons"><b><i aria-hidden="true">5</i>Considérant</b><span>Un raisonnement en arbre, des modèles pour le cas pratique ou la consultation, et l’export Word.</span></button>
-        <button class="onglet" id="t-quant" type="button" role="tab" aria-controls="o-quant"><b><i aria-hidden="true">6</i>Quantième</b><span>168 procédures et 603 étapes&#8239;: votre prochaine date limite, puis tout le parcours, article à l’appui.</span></button>
+        <button class="onglet" id="t-dil" type="button" role="tab" aria-controls="o-dil"><b><i aria-hidden="true">4</i>Diligences</b><span><span class="verbe">Suivre vos dossiers.</span> Sociétés, contrats, litiges et consultations, avec leurs échéances, leurs pièces, le temps passé et les honoraires.</span></button>
+        <button class="onglet" id="t-cons" type="button" role="tab" aria-controls="o-cons"><b><i aria-hidden="true">5</i>Considérant</b><span><span class="verbe">Construire un raisonnement.</span> Un arbre, des modèles pour le cas pratique ou la consultation, et l’export Word.</span></button>
+        <button class="onglet" id="t-quant" type="button" role="tab" aria-controls="o-quant"><b><i aria-hidden="true">6</i>Quantième</b><span><span class="verbe">Calculer vos délais de procédure.</span> 168 procédures et 603 étapes&#8239;: votre prochaine date limite, puis tout le parcours, article à l’appui.</span></button>
       </div>
     </div>
   </section>
@@ -273,7 +275,7 @@
     <div class="bloc__tete bloc__tete--cote">
       <p class="etiquette">Télécharger</p>
       <h2 class="grand" id="dl-t">Une installation, six outils.</h2>
-      <p class="lead">Version <span data-version>1.2.1</span>, pour Mac et Windows.</p>
+      <p class="lead">Version <span data-version>1.3.0</span>, pour Mac et Windows.</p>
     </div>
     <div class="dl">
       <div class="dl__intro">
@@ -281,6 +283,7 @@
           <li><svg aria-hidden="true"><use href="#i-check"/></svg>Aucun compte à créer</li>
           <li><svg aria-hidden="true"><use href="#i-check"/></svg>Rien n’est envoyé sans votre accord</li>
         </ul>
+        <p class="avert"><b>Un avertissement à la première ouverture</b>Paraphe n’est pas encore signé par Apple ni par Microsoft&#8239;: le système signale un éditeur qu’il ne connaît pas. Les étapes sont sous chaque bouton, avec l’empreinte qui prouve que le fichier est bien celui publié ici. La version Mac est en préparation pour le Mac App Store, où Apple la vérifiera.</p>
         <p class="cond">En téléchargeant Paraphe, vous acceptez ses <a href="mentions-legales.html#conditions">conditions d’utilisation</a>. Les délais calculés sont indicatifs et ne constituent pas un avis juridique : vérifiez toujours les textes en vigueur.</p>
         <div class="dl__mobile">
           <p>Vous êtes sur un téléphone : Paraphe s’installe sur un ordinateur Mac ou Windows.</p>
@@ -294,9 +297,9 @@
         <article class="card os" data-os="mac" data-hover>
           <div class="os__h"><svg aria-hidden="true"><use href="#i-laptop"/></svg><h3>macOS</h3><span class="os__tag" hidden>Pour cet ordinateur</span></div>
           <dl class="os__spec">
-            <div><dt>Taille</dt><dd>15,9 Mo</dd></div><div><dt>Système</dt><dd>macOS 12 ou plus</dd></div><div><dt>Processeur</dt><dd>Apple Silicon et Intel</dd></div>
+            <div><dt>Taille</dt><dd>31,5 Mo</dd></div><div><dt>Système</dt><dd>macOS 12 ou plus</dd></div><div><dt>Processeur</dt><dd>Apple Silicon et Intel</dd></div>
           </dl>
-          <a class="btn btn--primary btn--dl" data-dl="mac" href="logiciels/Paraphe_1.2.1_universal.dmg"><svg aria-hidden="true"><use href="#i-down"/></svg>Télécharger pour Mac</a>
+          <a class="btn btn--primary btn--dl" data-dl="mac" href="https://github.com/PARPAR30/Paraphe-Site/releases/download/v1.3.0/Paraphe_1.3.0_universal.dmg"><svg aria-hidden="true"><use href="#i-down"/></svg>Télécharger pour Mac</a>
           <details>
             <summary><svg aria-hidden="true"><use href="#i-chev"/></svg>Première ouverture sur Mac</summary>
             <ol>
@@ -306,13 +309,19 @@
               <li>Sur macOS 12 à 14, un clic droit sur Paraphe puis « Ouvrir » suffit aussi.</li>
             </ol>
           </details>
+          <details>
+            <summary><svg aria-hidden="true"><use href="#i-chev"/></svg>Vérifier le fichier</summary>
+            <p class="empreinte__p">Empreinte SHA-256 du fichier publié&#8239;:</p>
+            <code class="empreinte" data-empreinte="mac">165c42560d3bd661cecf8b2569b4cb3b82f6c29728df18250bf74f903230c326</code>
+            <p class="empreinte__p">Dans le Terminal, <code>shasum -a 256 ~/Downloads/Paraphe_1.3.0_universal.dmg</code> doit afficher la même suite.</p>
+          </details>
         </article>
         <article class="card os" data-os="windows" data-hover>
           <div class="os__h"><svg aria-hidden="true"><use href="#i-desktop"/></svg><h3>Windows</h3><span class="os__tag" hidden>Pour cet ordinateur</span></div>
           <dl class="os__spec">
-            <div><dt>Taille</dt><dd>6,1 Mo</dd></div><div><dt>Système</dt><dd>Windows 10 ou 11</dd></div><div><dt>Version</dt><dd>64 bits</dd></div>
+            <div><dt>Taille</dt><dd>20,6 Mo</dd></div><div><dt>Système</dt><dd>Windows 10 ou 11</dd></div><div><dt>Version</dt><dd>64 bits</dd></div>
           </dl>
-          <a class="btn btn--primary btn--dl" data-dl="windows" href="logiciels/Paraphe_1.2.1_x64-setup.exe"><svg aria-hidden="true"><use href="#i-down"/></svg>Télécharger pour Windows</a>
+          <a class="btn btn--primary btn--dl" data-dl="windows" href="logiciels/Paraphe_1.3.0_x64-setup.exe"><svg aria-hidden="true"><use href="#i-down"/></svg>Télécharger pour Windows</a>
           <details>
             <summary><svg aria-hidden="true"><use href="#i-chev"/></svg>Première ouverture sur Windows</summary>
             <ol>
@@ -321,6 +330,12 @@
               <li>Suivez l’installation. Sur Windows 10, elle peut ajouter le composant Microsoft Edge WebView2 s’il manque.</li>
               <li>Ouvrez Paraphe depuis le menu Démarrer.</li>
             </ol>
+          </details>
+          <details>
+            <summary><svg aria-hidden="true"><use href="#i-chev"/></svg>Vérifier le fichier</summary>
+            <p class="empreinte__p">Empreinte SHA-256 du fichier publié&#8239;:</p>
+            <code class="empreinte" data-empreinte="windows">45314103601d796fa297dbb1f8860b11997209a1687793ac462e1d7a21f82df9</code>
+            <p class="empreinte__p">Dans PowerShell, <code>Get-FileHash $env:USERPROFILE\Downloads\Paraphe_1.3.0_x64-setup.exe</code> doit afficher la même suite (en majuscules).</p>
           </details>
         </article>
       </div>
@@ -338,6 +353,10 @@
       <a class="btn btn--verre" data-fleche href="mailto:paraphe.droit@gmail.com">paraphe.droit@gmail.com</a>
     </div>
     <div>
+      <details class="qr"><summary>Qui est derrière Paraphe&#8239;?<svg aria-hidden="true"><use href="#i-chev"/></svg></summary><p>Un étudiant en droit, qui conçoit et développe Paraphe seul, à titre indépendant. Paraphe ne collecte rien&#8239;: ni compte, ni mesure d’audience, ni traceur. Une question, une erreur dans une fiche, un délai qui vous semble faux&#8239;: écrivez à <a href="mailto:paraphe.droit@gmail.com">paraphe.droit@gmail.com</a>.</p></details>
+      <details class="qr"><summary>D’où viennent les contenus fournis&#8239;?<svg aria-hidden="true"><use href="#i-chev"/></svg></summary><p>Les articles reprennent le texte officiel des codes consolidés publiés par Légifrance (EUR-Lex pour le droit de l’Union), avec la date de leur version. Chaque délai de Quantième indique l’article sur lequel il repose, et la date à laquelle le droit est arrêté est affichée dans l’outil&#8239;; une veille des réformes a lieu chaque semaine. Les fiches d’arrêt des décisions les plus citées ont été recoupées en ligne&#8239;; quand un détail n’était pas sûr, la fiche reste générale plutôt que de l’inventer, et aucun numéro de pourvoi n’est donné. Vérifiez toujours les faits et les textes avant un examen ou un acte.</p></details>
+      <details class="qr"><summary>Que transmet l’assistant IA&#8239;?<svg aria-hidden="true"><use href="#i-chev"/></svg></summary><p>Rien tant que vous ne l’activez pas. L’assistant de Diligences est facultatif&#8239;: il utilise le service de votre choix (Claude, ChatGPT, Gemini, Mistral, DeepSeek ou Perplexity) avec votre propre clé. Avant le premier envoi vers chaque service, Paraphe vous demande votre accord et vous montre ce qui part et à qui. Partent alors, directement vers ce service, le texte que vous écrivez à l’assistant et les derniers échanges de la conversation&#8239;; jamais, de lui-même, le contenu de vos dossiers. Rien ne passe par un serveur Paraphe. <a href="mentions-legales.html#confidentialite">Le détail dans la page Confidentialité</a>.</p></details>
+      <details class="qr"><summary>Pourquoi mon ordinateur m’avertit-il à l’installation&#8239;?<svg aria-hidden="true"><use href="#i-chev"/></svg></summary><p>Paraphe n’est pas encore signé par Apple ni par Microsoft&#8239;: le système signale un éditeur qu’il ne connaît pas («&#8239;ne peut pas vérifier le développeur&#8239;» sur Mac, «&#8239;Windows a protégé votre ordinateur&#8239;» sur Windows). Pour vous assurer que le fichier est bien celui publié ici, comparez son empreinte&#8239;: «&#8239;Vérifier le fichier&#8239;», sous chaque bouton de <a href="#telecharger">téléchargement</a>. La version Mac est en préparation pour le Mac App Store, où Apple la vérifiera.</p></details>
       <details class="qr"><summary>Faut-il créer un compte&#8239;?<svg aria-hidden="true"><use href="#i-chev"/></svg></summary><p>Non. Paraphe s’installe et s’ouvre, sans inscription ni adresse e-mail.</p></details>
       <details class="qr"><summary>Où sont enregistrées mes données&#8239;?<svg aria-hidden="true"><use href="#i-chev"/></svg></summary><p>Dans le dossier de l’application, sur votre ordinateur. Des copies de sécurité sont faites automatiquement, toutes les six heures au plus, et gardées sept jours&#8239;; vous pouvez choisir leur dossier et les protéger par un mot de passe.</p></details>
       <details class="qr"><summary>Paraphe fonctionne-t-il sans connexion&#8239;?<svg aria-hidden="true"><use href="#i-chev"/></svg></summary><p>Oui, les six outils fonctionnent hors ligne. Seul l’assistant IA de Diligences, facultatif, a besoin d’une connexion&#8239;; il utilise votre propre clé et vous demande votre accord avant tout envoi.</p></details>
@@ -378,7 +397,7 @@
     </div>
     <div class="pied__bas">
       <span>© <span data-annee>2026</span> Pierre-Antoine Ruat</span>
-      <span class="pied__droite"><span>Version <span data-version>1.2.1</span></span>
+      <span class="pied__droite"><span>Version <span data-version>1.3.0</span></span>
         <a class="velo velo--chrono" href="isometrique.html" title="Une échappée en solo ?" aria-label="Le monde isométrique : le tout premier accueil de Paraphe"><svg viewBox="0 0 30 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g class="roue"><circle cx="6" cy="14" r="5" fill="currentColor" fill-opacity=".22"/><circle cx="6" cy="14" r=".9" fill="currentColor" stroke="none"/><path d="M6 10.4v1.4" stroke-width=".9"/></g><g class="roue"><circle cx="24" cy="14" r="5"/><path d="M24 14V9.6M24 14l3.8 2.2M24 14l-3.8 2.2" stroke-width="1"/></g><path d="M6 14h7l7.4-6M13 14l-1.6-6.2M6 14l5.2-6.4M11.4 7.6l9.2.2M20.2 7.4L24 14"/><path d="M9.6 6.6h3.6M20.6 7.4h5.2M22.4 7.4l-.4-1.4h1.6" stroke-width="1.6"/></svg></a>
         <a class="velo" href="maison.html" title="Une petite balade ?" aria-label="La maison des outils : l’ancien accueil de Paraphe, en 3D"><svg viewBox="0 0 30 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g class="roue"><circle cx="6" cy="14" r="5"/><path d="M6 10v8M2 14h8" stroke-width=".7"/></g><g class="roue"><circle cx="24" cy="14" r="5"/><path d="M24 10v8M20 14h8" stroke-width=".7"/></g><path d="M6 14l7 0 7.5-6.5M13 14L10.8 6.5M6 14l5-6.8M11 7.3h9.5M20.2 6.4L24 14"/><path d="M9.3 5.6h3.6M19.6 6.2l2.6-.5c1.3-.2 1.6 1.6.4 2" stroke-width="1.6"/></svg></a></span>
     </div>

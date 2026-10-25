@@ -37,7 +37,7 @@
       <p>Paraphe</p>
     </div>
     <div class="logo-actions">
-      <button id="theme-btn" title="Changer le thème"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button>
+      <button id="theme-btn" title="Revenir au thème clair"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="4.22" x2="19.78" y2="5.64"/></svg></button>
       <button id="collapse-btn" title="Réduire"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15,18 9,12 15,6"/></svg></button>
     </div>
   </div>
@@ -574,7 +574,8 @@
       </div>
     </div>
     <div id="cal-liste-zone" hidden>
-      <div class="tw"><table class="cal-liste"><thead><tr><th>Date</th><th>Échéance</th><th>Dans</th></tr></thead><tbody id="cal-liste"></tbody></table></div>
+      <div class="row end" style="margin:0 0 8px"><button type="button" class="btn btn-sm" id="cal-liste-csv">Exporter en tableau (CSV)</button></div>
+      <div class="tw"><table class="cal-liste"><thead><tr><th>Date</th><th>Type</th><th>Échéance</th><th>Partie</th><th>Dans</th></tr></thead><tbody id="cal-liste"></tbody></table></div>
     </div>
   </div>
 
@@ -1029,7 +1030,15 @@
     <div class="fr">
       <div class="fg"><label>Date de début</label><input id="c-debut" type="date"></div>
       <div class="fg"><label>Date de fin (échéance)</label><input id="c-fin" type="date" aria-describedby="c-fin-aide">
-        <small class="aide-champ" id="c-fin-aide">Elle apparaît dans « À traiter » 30 jours avant. Si vous activez les rappels de l'ordinateur (accueil de Paraphe), une notification vous prévient à 7 jours.</small></div>
+        <small class="aide-champ" id="c-fin-aide">Elle apparaît tout de suite dans « Échéances et audiences », et sur l'accueil de Diligences (« À traiter ») 30 jours avant. Si vous activez les rappels de l'ordinateur (accueil de Paraphe), une notification vous prévient à 7 jours.</small></div>
+    </div>
+    <!-- 6e passe : ni préavis ni tacite reconduction pour un contrat -->
+    <div class="fr">
+      <div class="fg"><label for="c-preavis">Préavis pour ne pas le renouveler</label>
+        <div class="fr" style="gap:8px"><input id="c-preavis" type="number" min="0" placeholder="Facultatif, ex. 3" aria-describedby="c-preavis-aide">
+        <select id="c-preavis-unite" aria-label="Unité du préavis"><option value="jours">jours</option><option value="mois">mois</option></select></div>
+        <small class="aide-champ" id="c-preavis-aide">Le dernier jour pour dénoncer le contrat apparaît tout de suite dans « Échéances et audiences », et sur l'accueil de Diligences 60 jours avant.</small></div>
+      <div class="fg"><label style="display:flex;align-items:center;gap:8px;margin-top:26px;text-transform:none;letter-spacing:0"><input id="c-tacite" type="checkbox" style="width:auto"> Il se renouvelle tacitement s'il n'est pas dénoncé</label></div>
     </div>
     <div class="fr">
       <div class="fg"><label>Valeur du contrat (€)</label><input id="c-val" type="number" placeholder="Facultatif"></div>
@@ -1048,14 +1057,16 @@
 <!-- MODAL LITIGE -->
 <div class="modal-bg" id="m-lit">
   <div class="modal">
-    <h3 id="m-lit-t"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg> Nouveau litige</h3>
+    <h3 id="m-lit-t"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg> Nouveau litige</h3>
     <div class="fr">
       <div class="fg"><label>Objet du litige <span class="requis" title="obligatoire">*</span></label><input id="l-obj" required placeholder="Ex. : Facture impayée 2025-114"></div>
       <div class="fg"><label>Partie adverse</label><input id="l-adv" autocomplete="off" placeholder="Ex. : Société Dupont SAS"><div id="l-adv-conflit" class="conflit-alerte" hidden></div></div>
     </div>
     <div class="fr">
       <div class="fg"><label>Tribunal (juridiction)</label><input id="l-jur" placeholder="Ex. : Tribunal de commerce de Lyon"></div>
-      <div class="fg"><label>Prochaine audience</label><input id="l-aud" type="date" title="Alimente le tableau de bord, le calendrier et les rappels J-X"></div>
+      <div class="fg"><label for="l-aud">Prochaine audience</label><input id="l-aud" type="date" title="Alimente le tableau de bord, le calendrier et les rappels J-X">
+        <div class="fr" style="margin-top:6px;gap:8px"><input id="l-aud-heure" type="time" aria-label="Heure de l'audience" title="Heure (facultatif)" style="max-width:130px">
+        <input id="l-chambre" placeholder="Chambre ou formation (facultatif)" aria-label="Chambre ou formation"></div></div>
     </div>
     <div class="fr">
       <div class="fg"><label>Niveau de risque</label><select id="l-niv" title="Votre estimation de la gravité du litige"><option>Faible</option><option value="Modere">Modéré</option><option value="Eleve">Élevé</option><option>Critique</option></select></div>
@@ -1329,5 +1340,9 @@
     var placer = function(){ var f = document.getElementById('copyright-footer'), m = document.getElementById('main'); if (f && m) m.appendChild(f); };
     placer(); addEventListener('load', function(){ setTimeout(placer, 0); });
   })();
+</script>
+<script>
+/* profil « J'exerce » : pas de lexique des sigles juridiques imposé sous les listes (8e passe) */
+try { if (localStorage.getItem('paraphe_profil') === 'exercer') { const st = document.createElement('style'); st.textContent = '.lexique{display:none!important}'; document.head.appendChild(st); } } catch (e) {}
 </script>
 </body>

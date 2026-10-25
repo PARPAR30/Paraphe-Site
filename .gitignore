@@ -3,3 +3,5 @@
 assets/media/presentation.mp4
 # notes de conception Impeccable : ne jamais publier
 .impeccable/
+# le .dmg Mac dépasse 25 Mo depuis le pack des codes (25 oct. 2026) : publié sur GitHub Releases, jamais dans ce dépôt
+logiciels/*.dmg

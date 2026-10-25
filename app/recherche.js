@@ -13,7 +13,7 @@
     '<input type="search" id="rg-q" autocomplete="off" spellcheck="false" ' +
     'placeholder="Rechercher partout : un arrêt, un article, un litige, une notion…" ' +
     'role="combobox" aria-autocomplete="list" aria-label="Rechercher dans les 6 outils" aria-controls="rg-res" aria-expanded="false">' +
-    '<kbd>' + (MAC ? "⌘" : "Ctrl") + " K</kbd></label>" +
+    '<kbd title="Raccourci clavier : ' + (MAC ? "⌘" : "Ctrl") + ' K place le curseur dans la recherche">' + (MAC ? "⌘" : "Ctrl") + " K</kbd></label>" +
     '<div class="rg-res" id="rg-res" role="listbox" hidden></div>';
 
   const champ = zone.querySelector("#rg-q");

@@ -54,11 +54,12 @@ button,select{font-family:inherit;font-size:inherit;color:inherit}
 header{background:var(--fond);color:var(--encre);position:relative;z-index:60}   /* au-dessus du panneau d'aide (50) : ses menus aussi */
 header .tete{display:flex;align-items:center;gap:8px 16px;padding:12px 20px;border-bottom:1px solid var(--filet)}
 header .tete .outils{--pxo-doux:var(--encre-2);margin-left:auto}
-header .tete .b-theme{position:relative;height:36px;padding:0 14px;font-size:calc(14px * var(--ech));margin-left:12px}
+header .tete .b-theme{position:relative;display:inline-flex;align-items:center;gap:7px;height:36px;padding:0 14px;font-size:calc(14px * var(--ech));margin-left:12px}
+header .tete .b-theme .ic-theme{flex:none;width:calc(15px * var(--ech));height:calc(15px * var(--ech))}
 header .tete .b-theme::before{content:"";position:absolute;left:-15px;top:6px;bottom:6px;width:1px;background:var(--papier-3);pointer-events:none}
 /* « Jour » / « Nuit » est un réglage, pas un bouton enfoncé : pas de violet (même dessin que dans les autres outils) */
-:root:root header .tete button.b-theme[aria-pressed]{background:var(--papier);border-color:var(--papier-3);color:var(--encre)}
-:root:root header .tete button.b-theme[aria-pressed]:hover{border-color:var(--gris)}
+:root:root header .tete button.b-theme{background:var(--papier);border-color:var(--papier-3);color:var(--encre)}
+:root:root header .tete button.b-theme:hover{border-color:var(--gris)}
 .barre-fiche{display:flex;align-items:center;gap:8px 12px;flex-wrap:wrap;padding:8px 20px;border-bottom:1px solid var(--filet);background:var(--fond)}
 .barre-fiche .etiquette{font-size:calc(13px * var(--ech));font-weight:560;color:var(--encre-2)}
 .barre-fiche .droite{margin-left:auto;display:flex;align-items:center;gap:12px}
@@ -70,8 +71,9 @@ header .menu-liste{box-shadow:var(--ombre-forte)}
    (une erreur d'enregistrement reste affichée) */
 header button.b{padding:0 10px}
 .paire{display:flex}
-.paire .b:first-child{border-top-right-radius:0;border-bottom-right-radius:0;padding-left:12px}
-.paire .b+.b{margin-left:-1px;border-top-left-radius:0;border-bottom-left-radius:0}
+.paire .b:first-child:has(+ .b:not([hidden])){border-top-right-radius:0;border-bottom-right-radius:0}   /* « Annuler » seul garde ses deux coins ronds */
+.paire .b:first-child{padding-left:12px}
+.paire .b:not([hidden])+.b{margin-left:-1px;border-top-left-radius:0;border-bottom-left-radius:0}
 .paire .b:hover{position:relative}
 @media (max-width:1099px){ header .mots span{display:none} }
 @media (max-width:1180px){ header select.b{max-width:160px} }
@@ -104,6 +106,7 @@ button.b[aria-pressed="true"]{background:var(--acc-doux);border-color:var(--acce
 select.b{max-width:300px;text-overflow:ellipsis}
 button.b.principal{background:var(--acc-fond);border-color:var(--acc-fond);color:#fff}
 button.b.principal:hover{background:var(--acc-survol);border-color:var(--acc-survol)}
+.menu-titre{margin:var(--e2) var(--e3) var(--e1);padding-top:var(--e2);border-top:1px solid var(--filet);font-size:calc(12px * var(--ech));font-weight:600;color:var(--encre-2)}
 .menu-reglage{display:flex;flex-direction:column;gap:6px;padding:8px 10px 10px;font-size:calc(13px * var(--ech));font-weight:600;color:var(--encre-2)}
 .menu-reglage input{width:100%}
 #etatSauve{font-size:calc(12px * var(--ech));color:var(--gris);font-variant-numeric:tabular-nums}
@@ -116,25 +119,27 @@ button.b.principal:hover{background:var(--acc-survol);border-color:var(--acc-sur
 
 .cube{
   /* width:max-content : le plan fait 0 px de large, sans cela le navigateur
-     réduisait chaque cube à son mot le plus long (un mot par ligne) */
-  position:absolute;width:max-content;max-width:250px;min-width:52px;padding:8px 13px;
+     réduisait chaque cube à son mot le plus long (un mot par ligne).
+     La largeur suit la taille du texte : avec « Grand », les cubes grandissent au lieu de passer à la ligne
+     (5e passe : « le réglage Grand ne grossit pas les cubes ») */
+  position:absolute;width:max-content;max-width:calc(260px * var(--ech));min-width:52px;padding:9px 14px;
   background:var(--papier);border:1px solid var(--filet);border-radius:var(--r-s);
   border-color:color-mix(in srgb,var(--teinte) 45%,var(--filet));box-shadow:var(--ombre-petite);
-  font-family:var(--serif);font-size:calc(15.5px * var(--ech));line-height:1.42;
+  font-family:var(--serif);font-size:calc(16.5px * var(--ech));line-height:1.42;
   cursor:grab;user-select:none;white-space:pre-wrap;overflow-wrap:break-word;
   transition:box-shadow .15s var(--ease),border-color .15s ease;
 }
 .cube:hover{border-color:color-mix(in srgb,var(--teinte) 70%,var(--filet));box-shadow:var(--ombre-forte)}
-.cube.tronc{font-family:var(--titre);font-size:calc(21px * var(--ech));font-weight:700;letter-spacing:-.015em;background:var(--encre);color:var(--papier);border-color:var(--encre);box-shadow:var(--ombre-forte);padding:11px 18px;border-radius:var(--r-m)}
+.cube.tronc{font-family:var(--titre);font-size:calc(22px * var(--ech));font-weight:700;letter-spacing:-.015em;background:var(--encre);color:var(--papier);border-color:var(--encre);box-shadow:var(--ombre-forte);padding:11px 18px;border-radius:var(--r-m)}
 .cube.sel{border-color:var(--teinte);box-shadow:0 0 0 2px var(--teinte),var(--ombre-forte)}
 .cube.cible{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent)}
 .cube.porte{opacity:.7;cursor:grabbing}
 .cube.redige{cursor:text;user-select:text;white-space:pre-wrap;box-shadow:0 0 0 2px var(--accent)}
 .ref{
-  display:block;font-size:calc(13px * var(--ech));line-height:15px;
+  display:block;font-size:calc(14.5px * var(--ech));line-height:1.15;
   color:var(--encre);margin-bottom:2px;font-weight:700;font-variant-numeric:tabular-nums
 }
-.cube code{font-family:var(--mono);font-size:.85em;color:var(--teinte);background:var(--papier-2);padding:0 4px;border-radius:4px}
+.cube code{font-family:inherit;font-size:1em;font-weight:600;color:var(--teinte);background:var(--papier-2);padding:0 4px;border-radius:4px}
 .cube.tronc code{color:var(--papier);background:#ffffff22}
 .cube b{font-weight:600}
 .cube.muet{color:transparent}
@@ -154,7 +159,7 @@ button.b.principal:hover{background:var(--acc-survol);border-color:var(--acc-sur
 /* doigt plus large que le curseur : cible tactile agrandie, glyphe inchangé */
 @media (pointer:coarse){
   button.b,select.b,a.b{height:44px}
-  #zoom button{width:44px;height:44px}
+  #zoom button{min-width:44px;height:44px}
   .poignee{width:34px;height:34px;right:-10px;bottom:-10px;opacity:.4}
   .poignee::after{right:11px;bottom:11px}
   .cube.sel .poignee{opacity:1}
@@ -183,25 +188,64 @@ button.b.principal:hover{background:var(--acc-survol);border-color:var(--acc-sur
   font-size:calc(13px * var(--ech));font-family:var(--sans);font-weight:500;color:var(--encre);white-space:nowrap
 }
 #reglette button:hover{background:var(--papier-2)}
+@media (pointer:coarse){ #reglette button{min-height:42px;padding:0 12px} }
 #reglette button.danger:hover{background:var(--marge-doux);color:var(--marge)}
 button.b.danger{color:var(--marge)}
 button.b.danger:hover{background:var(--marge-doux);border-color:var(--marge);color:var(--marge)}
 #reglette .pastilles{display:flex;gap:4px;align-items:center;padding:0 6px;border-left:1px solid var(--filet);margin-left:2px}
 #reglette .pastilles i{width:14px;height:14px;border-radius:50%;cursor:pointer;display:block}
 
-.hud{position:absolute;display:flex;gap:6px;align-items:center;font-size:calc(12px * var(--ech));color:var(--encre-2);z-index:20}
+.hud{position:absolute;display:flex;gap:6px;align-items:center;font-size:calc(13px * var(--ech));color:var(--encre-2);z-index:20}
+/* zoom : des boutons à la taille du doigt, le niveau affiché (un toucher le remet à 100 %), et « Ranger »
+   sorti du menu « Affichage » (5e passe : « zoom réduit à deux petits boutons », « Ranger caché ») */
 #zoom{right:12px;bottom:12px}
-#zoom button{width:30px;height:30px;border-radius:var(--r-s);border:1px solid var(--papier-3);background:var(--papier);box-shadow:var(--ombre-petite);cursor:pointer}
+#zoom button{min-width:40px;height:40px;border-radius:var(--r-s);border:1px solid var(--papier-3);background:var(--papier);box-shadow:var(--ombre-petite);cursor:pointer;font-size:calc(18px * var(--ech));line-height:1;color:var(--encre)}
 #zoom button:hover{border-color:var(--gris)}
-#zoom #zrecentrer{width:auto!important;padding:0 10px;font:600 calc(12px * var(--ech)) var(--sans);color:var(--encre)}
+#zoom .mot{padding:0 12px;font:600 calc(13px * var(--ech)) var(--sans);white-space:nowrap}
+#zoom #zpct{min-width:62px;font-variant-numeric:tabular-nums}
+@media (max-width:600px){ #zoom{left:12px;justify-content:flex-end} #zoom #zpct{display:none} }
+@media (pointer:coarse){ #zoom button{min-width:44px;height:44px} }
+/* légende des couleurs : ce que veulent dire la teinte et le trait d'une branche (5e passe, 20 profils) */
+#legende{display:block;right:12px;top:12px;max-width:min(320px,calc(100% - 24px));background:var(--papier);border:1px solid var(--filet);border-radius:var(--r-m);box-shadow:var(--ombre-petite);color:var(--encre)}
+#legende[hidden]{display:none}
+#legende summary{cursor:pointer;padding:8px 14px;font-weight:600;list-style:none;display:flex;align-items:center;gap:8px}
+#legende summary::-webkit-details-marker{display:none}
+#legende summary::after{content:"";width:7px;height:7px;border-right:2px solid var(--encre-2);border-bottom:2px solid var(--encre-2);transform:rotate(45deg) translateY(-2px);margin-left:auto}
+#legende[open] summary::after{transform:rotate(-135deg) translateY(-2px)}
+#legende p{margin:0 14px 8px;color:var(--encre-2);line-height:1.45}
+#legende ul{list-style:none;margin:0;padding:0 14px 12px;display:grid;gap:7px}
+#legende li{display:flex;align-items:center;gap:10px;min-width:0}
+#legende li svg{flex:none}
+#legende li span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#legende li b{font-variant-numeric:tabular-nums;margin-right:4px}
+/* 7e passe : repliée, la légende laissait le rouge et le vert sans explication ; ouverte en bloc, elle couvrait des
+   cubes (6e passe). Sur grand écran, elle tient en une ligne dans la bande du haut que recentrer() laisse libre. */
+@media (min-width:1200px){
+  #legende[open]{display:flex;align-items:center;gap:var(--e3);padding-right:14px;max-width:calc(100% - 560px)}
+  #legende[open] summary{white-space:nowrap;flex:none}
+  #legende[open] summary::after{margin-left:8px}
+  #legende[open] p{display:none}
+  #legende[open] summary{padding:8px 4px 8px 14px}
+  #legende[open] ul{display:flex;gap:18px;padding:0;min-width:0;overflow:hidden}
+  #legende[open] li{flex:0 1 auto;min-width:0}
+  #legende[open] li span{max-width:170px}
+  #astuces{max-width:520px}
+}
 #astuces[hidden]{display:none}
 #masquerAstuces{order:9;border:0;background:none;cursor:pointer;font-size:16px;line-height:1;color:var(--encre-2);padding:2px 4px;margin-left:2px}
-#astuces{left:12px;bottom:12px;background:var(--papier);border:1px solid var(--filet);border-radius:999px;box-shadow:var(--ombre-petite);padding:6px 14px;gap:12px}
-#astuces kbd{font-family:var(--sans);font-weight:600;font-size:calc(12px * var(--ech));background:var(--papier-2);border:1px solid var(--papier-3);border-bottom-width:2px;padding:0 5px;border-radius:5px;color:var(--encre)}
+/* 6e passe : en bas, la ligne d'astuces couvrait des cubes ; elle va dans la bande du haut, réservée par recentrer() */
+#astuces{left:12px;top:12px;background:var(--papier);border:1px solid var(--filet);border-radius:999px;box-shadow:var(--ombre-petite);padding:6px 14px;gap:12px;max-width:calc(100% - 260px)}
+/* la ligne d'astuces ne passe plus sous les boutons de zoom : sur écran moyen, la partie clavier s'efface (elle reste dans l'aide) */
+@media (max-width:1280px){ #astuces .k{display:none} }
+@media (max-width:1000px){ #astuces{top:auto;bottom:66px;max-width:calc(100% - 24px)} }
+#astuces kbd{font-family:var(--sans);font-weight:600;font-size:calc(13px * var(--ech));background:var(--papier-2);border:1px solid var(--papier-3);border-bottom-width:2px;padding:0 5px;border-radius:5px;color:var(--encre)}
 #compteur{left:12px;top:12px;background:var(--papier);border:1px solid var(--filet);border-radius:999px;box-shadow:var(--ombre-petite);padding:6px 14px;display:none}
 #compteur.on{display:flex}
 #compteur b{color:var(--accent);font-weight:600}
-#message{position:absolute;left:50%;top:14px;transform:translateX(-50%);background:var(--encre);color:var(--encre);padding:7px 16px;border-radius:999px;box-shadow:var(--ombre-forte);font-size:calc(13px * var(--ech));font-weight:600;opacity:0;pointer-events:none;transition:opacity .2s var(--ease);z-index:40}
+#compteur .consigne{color:var(--encre)}
+/* en récitation, rien n'invite à modifier l'arbre : ni barre d'édition, ni astuces, ni légende (elle dévoilerait les parties) */
+body.recite #astuces,body.recite #legende{display:none}
+#message{position:absolute;left:50%;bottom:72px;transform:translateX(-50%);background:var(--encre);color:var(--encre);padding:7px 16px;border-radius:999px;box-shadow:var(--ombre-forte);font-size:calc(13px * var(--ech));font-weight:600;opacity:0;pointer-events:none;transition:opacity .2s var(--ease);z-index:40}
 #message.on{opacity:1}
 
 #aide{position:absolute;top:0;right:0;bottom:0;width:min(400px,100%);z-index:50;background:var(--papier);border-left:1px solid var(--filet);box-shadow:var(--ombre-forte);display:none;overflow:auto;padding:20px}
@@ -225,6 +269,9 @@ button.b.modele{display:flex;flex-direction:column;align-items:flex-start;gap:4p
 button.b.modele b{font-weight:650;font-size:calc(15px * var(--ech))}
 button.b.modele:active{transform:scale(.98)}
 button.b.modele span{font-weight:400;color:var(--encre-2);font-size:calc(13px * var(--ech));line-height:1.4}
+/* écran de départ : la page vierge en premier, mise en avant ; les modèles ; l'exemple pour découvrir */
+button.b.modele.vierge{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+dialog.modeles .groupe-titre{margin:4px 0 8px;font-size:calc(13px * var(--ech));font-weight:600;color:var(--encre-2)}
 .fenetre-ia h3{margin:0 0 8px;font-family:var(--titre);font-size:calc(20px * var(--ech));font-weight:700;letter-spacing:-.015em}
 .fenetre-ia .ia-etat{margin:0 0 12px;font-size:calc(14px * var(--ech));font-weight:600}
 .fenetre-ia .ia-etat.erreur{color:var(--marge)}
@@ -277,14 +324,44 @@ button.b.modele span{font-weight:400;color:var(--encre-2);font-size:calc(13px * 
   #astuces{display:none}
   #toile{min-height:0}
 }
+/* vue en liste (téléphone d'abord, 8e passe : « aucune présentation adaptée au petit écran ») : le même arbre,
+   lu de haut en bas comme un plan numéroté ; on touche une ligne pour écrire ou ajouter. L'arbre reste
+   dessous, mesuré mais invisible, pour que les cubes créés ici trouvent leur place en revenant à l'arbre. */
+#liste{display:none;position:absolute;inset:0;z-index:45;overflow:auto;touch-action:pan-y;overscroll-behavior:contain;background:var(--fond);padding:16px 16px 96px;cursor:auto}
+body.en-liste #liste{display:block}
+body.en-liste #plan,body.en-liste #reglette,body.en-liste #zoom,body.en-liste #astuces,body.en-liste #legende{visibility:hidden}
+body.en-liste #reglette.on{display:none}
+body.en-liste .barre-fiche .menu-b:has(#largeur){display:none}   /* largeur des cubes, Ranger, légende : propres à l'arbre */
+#liste .l-titre{margin:0 auto 14px;max-width:760px;padding:12px 16px;border-radius:var(--r-m);background:var(--encre);color:var(--papier);font:700 calc(20px * var(--ech))/1.3 var(--titre);letter-spacing:-.01em;cursor:pointer}
+#liste ol{list-style:none;margin:0;padding:0}
+#liste > ol{max-width:760px;margin:0 auto}
+#liste li > ol{margin-left:14px;padding-left:12px;border-left:2px solid color-mix(in srgb,var(--teinte) 40%,transparent)}
+#liste .l-ligne{display:grid;grid-template-columns:32px minmax(0,1fr);align-items:start;gap:6px;margin:6px 0;padding:8px 10px 8px 4px;border:1px solid var(--filet);border-left:4px solid var(--teinte);border-radius:var(--r-s);background:var(--papier);box-shadow:var(--ombre-petite);cursor:pointer}
+#liste .l-ligne.sel{box-shadow:0 0 0 2px var(--teinte),var(--ombre-petite)}
+#liste .l-plier{width:32px;height:32px;margin:-4px 0;border:0;background:none;border-radius:6px;cursor:pointer;color:var(--encre-2);display:flex;align-items:center;justify-content:center}
+#liste .l-plier:hover{background:var(--papier-2)}
+#liste .l-plier svg{transition:transform .15s var(--ease)}
+#liste .l-plier[aria-expanded="true"] svg{transform:rotate(90deg)}
+#liste .l-plier[hidden]{display:block;visibility:hidden}
+#liste .l-corps{min-width:0;font-size:calc(16px * var(--ech));line-height:1.45;white-space:pre-wrap;overflow-wrap:break-word}
+#liste .l-corps .ref{display:inline;margin:0 6px 0 0;font-size:calc(14px * var(--ech))}
+#liste .l-corps code{font-family:inherit;font-weight:600;color:var(--teinte);background:var(--papier-2);padding:0 4px;border-radius:4px}
+#liste .l-cache{color:var(--gris);font-style:italic}
+#liste .l-nb{margin-left:6px;font-size:calc(12.5px * var(--ech));color:var(--gris);white-space:nowrap}
+#liste .l-actions{grid-column:2;display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+#liste .l-actions .b{min-height:40px}
+#liste textarea{width:100%;min-height:3.2em;resize:vertical;font:inherit;color:var(--encre);background:var(--papier);border:1px solid var(--accent);border-radius:6px;padding:6px 8px;box-shadow:0 0 0 2px var(--acc-doux)}
+#liste .l-titre textarea{color:var(--encre);font-size:calc(18px * var(--ech))}
+#liste .l-vide{max-width:760px;margin:12px auto;color:var(--encre-2)}
 #aide .aide-plus{margin:14px 0 4px}
+#aide .aide-titre{margin:4px 0 10px;font:650 calc(15px * var(--ech))/1.3 var(--titre)}
 #aide .aide-plus>summary{cursor:pointer;font-weight:600;color:var(--encre-2)}
 #aide .aide-plus>summary:hover{color:var(--encre)}
 
 /* le verre (23 oct. 2026) : seulement ce qui flotte au-dessus du contenu, menus et panneaux volants */
-#reglette,.menu-liste,#astuces,#compteur,#message{background:var(--verre)!important;-webkit-backdrop-filter:blur(18px) saturate(180%);backdrop-filter:blur(18px) saturate(180%);
+#reglette,.menu-liste,#astuces,#compteur,#message,#legende{background:var(--verre)!important;-webkit-backdrop-filter:blur(18px) saturate(180%);backdrop-filter:blur(18px) saturate(180%);
   box-shadow:inset 0 1px 0 var(--verre-reflet),0 0 0 1px var(--verre-bord),0 14px 34px -14px rgba(0,0,0,.35)!important;border-color:transparent!important}
-@media (prefers-reduced-transparency:reduce){#reglette,.menu-liste,#astuces,#compteur,#message{background:var(--papier)!important;-webkit-backdrop-filter:none;backdrop-filter:none}}
+@media (prefers-reduced-transparency:reduce){#reglette,.menu-liste,#astuces,#compteur,#message,#legende{background:var(--papier)!important;-webkit-backdrop-filter:none;backdrop-filter:none}}
 </style>
 
 <header>
@@ -304,16 +381,16 @@ button.b.modele span{font-weight:400;color:var(--encre-2);font-size:calc(13px * 
   </div>
   <span data-paraphe-nav></span>
   <span data-paraphe-outils class="outils"></span>
-  <button class="b b-theme" id="nuit" aria-pressed="false">Nuit</button>
+  <button class="b b-theme" id="nuit">Nuit</button>
  </div>
  <div class="barre-fiche" role="toolbar" aria-label="Fiche affichée">
   <div class="groupe">
     <select class="b" id="fiches" title="Vos fiches" aria-label="Fiche affichée"></select>
     <div class="menu-b">
-      <button class="b" type="button" aria-haspopup="menu" aria-expanded="false">Fiche ▾</button>
+      <button class="b" type="button" aria-haspopup="menu" aria-expanded="false">Mes fiches ▾</button>
       <div class="menu-liste" role="menu" hidden>
-        <button class="b" id="nouvelle" role="menuitem">Nouvelle fiche</button>
-        <button class="b" id="depuisModele" role="menuitem" title="Cas pratique, dissertation, commentaire, consultation : un squelette prêt à remplir">Nouvelle fiche depuis un modèle…</button>
+        <button class="b" id="nouvelle" role="menuitem">Nouvelle fiche vierge</button>
+        <button class="b" id="depuisModele" role="menuitem" title="Cas pratique, dissertation, commentaire, consultation : un squelette prêt à remplir ; ou l'exemple rempli">Nouvelle fiche depuis un modèle…</button>
         <button class="b" id="renommer" role="menuitem" title="Renommer la fiche affichée">Renommer</button>
         <button class="b" id="dupliquer" role="menuitem" title="Dupliquer la fiche affichée">Dupliquer</button>
         <button class="b danger" id="supprimerFiche" role="menuitem" title="Supprimer la fiche affichée">Supprimer</button>
@@ -325,15 +402,17 @@ button.b.modele span{font-weight:400;color:var(--encre-2);font-size:calc(13px * 
     <!-- une action visible pour écrire, au doigt comme à la souris (test par 100 utilisateurs fictifs, seconde passe :
          « aucun bouton visible pour ajouter ou écrire ») ; l'affichage est rangé dans un menu -->
     <button class="b principal" id="ajouterIdee" title="Ajoute une idée rattachée au cube sélectionné, ou au titre si rien n'est sélectionné (Tab au clavier)">+ Ajouter une idée</button>
+    <button class="b" id="vueListe" title="Le même raisonnement en plan numéroté, de haut en bas : plus simple sur un téléphone">Voir en liste</button>
     <button class="b" id="recitation" aria-pressed="false" title="Cache les branches : récitez le raisonnement, puis touchez un cube pour révéler la suite">S'entraîner à réciter</button>
     <div class="menu-b">
-      <button class="b" type="button" aria-haspopup="dialog" aria-expanded="false">Affichage ▾</button>
+      <button class="b" type="button" aria-haspopup="dialog" aria-expanded="false">Mise en page ▾</button>
       <!-- un curseur ne peut pas vivre dans un role="menu" : ce panneau est un simple groupe -->
-      <div class="menu-liste" role="group" aria-label="Affichage" hidden>
+      <div class="menu-liste" role="group" aria-label="Mise en page" hidden>
         <label class="menu-reglage">Largeur des cubes
           <input type="range" id="largeur" min="120" max="440" step="10" value="250" title="Largeur de tous les cubes non étirés à la main"></label>
         <button class="b" id="largeurAuto">Largeur automatique</button>
         <button class="b" id="ranger" title="Remettre les cubes en ordre, branche par branche">Ranger l'arbre</button>
+        <button class="b" id="voirLegende">Afficher la légende des couleurs</button>
       </div>
     </div>
     <span class="paire">
@@ -351,6 +430,7 @@ button.b.modele span{font-weight:400;color:var(--encre-2);font-size:calc(13px * 
         <button class="b" id="expword" role="menuitem" title="Le raisonnement en document Word : titres I, A, 1, a, prêt pour une copie ou des conclusions">Word (.docx)</button>
         <button class="b" id="expmd" role="menuitem">Markdown</button>
         <button class="b" id="sauvegarde" role="menuitem">Sauvegarde (fichier)</button>
+        <p class="menu-titre" role="presentation">Importer</p>
         <button class="b" id="importer" role="menuitem">Importer une sauvegarde</button>
         <button class="b" id="promptIA" role="menuitem" title="Copier un prompt qui fait convertir votre document (PDF, Word, texte…) en fiche par une IA">Depuis un document (prompt IA)</button>
       </div>
@@ -365,9 +445,10 @@ button.b.modele span{font-weight:400;color:var(--encre-2);font-size:calc(13px * 
     <svg id="liens" viewBox="-12000 -12000 24000 24000" xmlns="http://www.w3.org/2000/svg"></svg>
   </div>
 
+  <!-- « enfant » et « voisin » ne parlaient qu'aux informaticiens (5e passe) : on dit ce que fait le bouton -->
   <div id="reglette">
-    <button data-a="enfant" title="Tab">+ enfant</button>
-    <button data-a="voisin" title="Entrée">+ voisin</button>
+    <button data-a="enfant" title="Une idée qui développe ce cube, à sa droite (Tab au clavier)">+ Sous-idée</button>
+    <button data-a="voisin" title="Une idée au même niveau, juste dessous (Entrée au clavier)">+ Idée suivante</button>
     <button data-a="ecrire" title="Double-clic ou F2">Écrire</button>
     <button data-a="plier">Replier</button>
     <button data-a="uniformiser" title="Donner ce format à tous les cubes">Ce format partout</button>
@@ -375,17 +456,23 @@ button.b.modele span{font-weight:400;color:var(--encre-2);font-size:calc(13px * 
     <span class="pastilles" id="pastilles"></span>
   </div>
 
-  <div class="hud" id="compteur"><span>Récitation</span>&nbsp;<b id="score">0 / 0</b></div>
+  <div class="hud" id="compteur" role="status"><span>Récitation</span>&nbsp;<b id="score">0 / 0</b>&nbsp;<span class="consigne">· récitez la suite de mémoire, puis ouvrez le cube pour vérifier</span></div>
   <div class="hud" id="astuces">
     <button type="button" id="masquerAstuces" title="Masquer cette ligne d'astuces (l'aide reste dans « Aide »)" aria-label="Masquer les astuces">×</button>
-    <span>touchez ou cliquez un cube : « + enfant », « + voisin » et « Écrire » apparaissent</span>
-    <span class="clavier">au clavier : <kbd>Tab</kbd> enfant · <kbd>Entrée</kbd> voisin · <kbd>double-clic</kbd> écrire</span>
-    <span class="tactile">glissez pour vous déplacer, pincez pour zoomer</span>
+    <span class="clavier">Pour écrire : cliquez un cube, puis « Écrire » ; pour ajouter : « + Ajouter une idée »</span>
+    <span class="tactile">Pour écrire : touchez un cube, puis « Écrire » ; pour ajouter : « + Ajouter une idée »</span>
   </div>
+  <details class="hud" id="legende">
+    <summary>Couleurs des branches</summary>
+    <p>Chaque grande partie a sa couleur et son trait, pour la suivre d'un coup d'œil.</p>
+    <ul id="legendeListe"></ul>
+  </details>
   <div class="hud" id="zoom">
-    <button id="zmoins" title="Réduire" aria-label="Réduire">−</button><button id="zplus" title="Agrandir" aria-label="Agrandir">+</button><button id="zrecentrer" title="Tout voir — 0">Tout voir</button>
+    <button id="ranger2" class="mot" title="Remettre les cubes en ordre, branche par branche">Ranger</button>
+    <button id="zmoins" title="Réduire (touche −)" aria-label="Réduire">−</button><button id="zpct" class="mot" title="Revenir à 100 %" aria-label="Revenir à 100 %">100 %</button><button id="zplus" title="Agrandir (touche +)" aria-label="Agrandir">+</button><button id="zrecentrer" class="mot" title="Tout voir — 0">Tout voir</button>
   </div>
   <div id="message"></div>
+  <div id="liste" aria-label="Le raisonnement en liste"></div>
 
   <div id="aide">
     <div class="carte">
@@ -393,22 +480,33 @@ button.b.modele span{font-weight:400;color:var(--encre-2);font-size:calc(13px * 
       <p class="sous">Dessinez le raisonnement d'une décision, d'un cours ou d'une question comme un arbre :
         <b>une idée = un cube</b>. Les traits disent laquelle s'appuie sur laquelle, et chaque branche porte son
         numéro — 2.3 se relit comme un considérant.</p>
-      <p class="sous"><b>Pour commencer, à la souris ou au doigt :</b> touchez un cube, puis « + enfant », « + voisin » ou « Écrire » ;
-        le bouton <b>+ Ajouter une idée</b>, en haut, fait la même chose. Au clavier :</p>
+      <p class="sous"><b>À quoi ça sert :</b> préparer un cas pratique, une dissertation, un commentaire, une consultation ou des conclusions,
+        le réviser en le récitant, puis l'exporter en Word avec le plan I, A, 1, a.</p>
+      <!-- l'aide parlait d'abord de Tab et de double-clic : inutiles au doigt (5e passe, 14 profils) -->
+      <h3 class="aide-titre">Au doigt ou à la souris</h3>
       <dl>
-        <dt>double-clic</dt><dd>écrire dans un cube. <kbd>Échap</kbd> ou clic ailleurs pour valider.</dd>
-        <dt>Tab</dt><dd>créer un cube <b>enfant</b>, rattaché à celui qui est sélectionné.</dd>
-        <dt>Entrée</dt><dd>créer un cube <b>voisin</b>, au même niveau (en cours d'écriture : valide le cube, puis crée le voisin).</dd>
-        <dt>glisser</dt><dd>déplacer un cube et toute sa descendance. Lâchez-le <b>sur un autre cube</b> pour le rattacher ailleurs.</dd>
+        <dt>toucher un cube</dt><dd>une barre apparaît : <b>+ Sous-idée</b> développe ce cube, à sa droite ; <b>+ Idée suivante</b> ajoute une idée au même niveau, juste dessous ; <b>Écrire</b> change son texte.</dd>
+        <dt>glisser un cube</dt><dd>le déplace avec ses sous-idées. Lâché <b>sur un autre cube</b>, il s'y rattache.</dd>
+        <dt>glisser le fond</dt><dd>déplace la vue. Pincez à deux doigts, ou touchez <b>−</b> et <b>+</b> en bas à droite, pour zoomer.</dd>
+        <dt>Ranger</dt><dd>remet l'arbre d'équerre ; <b>Tout voir</b> le fait tenir dans l'écran.</dd>
+        <dt>Réciter</dt><dd><b>S'entraîner à réciter</b> cache les sous-idées : dites-les de mémoire, puis touchez un cube pour vérifier.</dd>
+        <dt>couleurs</dt><dd>chaque grande partie (1, 2, 3…) a sa couleur et son trait (plein, tirets, pointillés) ; la légende, en haut à droite, les rappelle.</dd>
       </dl>
+      <details class="aide-plus"><summary>Au clavier</summary>
+      <dl>
+        <dt>double-clic, F2</dt><dd>écrire dans un cube. <kbd>Échap</kbd> ou clic ailleurs pour valider.</dd>
+        <dt>Tab</dt><dd>ajouter une sous-idée au cube sélectionné.</dd>
+        <dt>Entrée</dt><dd>ajouter l'idée suivante, au même niveau (en cours d'écriture : valide le cube, puis l'ajoute).</dd>
+        <dt>Suppr</dt><dd>supprimer le cube et ses sous-idées. <kbd>Ctrl</kbd>+<kbd>Z</kbd> répare.</dd>
+        <dt>flèches</dt><dd>passer d'un cube à l'autre sans la souris.</dd>
+        <dt>+ − 0</dt><dd>agrandir, réduire, tout voir.</dd>
+      </dl>
+      </details>
       <details class="aide-plus"><summary>Autres gestes</summary>
       <dl>
-        <dt>Alt + glisser</dt><dd>déplacer le cube seul, en laissant ses enfants où ils sont.</dd>
+        <dt>Alt + glisser</dt><dd>déplacer le cube seul, en laissant ses sous-idées où elles sont.</dd>
         <dt>coin bas-droit</dt><dd>étirer un cube. Double-clic sur la poignée pour revenir au format automatique.</dd>
-        <dt>largeur</dt><dd>le curseur en haut règle d'un coup tous les cubes que vous n'avez pas étirés à la main.</dd>
-        <dt>Ranger</dt><dd>remet tout l'arbre d'équerre quand la toile part en vrille.</dd>
-        <dt>Suppr</dt><dd>supprimer le cube et sa descendance. <kbd>Ctrl</kbd>+<kbd>Z</kbd> répare.</dd>
-        <dt>flèches</dt><dd>passer d'un cube à l'autre sans la souris.</dd>
+        <dt>largeur</dt><dd>dans « Mise en page », le curseur règle d'un coup tous les cubes que vous n'avez pas étirés à la main.</dd>
         <dt>`accents graves`</dt><dd>colorent une référence : <code>`art. 1240 C. civ.`</code></dd>
       </dl>
       </details>
@@ -517,7 +615,13 @@ function numeroter(){
   })(racine(), '');
 }
 
-function rendre(){ avecIndex(rendreIndexe); }
+function rendre(){ avecIndex(rendreIndexe); majAnnuler(); }
+// Annuler et Rétablir n'occupent la barre que lorsqu'il y a quelque chose à annuler ou à rétablir
+function majAnnuler(){
+  const a = document.getElementById('annuler'), r = document.getElementById('refaire'); if (!a || !r) return;
+  a.hidden = !pile.length; r.hidden = !refait.length;
+  a.parentElement.hidden = a.hidden && r.hidden;
+}
 function rendreIndexe(){
   numeroter();
   for (const el of cubes.values()) el.remove();
@@ -540,7 +644,9 @@ function rendreIndexe(){
       const b = document.createElement('span');
       b.className = 'badge' + (n.plie ? '' : ' ouvert');
       b.textContent = n.plie ? compter(n) : '';
-      b.title = n.plie ? 'Déplier' : 'Replier';
+      // un nombre seul ne disait rien (5e passe) : « 12 idées cachées dessous »
+      const c = compter(n), cachees = `${c} idée${c > 1 ? 's' : ''} cachée${c > 1 ? 's' : ''} dessous`;
+      b.title = n.plie ? cachees + ' — toucher pour déplier' : 'Replier';
       b.addEventListener('pointerdown', e => e.stopPropagation());
       b.addEventListener('click', e => { e.stopPropagation(); basculer(n); });
       d.appendChild(b);
@@ -561,6 +667,20 @@ function rendreIndexe(){
   tracerLiens(vus.map(v => v[0]));
   placerReglette();
   majScore();
+  majLegende();
+  if (enListe()) rendreListe();
+}
+
+// une ligne par grande partie : son trait (couleur et motif, comme dans l'arbre), son numéro, son début
+const court = t => { const s = String(t || 'Sans titre').replace(/`|\*\*/g, '').trim(); return s.length > 38 ? s.slice(0, 37) + '…' : s; };
+function majLegende(){
+  const parties = racine().enfants;
+  document.getElementById('legende').hidden = parties.length < 2;
+  document.getElementById('legendeListe').innerHTML = parties.map((p, i) => {
+    const motif = motifDe(p);
+    return `<li><svg width="34" height="10" aria-hidden="true"><path d="M3 5H31" fill="none" stroke="${teinteDe(p)}" stroke-width="3" stroke-linecap="round"${motif ? ` stroke-dasharray="${motif}"` : ''}/></svg>`
+      + `<span><b>${i + 1}</b>${echapper(court(p.t))}</span></li>`;
+  }).join('');
 }
 
 const largeurCommune = () => fiches[iFiche].largeur;
@@ -617,7 +737,7 @@ function tracerLiensIndexe(vus){
       p.setAttribute('d', `M${x1},${y1}C${x1 + dx},${y1} ${x2 - dx},${y2} ${x2},${y2}`);
       p.setAttribute('fill', 'none');
       p.setAttribute('stroke', teinteDe(e));
-      p.setAttribute('stroke-width', Math.max(1.2, 3 - profDe(e.id) * .5));
+      p.setAttribute('stroke-width', Math.max(1.8, 3.4 - profDe(e.id) * .4));   // des tirets fins se lisaient mal (5e passe)
       p.setAttribute('stroke-linecap', 'round');
       const motif = motifDe(e); if (motif) p.setAttribute('stroke-dasharray', motif);
       p.setAttribute('opacity', masque(e) ? .3 : .8);
@@ -636,12 +756,24 @@ function compter(n){ let c = 0; (function w(x){ for (const e of x.enfants){ c++;
 
 function appliquerVue(){
   plan.style.transform = `translate(${vue.x}px,${vue.y}px) scale(${vue.k})`;
+  document.getElementById('zpct').textContent = Math.round(vue.k * 100) + ' %';
   placerReglette();
 }
 
 /* ============================================================
    Sélection et réglette
    ============================================================ */
+// au clavier, la vue suit le cube choisi (8e passe : en récitation, le cube dévoilé restait hors de l'écran)
+function rendreVisible(id){
+  const n = id ? trouver(id) : null; if (!n) return;
+  const r = toile.getBoundingClientRect(), w = (n.w || 140) * vue.k, h = (n.h || 38) * vue.k;
+  const x = vue.x + n.x * vue.k, y = vue.y + n.y * vue.k, haut = 64, bas = 80, cote = 24;
+  let dx = 0, dy = 0;
+  if (x < cote) dx = cote - x; else if (x + w > r.width - cote) dx = r.width - cote - (x + w);
+  if (y < haut) dy = haut - y; else if (y + h > r.height - bas) dy = r.height - bas - (y + h);
+  if (dx || dy){ vue.x += dx; vue.y += dy; appliquerVue(); }
+}
+function selectionnerAuClavier(id){ selectionner(id); rendreVisible(id); }
 function selectionner(id){
   sel = id;
   for (const [k, el] of cubes) el.classList.toggle('sel', k === id);
@@ -649,11 +781,13 @@ function selectionner(id){
 }
 function placerReglette(){
   const n = sel ? trouver(sel) : null;
-  if (!n || !cubes.has(n.id) || redaction){ reglette.classList.remove('on'); return; }
+  // en récitation, pas de barre d'édition : on révise, on ne modifie pas (5e passe : « Supprimer » restait proposé)
+  if (!n || !cubes.has(n.id) || redaction || recitation){ reglette.classList.remove('on'); return; }
   reglette.classList.add('on');
   const x = vue.x + n.x * vue.k, y = vue.y + n.y * vue.k;
   // toujours dans l'écran (quatrième passe : « Supprimer » sortait à droite sur téléphone) ; sous le cube
   // quand la place manque au-dessus, pour ne pas recouvrir le cube lui-même
+  reglette.style.left = '0px';   // mesurée à gauche, la barre ne passe pas à la ligne parce qu'elle était près du bord
   const larg = toile.clientWidth, h = reglette.offsetHeight, w = reglette.offsetWidth;
   reglette.style.left = Math.max(6, Math.min(x, larg - w - 6)) + 'px';
   const dessus = y - h - 9, dessous = y + (n.h || 38) * vue.k + 9;
@@ -704,7 +838,7 @@ function teinter(n, i){
    Écriture dans le cube
    ============================================================ */
 let redaction = null;
-function rediger(n, sansMemo){
+function rediger(n, sansMemo, nouveau){
   const d = cubes.get(n.id); if (!d) return;
   if (!sansMemo) memoriser();
   redaction = n.id;
@@ -714,13 +848,27 @@ function rediger(n, sansMemo){
   d.contentEditable = 'true';
   d.textContent = n.t;
   d.focus();
-  const r = document.createRange(); r.selectNodeContents(d);
-  const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+  // l'indication d'un modèle est sélectionnée, pour que la frappe la remplace (5e passe : « [intitulé] » restait
+  // et le texte s'ajoutait derrière) : d'abord ce qui est entre crochets, sinon « … », sinon tout le cube
+  const choisir = () => {
+    const t = d.firstChild && d.firstChild.nodeType === 3 ? d.firstChild : null;
+    const m = t && (/\[[^\]\n]*\]/.exec(t.data) || /…/.exec(t.data));
+    const r = document.createRange();
+    if (m){ r.setStart(t, m.index); r.setEnd(t, m.index + m[0].length); } else r.selectNodeContents(d);
+    const s = getSelection(); s.removeAllRanges(); s.addRange(r);
+  };
+  choisir();
+  // après un double-clic, le navigateur pose sa propre sélection (le mot cliqué) juste après : on la remplace
+  requestAnimationFrame(() => { if (redaction === n.id && document.activeElement === d) choisir(); });
   const finir = () => {
     d.contentEditable = 'false';
     d.classList.remove('redige');
     n.t = d.innerText.replace(/\n+$/, '').trim();
     redaction = null;
+    // une idée tout juste créée et laissée vide ne reste pas en « Sans titre » (6e passe : Entrée puis Échap
+    // laissaient une partie vide) ; l'état d'avant la création est repris de la pile d'annulation
+    const p = nouveau && !n.t ? parentDe(n.id) : null;
+    if (p){ p.enfants = p.enfants.filter(e => e.id !== n.id); sel = p.id; pile.pop(); }
     rendre(); enregistrerBientot();
   };
   d.addEventListener('blur', finir, {once:true});
@@ -730,10 +878,14 @@ function rediger(n, sansMemo){
     // Entrée : valide le cube et ouvre une idée voisine, comme l'annonce l'aide (un cube resté vide est seulement validé)
     else if (ev.key === 'Enter' && !ev.shiftKey){
       ev.preventDefault(); const vide = !d.innerText.trim(); d.blur();
-      if (!vide) n.id === racine().id ? ajouter(n, 'enfant') : ajouter(n, 'voisin');
+      // sur le titre, Entrée valide seulement (8e passe : elle créait une partie « 6 Sans titre ») ; Tab ajoute une partie
+      if (!vide && n.id !== racine().id) ajouter(n, 'voisin');
     }
     // Tab : valide le cube et ouvre aussitôt une idée enfant en écriture (le focus reste dans l'arbre)
-    else if (ev.key === 'Tab' && !ev.shiftKey){ ev.preventDefault(); d.blur(); ajouter(n, 'enfant'); }
+    else if (ev.key === 'Tab' && !ev.shiftKey){
+      ev.preventDefault(); const vide = !d.innerText.trim(); d.blur();
+      if (!vide || !nouveau) ajouter(n, 'enfant');
+    }
   });
 }
 
@@ -754,24 +906,48 @@ function libre(x, y, w, h, exclus = new Set()){
   return y;
 }
 
+// bas du cube et de ses sous-idées visibles
+function basDe(n){
+  let b = n.y + (n.h || 38);
+  if (!n.plie) for (const e of n.enfants) b = Math.max(b, basDe(e));
+  return b;
+}
+// Une nouvelle idée se place juste après sa sœur, et ce qui vient après elle dans l'arbre descend d'autant :
+// avant, elle était poussée vers le bas jusqu'à une place libre, souvent sous une autre branche, trait croisé
+// (5e passe, parcours réel).
+function fairePlace(e, w, h){
+  const apres = []; let vu = false;
+  parcours(m => { if (m === e) vu = true; else if (vu && visible(m) && m.w) apres.push(m); });
+  const heurte = m => e.x < m.x + m.w + 14 && e.x + w + 14 > m.x && e.y < m.y + m.h + 10 && e.y + h + 10 > m.y;
+  if (!apres.some(heurte)) return;
+  const pas = h + 16;
+  for (const m of apres) if (m.y >= e.y - 10) m.y += pas;
+}
+
 function ajouter(n, quoi){
+  const e = creerIdee(n, quoi);
+  rendre();
+  if (enListe()) editerLigne(e, true); else rediger(e, true, true);
+}
+function creerIdee(n, quoi){
   memoriser();
   document.getElementById('aide').classList.remove('on');   // l'aide couvrait les nouvelles idées (troisième passe)
   const parent = quoi === 'enfant' ? n : (parentDe(n.id) || n);
-  const larg = n.w || 140;
+  const larg = n.w || 140, ech = parseFloat(cssVar('--ech')) || 1;
+  const derniere = quoi === 'enfant' && !n.plie ? n.enfants[n.enfants.length - 1] : null;
   let x, y;
-  if (quoi === 'enfant'){ x = n.x + larg + 70; y = n.y; }
-  else { x = n.x; y = n.y + (n.h || 40) + 16; }
-  y = libre(x, y, 130, 38);
+  if (derniere){ x = derniere.x; y = basDe(derniere) + 16; }       // sous la dernière sous-idée
+  else if (quoi === 'enfant'){ x = n.x + larg + 70; y = n.y; }     // première sous-idée : à droite
+  else { x = n.x; y = basDe(n) + 16; }                             // idée suivante : sous le cube et ses sous-idées
   const e = neuf('', x, y);
   if (quoi === 'voisin'){
     const i = parent.enfants.findIndex(c => c.id === n.id);
     parent.enfants.splice(i + 1, 0, e);
   } else { parent.plie = false; parent.enfants.push(e); }
+  avecIndex(() => fairePlace(e, 140 * ech, 42 * ech));
   if (recitation) revelees.add(e.id);
   sel = e.id;
-  rendre();
-  rediger(e, true);
+  return e;
 }
 
 function supprimer(n){
@@ -794,7 +970,7 @@ function basculer(n){
    Glisser : déplacer, rattacher
    ============================================================ */
 function ecouter(d, n){
-  d.addEventListener('dblclick', ev => { ev.stopPropagation(); rediger(n); });
+  d.addEventListener('dblclick', ev => { ev.stopPropagation(); if (!recitation) rediger(n); });
   d.addEventListener('pointerdown', ev => {
     if (redaction) return;
     ev.stopPropagation();
@@ -1018,13 +1194,24 @@ function recentrer(){
     x1 = Math.max(x1, n.x + (n.w || 140)); y1 = Math.max(y1, n.y + (n.h || 38));
   });
   const r = toile.getBoundingClientRect();
-  const k = Math.min(1.1, (r.width - 120) / Math.max(1, x1 - x0), (r.height - 140) / Math.max(1, y1 - y0));
-  /* en dessous de 0,8 le texte des cubes devient illisible (test du 24 oct. 2026) : on garde 0,8, la racine
-     à gauche, et le reste de l'arbre se parcourt en glissant ; « − » permet toujours d'en voir plus */
-  vue.k = Math.max(innerWidth < 700 ? 1 : .8, k);   // sur téléphone, les cubes restent à leur taille réelle
+  // bandes réservées en haut (légende, compteur) et en bas (astuces, zoom) : l'arbre se cadre entre elles
+  // au lieu de passer dessous (6e passe : « la barre d'aide cache Exonérations »)
+  const haut = 60, bas = innerWidth <= 1000 && !document.getElementById('astuces').hidden ? 124 : 72, dispo = r.height - haut - bas;
+  const k = Math.min(1.1, (r.width - 120) / Math.max(1, x1 - x0), (dispo - 20) / Math.max(1, y1 - y0));
+  /* en dessous de 0,85 le texte des cubes passe sous 14 px (5e passe : « cubes minuscules ») : on garde 0,85,
+     la racine à gauche, et le reste de l'arbre se parcourt en glissant ; « − » permet toujours d'en voir plus.
+     Comme la taille du texte agrandit les cubes, « Grand » se voit vraiment au lieu d'être repris par le zoom */
+  vue.k = Math.max(innerWidth < 700 || innerWidth >= 1200 ? 1 : .85, k);   // téléphone et grand écran : taille réelle (8e passe : « 85 %, numéros minuscules »)
   const tient = (x1 - x0) * vue.k <= r.width - 60;
-  vue.x = tient ? (r.width - (x1 - x0) * vue.k) / 2 - x0 * vue.k : 40 - x0 * vue.k;
-  vue.y = (y1 - y0) * vue.k <= r.height - 80 ? (r.height - (y1 - y0) * vue.k) / 2 - y0 * vue.k : 40 - y0 * vue.k;
+  vue.x = tient ? (r.width - (x1 - x0) * vue.k) / 2 - x0 * vue.k : Math.min(40, r.width * .06) - x0 * vue.k;
+  // arbre trop haut pour l'écran : on part du titre, à mi-hauteur, plutôt que du haut de l'arbre
+  // (sur téléphone, le titre restait collé en bas, sous les boutons de zoom)
+  const t = racine();
+  // arbre plus haut que l'écran : sur ordinateur et tablette, on part du haut de l'arbre (le bas se découvre en
+  // glissant ; 6e passe : les premières idées étaient coupées) ; sur téléphone, le titre reste au milieu
+  vue.y = (y1 - y0) * vue.k <= dispo ? haut + (dispo - (y1 - y0) * vue.k) / 2 - y0 * vue.k
+        : innerWidth >= 700 ? haut + 8 - y0 * vue.k
+        : haut + dispo / 2 - (t.y + (t.h || 38) / 2) * vue.k;
   appliquerVue();
 }
 
@@ -1034,6 +1221,7 @@ function recentrer(){
 addEventListener('keydown', ev => {
   if (redaction) return;
   const cible = ev.target;
+  if (enListe() && cible.closest && cible.closest('#liste')) return;
   if (cible.isContentEditable) return;
   if (cible.tagName === 'SELECT' || cible.tagName === 'INPUT') return;
   const n = sel ? trouver(sel) : null;
@@ -1047,7 +1235,28 @@ addEventListener('keydown', ev => {
   }
   if ((ev.ctrlKey || ev.metaKey) && k.toLowerCase() === 's'){ ev.preventDefault(); enregistrer(); return; }
   if (k === '0'){ recentrer(); return; }
+  if (k === '+' || k === '='){ zoomer(1.2); return; }
+  if (k === '-'){ zoomer(1/1.2); return; }
+  // récitation au clavier (6e passe : Tab bloqué, rien pour dévoiler) : Tab va au cube suivant, Entrée ou Espace dévoile
+  if (recitation && k === 'Tab'){
+    ev.preventDefault();
+    const vus = []; parcours(m => { if (visible(m)) vus.push(m); });
+    const i = n ? vus.findIndex(m => m.id === n.id) : -1;
+    const j = ev.shiftKey ? (i <= 0 ? vus.length - 1 : i - 1) : (i + 1) % vus.length;
+    selectionnerAuClavier(vus[j].id); return;
+  }
   if (!n) return;
+  if (recitation && (k === 'Enter' || k === ' ')){
+    ev.preventDefault();
+    // dévoiler un cube ouvre aussi ses sous-idées (encore cachées) : Tab les parcourt dans l'ordre du plan
+    if (masque(n)){ revelees.add(n.id); if (n.enfants.length) n.plie = false; rendre(); }
+    else if (n.enfants.length && n.plie) basculer(n);
+    rendreVisible(n.id);
+    return;
+  }
+  if (recitation && ['F2', 'Delete', 'Backspace'].includes(k)){
+    ev.preventDefault(); signaler('Quittez la récitation pour modifier l\'arbre'); return;
+  }
 
   if (k === 'Tab'){ ev.preventDefault(); ajouter(n, 'enfant'); return; }
   if (k === 'Enter'){ ev.preventDefault(); n.id === racine().id ? ajouter(n, 'enfant') : ajouter(n, 'voisin'); return; }
@@ -1071,12 +1280,12 @@ addEventListener('keydown', ev => {
 
 function naviguer(n, touche){
   const p = parentDe(n.id);
-  if (touche === 'ArrowRight' && n.enfants.length && !n.plie) return selectionner(n.enfants[0].id);
-  if (touche === 'ArrowLeft' && p) return selectionner(p.id);
+  if (touche === 'ArrowRight' && n.enfants.length && !n.plie) return selectionnerAuClavier(n.enfants[0].id);
+  if (touche === 'ArrowLeft' && p) return selectionnerAuClavier(p.id);
   if (!p) return;
   const fr = p.enfants, i = fr.findIndex(e => e.id === n.id);
-  if (touche === 'ArrowDown' && fr[i + 1]) selectionner(fr[i + 1].id);
-  if (touche === 'ArrowUp' && fr[i - 1]) selectionner(fr[i - 1].id);
+  if (touche === 'ArrowDown' && fr[i + 1]) selectionnerAuClavier(fr[i + 1].id);
+  if (touche === 'ArrowUp' && fr[i - 1]) selectionnerAuClavier(fr[i - 1].id);
 }
 
 /* ============================================================
@@ -1097,6 +1306,94 @@ document.getElementById('annuler').onclick = annuler;
 document.getElementById('refaire').onclick = refaire;
 
 /* ============================================================
+   Vue en liste (téléphone)
+   ============================================================ */
+const listeEl = document.getElementById('liste');
+const boutonListe = document.getElementById('vueListe');
+const enListe = () => document.body.classList.contains('en-liste');
+const FLECHE = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>';
+let enEdition = null;   // id de la ligne en cours d'écriture
+function rendreListe(){
+  if (enEdition) return;   // ne pas détruire la zone de saisie ouverte
+  const haut = listeEl.scrollTop;
+  const r = racine(), actions = n => n.id !== sel || recitation ? '' : `<div class="l-actions">
+      <button class="b" data-l="ecrire">Écrire</button>
+      <button class="b" data-l="enfant">+ Sous-idée</button>
+      ${n.id !== r.id ? '<button class="b" data-l="voisin">+ Idée suivante</button><button class="b danger" data-l="supprimer">Supprimer</button>' : ''}</div>`;
+  const ligne = n => {
+    const muet = masque(n), c = n.enfants.length;
+    return `<li data-id="${n.id}" style="--teinte:${teinteDe(n)}">
+      <div class="l-ligne${n.id === sel ? ' sel' : ''}">
+        <button class="l-plier" data-l="plier" aria-expanded="${!n.plie}" aria-label="${n.plie ? 'Déplier' : 'Replier'}"${c ? '' : ' hidden'}>${FLECHE}</button>
+        <div class="l-corps"><span class="ref">${refs.get(n.id) || ''}</span>${muet ? `<span class="l-cache">${geste()} pour vérifier</span>` : formater(n.t || 'Sans titre')}${n.plie && c ? `<span class="l-nb">· ${c} idée${c > 1 ? 's' : ''} dessous</span>` : ''}</div>
+        ${actions(n)}
+      </div>
+      ${c && !n.plie ? `<ol>${n.enfants.map(ligne).join('')}</ol>` : ''}
+    </li>`;
+  };
+  listeEl.innerHTML = `<div class="l-titre" data-id="${r.id}">${formater(r.t || 'Sans titre')}</div>`
+    + (sel === r.id && !recitation ? `<div class="l-actions" style="max-width:760px;margin:-6px auto 12px"><button class="b" data-l="ecrire">Écrire le titre</button><button class="b principal" data-l="enfant">+ Ajouter une partie</button></div>` : '')
+    + (r.enfants.length ? `<ol>${r.enfants.map(ligne).join('')}</ol>` : `<p class="l-vide">Aucune idée pour l'instant : touchez « + Ajouter une idée ».</p>`);
+  listeEl.scrollTop = haut;
+}
+// écrire dans une ligne : une zone de saisie à la place du texte ; Entrée valide et ouvre l'idée suivante
+function editerLigne(n, nouveau){
+  const bloc = n.id === racine().id ? listeEl.querySelector('.l-titre') : listeEl.querySelector(`li[data-id="${n.id}"] > .l-ligne .l-corps`);
+  if (!bloc) return;
+  if (!nouveau) memoriser();
+  enEdition = n.id;
+  const zone = document.createElement('textarea');
+  zone.value = n.t || '';
+  zone.setAttribute('aria-label', n.id === racine().id ? 'Titre de la fiche' : 'Texte de l\'idée ' + (refs.get(n.id) || ''));
+  const ref = bloc.querySelector('.ref');
+  bloc.textContent = ''; if (ref) bloc.appendChild(ref); bloc.appendChild(zone);
+  bloc.closest('.l-ligne')?.querySelector('.l-actions')?.remove();
+  zone.focus();
+  const m = /\[[^\]\n]*\]/.exec(zone.value) || /…/.exec(zone.value);   // l'indication d'un modèle est choisie, comme dans l'arbre
+  if (m) zone.setSelectionRange(m.index, m.index + m[0].length); else zone.select();
+  zone.scrollIntoView({block: 'nearest'});
+  let suite = false;
+  const finir = () => {
+    enEdition = null;
+    n.t = zone.value.replace(/\n+$/, '').trim();
+    const p = nouveau && !n.t ? parentDe(n.id) : null;
+    if (p){ p.enfants = p.enfants.filter(e => e.id !== n.id); sel = p.id; pile.pop(); }
+    rendre(); enregistrerBientot();
+    if (suite && n.t && n.id !== racine().id) ajouter(n, 'voisin');
+  };
+  zone.addEventListener('blur', finir, {once: true});
+  zone.addEventListener('keydown', ev => {
+    if (ev.key === 'Escape'){ ev.preventDefault(); zone.blur(); }
+    else if (ev.key === 'Enter' && !ev.shiftKey){ ev.preventDefault(); suite = !!zone.value.trim(); zone.blur(); }
+  });
+}
+['pointerdown', 'wheel', 'dblclick'].forEach(t => listeEl.addEventListener(t, ev => ev.stopPropagation(), {passive: true}));
+listeEl.addEventListener('click', ev => {
+  if (enEdition) return;
+  const item = ev.target.closest('[data-id]'); if (!item) return;
+  const n = trouver(item.dataset.id); if (!n) return;
+  const a = ev.target.closest('[data-l]')?.dataset.l;
+  if (a === 'plier'){ sel = n.id; basculer(n); return; }
+  if (recitation && masque(n)){ revelees.add(n.id); sel = n.id; rendre(); return; }
+  if (a === 'ecrire') return editerLigne(n);
+  if (a === 'enfant' || a === 'voisin') return ajouter(n, a);
+  if (a === 'supprimer') return supprimer(n);
+  if (ev.target.closest('.l-actions')) return;
+  // toucher une ligne déjà choisie l'ouvre en écriture ; sinon elle est choisie et ses actions apparaissent
+  if (sel === n.id && !recitation) return editerLigne(n);
+  sel = n.id; rendre();
+});
+function choisirVue(liste, retenir){
+  document.body.classList.toggle('en-liste', liste);
+  boutonListe.textContent = liste ? "Voir l'arbre" : 'Voir en liste';
+  boutonListe.title = liste ? 'Revenir aux cubes reliés' : 'Le même raisonnement en plan numéroté, de haut en bas : plus simple sur un téléphone';
+  if (retenir) try { localStorage.setItem('considerant_vue', liste ? 'liste' : 'arbre'); } catch {}
+  rendre();
+  if (!liste) recentrer();
+}
+boutonListe.onclick = () => choisirVue(!enListe(), true);
+
+/* ============================================================
    Récitation
    ============================================================ */
 // état replié de chaque cube avant la récitation : restauré à la sortie (avant, tout était déplié)
@@ -1104,17 +1401,21 @@ let plisAvant = null;
 document.getElementById('recitation').onclick = () => {
   if (recitation){ quitterRecitation(); signaler('Récitation terminée'); return; }
   recitation = true;
+  document.body.classList.add('recite');
   document.getElementById('recitation').setAttribute('aria-pressed', 'true');
   revelees.clear();
   plisAvant = new Map();
   parcours(n => plisAvant.set(n.id, n.plie));
   parcours(n => { if (n.id !== racine().id) n.plie = n.enfants.length > 0; });
-  rendre();
-  signaler('Récitez, puis cliquez un cube pour vérifier');
+  rendre(); recentrer();
+  // le premier cube est choisi d'office : Tab et Entrée marchent aussitôt (8e passe : Tab restait bloqué)
+  const premier = racine().enfants[0]; if (premier) selectionnerAuClavier(premier.id);
+  signaler(geste() + ' un cube pour vérifier · au clavier : Tab, cube suivant ; Entrée, dévoiler');
 };
 function quitterRecitation(){
   if (!recitation) return;
   recitation = false;
+  document.body.classList.remove('recite');
   document.getElementById('recitation').setAttribute('aria-pressed', 'false');
   revelees.clear();
   parcours(n => { n.plie = plisAvant && plisAvant.has(n.id) ? plisAvant.get(n.id) : false; });
@@ -1193,14 +1494,16 @@ const sauver = () => sansPliagesDeRecitation(() => rangement.ecrire(CLE, {fiches
 // une modification faite moins d'une seconde avant de fermer la fenêtre était perdue
 addEventListener('pagehide', () => { if (minuterieSauve) sauver(); });
 
-document.getElementById('nouvelle').onclick = () => {
+function ficheVierge(){
   quitterRecitation();
-  fiches.push({racine: neuf('Nouvelle fiche', 0, 0), mesure: 2});
+  fiches.push({racine: neuf('Nouvelle fiche', 0, 0), mesure: 3});
   iFiche = fiches.length - 1; sel = fiches[iFiche].racine.id;
   // les piles d'annulation portent sur l'arbre de l'ancienne fiche : « Rétablir » l'aurait recopié ici
   pile.length = 0; refait.length = 0; rendre(); recentrer(); enregistrerBientot();
   rediger(racine(), true);
-};
+  signaler('Écrivez le sujet, puis Entrée pour la première idée');
+}
+document.getElementById('nouvelle').onclick = ficheVierge;
 
 document.getElementById('renommer').onclick = () => {
   const actuel = racine().t || '';
@@ -1226,7 +1529,7 @@ document.getElementById('supprimerFiche').onclick = () => {
   if (!confirm(`Supprimer la fiche « ${titre} » et tous ses cubes ?\n\nAstuce : « Sauvegarde » garde une copie de toutes vos fiches.`)) return;
   quitterRecitation();
   fiches.splice(iFiche, 1);
-  if (!fiches.length) fiches.push({racine: neuf('Nouvelle fiche', 0, 0), mesure: 2});
+  if (!fiches.length) fiches.push({racine: neuf('Nouvelle fiche', 0, 0), mesure: 3});
   iFiche = Math.min(iFiche, fiches.length - 1);
   sel = null; pile.length = 0; refait.length = 0;
   rendre(); recentrer(); enregistrerBientot();
@@ -1235,13 +1538,23 @@ document.getElementById('supprimerFiche').onclick = () => {
 
 // Les fiches créées avant la correction de largeur des cubes avaient été disposées pour
 // des cubes d'un mot de large : on les remet d'équerre une fois (Ctrl+Z pour revenir).
+// Mesure 3 (25 oct. 2026) : les cubes ont grandi avec le texte ; une fiche n'est remise d'équerre
+// que si des cubes se chevauchent désormais, pour ne pas défaire une disposition faite à la main.
+function chevauchement(){
+  const vus = [];
+  parcours(n => { if (visible(n) && n.w) vus.push(n); });
+  return vus.some((a, i) => vus.slice(i + 1).some(b =>
+    a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y));
+}
+// Même contrôle quand la taille du texte a changé depuis la dernière visite de la fiche (f.ech).
 function miseAJourLargeur(){
-  const f = fiches[iFiche];
-  if (!f || f.mesure === 2) return;
-  f.mesure = 2;
-  if (!racine().enfants.length) { enregistrerBientot(); return; }
+  const f = fiches[iFiche], ech = parseFloat(cssVar('--ech')) || 1;
+  if (!f || (f.mesure >= 3 && f.ech === ech)) return;
+  const ancienne = f.mesure !== 2 && f.mesure !== 3;
+  f.mesure = 3; f.ech = ech;
+  if (!racine().enfants.length || !(ancienne || avecIndex(chevauchement))) { enregistrerBientot(); return; }
   ranger();
-  signaler('Cubes élargis : fiche remise d\'équerre — Ctrl+Z pour annuler');
+  signaler((ancienne ? 'Cubes élargis' : 'Cubes agrandis') + ' : fiche remise d\'équerre — Ctrl+Z pour annuler');
 }
 
 function versMarkdown(){
@@ -1258,7 +1571,8 @@ function telecharger(nom, texte, type){
   a.download = nom; a.click();
   setTimeout(() => URL.revokeObjectURL(a.href), 4000);
 }
-const nomFichier = () => (racine().t || 'fiche').replace(/[^\w\-À-ÿ ]+/g, '').trim() || 'fiche';
+// « Cas pratique — Responsabilité » donnait « Cas pratique  Responsabilité » (5e passe) : tiret gardé, espaces simples
+const nomFichier = () => (racine().t || 'fiche').replace(/[—–]/g, '-').replace(/['’]/g, '’').replace(/[^\w\-À-ÿ’ ]+/g, '').replace(/\s+/g, ' ').trim() || 'fiche';
 document.getElementById('expmd').onclick = () => telecharger(nomFichier() + '.md', versMarkdown(), 'text/markdown');
 
 /* ── Export Word : le plan juridique d'usage (I, A, 1, a), l'introduction et la conclusion hors numérotation ── */
@@ -1292,11 +1606,14 @@ function versWord(){
     pied: 'Paraphe · Considérant' });
 }
 document.getElementById('expword').onclick = () => {
+  // 8e passe : l'export partait avec les « [intitulé] » du modèle sans prévenir
+  let restes = 0; parcours(n => { if (/\[[^\]\n]*\]|…/.test(n.t || '')) restes++; });
+  if (restes && !confirm(restes + (restes > 1 ? ' cubes contiennent' : ' cube contient') + ' encore une indication du modèle (« […] » ou « … »).\n\nOK : exporter quand même. Annuler : les remplir d\'abord.')) return;
   const a = document.createElement('a');
   a.href = URL.createObjectURL(versWord());
   a.download = nomFichier() + '.docx'; a.click();
   setTimeout(() => URL.revokeObjectURL(a.href), 4000);
-  signaler('Document Word enregistré : les titres suivent le plan I, A, 1, a');
+  signaler('Document Word enregistré : dans Word, 1 devient I, 1.1 devient A, 1.1.1 devient 1');
 };
 
 /* ── Modèles de raisonnement : un squelette à remplir, cube par cube ── */
@@ -1327,10 +1644,10 @@ function arbreDepuis([t, enfants = []]){
   enfants.forEach(e => n.enfants.push(arbreDepuis(e)));
   return n;
 }
-function ajouterFicheModele(arbre){
+function ajouterFicheModele(arbre, fiche){
   quitterRecitation();
   document.getElementById('aide').classList.remove('on');   // l'aide masquait la moitié de l'arbre (seconde passe)
-  fiches.push({racine: arbreDepuis(arbre), mesure: 2});
+  fiches.push(fiche || {racine: arbreDepuis(arbre), mesure: 3});
   iFiche = fiches.length - 1; sel = fiches[iFiche].racine.id;
   pile.length = 0; refait.length = 0;
   ranger(); rendre();
@@ -1345,25 +1662,45 @@ if (new URLSearchParams(location.search).get('depuis') === 'commentaire'){
   history.replaceState(null, '', location.pathname);
   if (Array.isArray(arbre)) window.planEnAttente = arbre;     // posé une fois les fiches chargées (fin du démarrage)
 }
-let fenModeles;
-document.getElementById('depuisModele').onclick = () => {
-  if (!fenModeles){
-    fenModeles = document.createElement('dialog');
-    fenModeles.className = 'fenetre-ia modeles';
-    fenModeles.setAttribute('aria-labelledby', 'modelesTitre');
-    fenModeles.innerHTML = '<h3 id="modelesTitre">Partir d\'un modèle</h3><p class="muet-texte">Un squelette de raisonnement à remplir : double-cliquez sur un cube pour écrire à la place des indications.</p>' +
+/* ── Écran de départ « Par où commencer ? » ──
+   Considérant s'ouvrait sur un exemple déjà rempli et neuf commandes, sans point de départ (5e passe : six
+   décrochages, le plus gros écueil du logiciel). Au premier lancement, et par « Fiche › Nouvelle fiche depuis un
+   modèle… », on propose : une page vierge, un des quatre modèles, ou l'exemple pour découvrir. Au premier lancement,
+   l'exemple affiché derrière est remplacé par le choix (il reste dans ce même écran). */
+let fenDepart, departPremier = false;
+// « Touchez » au doigt, « Cliquez » à la souris (6e passe : consignes tactiles lues sur ordinateur)
+const geste = () => matchMedia('(pointer:coarse)').matches ? 'Touchez' : 'Cliquez';
+function ouvrirDepart(premier){
+  departPremier = !!premier;
+  if (!fenDepart){
+    fenDepart = document.createElement('dialog');
+    fenDepart.className = 'fenetre-ia modeles';
+    fenDepart.setAttribute('aria-labelledby', 'departTitre');
+    fenDepart.innerHTML = '<h3 id="departTitre">Par où commencer ?</h3><p class="muet-texte">Considérant dessine un raisonnement en arbre : le sujet à gauche, ses parties à droite, puis leurs détails. Une idée par cube.</p>' +
+      '<div class="liste-modeles"><button type="button" class="b modele vierge" data-depart="vierge"><b>Une page vierge</b><span>Vous écrivez le sujet, puis vos idées une à une.</span></button>' +
+      '<button type="button" class="b modele" data-depart="exemple"><b>Voir un exemple rempli</b><span>La responsabilité civile en arbre, pour découvrir avant d\'écrire.</span></button></div>' +
+      '<p class="groupe-titre">Ou partir d\'un modèle, à remplir cube par cube</p>' +
       '<div class="liste-modeles">' + Object.entries(MODELES).map(([k, m]) => `<button type="button" class="b modele" data-modele="${k}"><b>${m.nom}</b><span>${m.aide}</span></button>`).join('') +
-      '</div><div class="ia-actions"><button type="button" class="b" data-fermer>Annuler</button></div>';
-    document.body.appendChild(fenModeles);
-    fenModeles.addEventListener('click', e => {
-      const b = e.target.closest('[data-modele]');
-      if (b){ fenModeles.close(); ajouterFicheModele(MODELES[b.dataset.modele].arbre); signaler('Modèle « ' + MODELES[b.dataset.modele].nom + ' » ajouté'); }
-      else if (e.target.closest('[data-fermer]') || e.target === fenModeles) fenModeles.close();
+      '</div><div class="ia-actions"><button type="button" class="b" data-fermer>Fermer</button></div>';
+    document.body.appendChild(fenDepart);
+    fenDepart.addEventListener('click', e => {
+      const b = e.target.closest('[data-modele], [data-depart]');
+      if (b){
+        fenDepart.close();
+        const quoi = b.dataset.depart;
+        if (quoi === 'exemple' && departPremier) return signaler(geste() + ' un cube pour le modifier, ou « Mes fiches » pour en créer une');
+        if (departPremier){ fiches = []; iFiche = 0; }   // l'exemple d'accueil, jamais modifié, laisse la place
+        if (quoi === 'vierge') ficheVierge();
+        else if (quoi === 'exemple'){ ajouterFicheModele(null, fichExemple()); signaler('Exemple ajouté'); }
+        else { ajouterFicheModele(MODELES[b.dataset.modele].arbre); signaler('Modèle « ' + MODELES[b.dataset.modele].nom + ' » ajouté : ' + geste().toLowerCase() + ' un cube pour remplacer l\'indication'); }
+      }
+      else if (e.target.closest('[data-fermer]') || e.target === fenDepart) fenDepart.close();
     });
   }
-  fenModeles.showModal();
-  fenModeles.querySelector('[data-modele]').focus();
-};
+  fenDepart.showModal();
+  fenDepart.querySelector('[data-depart="vierge"]').focus();
+}
+document.getElementById('depuisModele').onclick = () => ouvrirDepart(false);
 document.getElementById('sauvegarde').onclick = () =>
   telecharger('considerant-sauvegarde.json', sansPliagesDeRecitation(() => JSON.stringify({fiches}, null, 1)), 'application/json');
 
@@ -1395,7 +1732,7 @@ function importerFiches(texte){
       });
     };
     const f = Object.assign({}, fi, {racine: norm(fi.racine)});
-    if (sansPosition){ f.mesure = 2; aRanger.add(f); }
+    if (sansPosition){ f.mesure = 3; aRanger.add(f); }
     return f;
   });
   quitterRecitation();
@@ -1452,10 +1789,14 @@ Commun.promptIA(document.getElementById('promptIA'), {
   options: { importer: texte => importerFiches(texte), apres: n => signaler(n > 1 ? n + ' fiches importées' : 'Fiche importée') }
 });
 
-// le bouton dit ce qu'il fera, comme dans les autres outils : « Nuit » le jour, « Jour » la nuit
+// le bouton dit ce qu'il fera, comme dans les autres outils (theme.js) : lune + « Nuit » le jour, soleil + « Jour » la nuit
+const IC_LUNE = '<svg class="ic-theme" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg>';
+const IC_SOLEIL = '<svg class="ic-theme" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>';
 const majBoutonNuit = () => {
   const b = document.getElementById('nuit'), on = estNuit();
-  b.textContent = on ? 'Jour' : 'Nuit'; b.setAttribute('aria-pressed', String(on));
+  b.innerHTML = (on ? IC_SOLEIL : IC_LUNE) + '<span>' + (on ? 'Jour' : 'Nuit') + '</span>';
+  b.removeAttribute('aria-pressed');
+  b.title = on ? 'Revenir au thème clair' : 'Passer au thème sombre';
 };
 document.getElementById('nuit').onclick = () => {
   const on = !estNuit();
@@ -1477,6 +1818,17 @@ document.getElementById('largeurAuto').onclick = () => {
   signaler('Format automatique pour toute la fiche');
 };
 document.getElementById('ranger').onclick = ranger;
+document.getElementById('ranger2').onclick = () => { ranger(); signaler('Arbre rangé — Ctrl+Z pour revenir'); };
+// légende : ouverte sur grand écran ; ailleurs, repliée en un bouton pour ne pas couvrir les cubes ; le choix de l'utilisateur est gardé
+const legende = document.getElementById('legende');
+let legendeChoix = null; try { legendeChoix = localStorage.getItem('considerant_legende'); } catch {}
+// ouverte en une ligne sur grand écran (elle ne couvre plus de cube), repliée ailleurs ; le choix de l'utilisateur est gardé
+legende.open = legendeChoix ? legendeChoix === '1' : innerWidth >= 1200;
+legende.addEventListener('toggle', () => { try { localStorage.setItem('considerant_legende', legende.open ? '1' : '0'); } catch {} });
+document.getElementById('voirLegende').onclick = () => {
+  if (legende.hidden) return signaler('La légende apparaît dès que la fiche a deux grandes parties');
+  legende.open = true;
+};
 // la ligne d'astuces du bas cachait un cube (quatrième passe) : elle se masque, et le reste
 const astuces = document.getElementById('astuces');
 try { if (localStorage.getItem('considerant_astuces_masquees') === '1') astuces.hidden = true; } catch {}
@@ -1489,6 +1841,7 @@ document.getElementById('ajouterIdee').onclick = () => {
 document.getElementById('zplus').onclick = () => zoomer(1.2);
 document.getElementById('zmoins').onclick = () => zoomer(1/1.2);
 document.getElementById('zrecentrer').onclick = recentrer;
+document.getElementById('zpct').onclick = () => zoomer(1 / vue.k);
 const aide = document.getElementById('aide');
 // menus « Fiche ▾ » et « Exporter ▾ » : s'ouvrent au clic, se ferment après un choix, un clic ailleurs ou Échap
 document.querySelectorAll('.menu-b').forEach(m => {
@@ -1583,8 +1936,9 @@ function composerIndexe(echelle, fond){
       const dx = Math.max(24, Math.abs(d - a) * .5);
       ctx.beginPath(); ctx.moveTo(a, b); ctx.bezierCurveTo(a + dx, b, d - dx, f, d, f);
       ctx.strokeStyle = teinteDe(e);
-      ctx.lineWidth = Math.max(1.2, 3 - profDe(e.id) * .5);
-      ctx.lineCap = 'round'; ctx.globalAlpha = .8; ctx.stroke(); ctx.globalAlpha = 1;
+      ctx.lineWidth = Math.max(1.8, 3.4 - profDe(e.id) * .4);
+      const motif = motifDe(e); ctx.setLineDash(motif ? motif.split(' ').map(Number) : []);   // même trait qu'à l'écran
+      ctx.lineCap = 'round'; ctx.globalAlpha = .8; ctx.stroke(); ctx.globalAlpha = 1; ctx.setLineDash([]);
     }
   });
 
@@ -1692,7 +2046,7 @@ function fichExemple(){
   c.enfants.push(fg, dom, lien);
   bloc('Régimes spéciaux', ['Loi Badinter, 5 juillet 1985', 'Produits défectueux — `art. 1245 et s.`', 'Troubles anormaux de voisinage']);
   bloc('Exonérations', ['Force majeure', 'Fait d\'un tiers', 'Faute de la victime']);
-  return {racine: r, mesure: 2};
+  return {racine: r, mesure: 3};
 }
 
 (async function demarrer(){
@@ -1715,6 +2069,8 @@ function fichExemple(){
   majBoutonNuit();
   listerFiches();
   if (document.fonts) await document.fonts.ready.catch(() => {});
+  let vueChoisie = null; try { vueChoisie = localStorage.getItem('considerant_vue'); } catch {}
+  if (vueChoisie ? vueChoisie === 'liste' : innerWidth < 700) choisirVue(true, false);
   rendre();
   if (!sauvegarde) ranger(); else { recentrer(); miseAJourLargeur(); }
   const cubeVise = ancre.get('cube') && trouver(ancre.get('cube'));
@@ -1728,7 +2084,9 @@ function fichExemple(){
   }
   if (ancre.has('fiche')) history.replaceState(null, '', location.pathname);
   if (window.planEnAttente){ ajouterFicheModele(window.planEnAttente); window.planEnAttente = null; signaler('Plan du commentaire ajouté : remplacez les crochets par vos mots'); }
-  if (!(await rangement.lire('attendu-aide-vue'))) aide.classList.add('on');
+  // premier lancement : l'écran « Par où commencer ? » plutôt que l'aide ouverte sur l'exemple
+  else if (!sauvegarde && !cubeVise){ reglagesVus(); ouvrirDepart(true); }
+  else if (!(await rangement.lire('attendu-aide-vue'))) aide.classList.add('on');
 })();
 
 addEventListener('resize', placerReglette);

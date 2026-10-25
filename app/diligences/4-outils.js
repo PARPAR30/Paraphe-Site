@@ -70,6 +70,8 @@ function renderCal() {
     allEvents.push(ev);
   }
   DB.ctr.forEach(function(c) { if (c.fin) addEv(c.fin, c.titre.substring(0, 22), 'ctr', c.titre + ' (' + c.ref + ')'); });
+  // dernier jour pour dénoncer un contrat (fin moins le préavis), comme une échéance à part (7e passe)
+  DB.ctr.forEach(function(c) { var d = sjDenonciation(c); if (d) addEv(sjIso(d), 'Dénoncer : ' + c.titre.substring(0, 14), 'ctr', 'Dernier jour pour dénoncer : ' + c.titre + ' (' + c.ref + ')'); });
   DB.lit.forEach(function(l) {
     if (l.aud) addEv(l.aud, 'Audience ' + l.ref, 'lit', 'Audience — ' + l.obj);
     (l.events || []).forEach(function(ev) {
@@ -121,11 +123,12 @@ function renderCal() {
   var upcoming = allEvents.filter(function(e) { return e.date >= nowStr; }).sort(function(a, b) { return a.date.localeCompare(b.date); });
   // Also gather future events from other months
   var futureEvs = [];
-  DB.ctr.forEach(function(c) { if (c.fin && c.fin >= nowStr) futureEvs.push({ date: c.fin, label: c.titre, cls: 'ctr', full: c.titre + ' (' + c.ref + ')' }); });
+  DB.ctr.forEach(function(c) { if (c.fin && c.fin >= nowStr) futureEvs.push({ date: c.fin, label: c.titre, cls: 'ctr', full: c.titre + ' (' + c.ref + ')', type: 'Fin du contrat', partie: c.partie || '' }); });
+  DB.ctr.forEach(function(c) { var d = sjDenonciation(c); if (d && sjIso(d) >= nowStr) futureEvs.push({ date: sjIso(d), label: 'Dernier jour pour dénoncer : ' + c.titre, cls: 'ctr', full: 'Dernier jour pour dénoncer : ' + c.titre + ' (' + c.ref + ')', type: 'Dernier jour pour dénoncer', partie: c.partie || '' }); });
   DB.lit.forEach(function(l) {
-    if (l.aud && l.aud >= nowStr) futureEvs.push({ date: l.aud, label: 'Audience ' + l.ref, cls: 'lit', full: 'Audience — ' + l.obj });
+    if (l.aud && l.aud >= nowStr) futureEvs.push({ date: l.aud, label: 'Audience ' + l.ref, cls: 'lit', full: 'Audience — ' + l.obj + (l.aud_heure ? ' à ' + l.aud_heure.replace(':', ' h ') : '') + (l.chambre ? ' (' + l.chambre + ')' : ''), type: 'Audience', partie: l.adv || '' });
     (l.events || []).forEach(function(ev) {
-      if (ev.date && ev.date >= nowStr) futureEvs.push({ date: ev.date, label: ev.type + ' ' + l.ref, cls: ev.type === 'Audience' ? 'lit' : 'proc', full: ev.type + ' — ' + l.obj });
+      if (ev.date && ev.date >= nowStr) futureEvs.push({ date: ev.date, label: ev.type + ' ' + l.ref, cls: ev.type === 'Audience' ? 'lit' : 'proc', full: ev.type + ' — ' + l.obj, type: ev.type, partie: l.adv || '' });
     });
   });
   // Deduplicate by date+label
@@ -138,8 +141,12 @@ function renderCal() {
   var liste = document.getElementById('cal-liste');
   if (liste) {
     liste.innerHTML = futureEvs.length ? futureEvs.map(function(ev) {
-      return '<tr><td>' + fmtDate(ev.date) + '</td><td>' + esc(ev.full) + '</td><td>' + jxBadge(ev.date) + '</td></tr>';
-    }).join('') : '<tr><td colspan="3" style="color:var(--text2);text-align:center;padding:20px">Aucune échéance à venir</td></tr>';
+      return '<tr><td>' + fmtDate(ev.date) + '</td><td>' + esc(ev.type || '') + '</td><td>' + esc(ev.full) + '</td><td>' + esc(ev.partie || '') + '</td><td>' + jxBadge(ev.date) + '</td></tr>';
+    }).join('') : '<tr><td colspan="5" style="color:var(--text2);text-align:center;padding:20px">Aucune échéance à venir</td></tr>';
+    var csv = document.getElementById('cal-liste-csv');
+    if (csv) csv.onclick = function() {
+      downloadCSV(toCSV(futureEvs.map(function(ev) { return [ev.date, ev.type || '', ev.full, ev.partie || '']; }), ['Date', 'Type', 'Échéance', 'Partie']), 'echeances-' + new Date().toLocaleDateString('sv-SE') + '.csv');
+    };
     var choix = null; try { choix = localStorage.getItem('sj_cal_vue'); } catch (e) {}
     var moisVide = !allEvents.some(function(e) { return e.date.slice(0, 7) === calYear + '-' + String(calMonth + 1).padStart(2, '0'); });
     calVue(choix || (moisVide && futureEvs.length ? 'liste' : 'cal'), false);

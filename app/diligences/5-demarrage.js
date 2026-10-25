@@ -57,6 +57,7 @@ function attachTableStep3() {
         {l:'Valeur',           v: valStr, c: c.val?'c-gold':''},
         {l:'Échéance',         v: c.fin ? fmtDate(c.fin) : 'Sans fin', c: daysLeft<=30?'c-warn':''},
         {l:'Jours restants',   v: daysLeft !== null ? daysLeft+' j' : '—', c: daysLeft<=7?'c-red':daysLeft<=30?'c-warn':''},
+        {l:'Dernier jour pour dénoncer', v: sjDenonciation(c) ? fmtDate(sjIso(sjDenonciation(c))) + (c.tacite ? ' (sinon renouvelé)' : '') : (c.tacite ? 'Renouvellement tacite' : '—')},
         {l:'Statut',           v: c.stat, c: c.stat==='En cours'?'c-blue':'c-green'},
         {l:'Tags',             v: c.tags ? c.tags.length : 0},
         {l:'Litiges liés',     v: litCount || 0, c: litCount>0?'c-red':'c-green'},
@@ -667,7 +668,7 @@ function openRapport() {
   var horizon = _rxJours;
   var auj = new Date(); auj.setHours(0, 0, 0, 0);
   var aujIso = auj.toLocaleDateString('sv-SE');
-  var nomPf = ''; try { var pf = pfAll().find(function(x) { return x.id === _pfActive; }); nomPf = pf && pf.name ? pf.name : ''; } catch (e) {}
+  var nomPf = ''; try { var pf = pfAll().find(function(x) { return x.id === _pfActive; }); nomPf = pf && pf.name && !/^(Profil \d+|Mon profil)$/.test(pf.name) ? pf.name : ''; } catch (e) {}
   document.getElementById('rapport-date').textContent = (nomPf ? nomPf + ' · ' : '') + 'au ' + rxDate(aujIso, true) + ' · horizon : ' + horizon + ' jours';
   document.getElementById('rapport-footer-date').textContent = 'Édité le ' + auj.toLocaleDateString('fr-FR');
   document.querySelectorAll('[data-rx-jours]').forEach(function(b) { b.setAttribute('aria-pressed', String(+b.dataset.rxJours === horizon)); });
@@ -703,7 +704,9 @@ function openRapport() {
   DB.lit.forEach(function(l) { (l.temps || []).forEach(function(t) { var j = sjJours(t.date); if (j <= 0 && j >= -horizon) minPeriode += (+t.min || 0); }); });
   if (minPeriode) bref.push(tpsFormat(minPeriode) + ' de temps saisi sur les ' + horizon + ' derniers jours.');
   if (aCompleter.length) bref.push(rxPl(aCompleter.length, 'dossier incomplet', 'dossiers incomplets') + ' : voir « À compléter » en fin de rapport.');
-  o += '<section class="rx-bloc rx-bref"><h2>En bref</h2><ul>' + bref.map(function(t) { return '<li>' + t + '</li>'; }).join('') + '</ul></section>';
+  o += '<section class="rx-bloc rx-bref"><h2>En bref</h2><ul>' + bref.map(function(t) { return '<li>' + t + '</li>'; }).join('') + '</ul>'
+    // 8e passe : « LIT-, CTR- jamais expliqués »
+    + '<p class="rx-texte" data-sans-sigles>Références : LIT-0001 désigne le litige n° 1, CTR-0001 le contrat n° 1 ; elles servent à les retrouver dans Diligences.</p></section>';
 
   // 2. Calendrier
   var MAX = 25;

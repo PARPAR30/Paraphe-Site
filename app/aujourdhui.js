@@ -34,9 +34,28 @@ window.ParapheJour = (() => {
   function memo() {
     const cartes = lire("droit_flashcards");
     if (!Array.isArray(cartes) || !cartes.length)
-      return { outil: "Fiches mémo", href: "flashcards.html?reviser=1", texte: "Des cartes d'exemple vous attendent, de la L1 au M2 : révisez-en cinq pour commencer.", action: "Réviser" };
+      return { outil: "Fiches mémo", href: "flashcards.html?reviser=1", texte: "Des cartes d'exemple vous attendent, de la licence au master : révisez-en cinq pour commencer.", action: "Réviser" };
     const auj = iso();
-    const dues = cartes.filter(c => !c.dueDate || c.dueDate <= auj);
+    // même règle que Fiches mémo : les cartes d'exemple d'un autre niveau restent en réserve,
+    // et 20 nouvelles cartes d'exemple au plus entrent en révision chaque jour
+    let annee = null; try { annee = localStorage.getItem("droit_flashcards_annee"); } catch {}
+    const plan0 = lire("droit_flashcards_examen");
+    const ORDRE = ["L1", "L2", "L3", "M1", "M2"];
+    const voulu = annee === "M" ? ["M1", "M2"] : { L1: ["L1"], L2: ["L1", "L2"], L3: ["L1", "L2", "L3"] }[annee];
+    const exemple = c => String(c.id).startsWith("seed-fc-"), neuve = c => !c.vue && !c.reps && !c.interval;
+    const reserve = c => {
+      if (!voulu || !exemple(c) || !neuve(c)) return false;
+      const niv = c.niveau || (/^seed-fc-\d+$/.test(c.id) ? "M1-M2" : ""); if (!niv) return false;
+      const [a, b] = niv.split("-"), couverts = b ? ORDRE.slice(ORDRE.indexOf(a), ORDRE.indexOf(b) + 1) : [a];
+      return !voulu.some(v => couverts.includes(v));
+    };
+    const planEnCours = !!(plan0 && plan0.date && plan0.date >= auj);   // un planning d'examen dose déjà les cartes
+    let place = Math.max(0, 20 - cartes.filter(c => c.premiereFois === auj).length);
+    const dues = cartes.filter(c => {
+      if (reserve(c)) return false;
+      if (exemple(c) && neuve(c) && !planEnCours) return (!c.dueDate || c.dueDate <= auj) && place-- > 0;
+      return !c.dueDate || c.dueDate <= auj;
+    });
     const plan = lire("droit_flashcards_examen");
     let suite = "";
     if (plan && plan.date) {
@@ -56,7 +75,7 @@ window.ParapheJour = (() => {
   function quantieme() {
     const r = lire("quantieme_echeances");
     const lignes = r && Array.isArray(r.echeances) ? r.echeances : [];
-    if (!r) return { outil: "Quantième", href: "quantieme.html", texte: "Calculez les délais d'une procédure, puis gardez-les dans l'agenda de Quantième : ils s'afficheront ici.", action: "Calculer" };
+    if (!r) return { outil: "Quantième", href: "quantieme.html", texte: "Calculez les délais d'une procédure, puis gardez-les dans l'agenda de Quantième : ils s'afficheront ici.", action: "Calculer", intro: true };
     if (!lignes.length) return { outil: "Quantième", href: "quantieme.html", texte: "Aucun délai dans les 90 prochains jours.", action: "Ouvrir" };
     // les dates limites d'abord : une date estimée n'est jamais pressante
     const limites = lignes.filter(e => e.nature !== "indicatif");
@@ -73,7 +92,7 @@ window.ParapheJour = (() => {
   function diligences() {
     const profils = lire("sj-profiles") || [];
     if (!Array.isArray(profils) || !profils.length)
-      return { outil: "Diligences", href: "diligences.html", texte: "Ajoutez un premier dossier pour suivre ses audiences et ses échéances.", action: "Commencer" };
+      return { outil: "Diligences", href: "diligences.html", texte: "Ajoutez un premier dossier pour suivre ses audiences et ses échéances.", action: "Commencer", intro: true };
     const dates = [], verrouilles = [];
     profils.forEach(p => {
       const db = lire("sjp-" + p.id + "-data");
@@ -112,7 +131,7 @@ window.ParapheJour = (() => {
   function considerant() {
     const c = lire("attendu-cubes-v1");
     const fiches = c && Array.isArray(c.fiches) ? c.fiches : [];
-    if (!fiches.length) return { outil: "Considérant", href: "considerant.html", texte: "Construisez un raisonnement en arbre, ou partez d'un modèle (cas pratique, consultation…).", action: "Commencer" };
+    if (!fiches.length) return { outil: "Considérant", href: "considerant.html", texte: "Construisez un raisonnement en arbre, ou partez d'un modèle (cas pratique, consultation…).", action: "Commencer", intro: true };
     const i = fiches[c.iFiche] ? c.iFiche : 0, f = fiches[i];
     let cubes = 0;
     (function compter(n) { if (!n) return; cubes++; (n.enfants || []).forEach(compter); })(f.racine);
@@ -120,21 +139,31 @@ window.ParapheJour = (() => {
       texte: `« ${echapper((f.racine && f.racine.t) || "Fiche sans titre")} » · ${pluriel(cubes, "idée", "idées")}`, action: "Reprendre" };
   }
 
+  // juridiction écrite en entier sur l'accueil (6e passe : « CJUE » restait en sigle)
+  const EN_ENTIER = { CJUE: "Cour de justice de l'Union européenne", CEDH: "Cour européenne des droits de l'homme", CIJ: "Cour internationale de justice" };
+
   /* ── Fiches d'arrêt : un arrêt du jour, parmi les vôtres et ceux préchargés ── */
   function arret() {
     let fiches = lire("droit_fiches_arret");
-    if (!Array.isArray(fiches) || !fiches.length) fiches = window.JURISPRUDENCE || [];
+    if (!Array.isArray(fiches) || !fiches.length) {
+      // l'arrêt du jour d'un débutant est un arrêt de licence (8e passe : un arrêt de master à l'accueil)
+      const jp = window.JURISPRUDENCE || [];
+      let annee = ""; try { annee = localStorage.getItem("droit_flashcards_annee") || ""; } catch {}
+      const niv = annee === "M" ? ["M1", "M2"] : ["L1", "L2"];
+      const choisis = jp.filter(f => String(f.niveau || "").split("-").some(n => niv.includes(n)));
+      fiches = choisis.length ? choisis : jp;
+    }
     const f = duJour(fiches.filter(x => x && x.titre));
-    if (!f) return { outil: "Fiches d'arrêt", href: "fiches-arret.html", texte: "Fichez un premier arrêt : faits, procédure, problème, solution, portée.", action: "Commencer" };
+    if (!f) return { outil: "Fiches d'arrêt", href: "fiches-arret.html", texte: "Fichez un premier arrêt : faits, procédure, problème, solution, portée.", action: "Commencer", intro: true };
     const quandArret = f.date ? new Date(f.date + "T12:00").toLocaleDateString("fr-FR", { day: "numeric", month: "short", year: "numeric" }) : "";
     return { outil: "Fiches d'arrêt", href: "fiches-arret.html#" + encodeURIComponent(f.id),
-      texte: `Arrêt du jour : <b>${echapper(f.titre)}</b>${f.juridiction ? ", " + echapper(f.juridiction) : ""}${quandArret ? ", " + quandArret : ""}`, action: "Relire" };
+      texte: `Arrêt du jour : <b>${echapper(f.titre)}</b>${f.juridiction && f.juridiction !== "Autre" ? ", " + echapper(EN_ENTIER[f.juridiction] || f.juridiction) : ""}${quandArret ? ", " + quandArret : ""}`, action: "Relire" };
   }
 
   /* ── Codes & articles : un article « à retenir » à relire ── */
   function codes() {
     const articles = lire("droit_codes");
-    if (!Array.isArray(articles) || !articles.length) return { outil: "Codes & articles", href: "codes.html", texte: "Les articles cités par les fiches d'arrêt et par Quantième sont déjà là, avec leur texte officiel daté.", action: "Ouvrir" };
+    if (!Array.isArray(articles) || !articles.length) return { outil: "Codes & articles", href: "codes.html", texte: "Les articles cités par les fiches d'arrêt et par Quantième sont déjà là, avec leur texte officiel daté.", action: "Ouvrir", intro: true };
     const retenus = articles.filter(a => a.star);
     const a = duJour(retenus.length ? retenus : articles);
     return { outil: "Codes & articles", href: "codes.html#art-" + encodeURIComponent(a.id),
@@ -146,7 +175,10 @@ window.ParapheJour = (() => {
     etudier: ["memo", "arret", "codes", "considerant", "quantieme", "diligences"],
     exercer: ["quantieme", "diligences", "considerant", "memo", "arret", "codes"],
     "": ["memo", "quantieme", "diligences", "considerant", "arret", "codes"],
+    particulier: ["quantieme", "diligences", "codes", "considerant", "memo", "arret"],
   };
+  // « intro » : une ligne qui ne fait que présenter un outil encore vide ; l'accueil la tait, ses tuiles le présentent déjà
+  // (6e passe : « chaque outil est présenté deux ou trois fois »)
   const SOURCES = { memo, quantieme, diligences, considerant, arret, codes };
 
   function collecter() {

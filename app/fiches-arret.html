@@ -65,7 +65,7 @@
 <main class="arrets large">
   <p class="eyebrow">Analyse de jurisprudence</p>
   <h1>Fiches d'arrêt</h1>
-  <p class="muted">Une fiche par décision : faits, procédure, problème de droit, solution et portée. 352 arrêts de référence sont préchargés, chacun avec sa juridiction et sa date pour le retrouver dans votre cours ou sur Légifrance.</p>
+  <p class="muted">Une fiche par décision : faits, procédure, problème de droit, solution et portée. 355 arrêts de référence sont préchargés, chacun avec sa juridiction et sa date pour le retrouver dans votre cours ou sur Légifrance.</p>
 
   <div class="card" id="panneauFiche" hidden>
     <div class="panneau-tete"><h2 id="formTitle" class="titre-3">Nouvelle fiche</h2><button type="button" id="fermerPanneau" aria-label="Fermer le formulaire">Fermer</button></div>
@@ -97,7 +97,7 @@
       </div>
     </div>
     <label for="fMatiere">Matière</label>
-    <input type="text" id="fMatiere" list="matiereList" placeholder="ex. Droit des obligations">
+    <input type="text" id="fMatiere" list="matiereList" placeholder="Choisissez dans la liste ou écrivez une matière">
     <datalist id="matiereList"></datalist>
     <label for="fNiveau">Niveau d'étude</label>
     <select id="fNiveau"><option value="">Non précisé</option><option value="L1">Licence 1</option><option value="L2">Licence 2</option><option value="L3">Licence 3</option><option value="M1">Master 1</option><option value="M2">Master 2</option></select>
@@ -143,7 +143,7 @@
       <button type="button" id="nouvelleFiche" class="primary">+ Nouvelle fiche</button>
       <div class="barre-groupe" role="group" aria-label="Importer">
         <span class="barre-titre">Importer</span>
-        <button type="button" id="importBtn" title="Reprendre un fichier .json enregistré depuis cet outil">Depuis un fichier</button>
+        <button type="button" id="importBtn" title="Reprendre un fichier .json enregistré depuis cet outil, ou reçu d'un autre utilisateur de Paraphe">Depuis un fichier<span class="sous">enregistré ou partagé depuis Paraphe</span></button>
         <button type="button" id="promptIA" title="Copie une consigne à coller dans l'IA de votre choix, avec votre document : elle le convertit au format d'import. Paraphe n'envoie rien.">Avec une IA</button>
       </div>
       <p class="barre-note">« Avec une IA » copie une consigne à coller dans l'IA de votre choix : Paraphe n'envoie rien.</p>
@@ -181,6 +181,7 @@
 
 <script src="commun.js"></script>
 <script src="jurisprudence.js"></script>
+<script src="bibliotheque/catalogue.js"></script>
 <script src="liens-juridiques.js"></script>
 <script>
 const STORAGE_KEY = "droit_fiches_arret";
@@ -319,8 +320,17 @@ const NIVEAU_ANCIEN = { "Blanco": "L2", "Société commerciale de l'Ouest africa
 SEED.forEach(f => { if (NIVEAU_ANCIEN[f.titre]) f.niveau = NIVEAU_ANCIEN[f.titre]; });
 // Un exemple n'est ajouté que si l'utilisateur n'a pas déjà la même décision (même date, même titre)
 const cleDecision = f => (f.date || "") + "|" + String(f.titre || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, " ").trim();
+// Fiches préchargées changées de matière après coup : la copie déjà enregistrée suit, sauf si l'utilisateur a modifié la matière
+// (25 oct. 2026 : Cohn-Bendit et Perreux, décisions du Conseil d'État, passent du droit constitutionnel au droit administratif)
+const MATIERE_CORRIGEE = {
+  "seed-jp-1978-12-22-cohn-bendit-ass": ["Droit constitutionnel", "Droit administratif"],
+  "seed-jp-2009-10-30-mme-perreux-ass": ["Droit constitutionnel", "Droit administratif"]
+};
 function loadFiches() {
   const existantes = Commun.lire(STORAGE_KEY, []);
+  let corrigees = false;
+  existantes.forEach(f => { const c = MATIERE_CORRIGEE[f.id]; if (c && f.matiere === c[0]) { f.matiere = c[1]; corrigees = true; } });
+  if (corrigees) Commun.ecrire(STORAGE_KEY, existantes);
   const vues = new Set(existantes.map(cleDecision)), ids = new Set(existantes.map(f => f.id));
   const exemples = SEED.concat(window.JURISPRUDENCE || []).filter(f => ids.has(f.id) || !vues.has(cleDecision(f)));
   return Commun.avecExemples(STORAGE_KEY, exemples, DELETED_SEEDS_KEY);
@@ -349,6 +359,11 @@ function titreEnEntier(f) {
     : f.juridiction === "Conseil d'État" && m === "Sect." ? "section du contentieux"
     : FORMATIONS[m] || m).join(", ") + ")");
 }
+const _cssLisible = document.head.appendChild(document.createElement("style"));
+_cssLisible.textContent = ".fiche-date{white-space:nowrap;font-size:calc(14px * var(--ech));color:var(--encre-2)}"
+  + ".ouvrir-fiche{margin-left:var(--e2);font-weight:600;color:rgb(var(--acc))}"
+  + "#ficheList .card.ouverte > p{max-width:75ch;line-height:1.6}"
+  + "#ficheList .badge.etiquette{color:var(--encre-2)}";
 const sansAccents = t => String(t || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, " ").trim();
 // Étiquettes des fiches écrites en entier (test par 100 utilisateurs fictifs : « CJUE », « L3-M1 » bloquaient)
 const JURIDICTIONS_EN_ENTIER = { CJUE: "Cour de justice de l'Union européenne", CEDH: "Cour européenne des droits de l'homme", CIJ: "Cour internationale de justice" };
@@ -368,6 +383,7 @@ const CHAMPS = [
 ];
 
 let fiches = loadFiches();
+fiches.forEach(f => { if (estPrechargee(f) && f.matiere === "Libertés fondamentales et CEDH") f.matiere = "Libertés fondamentales"; });
 saveFiches(fiches);
 let expanded = new Set();
 
@@ -487,6 +503,15 @@ document.getElementById("saveBtn").addEventListener("click", () => {
     const idx = fiches.findIndex(f => f.id === id);
     if (idx >= 0) fiches[idx] = data;
   } else {
+    // même décision déjà là (fournie avec Paraphe ou déjà fichée) : on le dit avant de créer un doublon (6e passe)
+    const mots = t => String(t || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, " ").trim();
+    const nom = t => mots(t).split(" ").find(m => m.length > 3) || mots(t);
+    const double = fiches.find(f => cleDecision(f) === cleDecision(data)
+      || (data.date && f.date === data.date && (mots(f.titre).includes(nom(data.titre)) || mots(data.titre).includes(nom(f.titre)))));
+    if (double && !confirm("Cette décision a déjà une fiche : « " + double.titre + " »" + (estPrechargee(double) ? ", fournie avec Paraphe" : "")
+        + ".\n\nOK : l'enregistrer quand même, en double.\nAnnuler : revenir à la fiche existante.")) {
+      resetForm(); expanded.add(double.id); renderList(); montrerFiche(double.id); return;
+    }
     fiches.push(data);
   }
   saveFiches(fiches);
@@ -547,9 +572,26 @@ function fichesFiltrees() {
     (!origine || (origine === "miennes") === !estPrechargee(f)) &&
     (!matiere || f.matiere === matiere) &&
     (!niveau || (f.niveau || "").split("-").includes(niveau)) &&
+    (!filtreAnnee() || !f.niveau || !estPrechargee(f) || (f.niveau || "").split("-").some(n => NIVEAUX_ANNEE.includes(n))) &&
     (!juridiction || f.juridiction === juridiction) &&
     (!tag || (f.tags || []).some(t => sansAccents(t) === tag || sansAccents(t).includes(tag))) &&
     (!search || Object.values(f).join(" ").toLowerCase().includes(search)));
+}
+
+// L'année d'études choisie dans Fiches mémo (5e passe du panel : une L1 voyait d'abord des arrêts de master)
+const ANNEE_ETUDES = (() => { try { return localStorage.getItem("droit_flashcards_annee"); } catch { return null; } })();
+const RANG_ANNEE = { L1: 1, L2: 2, L3: 3, M: 4 }[ANNEE_ETUDES] || 0;   // 0 : pas d'année choisie, ou « toutes »
+const NOM_ANNEE = { L1: "Licence 1", L2: "Licence 2", L3: "Licence 3", M: "Master" }[ANNEE_ETUDES] || "";
+// 8e passe : une L1 tombait sur des arrêts de master en faisant défiler ; les fiches préchargées de son année (et des
+// précédentes, en licence) seules, tant qu'elle ne cherche rien et n'a pas demandé à tout voir
+const NIVEAUX_ANNEE = { L1: ["L1"], L2: ["L1", "L2"], L3: ["L1", "L2", "L3"], M: ["L3", "M1", "M2"] }[ANNEE_ETUDES] || [];
+let tousNiveaux = false;
+const filtreAnnee = () => NIVEAUX_ANNEE.length && !tousNiveaux && !document.getElementById("searchBox").value.trim() && !document.getElementById("filterNiveau").value;
+// distance entre le niveau d'une fiche (« L2 », « L3-M1 ») et l'année choisie : 0 si elle la couvre
+function ecartAnnee(f) {
+  const rangs = String(f.niveau || "").split("-").map(n => ({ L1: 1, L2: 2, L3: 3, M1: 4, M2: 4 })[n]).filter(Boolean);
+  if (!RANG_ANNEE || !rangs.length) return 2.5;
+  return Math.min(...rangs.map(r => Math.abs(r - RANG_ANNEE) + (r > RANG_ANNEE ? 0.5 : 0)));   // à égalité, l'année précédente d'abord
 }
 
 // Affichage par lots : 30 fiches, puis « Afficher plus ». Le lot revient à 30 quand la recherche
@@ -561,7 +603,10 @@ function renderList() {
   const list = document.getElementById("ficheList");
   const filtered = fichesFiltrees();
 
-  filtered.sort((a, b) => (b.date || "").localeCompare(a.date || ""));
+  // vos fiches d'abord, puis celles de votre année d'études, puis les plus récentes
+  // sans année choisie (ou « toutes »), de la licence vers le master (6e passe : la liste s'ouvrait sur des arrêts de master)
+  const rangMin = f => Math.min(5, ...String(f.niveau || "").split("-").map(n => ({ L1: 1, L2: 2, L3: 3, M1: 4, M2: 4 })[n]).filter(Boolean));
+  filtered.sort((a, b) => (estPrechargee(a) - estPrechargee(b)) || (RANG_ANNEE ? ecartAnnee(a) - ecartAnnee(b) : rangMin(a) - rangMin(b)) || (b.date || "").localeCompare(a.date || ""));
 
   const signature = ["searchBox", "filterMatiere", "filterJuridiction", "filterTag", "filterNiveau", "filterOrigine"].map(id => document.getElementById(id).value).join("|");
   if (signature !== signatureFiltres) { signatureFiltres = signature; limite = LOT; }
@@ -577,7 +622,10 @@ function renderList() {
   }
 
 
-  document.getElementById("compteListe").textContent = filtered.length + (filtered.length > 1 ? " fiches" : " fiche") + (filtered.length < fiches.length ? " sur " + fiches.length : "");
+  document.getElementById("compteListe").innerHTML = escapeHtml(filtered.length + (filtered.length > 1 ? " fiches" : " fiche") + (filtered.length < fiches.length ? " sur " + fiches.length : ""))
+    + (filtreAnnee() ? " · arrêts de " + escapeHtml(NOM_ANNEE) + ' · <button type="button" class="lien" id="tousNiveaux">voir aussi les autres niveaux</button>'
+      : NOM_ANNEE && !document.getElementById("filterNiveau").value ? " · " + escapeHtml(NOM_ANNEE) + " en tête" : "");
+  const bt = document.getElementById("tousNiveaux"); if (bt) bt.onclick = () => { tousNiveaux = true; renderList(); };
   list.innerHTML = filtered.slice(0, limite).map(f => {
     const isOpen = expanded.has(f.id);
     const mat = Commun.classeMatiere(f.matiere);
@@ -585,15 +633,15 @@ function renderList() {
     <div class="card${mat ? " repere " + mat : ""}${isOpen ? " ouverte" : ""}">
       <div class="row between" style="cursor:pointer;" data-toggle="${escapeHtml(f.id)}" id="fiche-${escapeHtml(f.id)}" role="button" tabindex="0" aria-expanded="${isOpen}">
         <div>
-          <strong>${escapeHtml(titreEnEntier(f))}</strong>
+          <strong${estPrechargee(f) ? "" : " data-sans-sigles"}>${escapeHtml(estPrechargee(f) ? titreEnEntier(f) : f.titre)}</strong>
           ${estPrechargee(f) ? "" : '<span class="badge ma-fiche">Ma fiche</span>'}
           <span class="badge" style="margin-left:0.5rem;">${escapeHtml(juridictionEnEntier(f.juridiction))}</span>
           ${f.niveau ? `<span class="badge" style="margin-left:0.3rem;">${escapeHtml(niveauEnEntier(f.niveau))}</span>` : ""}
           ${f.matiere ? `<span class="badge${mat ? " matiere" : ""}" style="margin-left:0.3rem;">${escapeHtml(matiereEnEntier(f.matiere))}</span>` : ""}
-          ${(isOpen ? (f.tags || []) : (f.tags || []).slice(0, 3)).map(t => `<span class="badge etiquette">#${escapeHtml(t)}</span>`).join("")}
-          ${!isOpen && (f.tags || []).length > 3 ? `<span class="badge etiquette plus" title="${escapeHtml(f.tags.slice(3).map(t => "#" + t).join(" "))}">+${f.tags.length - 3}</span>` : ""}
+          ${/* 7e passe : « trop d'étiquettes par fiche » ; fermée, une fiche montre juridiction, niveau et matière, ses #étiquettes à l'ouverture */
+            isOpen ? (f.tags || []).map(t => `<span class="badge etiquette">#${escapeHtml(t)}</span>`).join("") : ""}
         </div>
-        <span class="muted" style="white-space:nowrap;">${escapeHtml(dateFr(f.date))} ${isOpen ? "▲" : "▼"}</span>
+        <span class="fiche-date">${escapeHtml(dateFr(f.date))} <span class="ouvrir-fiche">${isOpen ? "Fermer ▲" : "Lire la fiche ▼"}</span></span>
       </div>
       ${isOpen ? `
         <hr class="sep">
@@ -602,6 +650,7 @@ function renderList() {
         <div class="row end">
           <button data-commentaire="${escapeHtml(f.id)}" title="Un plan de commentaire pré-rempli à partir de cette fiche, avec les conseils de méthode">Préparer le commentaire</button>
           <button data-memo="${escapeHtml(f.id)}" title="Créer des cartes de révision (problème, solution, attendu, portée)">→ Fiches mémo</button>
+          <button data-partager="${escapeHtml(f.id)}" title="Un fichier avec cette fiche, à envoyer : il s'importe avec « Depuis un fichier »">Partager</button>
           <button data-edit="${escapeHtml(f.id)}">Modifier</button>
           <button class="danger" data-delete="${escapeHtml(f.id)}">Supprimer</button>
         </div>
@@ -613,11 +662,18 @@ function renderList() {
 }
 
 document.getElementById("ficheList").addEventListener("click", (e) => {
-  const el = e.target.closest("[data-toggle], [data-edit], [data-delete], [data-memo], [data-plus], [data-commentaire]");
+  const el = e.target.closest("[data-toggle], [data-edit], [data-delete], [data-memo], [data-plus], [data-commentaire], [data-partager]");
   if (!el) return;
   if (el.hasAttribute("data-plus")) {
     const premiere = limite; limite += LOT; renderList();
     document.querySelectorAll("#ficheList [data-toggle]")[premiere]?.focus();   /* le clavier reprend à la première fiche ajoutée */
+    return;
+  }
+  if (el.dataset.partager) {
+    const f = fiches.find(x => x.id === el.dataset.partager); if (!f) return;
+    const { id, ...sans } = f;
+    Commun.telecharger("fiche-" + sansAccents(f.titre).replace(/ /g, "-").slice(0, 50) + ".json", JSON.stringify([sans], null, 2));
+    Commun.annoncer("Fiche « " + f.titre + " » mise dans un fichier. Envoyez-le : la personne l'importe avec « Depuis un fichier ».");
     return;
   }
   if (el.dataset.commentaire) preparerCommentaire(el.dataset.commentaire);
@@ -655,16 +711,18 @@ function articlesLies(f) {
   const articles = Commun.lire("droit_codes", []);
   const lies = articles.filter(a => (a.arrets || []).includes(f.id));
   const refs = window.ParapheRefs ? window.ParapheRefs.extraire([f.probleme, f.solution, f.attendu, f.portee, f.procedure].join(" ")) : [];
-  const liens = lies.map(a => `<a class="lien-croise" href="codes.html#art-${encodeURIComponent(a.id)}">Art. ${escapeHtml(a.numero)} ${escapeHtml(a.code || "")}</a>`);
+  const liens = lies.map(a => `<a class="lien-croise" href="codes.html#art-${encodeURIComponent(a.id)}" data-sans-sigles>Art. ${escapeHtml(a.numero)} ${escapeHtml(a.code || "")}</a>`);
   refs.forEach(r => {
     const a = window.ParapheRefs.trouver(articles, r);
     if (a && lies.includes(a)) return;
     const libelle = "Art. " + escapeHtml(r.numero.replace(/^1ER$/, "1er").replace(/^PRELIMINAIRE$/, "préliminaire")) + " " + escapeHtml(NOMS_CODES[r.code] || r.code);
+    const dansLesCodes = ((window.PARAPHE_CATALOGUE || {}).codes || []).some(c => c.ref === r.code);
     liens.push(a ? `<a class="lien-croise" href="codes.html#art-${encodeURIComponent(a.id)}">${libelle}</a>`
+      : dansLesCodes ? `<a class="lien-croise" href="codes.html#code=${r.code}&art=${encodeURIComponent(r.numero)}" title="Lire l'article dans Codes & articles, onglet « Tous les codes »">${libelle}</a>`
       : `<a class="lien-croise" href="https://www.legifrance.gouv.fr/search/all?tab_selection=all&searchField=ALL&query=${encodeURIComponent("article " + r.numero + " " + (REQUETES_CODES[r.code] || r.code))}&page=1&init=true" target="_blank" rel="noopener" title="Pas encore dans vos articles : ouvrir sur Légifrance">${libelle} ↗</a>`);
   });
   if (!liens.length) return "";
-  return `<p><strong>Articles appliqués.</strong> ${liens.join(" · ")}</p>`;
+  return `<p><strong>Articles cités.</strong> ${liens.join(" · ")}</p>`;
 }
 
 // --- Méthode du commentaire guidée : un plan I / II, A / B pré-rempli depuis la fiche, avec la méthode ---
@@ -676,7 +734,8 @@ function planCommentaire(f) {
       elements: [["Accroche", aRediger("une phrase qui situe le thème" + (f.matiere ? " (" + f.matiere.toLowerCase() + ")" : ""))], ["Faits", f.faits], ["Procédure", f.procedure],
         ["Problème de droit", f.probleme], ["Solution", f.solution], ["Annonce du plan", aRediger("I. … puis II. …")]] },
     { titre: "I. " + aRediger("Le sens de la décision, avec les mots de l'arrêt"), conseil: ["Expliquez avant de juger : que dit la Cour, sur quel texte, avec quels mots (« seul », « nécessairement », « en principe ») ?", "Chaque sous-partie s'appuie sur un passage précis de la décision."],
-      elements: [["A. " + aRediger("La règle posée"), f.attendu || f.solution], ["B. " + aRediger("Sa justification"), aRediger("le raisonnement de la Cour, le texte appliqué, l'interprétation retenue")]] },
+      // 8e passe : le I.A recopiait la solution brute ; elle devient une citation à reformuler avec les mots de l'arrêt
+      elements: [["A. " + aRediger("La règle posée, avec les mots de l'arrêt"), "À citer puis reformuler : « " + (f.attendu || f.solution) + " »"], ["B. " + aRediger("Sa justification"), aRediger("le raisonnement de la Cour, le texte appliqué, l'interprétation retenue")]] },
     { titre: "II. " + aRediger("La valeur et la portée de la décision"), conseil: ["Appréciez : la solution est-elle conforme aux textes et à la jurisprudence antérieure ? Est-elle opportune ?", "La portée : arrêt de principe ou d'espèce, publié ou non, confirmé ou contredit depuis."],
       elements: [["A. " + aRediger("Une solution approuvée ou discutée"), aRediger("doctrine, cohérence avec la jurisprudence antérieure")], ["B. " + aRediger("Une portée de principe ou d'espèce"), f.portee]] },
   ] };

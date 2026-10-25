@@ -768,8 +768,8 @@ function applyHue(h,choisi){
 }
 function renderSettings(){
   // Theme buttons
-  document.getElementById('set-dark').onclick=function(){document.body.classList.remove('light');sjSaveTheme();applyPalette('encre',true);document.getElementById('theme-btn').innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';};
-  document.getElementById('set-light').onclick=function(){document.body.classList.add('light');sjSaveTheme();document.getElementById('theme-btn').innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="4.22" x2="19.78" y2="5.64"/></svg>';};
+  document.getElementById('set-dark').onclick=function(){document.getElementById('theme-btn').title='Revenir au thème clair';document.body.classList.remove('light');sjSaveTheme();applyPalette('encre',true);document.getElementById('theme-btn').innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="4.22" x2="19.78" y2="5.64"/></svg>';};
+  document.getElementById('set-light').onclick=function(){document.getElementById('theme-btn').title='Passer au thème sombre';document.body.classList.add('light');sjSaveTheme();document.getElementById('theme-btn').innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';};
   document.getElementById('set-blue').onclick=function(){document.body.classList.remove('light');sjSaveTheme();applyPalette('blue',true);};
   document.getElementById('set-grey').onclick=function(){document.body.classList.remove('light');sjSaveTheme();applyPalette('grey',true);};
 
@@ -1078,6 +1078,7 @@ renderLitCards = function() {
     var now = new Date(); now.setHours(0,0,0,0);
     var items = [];
     DB.ctr.forEach(function(c, i) { if (c.fin) items.push({ date: c.fin, label: c.titre, type: 'ctr', idx: i, icon: '' }); });
+    DB.ctr.forEach(function(c, i) { var d = sjDenonciation(c); if (d) items.push({ date: sjIso(d), label: 'Dernier jour pour dénoncer : ' + c.titre, type: 'ctr', idx: i, icon: '' }); });
     DB.lit.forEach(function(l, i) { (l.events || []).forEach(function(ev) { if (ev.date && new Date(ev.date) >= now) items.push({ date: ev.date, label: l.ref + ' — ' + ev.type, type: 'lit', idx: i, icon: '' }); }); });
     items.sort(function(a, b) { return new Date(a.date) - new Date(b.date); });
     wrap.innerHTML = '<div style="display:flex;flex-direction:column;gap:8px">' + (items.length ? items.slice(0, 30).map(function(it) {
@@ -3280,6 +3281,7 @@ window.addEventListener('load', function() {
   document.querySelectorAll('.modal-bg').forEach(function(m) {
     m.classList.remove('open');
   });
+  document.querySelectorAll('[inert]').forEach(function(el) { el.inert = false; });   // voir openM
   // Reset modal state
   if (typeof _evModalLitIdx !== 'undefined') { _evModalLitIdx = -1; _evModalEvIdx = -1; }
   document.body.style.overflow = '';

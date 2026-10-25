@@ -24,6 +24,9 @@
   .hub-actions{display:flex;align-items:center;gap:var(--e2)}
   .hub-sauver{position:relative}
   /* taille du texte : trois « A » de plus en plus grands */
+  /* 6e passe : « trois boutons A sans libellé » */
+  .taille-mot{font-size:calc(13px * var(--ech));font-weight:600;color:var(--encre-2);margin-right:var(--e1);white-space:nowrap}
+  @media (max-width:700px){ .taille-mot{display:none} }
   .taille{display:flex;padding:3px;gap:2px;background:var(--carte-2);border:1px solid var(--filet);border-radius:10px;margin-right:var(--e2)}
   .taille button{border:0;box-shadow:none;height:32px;min-height:32px;min-width:34px;padding:0 8px;border-radius:7px;font-family:var(--sans);font-weight:700;line-height:1;text-transform:none;letter-spacing:0;background:transparent;color:var(--encre)}
   
@@ -38,10 +41,12 @@
     .hub{max-width:none;padding:var(--e8) max(var(--pad), calc((100% - var(--largeur-contenu)) / 2));
       display:grid;grid-template-columns:repeat(12,minmax(0,1fr));column-gap:var(--gouttiere);align-items:start}
     .hub > *{grid-column:1 / -1}
-    .hub > .hub-accueil{grid-column:1 / span 4;grid-row:1;margin-bottom:var(--e5)}
-    .hub > .premiers{grid-column:1 / span 4;grid-row:2}
+    .hub > .hub-accueil{grid-column:1 / span 4;grid-row:1 / span 2;margin-bottom:var(--e5)}
+    /* la recherche sous « Aujourd'hui », sur toute la colonne : visible sans défiler (audit du 25 oct. 2026) */
+    .hub > #recherche-globale{grid-column:5 / -1;grid-row:2;margin:var(--e5) 0 0}
+    .hub > .premiers{grid-column:1 / span 4;grid-row:3}
     .hub > .premiers ol{grid-template-columns:1fr}
-    .hub > .jour{grid-column:5 / -1;grid-row:1 / span 2}
+    .hub > .jour{grid-column:5 / -1;grid-row:1}
     .hub-accueil h1{font-size:calc(64px * var(--ech))}
     .hub-accueil p{max-width:38ch}
   }
@@ -58,7 +63,7 @@
   .hub-accueil p{margin:0;color:var(--encre-2);font-size:calc(17px * var(--ech));max-width:56ch}
   .hub-accueil p.eyebrow{color:rgb(var(--acc));font-size:calc(13px * var(--ech));margin-bottom:var(--e2)}
 
-  .hub #recherche-globale{max-width:none;margin:0}
+  .hub #recherche-globale{max-width:none;margin:0 0 var(--e6)}
   .rappel{margin:var(--e6) 0 0}
   .rappel .row{gap:var(--e2)}
 
@@ -147,7 +152,7 @@
   .v-sauve{display:flex;align-items:center;gap:var(--e4);flex-wrap:wrap;justify-content:center;font-size:calc(14px * var(--ech));color:var(--encre-2)}
   .v-sauve .faux-bouton{position:relative;border:1px solid var(--filet);border-radius:var(--r-m);background:var(--carte);color:var(--encre);padding:10px 16px;font:700 calc(12px * var(--ech))/1 var(--sans);letter-spacing:0;text-transform:none}
   .v-sauve .faux-bouton::after{content:"";position:absolute;top:-5px;right:-5px;width:10px;height:10px;border-radius:50%;background:rgb(var(--acc-fond));border:2px solid var(--fond)}
-  .choix-profil{display:grid;grid-template-columns:1fr 1fr;gap:var(--e3);margin:var(--e5) 0 var(--e3)}
+  .choix-profil{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:var(--e3);margin:var(--e5) 0 var(--e3)}
   .choix-profil .profil{display:flex;flex-direction:column;align-items:flex-start;gap:6px;height:auto;min-height:150px;padding:var(--e5);border:1px solid var(--filet-2);border-radius:var(--r-l);background:var(--carte);text-align:left;white-space:normal;text-transform:none;letter-spacing:0;font-weight:400;color:var(--encre);transition:border-color .15s var(--ease),box-shadow .15s var(--ease)}
   .choix-profil .profil:hover{border-color:var(--gris);background:var(--carte)}
   .choix-profil .profil[aria-checked="true"]{border-color:rgb(var(--acc-fond));box-shadow:0 0 0 1px rgb(var(--acc-fond)),var(--ombre-forte);background:var(--carte)}
@@ -178,19 +183,25 @@
   .points i{width:22px;height:6px;border-radius:99px;background:var(--filet)}
   .points i.on{background:rgb(var(--acc))}
   .bienvenue-pied .droite{display:flex;gap:var(--e2);align-items:center}
+  .hub-ia{margin-top:var(--e2)!important;font-size:calc(14px * var(--ech));color:var(--encre-2);max-width:46em}
+  .pied-effacer{display:block;margin-top:var(--e3)}
+  .grid-links .tool-num{display:none}   /* 8e passe : « les numéros 1 à 6 laissent croire à un ordre » */
+  .grid-links .tool p{color:var(--encre-2)}
   .hub-engagement{display:flex;flex-wrap:wrap;gap:var(--e1) var(--e4);margin-top:var(--e3)!important;font-size:calc(14px * var(--ech));color:var(--encre-2)}
   .hub-engagement span::before{content:"";display:inline-block;width:6px;height:6px;border-radius:2px;background:rgb(var(--acc));margin-right:var(--e2);vertical-align:2px}
   /* « Aujourd'hui » replié sur téléphone : trois lignes, puis « Voir tout » (l'accueil était trop long) */
   .jour-plus{display:none}
   @media (max-width:560px){
     .jour-liste.replie li:nth-child(n+4){display:none}
-    .hub-accueil + #recherche-globale{margin:var(--e2) 0 var(--e6)}
     .jour-plus{display:inline-flex;margin-top:var(--e2)}
     .hub-accueil h1{font-size:calc(40px * var(--ech))}
     .hub-barre{flex-wrap:wrap;row-gap:var(--e3)}
     .hub-actions{width:100%;justify-content:space-between;flex-wrap:wrap;row-gap:var(--e2)}
     .taille{margin-right:0}
     .v-outils > div{grid-template-columns:1fr}
+    /* 6e passe : sur téléphone, les outils arrivaient six écrans plus bas */
+    .hub-engagement{font-size:calc(13px * var(--ech))}
+    #premiersListe .detail{display:none}
   }
   /* 320 à 360 px : taille, Sauvegarde et Nuit tiennent sur une ligne */
   @media (max-width:360px){
@@ -207,10 +218,11 @@
       Paraphe
     </a>
     <div class="hub-actions">
+      <span class="taille-mot" aria-hidden="true">Taille du texte</span>
       <div class="taille" role="group" aria-label="Taille du texte" title="Taille du texte, dans tous les outils">
-        <button type="button" data-taille="1" aria-label="Texte normal">A</button><button type="button" data-taille="1.12" aria-label="Texte grand">A</button><button type="button" data-taille="1.25" aria-label="Texte très grand">A</button>
+        <button type="button" data-taille="1" aria-label="Texte normal">A</button><button type="button" data-taille="1.15" aria-label="Texte grand">A</button><button type="button" data-taille="1.3" aria-label="Texte très grand">A</button>
       </div>
-      <button type="button" class="hub-sauver" id="ouvrirSauvegarde">Sauvegarde<span class="pastille" id="pastilleSauvegarde" hidden></span></button>
+      <button type="button" class="hub-sauver" id="ouvrirSauvegarde" title="Mettre mes données à l'abri : copie, déménagement vers un autre appareil">Sauvegarde<span class="pastille" id="pastilleSauvegarde" hidden></span></button>
       <button type="button" id="theme-toggle" aria-pressed="false">Nuit</button>
     </div>
   </header>
@@ -218,14 +230,15 @@
   <main class="hub">
     <section class="hub-accueil">
       <h1>Paraphe<span class="point-final" aria-hidden="true"></span></h1>
-      <p>Six outils pour étudier et pratiquer le droit. Voici ce qui vous attend aujourd'hui ; plus bas, choisissez un outil ou cherchez dans tout ce que vous avez déjà saisi.</p>
+      <p>Six outils pour étudier et pratiquer le droit.</p>
       <!-- l'engagement sur les données, en haut et non plus seulement dans le pied (seconde passe du test) -->
       <p class="hub-engagement"><span>Sans compte</span><span>Rien n'est envoyé sans votre accord</span><span>Vos données restent sur cet appareil</span><a class="lien" href="confidentialite.html">En savoir plus</a></p>
+      <p class="hub-ia">Seule exception, éteinte au départ : l'assistant IA de Diligences. Allumé avec votre propre clé, il n'envoie que votre question, à votre service d'IA, après votre accord.</p>
     </section>
 
     <section class="premiers" id="premiers" aria-labelledby="t-premiers" hidden>
-      <div class="premiers-tete"><h2 id="t-premiers">Vos deux premières minutes</h2>
-        <p><span id="premiersCompte"></span> · <button type="button" class="lien" id="premiersMasquer">Masquer</button></p></div>
+      <div class="premiers-tete"><h2 id="t-premiers">Pour commencer</h2>
+        <p><span id="premiersCompte"></span> · <button type="button" class="lien" id="premiersMasquer" aria-label="Masquer les premiers pas">Masquer</button></p></div>
       <ol id="premiersListe"></ol>
     </section>
 
@@ -262,7 +275,7 @@
       <div class="grid-links">
         <a class="tool" href="flashcards.html">
           <h3><span class="tool-num" aria-hidden="true">1</span>Fiches mémo</h3>
-          <p>Des cartes question-réponse ou à trous, de la L1 au M2. Celles que vous connaissez bien reviennent moins souvent.</p>
+          <p>Des cartes question-réponse ou à trous, de la licence au master. Celles que vous connaissez bien reviennent moins souvent.</p>
           <div class="tool-contenu"><span data-compte="memo"></span><span class="ouvrir">Ouvrir →</span></div>
         </a>
         <a class="tool" href="fiches-arret.html">
@@ -272,7 +285,7 @@
         </a>
         <a class="tool" href="codes.html">
           <h3><span class="tool-num" aria-hidden="true">3</span>Codes &amp; articles</h3>
-          <p>Les articles cités, avec leur texte officiel daté, vos notes et ceux à retenir.</p>
+          <p>Les 62 codes en vigueur, et vos articles : texte officiel daté, notes et repères « à retenir ».</p>
           <div class="tool-contenu"><span data-compte="codes"></span><span class="ouvrir">Ouvrir →</span></div>
         </a>
       </div>
@@ -303,8 +316,9 @@
     </section>
 
     <footer class="hub-pied">
-      <span>Vos données restent sur cet appareil : aucun compte, aucun envoi sur internet. Une seule fonction peut envoyer un texte, et elle est éteinte tant que vous ne l'allumez pas : l'assistant IA de Diligences. Si vous lui donnez votre propre clé, il envoie la question que vous écrivez, et elle seule, au service que vous avez choisi, après votre accord.</span>
-      <span class="row" style="gap:var(--e4)"><button type="button" class="lien" id="changerProfil"></button><button type="button" class="lien" id="revoirBienvenue">Revoir la présentation</button><a class="lien" href="confidentialite.html">Confidentialité et informations légales</a><button type="button" class="lien" id="piedSauvegarde">Mettre mes données à l'abri</button><button type="button" class="lien lien-discret" id="ouvrirEffacer">Tout effacer et repartir de zéro</button></span>
+      <!-- audit du 25 oct. 2026 : la promesse est déjà en haut, la Sauvegarde déjà dans la barre (un seul endroit chacune) -->
+      <span class="row" style="gap:var(--e4)"><button type="button" class="lien" id="changerProfil"></button><button type="button" class="lien" id="revoirBienvenue">Revoir la présentation</button><a class="lien" href="confidentialite.html">Confidentialité et informations légales</a></span>
+      <span class="pied-effacer"><button type="button" class="lien lien-discret" id="ouvrirEffacer">Tout effacer et repartir de zéro</button></span>
     </footer>
   </main>
 
@@ -314,6 +328,7 @@
       <button type="button" id="fermerSauvegarde">Fermer</button>
     </div>
     <div class="fenetre-corps">
+      <p class="fenetre-note perimetre">La sauvegarde contient tout ce que Paraphe garde <b>sur cet appareil, dans ce navigateur</b> (ou dans l'application) : les six outils, leurs réglages et les pièces jointes. Ce que vous avez saisi sur un autre ordinateur n'y est pas.</p>
       <p id="introSauvegarde">Vos fiches, dossiers et réglages sont enregistrés sur cet appareil. Une sauvegarde les réunit dans un seul fichier, pièces jointes comprises (vos clés d'IA n'y sont jamais)&nbsp;: rangez-le sur une clé USB ou dans votre cloud, ou servez-vous-en pour tout retrouver sur un autre ordinateur.</p>
       <div class="etat-sauvegarde" id="etatSauvegarde"><i aria-hidden="true"></i><span id="derniereSauvegarde">Aucune sauvegarde pour l'instant.</span></div>
       <p class="resultat-sauvegarde" id="resultatSauvegarde" aria-live="polite" hidden></p>
@@ -323,7 +338,7 @@
         <button type="button" id="toutRestaurer">Restaurer une sauvegarde…</button>
       </div>
       <input type="file" id="fichierRestauration" accept="application/json,.json" hidden>
-      <p class="fenetre-note">La sauvegarde contient tout : les six outils, leurs réglages et les pièces jointes. Restaurer remplace les données actuelles par celles du fichier choisi. (Les exports d'un outil, PDF ou fichier de révision, servent à partager une partie seulement.)</p>
+      <p class="fenetre-note">Restaurer remplace les données actuelles par celles du fichier choisi. (Les exports d'un outil, PDF ou fichier de révision, servent à partager une partie seulement.)</p>
       <p class="alerte-espace" id="alerteEspace" hidden></p>
 
       <div class="copies-auto" id="copiesAuto" hidden>
@@ -401,17 +416,20 @@
         <p>Paraphe met en avant les outils qui vous servent et vous propose trois premiers pas de deux minutes. Les six outils restent toujours à portée de main.</p>
         <div class="choix-profil" role="radiogroup" aria-labelledby="bv-titre-1">
           <button type="button" class="profil" role="radio" aria-checked="false" data-profil="etudier">
-            <b>J'étudie</b><span>Réviser le cours, ficher les arrêts, retenir les articles.</span>
-            <small>Fiches mémo · Fiches d'arrêt · Codes &amp; articles</small></button>
+            <b>J'étudie</b><span>Réviser le cours, ficher les arrêts, retenir les articles, préparer un cas pratique.</span>
+            <small>Fiches mémo · Fiches d'arrêt · Codes &amp; articles · Considérant</small></button>
           <button type="button" class="profil" role="radio" aria-checked="false" data-profil="exercer">
             <b>J'exerce</b><span>Suivre les dossiers, calculer les délais, construire un raisonnement.</span>
-            <small>Diligences · Quantième · Considérant</small></button>
+            <small>Diligences · Quantième · Considérant · Codes &amp; articles</small></button>
+          <button type="button" class="profil" role="radio" aria-checked="false" data-profil="particulier">
+            <b>Pour une affaire personnelle</b><span>Un litige, un licenciement, un bail : trouver vos délais et suivre votre affaire.</span>
+            <small>Quantième · Diligences · Codes &amp; articles</small></button>
         </div>
-        <button type="button" class="lien" data-profil="">Les deux, sans préférence</button>
+        <button type="button" class="lien" data-profil="">Je découvre, j'enseigne : tout montrer sans préférence</button>
         <!-- la taille du texte se règle dès la bienvenue : derrière la fenêtre, les boutons de l'accueil sont hors d'atteinte -->
         <div class="bv-taille"><span id="bv-taille-titre">Taille du texte</span>
           <div class="taille" role="group" aria-labelledby="bv-taille-titre">
-            <button type="button" data-taille="1">Normal</button><button type="button" data-taille="1.12">Grand</button><button type="button" data-taille="1.25">Très grand</button>
+            <button type="button" data-taille="1">Normal</button><button type="button" data-taille="1.15">Grand</button><button type="button" data-taille="1.3">Très grand</button>
           </div></div>
       </section>
       <section class="etape" data-etape="2" hidden>
@@ -429,7 +447,7 @@
           <div class="v-sauve"><span class="faux-bouton" id="bvFauxBouton">Sauvegarde</span><span id="bvFauxTexte">en haut de l'accueil</span></div>
         </div>
         <h2 id="bv-titre-3" tabindex="-1">Pensez à faire une sauvegarde</h2>
-        <p id="bvTexte3">Comme vos données ne sont qu'ici, une panne ou un changement d'ordinateur peut les faire disparaître. Le bouton « Sauvegarde » les réunit dans un seul fichier, à ranger sur une clé USB ou dans votre cloud. Paraphe vous le rappellera si vous oubliez.</p>
+        <p id="bvTexte3">Comme vos données ne sont qu'ici, une panne, un changement d'appareil ou un navigateur vidé peut les faire disparaître. Le bouton « Sauvegarde » les réunit dans un seul fichier, à ranger sur une clé USB ou dans votre cloud. Paraphe vous le rappellera si vous oubliez.</p>
       </section>
     </div>
     <div class="bienvenue-pied">
@@ -490,7 +508,7 @@
     return n;
   }
   // Fiches mémo : vos cartes + les cartes d'exemple pas encore enregistrées ni supprimées
-  const NB_EXEMPLES_MEMO = 70;   // cartes « seed-fc-N » écrites dans flashcards.html
+  const NB_EXEMPLES_MEMO = 260;  // 70 cartes « seed-fc-N » de flashcards.html + 190 de cartes-exemples.js (même total que « Mes cartes »)
   function nbCartes() {
     const stockees = lire('droit_flashcards');
     const liste = Array.isArray(stockees) ? stockees : [];
@@ -530,7 +548,9 @@
   // ── Aujourd'hui : une ligne par outil (aujourdhui.js) ──
   function majJour() {
     $('jourDate').textContent = new Date().toLocaleDateString('fr-FR', { weekday: 'long', day: 'numeric', month: 'long' });
-    const lignes = window.ParapheJour ? window.ParapheJour.collecter() : [];
+    const toutes = window.ParapheJour ? window.ParapheJour.collecter() : [];
+    // les outils encore vides ne sont présentés qu'une fois, par leur tuile plus bas (6e passe)
+    const lignes = toutes.some(l => !l.intro) ? toutes.filter(l => !l.intro) : toutes;
     $('jourListe').innerHTML = lignes.map(l =>
       '<li><a class="jour-ligne" href="' + l.href + '"><span class="jour-outil">' + l.outil + '</span>' +
       '<span class="jour-texte">' + l.texte + '</span><span class="jour-action">' + l.action + '</span></a></li>').join('');
@@ -610,7 +630,6 @@
   const ouvrir = () => { afficherEtat(); fenetre.showModal ? fenetre.showModal() : fenetre.setAttribute('open', ''); };
   const fermer = () => fenetre.close ? fenetre.close() : fenetre.removeAttribute('open');
   $('ouvrirSauvegarde').addEventListener('click', ouvrir);
-  $('piedSauvegarde').addEventListener('click', ouvrir);
   $('fermerSauvegarde').addEventListener('click', fermer);
   fenetre.addEventListener('click', e => { if (e.target === fenetre) fermer(); });   // clic hors de la fenêtre
 
@@ -644,9 +663,11 @@
       [nb('droit_flashcards', v => v.length), 'carte', 'cartes'], [nb('droit_fiches_arret', v => v.length), 'fiche d\u2019arrêt', 'fiches d\u2019arrêt'],
       [nb('droit_codes', v => v.length), 'article', 'articles'], [nb('attendu-cubes-v1', v => (v.fiches || []).length), 'raisonnement', 'raisonnements'],
       [dossiers, 'dossier', 'dossiers'], [(paquet.pieces || []).length, 'pièce jointe', 'pièces jointes'],
-    ].filter(([n]) => n).map(([n, s1, s2]) => pluriel(n, s1, s2));
+    ].map(([n, s1, s2]) => n ? pluriel(n, s1, s2) : 'aucun' + (s1.startsWith('fiche') || s1.startsWith('carte') || s1.startsWith('pièce') ? 'e ' : ' ') + s1);
     const r = $('resultatSauvegarde');
-    r.textContent = 'Fichier « ' + nomFichier + ' » créé' + (parts.length ? ' : ' + parts.join(', ') : ' : vos réglages (aucune carte, fiche ni dossier saisi pour l\u2019instant)') + '. '
+    r.textContent = 'Fichier « ' + nomFichier + ' » créé' + (parts.length ? ' : ' + parts.join(', ') : ' : vos réglages et votre progression (rien d\u2019autre saisi pour l\u2019instant)') + '. '
+      // 6e passe : « aucune carte » alors que l'accueil en annonce 260 : le contenu fourni est dans le logiciel lui-même
+      + 'Les cartes, fiches d\u2019arrêt et articles fournis avec Paraphe sont dans le logiciel : ils n\u2019ont pas besoin de sauvegarde. '
       + (window.parapheSortie ? 'Il est à l\u2019endroit que vous avez choisi.' : 'Il est dans le dossier Téléchargements de votre navigateur.')
       + ' Rangez-le sur une clé USB ou dans votre cloud.';
     r.hidden = false;
@@ -763,7 +784,6 @@
     // vocabulaire de l'application : rien à faire, les options sont repliées
     $('t-sauvegarde').textContent = 'Mes données';
     $('ouvrirSauvegarde').firstChild.nodeValue = 'Mes données';
-    $('piedSauvegarde').hidden = true;
     $('introSauvegarde').textContent = 'Paraphe enregistre tout automatiquement, à chaque modification, et fait lui-même une copie de sécurité chaque jour d\u2019utilisation. Vous n\u2019avez rien à faire. Les options ci-dessous servent à déménager vos données sur un autre ordinateur ou à en garder une copie ailleurs.';
     $('avanceTitre').textContent = 'Options avancées';
     $('bvFauxBouton').textContent = 'Mes données';
@@ -899,7 +919,7 @@
   });
   const PREMIERS = {
     etudier: [
-      { titre: 'Réviser cinq cartes', detail: 'Des cartes d\u2019exemple vous attendent : notez-les de 1 à 4.', href: 'flashcards.html?reviser=1',
+      { titre: 'Réviser cinq cartes', detail: 'Des cartes d\u2019exemple vous attendent : notez-les d\u2019« Encore » à « Facile ».', href: 'flashcards.html?reviser=1',
         fait: () => { const s = lire('droit_flashcards_stats'); return !!(s && s.jours && Object.keys(s.jours).length); } },
       { titre: 'Lire l\u2019arrêt du jour', detail: 'Faits, procédure, problème, solution, portée.', href: () => (document.querySelector('.jour-ligne[href^="fiches-arret"]') || {}).getAttribute?.('href') || 'fiches-arret.html', marque: 'paraphe_pp_arret' },
       { titre: 'Faire une carte à trous', detail: 'Dans Codes & articles, ouvrez un article puis « Faire une carte à trous ».', href: 'codes.html',
@@ -909,11 +929,17 @@
       { titre: 'Calculer un premier délai', detail: 'Choisissez une procédure et une date : Quantième donne chaque date limite.', href: 'quantieme.html', marque: 'paraphe_pp_quantieme' },
       { titre: 'Ouvrir un premier dossier', detail: 'Un litige ou un contrat dans Diligences, avec sa prochaine échéance.', href: 'diligences.html',
         fait: () => (lire('sj-profiles') || []).some(p => { const d = lire('sjp-' + p.id + '-data'); return d && !d.enc && ['lit', 'ctr', 'cons', 'soc'].some(k => (d[k] || []).length); }) },
-      { titre: 'Préparer une consultation', detail: 'Dans Considérant : « Fiche », puis « Nouvelle fiche depuis un modèle ».', href: 'considerant.html',
+      { titre: 'Préparer une consultation', detail: 'Dans Considérant, partez d\u2019un modèle : cas pratique, consultation, dissertation, commentaire.', href: 'considerant.html',
         fait: () => { const c = lire('attendu-cubes-v1'); return !!(c && (c.fiches || []).length > 1); } },
     ],
   };
   PREMIERS[''] = [PREMIERS.etudier[0], PREMIERS.exercer[0], PREMIERS.etudier[2]];
+  // une affaire personnelle : les délais de sa situation, puis le suivi (8e passe : « rien pour un particulier »)
+  PREMIERS.particulier = [
+    { titre: 'Trouver les délais de votre situation', detail: 'Dans Quantième, partez de votre situation (« J\u2019ai reçu un jugement », « Mon bailleur m\u2019a donné congé »…).', href: 'quantieme.html', marque: 'paraphe_pp_quantieme' },
+    { titre: 'Suivre votre affaire', detail: 'Dans Diligences, notez votre litige et sa prochaine audience.', href: 'diligences.html', fait: PREMIERS.exercer[1].fait },
+    { titre: 'Lire où vont vos données', detail: 'Rien ne quitte cet appareil sans votre accord : voici comment.', href: 'confidentialite.html', marque: 'paraphe_pp_donnees' },
+  ];
   function majPremiers() {
     let masque = false; try { masque = localStorage.getItem(CLE_PP_MASQUES) === '1' || localStorage.getItem(CLE_PROFIL) === null; } catch {}
     const taches = PREMIERS[profil()] || PREMIERS[''];
@@ -930,9 +956,10 @@
     const p = profil();
     // les outils du profil d'abord
     const etudier = document.querySelector('[aria-labelledby="t-etudier"]'), pratiquer = document.querySelector('[aria-labelledby="t-pratiquer"]');
-    if (p === 'exercer' && etudier.compareDocumentPosition(pratiquer) & Node.DOCUMENT_POSITION_FOLLOWING) etudier.before(pratiquer);
-    if (p !== 'exercer' && pratiquer.compareDocumentPosition(etudier) & Node.DOCUMENT_POSITION_FOLLOWING) pratiquer.before(etudier);
-    $('changerProfil').textContent = 'Profil : ' + ({ etudier: 'j\u2019étudie', exercer: 'j\u2019exerce' }[p] || 'les deux') + ' (changer)';
+    const pratiqueDAbord = p === 'exercer' || p === 'particulier';
+    if (pratiqueDAbord && etudier.compareDocumentPosition(pratiquer) & Node.DOCUMENT_POSITION_FOLLOWING) etudier.before(pratiquer);
+    if (!pratiqueDAbord && pratiquer.compareDocumentPosition(etudier) & Node.DOCUMENT_POSITION_FOLLOWING) pratiquer.before(etudier);
+    $('changerProfil').textContent = 'Changer de profil (' + ({ etudier: 'j\u2019étudie', exercer: 'j\u2019exerce', particulier: 'affaire personnelle' }[p] || 'aucun choisi') + ')';
     bv.querySelectorAll('.profil').forEach(x => x.setAttribute('aria-checked', String(x.dataset.profil === p)));
     majJour(); majPremiers();
   }
@@ -971,10 +998,9 @@
 /* téléphone : la recherche monte sous le titre, et « Aujourd'hui » se replie (seconde passe du test : il fallait
    défiler plusieurs écrans avant d'atteindre un outil) */
 (() => {
-  const petit = matchMedia("(max-width:560px)"), rg = document.getElementById("recherche-globale");
-  const accueil = document.querySelector(".hub-accueil"), avant = document.getElementById("rappelSauvegarde");
-  const placer = () => { if (petit.matches) accueil.after(rg); else avant.before(rg); };
-  placer(); petit.addEventListener("change", placer);
+  const rg = document.getElementById("recherche-globale"), accueil = document.querySelector(".hub-accueil");
+  // audit du 25 oct. 2026 : sur ordinateur aussi, la recherche vient juste sous le titre (elle arrivait après tout le texte)
+  accueil.after(rg);
   const liste = document.getElementById("jourListe"), plus = document.getElementById("jourPlus");
   const majPlus = () => { const n = liste.children.length; plus.hidden = n <= 3; plus.textContent = liste.classList.contains("replie") ? "Voir tout (" + n + ")" : "Voir moins"; };
   plus.addEventListener("click", () => { const r = liste.classList.toggle("replie"); plus.setAttribute("aria-expanded", String(!r)); majPlus(); });
@@ -999,7 +1025,7 @@
   $('ouvrirEffacer').addEventListener('click', () => {
     mot.value = ''; ok.disabled = true; ok.textContent = 'Tout effacer';
     d.showModal ? d.showModal() : d.setAttribute('open', '');
-    mot.focus();
+    if (matchMedia('(pointer:coarse)').matches) { const t = d.querySelector('h2'); if (t) { t.setAttribute('tabindex', '-1'); t.focus(); } } else mot.focus();
   });
   mot.addEventListener('input', () => { ok.disabled = mot.value.trim().toUpperCase() !== 'EFFACER'; });
   $('efAnnuler').addEventListener('click', () => d.close());
@@ -1018,7 +1044,7 @@
     const supprimer = nom => new Promise(fin => {
       try { const rq = indexedDB.deleteDatabase(nom); rq.onsuccess = rq.onerror = rq.onblocked = () => fin(); } catch { fin(); }
     });
-    if (window.indexedDB) await Promise.all(['paraphe-pj', 'mes-logiciels-pj'].map(supprimer));
+    if (window.indexedDB) await Promise.all(['paraphe-pj', 'mes-logiciels-pj', 'paraphe-codes'].map(supprimer));
     // dans l'app : clés d'IA et mot de passe des copies, rangés dans le Trousseau
     if (window.parapheCles) await window.parapheCles.ecrire({}).catch(() => {});
     if (window.parapheDonnees && window.parapheDonnees.protection) await window.parapheDonnees.protection.retirer().catch(() => {});
