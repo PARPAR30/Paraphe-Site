@@ -1,12 +1,14 @@
 {
-  "version": "1.3.1",
-  "date": "2026-10-26",
+  "version": "1.4.0",
+  "date": "2026-10-28",
   "lien": "https://parpar30.github.io/Paraphe-Site/#telecharger",
-  "mac": "https://github.com/PARPAR30/Paraphe-Site/releases/download/v1.3.1/Paraphe_1.3.1_universal.dmg",
+  "mac": "https://github.com/PARPAR30/Paraphe-Site/releases/download/v1.4.0/Paraphe_1.4.0_universal.dmg",
+  "windows": "1.3.1",
   "nouveautes": [
-    "Codes & articles : dans un code ouvert, cherchez un numéro d’article ou des mots sans quitter son plan",
-    "Diligences fonctionne de nouveau normalement sur Mac : votre profil, les litiges enregistrés, le bouton Profil, la note rapide, le rapport et l’assistant IA",
-    "Le tableau de bord de Diligences (statistiques, synthèse financière, alertes) est de nouveau visible sur l’accueil",
-    "Un fichier n’est annoncé « enregistré » qu’une fois vraiment écrit, notamment dans Quantième"
+    "Sur Mac, Paraphe devient une vraie application du Mac : plus rapide, avec la barre de titre, les menus et les raccourcis du système",
+    "Les 62 codes sont fournis avec l’application : plus rien à télécharger, tout fonctionne hors connexion, et leurs mises à jour arrivent toujours d’elles-mêmes",
+    "Paraphe occupe toute la fenêtre, jusqu’aux écrans très larges, et suit le thème Jour ou Nuit jusque dans les boutons de la fenêtre",
+    "Considérant : les cubes s’étirent sans à-coups, leur texte ne déborde plus et tous les menus s’ouvrent",
+    "Sur Windows, la version 1.3.1 reste la plus récente"
   ]
 }
